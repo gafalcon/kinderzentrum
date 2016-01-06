@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="es">
+<head>
+    <title> {% block title %} Titulo Base {% endblock %}</title>
+    
+    {% block css %}
+    <link rel="stylesheet" href="/static/css/jquery-ui.css" />
+    <link rel="stylesheet" href="/static/css/bootstrap.css" />
+    {% endblock css %}
+
+    {% block js %}
+	  <script src="/static/js/jquery-1.9.1.js"></script>
+	  <script src="/static/js/jquery-ui.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+    {% endblock js %}
+</head>
+
+<body>
+<header>
+<h1>Proyecto Kinderzentrum</h1>
+<nav >
+	<ul >
+	<li><a href="#"> Inicio </a></li>
+	{% if user.is_authenticated %}
+	{% if registro %}
+	<li >
+	<a href="#">Registro </a>
+		<ul >
+			<!--<li><a href="{% url 'vista_ficha_medica' %}">Ficha medica</a></li>
+			<li><a href="{% url 'vista_actualiazion_ficha_medica' %}">Actualizacion ficha medica</a></li>-->
+			<li class="divider"></li>
+			<!--<li><a href="{% url 'vista_nueva' %}">Documentos</a></li>-->
+			<li><a href="#">Mas opciones</a></li>
+            
+        </ul>
+	</li>
+	{% endif %}
+	{% if resumen %}
+	<li><a href="#"> Resumen </a></li>
+	{% endif %}
+	<li><a href="#"> Información </a></li>
+	{% endif %}
+	<li><a href="#"> Acerca de </a></li>
+	{% if user.is_authenticated %}
+	<!--<li><a href="{% url 'vista_logout' %}"> Logout - {{user.username}}</a></li>-->
+	{% else %}
+	<li><a href="#"> Login </a></li> 
+	
+	{% endif %}
+
+	</ul>
+</nav>
+</header>
+
+<section>
+	<h2>{{ advertencia }}</h2>
+	{% block content %}
+	{% endblock %}
+</section>
+
+</body>
+</html>
