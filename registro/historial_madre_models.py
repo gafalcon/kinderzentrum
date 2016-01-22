@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 
-class Historial_madre(models.Model):
+class HistorialMadre(models.Model):
     
     perdidas_gestacionales = models.IntegerField()
     hijos_muertos = models.BooleanField()
@@ -14,7 +14,7 @@ class Historial_madre(models.Model):
 class Enfermedad_Madre(models.Model):
     nombre = models.CharField(max_length=100)
     fecha_desarrollo = models.CharField(max_length=25)
-    historial_madre = models.ForeignKey(Historial_madre, on_delete=models.CASCADE)
+    historial_madre = models.ForeignKey(HistorialMadre, on_delete=models.CASCADE)
 
 
 
@@ -31,7 +31,7 @@ class Gestacion(models.Model):
 class Actividad_Gestacion(models.Model):
     tipo = models.SmallIntegerField()
     periodo = models.SmallIntegerField()
-    historial_madre = models.ForeignKey(Historial_madre, on_delete=models.CASCADE)
+    gestacion = models.ForeignKey(Gestacion, on_delete=models.CASCADE)
 
 class Situacion_Gestacion(Actividad_Gestacion):
     pass

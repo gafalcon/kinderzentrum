@@ -31,6 +31,8 @@ class Descripcion(models.Model):
     had_convulsion = models.SmallIntegerField("¿Ha sentido convulsiones?",
                                             choices=LIMITACIONES_OPTIONS)
 
+    
+
 class Terapia(models.Model):
     """ terapias recibidas por el paciente """
     TERAPIA_CHOICES = ((1, "REHABILITACIÓN FÍSICA"),
@@ -38,13 +40,18 @@ class Terapia(models.Model):
     tipo = models.SmallIntegerField("tipo de terapia", choices=TERAPIA_CHOICES)
     tiempo_terapia = models.DurationField("¿Cuánto tiempo lleva realizando la terapia")
 
+    descripcion = models.ForeignKey(Descripcion)
+    
+
 
 class Convulsion(models.Model):
     """ Convulsion que haya presentado el paciente """
     crisis = models.CharField("¿Qué tipo de crisis tuvo en la convulsión?", max_length=300)
     edad = models.IntegerField("¿A qué edad fue la primera crisis?")
+    descripcion = models.ForeignKey(Descripcion)
 
 class Medicamento(models.Model):
     """ Medicamento recetado para convulsiones """
     nombre = models.CharField("nombre del medicamento", max_length=100)
     dosis_diaria = models.IntegerField()
+    convulsion = models.ForeignKey(Convulsion)

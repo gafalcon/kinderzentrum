@@ -3,9 +3,9 @@
 from __future__ import unicode_literals
 
 from django.db import models
-import descripcion_models
-import historial_madre_models
-import nacimiento_models
+from  descripcion_models import *
+from historial_madre_models import *
+from nacimiento_models import *
 
 class Familiar(models.Model):
     """ Familiar del paciente """
@@ -43,7 +43,6 @@ class Medico(models.Model):
         return self.apellidos + " " + self.nombres
 
 
-
 class Paciente(models.Model):
     """Modelo que representa a un paciente de la clinica"""
 
@@ -68,6 +67,12 @@ class Paciente(models.Model):
                                        max_length=4)
     sexo = models.CharField(choices=SEXO_CHOICES, max_length=1)
     familiares = models.ManyToManyField(Familiar)
+    medico = models.OneToOneField(Medico)
+    descripcion = models.OneToOneField(Descripcion)
+    historial_madre = models.OneToOneField(HistorialMadre)
+    gestacion = models.OneToOneField(Gestacion)
+    nacimiento = models.OneToOneField(Nacimiento)
+
     def __unicode__(self):
         return self.apellidos + " " + self.nombres
 
