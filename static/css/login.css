@@ -1,0 +1,109 @@
+h1{
+	font-size: 38px;
+	text-align: center;
+	font-family: "Century Gothic",arial;
+	color: #555;
+}
+
+h2{
+	font-size: 18px;
+	text-align: center;
+	font-family: "Century Gothic";
+	color: rgb(85, 85, 85);
+}
+
+#singin{
+	text-align: center;
+	background-color: #F7F7F7;
+	box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+	width: 30%;
+	padding: 10px 0;
+	margin-left: 35%;
+	border-radius: 10px;
+}
+
+#avatar{
+	margin-top: 10px;
+	margin-bottom: 10px;
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+}
+
+/* make keyframes that tell the start state and the end state of our object */
+@-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+.fade-in {
+  opacity:0;  /* make things invisible upon start */
+  -webkit-animation:fadeIn ease-in 1;  /* call our keyframe named fadeIn, use animattion ease-in and repeat it only 1 time */
+  -moz-animation:fadeIn ease-in 1;
+  animation:fadeIn ease-in 1;
+
+  -webkit-animation-fill-mode:forwards;  /* this makes sure that after animation is done we remain at the last keyframe value (opacity: 1)*/
+  -moz-animation-fill-mode:forwards;
+  animation-fill-mode:forwards;
+
+  -webkit-animation-duration:0.5s;
+  -moz-animation-duration:0.5s;
+  animation-duration:0.5s;
+}
+
+.fade-in.one {
+  -webkit-animation-delay: 0.4s;
+  -moz-animation-delay: 0.4s;
+  animation-delay: 0.4s;
+}
+
+#errorMsg{
+	color: red;
+	font-family: arial;
+}
+
+#id_username{
+	margin-top: 15px;
+	height: 35px;
+	font-size: 16px;
+	box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1) inset;
+	border-width: 1px;
+	border-color: rgb(160, 160, 160) rgb(185, 185, 185) rgb(185, 185, 185);
+	border-style: solid;
+	width: 50%;
+}
+
+#id_password{	
+	height: 35px;
+	font-size: 16px;
+	box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1) inset;
+	border-width: 1px;
+	border-color: rgb(160, 160, 160) rgb(185, 185, 185) rgb(185, 185, 185);
+	border-style: solid;
+	width: 50%;
+}
+
+#loginBtn{
+	background-color: rgb(53, 122, 232);
+	color: white;
+	border: 1px solid rgb(47, 91, 183);
+	text-shadow: 0px 1px rgba(0, 0, 0, 0.3);
+	background-image: -moz-linear-gradient(center top , rgb(77, 144, 254), rgb(53, 122, 232));
+	transition: all 0s ease 0s;
+	width: 50%;
+	height: 35px;
+	border-radius: 5px;
+	font-size: 15px;
+	font-weight: bold;
+	font-family: arial;
+	margin-bottom: 10px;
+}
+
+#olvidoCont{
+	font-family: arial;
+}
+
+#nuevaCuenta{
+	text-align: center;
+	color: rgb(53, 122, 232);
+	margin-top: 40px;
+}

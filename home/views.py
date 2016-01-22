@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 from django.shortcuts import render, render_to_response
 from django.contrib.auth import login, logout, authenticate
 from django.http import HttpResponseRedirect
@@ -39,7 +40,7 @@ def login_view(request):
                     login(request,usuario)
                     return HttpResponseRedirect('/')
                 else:
-                    mensaje = "Usuario y/o password incorrecto"
+                    mensaje = "Usuario y/o contraseña incorrecto"
         form = LoginForm()
         ctx = {'form':form,'mensaje':mensaje}
         return render_to_response('home/login.html',ctx,context_instance=RequestContext(request))
