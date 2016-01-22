@@ -1,17 +1,38 @@
-{% extends 'base.html' %}
-{% block title %} Login{% endblock %}
-{% block content %}
-<br> Ingrese al sistema 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="es">
+<head>
+    <title>{% block title %} Login{% endblock %}</title>
+    
+    {% block css %}
+    <link rel="stylesheet" href="/static/css/jquery-ui.css" />
+    <link rel="stylesheet" href="/static/css/bootstrap.css" />
+    <link rel="stylesheet" href="/static/css/login.css" />
+    {% endblock css %}
 
-<form action="." method="POST">
+    {% block js %}
+	<script src="/static/js/jquery-1.9.1.js"></script>
+	<script src="/static/js/jquery-ui.js"></script>
+	<script src="/static/js/bootstrap.js"></script>
+    {% endblock js %}
+</head>
 
-	{% csrf_token %}
-	{{ mensaje }}
-	{{ form.as_p }}
-	<input type="submit" value="Login">
-	<!-- <h5> <a href="">Registrate aqui</a></h5> -->
-
-</form>
-
-
-{% endblock %}
+<body>
+	{% block content %}
+	<center><img src="../static/images/kz_logo2.png" width=100 height=100 style="margin-top: 10px;"></center>
+	<h1>Kinderzentrum</h1>
+	<h2>Ingrese al sistema</h2>
+	
+	<div id="singin">
+		<img id="avatar" src="../static/images/avatar.png">
+		<form action="." method="POST">
+			{% csrf_token %}	
+			<div id="errorMsg" class="fade-in one">{{ mensaje }}</div>
+			{{ form.as_p }}
+			<input id="loginBtn" type="submit" value="Login">
+			<div id="olvidoCont">¿Olvid&oacute; su contraseña?</div>
+		</form>
+	</div>
+	<div id="nuevaCuenta">Crear nueva cuenta</div>
+	{% endblock %}
+</body>
+</html>
