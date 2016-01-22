@@ -26,10 +26,9 @@
 	<li >
 	<a href="#">Registro </a>
 		<ul >
-			<!--<li><a href="{% url 'vista_ficha_medica' %}">Ficha medica</a></li>
-			<li><a href="{% url 'vista_actualiazion_ficha_medica' %}">Actualizacion ficha medica</a></li>-->
-			<li class="divider"></li>
-			<!--<li><a href="{% url 'vista_nueva' %}">Documentos</a></li>-->
+			<li><a href="#">Registro de ficha medica</a></li>
+			<li><a href="#}">Actualizacion ficha medica</a></li>
+			<li><a href="#">Documentos</a></li>
 			<li><a href="#">Mas opciones</a></li>
             
         </ul>
@@ -42,7 +41,7 @@
 	{% endif %}
 	<li><a href="#"> Acerca de </a></li>
 	{% if user.is_authenticated %}
-	<!--<li><a href="{% url 'vista_logout' %}"> Logout - {{user.username}}</a></li>-->
+	<li><a href="{% url 'logout_view' %}"> Logout - {{user.first_name}}</a></li>
 	{% else %}
 	<li><a href="{% url 'login_view' %}"> Login </a></li> 
 	

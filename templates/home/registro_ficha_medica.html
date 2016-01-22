@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
-{% block title %} Login{% endblock %}
+{% block title %} Kinderzentrum - ficha medica{% endblock %}
 {% block content %}
-<br> Ingrese al sistema 
+<br> Registro de ficha medica
 
 <form action="." method="POST">
 
@@ -9,7 +9,7 @@
 	{{ mensaje }}
 	{{ form.as_p }}
 	<input type="submit" value="Login">
-	<!-- <h5> <a href="">Registrate aqui</a></h5> -->
+	<h5> <a href="{% url 'vista_registro' %}">Registrate aqui</a></h5>
 
 </form>
 
