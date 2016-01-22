@@ -4,7 +4,7 @@ import datetime
 #from django.contrib.auth.models import User
 
 class LoginForm(forms.Form):
-    username = forms.CharField(label="",widget=forms.TextInput(attrs={'placeholder': 'Usuario'}))
+    username = forms.CharField(label="",widget=forms.TextInput(attrs={'placeholder': 'Usuario','autofocus':'autofocus'}))
     password = forms.CharField(label="",widget=forms.PasswordInput(render_value=False, attrs={'placeholder': 'Contraseña'}))
 
 
