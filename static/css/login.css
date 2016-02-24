@@ -1,3 +1,9 @@
+body{
+  
+  background: url("../images/kz-background.jpg") no-repeat; 
+  background-size: 100% 115%;  
+}
+
 h1{
 	font-size: 38px;
 	text-align: center;
