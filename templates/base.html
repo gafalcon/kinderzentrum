@@ -8,10 +8,10 @@
     <link rel="stylesheet" href="/static/css/bootstrap.css" />
     {% endblock css %}
 
-    {% block js %}
 	  <script src="/static/js/jquery-1.9.1.js"></script>
 	  <script src="/static/js/jquery-ui.js"></script>
     <script src="/static/js/bootstrap.js"></script>
+    {% block js %}
     {% endblock js %}
 </head>
 
@@ -26,7 +26,7 @@
 	<li >
 	<a href="#">Registro </a>
 		<ul >
-			<li><a href="#">Registro de ficha medica</a></li>
+			<li><a href="{% url 'registro_view' %}">Registro de ficha medica</a></li>
 			<li><a href="#}">Actualizacion ficha medica</a></li>
 			<li><a href="#">Documentos</a></li>
 			<li><a href="#">Mas opciones</a></li>

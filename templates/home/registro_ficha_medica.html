@@ -1,5 +1,19 @@
 {% extends 'base.html' %}
 {% block title %} Kinderzentrum - ficha medica{% endblock %}
+
+{% block js %}
+<script>
+  $(function() {
+    $( ".datepicker" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1950:2012",
+      // Podemos poner mas opciones
+    });
+  });
+  </script>
+{% endblock js %}
+
 {% block content %}
 <br> Registro de ficha medica
 
@@ -7,10 +21,10 @@
 
 	{% csrf_token %}
 	{{ mensaje }}
-	{{ form.as_p }}
-	<input type="submit" value="Login">
-	<h5> <a href="{% url 'vista_registro' %}">Registrate aqui</a></h5>
-
+	{{ ficha_datos_form.as_p }}
+	<hr>
+	{{ ficha_datos_form.as_p }}
+	<input id="enviar" type="submit" value="Guardar Datos">
 </form>
 
 

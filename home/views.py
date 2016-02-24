@@ -3,7 +3,7 @@ from django.shortcuts import render, render_to_response
 from django.contrib.auth import login, logout, authenticate
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
-from home.forms import LoginForm
+from home.forms import LoginForm, Ficha_DatosForm
 
 # Create your views here.
 
@@ -45,7 +45,24 @@ def login_view(request):
         ctx = {'form':form,'mensaje':mensaje}
         return render_to_response('home/login.html',ctx,context_instance=RequestContext(request))
 
+
+def ficha_view(request):
+	if request.method == "POST":
+		form = FichaForm(request.POST)
+
     
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect('/')
+
+
+'''WEBADAS DE REGISTRO'''
+def registro_view(request):
+    mensaje = ""
+    if request.method == "POST":
+        mensaje = "guardando datos"
+    else:
+        mensaje = "enviando forma"
+    datos = Ficha_DatosForm()
+    ctx = {'ficha_datos_form':datos,'mensaje':mensaje}
+    return render_to_response('home/registro_ficha_medica.html',ctx,context_instance=RequestContext(request))
