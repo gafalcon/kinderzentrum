@@ -21,9 +21,16 @@
 
 	{% csrf_token %}
 	{{ mensaje }}
+	<br>
+	<label>Datos principales</label>
 	{{ ficha_datos_form.as_p }}
 	<hr>
-	{{ ficha_datos_form.as_p }}
+	<label>Datos familia</label>
+	{{ ficha_datos_familia_form.as_p }}
+	<hr>
+	<label>Datos medico</label>
+	{{ ficha_datos_medico_form.as_p }}
+	
 	<input id="enviar" type="submit" value="Guardar Datos">
 </form>
 

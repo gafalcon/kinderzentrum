@@ -3,7 +3,7 @@ from django.shortcuts import render, render_to_response
 from django.contrib.auth import login, logout, authenticate
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
-from home.forms import LoginForm, Ficha_DatosForm
+from home.forms import LoginForm, Ficha_DatosForm, Ficha_DatosFamiliaresForm, Ficha_DatosMedicoForm
 
 # Create your views here.
 
@@ -63,6 +63,9 @@ def registro_view(request):
         mensaje = "guardando datos"
     else:
         mensaje = "enviando forma"
+    #datos 
     datos = Ficha_DatosForm()
-    ctx = {'ficha_datos_form':datos,'mensaje':mensaje}
+    datos_familia = Ficha_DatosFamiliaresForm()
+    datos_medico = Ficha_DatosMedicoForm()
+    ctx = {'ficha_datos_medico_form':datos_medico,'ficha_datos_familia_form':datos_familia,'ficha_datos_form':datos,'mensaje':mensaje}
     return render_to_response('home/registro_ficha_medica.html',ctx,context_instance=RequestContext(request))

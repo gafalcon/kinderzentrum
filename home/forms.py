@@ -23,9 +23,26 @@ class Ficha_DatosForm(forms.Form):
     lugar_nacimiento = forms.CharField(widget=forms.TextInput())
     grupo_sanguineo = forms.ChoiceField(choices=GRUPO_SANGUINEO)
 
-class ClassName(object):
-    """docstring for ClassName"""
-    def __init__(self, arg):
-        super(ClassName, self).__init__()
-        self.arg = arg
+class Ficha_DatosFamiliaresForm(forms.Form):
+    ESTUDIO=[('primaria','Primaria'),('secundaria','Secundaria'),('universitaria','Universitaria'),('superior','Superior')]
+    apellidos = forms.CharField(widget=forms.TextInput())
+    nombres = forms.CharField(widget=forms.TextInput())
+    parentesco = forms.CharField(widget=forms.TextInput())
+    nivel_estudio = forms.ChoiceField(choices=ESTUDIO)
+    #trabajo
+    empresa = forms.CharField(widget=forms.TextInput())
+    direccion = forms.CharField(widget=forms.TextInput())
+    empresa = forms.CharField(widget=forms.TextInput())
+    #domicilio
+    direccion_domicilio = forms.CharField(widget=forms.TextInput())
+    telefono = forms.CharField(widget=forms.TextInput())
+
+class Ficha_DatosMedicoForm(forms.Form):
+    apellidos = forms.CharField(widget=forms.TextInput())
+    nombres = forms.CharField(widget=forms.TextInput())
+    area = forms.CharField(widget=forms.TextInput())
+    direccion = forms.CharField(widget=forms.TextInput())
+    telefono = forms.CharField(widget=forms.TextInput())
+        
+
         
