@@ -1,0 +1,26 @@
+h1{
+	font-size: 38px;
+	text-align: center;
+	font-family: "Century Gothic",arial;
+	color: #555;
+	background-color: #f5f5f5;
+	margin: 0px 0px 0px 0px;
+	padding: 5px 0px 5px 0px;
+}
+
+.show{
+	display: block;
+}
+
+.hide{
+	display: none;
+}
+
+form{
+	width: 95%;
+	margin-left: 2%;
+}
+
+ul{
+	list-style-type: none;
+}
