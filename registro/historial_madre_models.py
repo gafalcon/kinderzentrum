@@ -5,8 +5,8 @@ class HistorialMadre(models.Model):
     
     perdidas_gestacionales = models.IntegerField()
     hijos_muertos = models.BooleanField()
-    num_hijos_nacidos_muertos = models.SmallIntegerField()
-    num_hijos_nacidos_vivos = models.SmallIntegerField()
+    num_hijos_nacidos_muertos = models.SmallIntegerField("Número de hijos nacidos muertos")
+    num_hijos_nacidos_vivos = models.SmallIntegerField("Número de hijos nacidos vivos")
     enfermedades_previas = models.CharField("¿Enfermedad antes de concebir al bebé?",
                                             max_length=200, blank=True)
     anticonceptivos = models.CharField(max_length=100, blank=True)

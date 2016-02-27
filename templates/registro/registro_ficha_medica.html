@@ -43,6 +43,14 @@
 		<div class="panel-heading">Datos del M&eacute;dico</div>
 		<div class="panel-body">{{ ficha_datos_medico_form.as_p }}</div>
 	</div>
+
+	<div id="panel4" class="hide panel panel-default">
+		<div class="panel-heading">Historial de la Madre</div>
+		<div class="panel-body">
+			{{ historial_madre_form.as_p }}
+			{{ paciente.as_p }}
+		</div>
+	</div>
 	
 	<ul class="pager">
 		<li id="btn_previous" class="hide previous"><a href="#" onclick="javascript:previousPanel();">Anterior</a></li>
