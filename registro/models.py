@@ -6,30 +6,7 @@ from django.db import models
 from  descripcion_models import *
 from historial_madre_models import *
 from nacimiento_models import *
-
-class Familiar(models.Model):
-    """ Familiar del paciente """
-    NIVEL_ESTUDIO_CHOICES = (
-        ("Superior", "Superior"),
-        ("Bachiller", "Bachiller")
-    )
-    nombres = models.CharField(max_length=256)
-    apellidos = models.CharField(max_length=256)
-    nivel_studio = models.CharField("Nivel de Studio",
-                                    choices=NIVEL_ESTUDIO_CHOICES,
-                                    max_length=20)
-    direccion = models.CharField(max_length=256)
-    telefonos = models.CharField(max_length=50)
-    empresa = models.CharField("lugar de trabajo",
-                               max_length=256,
-                               blank=True)
-    direccion_empresa = models.CharField("direccion de empresa",
-                                         max_length=256,
-                                         blank=True)
-    jornada = models.CharField("jornada de trabajo", max_length=50)
-
-    def __unicode__(self):
-        return self.apellidos + " " + self.nombres
+from familiars_models import Familiar
 
 class Medico(models.Model):
     """ Representa al medico del paciente """
@@ -46,14 +23,34 @@ class Medico(models.Model):
 class Paciente(models.Model):
     """Modelo que representa a un paciente de la clinica"""
 
-    GRUPO_SANGUINEO_CHOICES = (
-        ("A+", "A+"),
-        ("O+", "O+"),
-        ("O-", "O-") #Faltan mas opciones
-    )
+    # GRUPO_SANGUINEO_CHOICES = (
+    #     ("A+", "A+"),
+    #     ("O+", "O+"),
+    #     ("O-", "O-") #Faltan mas opciones
+    # )
     SEXO_CHOICES = (
         ("M", "Masculino"),
         ("F", "Femenino")
+    )
+
+    VIVE_CON_PADRES = 0
+    VIVE_CON_PAPA = 1
+    VIVE_CON_MAMA = 2
+    VIVE_CON_APODERADO = 3
+    VIVE_CON_PADRE_ADOPTIVO = 4
+    VIVE_CON_ABUELOS = 5
+    VIVE_CON_GUARDERIA = 6
+    VIVE_CON_OTROS = 7
+    VIVE_CON_CHOICES = (
+        (VIVE_CON_PADRES, "Padres"),
+        (VIVE_CON_PAPA, "Papá"),
+        (VIVE_CON_MAMA, "Mamá"),
+        (VIVE_CON_APODERADO, "Apoderado"),
+        (VIVE_CON_PADRE_ADOPTIVO, "Padre adoptivo"),
+        (VIVE_CON_ABUELOS, "Abuelos"),
+        (VIVE_CON_GUARDERIA, "Guardería"),
+        (VIVE_CON_OTROS, "Otros")
+
     )
     nombres = models.CharField(max_length=256)
     apellidos = models.CharField(max_length=256)
@@ -62,11 +59,15 @@ class Paciente(models.Model):
     fecha_registro = models.DateField("fecha de registro",
                                      auto_now_add=True) #Autoregistro con la fecha de creacion
     nacionalidad = models.CharField(max_length=30)
-    grupo_sanguineo = models.CharField("grupo sanguineo",
-                                       choices=GRUPO_SANGUINEO_CHOICES,
-                                       max_length=4)
+    ciudad = models.CharField(max_length=30)
+    direccion = models.CharField("dirección", max_length=30)
+    telefono = models.CharField("teléfono", max_length=25)
+    vive_con = models.PositiveSmallIntegerField(choices=VIVE_CON_CHOICES)
+    # grupo_sanguineo = models.CharField("grupo sanguineo",
+    #                                    choices=GRUPO_SANGUINEO_CHOICES,
+    #                                    max_length=4)
     sexo = models.CharField(choices=SEXO_CHOICES, max_length=1)
-    familiares = models.ManyToManyField(Familiar)
+
     medico = models.OneToOneField(Medico)
     descripcion = models.OneToOneField(Descripcion)
     historial_madre = models.OneToOneField(HistorialMadre)

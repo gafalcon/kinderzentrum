@@ -3,6 +3,7 @@ from django import forms
 from django.forms import ModelForm
 from django.forms.extras.widgets import SelectDateWidget
 from historial_madre_models import HistorialMadre
+from familiars_models import Familiar
 from models import Paciente
 import datetime
 #from django.contrib.auth.models import User
@@ -54,4 +55,14 @@ class HistorialMadreForm(ModelForm):
 class PacienteForm(ModelForm):
     class Meta:
         model = Paciente
-        exclude = ['descripcion', 'historial_madre', 'gestacion', 'nacimiento', 'medico', 'familiares']
+        exclude = ['descripcion', 'historial_madre', 'gestacion', 'nacimiento', 'medico']
+
+class MadreForm(ModelForm):
+    class Meta:
+        model = Familiar
+        exclude = ['tipo']
+
+class PadreForm(ModelForm):
+    class Meta:
+        model = Familiar
+        exclude = ['tipo']

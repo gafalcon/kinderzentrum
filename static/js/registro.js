@@ -49,6 +49,5 @@ function previousPanel(){
 		//setProgressBar();
 		setProgressBar(0);
 	}
-	
 }
 
