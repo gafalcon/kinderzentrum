@@ -16,7 +16,7 @@ def index_view(request):
         va a usar
         '''
         registro = grupos.filter(name='registro').count() == 1
-        ctx = {'registro':registro}
+        ctx = {'registro':registro,'pagina_actual':'inicio'}
         return render_to_response('base.html', ctx, context_instance=RequestContext(request))
     else:
         return render_to_response('base.html', context_instance=RequestContext(request))
