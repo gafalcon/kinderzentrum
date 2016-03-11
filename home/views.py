@@ -55,17 +55,3 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect('/')
 
-
-'''WEBADAS DE REGISTRO'''
-def registro_view(request):
-    mensaje = ""
-    if request.method == "POST":
-        mensaje = "guardando datos"
-    else:
-        mensaje = "enviando forma"
-    #datos 
-    datos = Ficha_DatosForm()
-    datos_familia = Ficha_DatosFamiliaresForm()
-    datos_medico = Ficha_DatosMedicoForm()
-    ctx = {'ficha_datos_medico_form':datos_medico,'ficha_datos_familia_form':datos_familia,'ficha_datos_form':datos,'mensaje':mensaje}
-    return render_to_response('home/registro_ficha_medica.html',ctx,context_instance=RequestContext(request))
