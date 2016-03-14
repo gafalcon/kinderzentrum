@@ -23,10 +23,10 @@ class Familiar(models.Model):
         (TRABAJO_POR_HORAS, "Por horas")
     )
 
-    tipo = models.CharField(max_length=50, default='madre')
+    parentezco = models.CharField(max_length=50)
     nombres = models.CharField(max_length=256)
     apellidos = models.CharField(max_length=256)
-    nivel_studio = models.CharField("nivel de estudio",
+    nivel_estudio = models.CharField("nivel de estudio",
                                     choices=NIVEL_ESTUDIO_CHOICES,
                                     max_length=20)
     direccion = models.CharField("dirección", max_length=256)

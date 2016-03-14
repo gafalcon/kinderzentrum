@@ -59,13 +59,9 @@ class Paciente(models.Model):
     fecha_registro = models.DateField("fecha de registro",
                                      auto_now_add=True) #Autoregistro con la fecha de creacion
     nacionalidad = models.CharField(max_length=30)
-    ciudad = models.CharField(max_length=30)
-    direccion = models.CharField("dirección", max_length=30)
-    telefono = models.CharField("teléfono", max_length=25)
-    vive_con = models.PositiveSmallIntegerField(choices=VIVE_CON_CHOICES)
-    # grupo_sanguineo = models.CharField("grupo sanguineo",
-    #                                    choices=GRUPO_SANGUINEO_CHOICES,
-    #                                    max_length=4)
+    grupo_sanguineo = models.CharField("grupo sanguineo",
+                                        choices=GRUPO_SANGUINEO_CHOICES,
+                                        max_length=4)
     sexo = models.CharField(choices=SEXO_CHOICES, max_length=1)
 
     medico = models.OneToOneField(Medico)
