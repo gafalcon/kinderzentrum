@@ -24,6 +24,6 @@ def registro_view(request):
            'paciente': paciente,
            'padre': padre,
            'madre': madre,
-           'mensaje':mensaje
+           'mensaje':mensaje,
            'pagina_actual':'registro'}
     return render_to_response('registro/registro_ficha_medica.html',ctx,context_instance=RequestContext(request))

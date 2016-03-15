@@ -2,9 +2,9 @@
 from django import forms
 from django.forms import ModelForm
 from django.forms.extras.widgets import SelectDateWidget
-from historial_madre_models import HistorialMadre
-from familiars_models import Familiar
-from models import Paciente
+from modelos.historial_madre_models import HistorialMadre
+from modelos.familiars_models import Familiar
+from modelos.paciente_model import Paciente
 import datetime
 #from django.contrib.auth.models import User
 
@@ -49,8 +49,9 @@ class Ficha_DatosMedicoForm(forms.Form):
 class HistorialMadreForm(ModelForm):
     class Meta:
         model = HistorialMadre
-        fields = ['perdidas_gestacionales', 'hijos_muertos', 'num_hijos_nacidos_muertos',
-                  'num_hijos_nacidos_vivos', 'enfermedades_previas', 'anticonceptivos']
+        fields = ['defunciones_fetales', 'hijos_nacidos_muertos', 
+                  'hijos_nacidos_vivos', 'enfermedades_previas',
+                  'anticonceptivos']
 
 class PacienteForm(ModelForm):
     class Meta:
@@ -60,9 +61,10 @@ class PacienteForm(ModelForm):
 class MadreForm(ModelForm):
     class Meta:
         model = Familiar
-        exclude = ['tipo']
+        fields = '__all__'
 
 class PadreForm(ModelForm):
     class Meta:
         model = Familiar
-        exclude = ['tipo']
+        fields = '__all__'
+        #exclude = ['tipo']

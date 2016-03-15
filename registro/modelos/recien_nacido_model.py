@@ -24,6 +24,6 @@ class RecienNacido(models.Model):
 
     tiempo_internado = models.DurationField("¿Cuánto tiempo permaneció internado(a)")
 
-    tipo_contacto = models.CharField("¿Qué tipo de contacto tuvo con su bebé mientras estuvo internado?", max_length=246, blank=true)
+    tipo_contacto = models.CharField("¿Qué tipo de contacto tuvo con su bebé mientras estuvo internado?", max_length=246, blank=True)
 
     primera_lactancia = models.CharField("La primera vez que el bebé tomó leche fue con", max_length=100)
