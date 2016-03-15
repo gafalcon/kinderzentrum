@@ -9,13 +9,84 @@
 {% block js %}
 <script>
   $(function() {
+
+  	/* Creamos un widget de calendario con jquery-ui */
     $( ".datepicker" ).datepicker({
       changeMonth: true,
       changeYear: true,
       yearRange: "1950:2012",
       // Podemos poner mas opciones
     });
+
+    //ocultamos los campos que no son necesarios a menos que se realice una eleccion 
+    $('[oculto=oculto]').parent().hide();
+    //$('#id_descripcion_otros').parent().hide();
+    //$('#id_descripcion_pregunta_4').parent().hide();
+
+    /*	Si ha seleccionado la opcion de otros, entonces mostramos un casillero adicional
+    	que permite describir de forma especifica la opcion "otros" */
+    $('select[name=descripcion_pregunta_2]').change(function() { 
+    	if ($(this).val() == 'otros'){
+    		$('#id_descripcion_otros_2').parent().show();
+    		$('#id_descripcion_otros_2').val("Especifique")
+    		//console.log('mostrar casilla de otros');
+    	}else{
+    		$('#id_descripcion_otros_2').parent().hide();
+    	}	
+    });
+
+    $('#id_descripcion_pregunta_3').on('change', function() {
+   		valor_si_no = $('input[name=descripcion_pregunta_3]:checked', '#id_descripcion_pregunta_3').val(); 
+   		if (valor_si_no == 'si'){
+   			$('#id_descripcion_pregunta_4').parent().show();
+   		}else{
+   			$('#id_descripcion_pregunta_4').parent().hide();
+   		}
+	});
+
+    $('input[name=descripcion_pregunta_5').on('click', function(e){
+    	if(e.target.value == "rehabilitacion_fisica"){
+    		if (e.target.checked)
+    			$('#id_descripcion_tiempo_rehab_fisica').parent().show();
+    		else
+    			$('#id_descripcion_tiempo_rehab_fisica').parent().hide();
+    	}else if(e.target.value == "estimulacion_temprana"){
+    		if (e.target.checked)
+    			$('#id_descripcion_tiempo_estimu_temprana').parent().show();
+    		else
+    			$('#id_descripcion_tiempo_estimu_temprana').parent().hide();
+    	}
+    });
+
+    $('input[name=descripcion_pregunta_6]').on('click',function(e) { 
+    	if (e.target.value == 'otro'){
+    		if (e.target.checked){
+    			$('#id_descripcion_otros_6').parent().show();
+    			$('#id_descripcion_otros_6').val("Especifique")
+    		}else
+    			$('#id_descripcion_otros_6').parent().hide();
+    		//console.log('mostrar casilla de otros');
+    	}
+    });
+
+    $('select[name=descripcion_pregunta_8]').change(function() { 
+    	if ($(this).val() == 'si'){
+    		$('#id_descripcion_pregunta_8_1').parent().show();
+    		$('#id_descripcion_pregunta_8_2').parent().show();
+    		$('#id_descripcion_pregunta_8_3').parent().show();
+    		$('#id_descripcion_pregunta_8_4').parent().show();
+    		//console.log('mostrar casilla de otros');
+    	}else{
+    		$('#id_descripcion_pregunta_8_1').parent().hide();
+    		$('#id_descripcion_pregunta_8_2').parent().hide();
+    		$('#id_descripcion_pregunta_8_3').parent().hide();
+    		$('#id_descripcion_pregunta_8_4').parent().hide();
+    	}	
+    });
+
   });
+
+
   </script>
 {% endblock js %}
 
@@ -45,6 +116,15 @@
 	</div>
 
 	<div id="panel4" class="hide panel panel-default">
+		<div class="panel-heading">Descripcion Paciente</div>
+		<div class="panel-body">{{ descripcion_paciente.as_p }}
+			{% for hidden in descripcion_paciente.hidden_fields %}
+			    {{ hidden }}
+			{% endfor %}
+		</div>
+	</div>
+
+	<div id="panel5" class="hide panel panel-default">
 		<div class="panel-heading">Historial de la Madre</div>
 		<div class="panel-body">
 			{{ historial_madre_form.as_p }}
@@ -63,6 +143,8 @@
 			{{ padre.as_p }}
 		</div>
 	</div>
+
+	
 	
 	<ul class="pager">
 		<li id="btn_previous" class="hide previous"><a href="#" onclick="javascript:previousPanel();">Anterior</a></li>
