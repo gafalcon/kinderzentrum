@@ -13,45 +13,38 @@ class Descripcion(models.Model):
         blank=True,
         max_length=256
     )
-    fecha_disc_molestia = models.CharField(
-        "¿Cuándo lo empezaron a notar?",
+    edad_disc_molestia = models.IntegerField(
+        "¿A qué edad notaron estas molestias?",
         blank=True,
-        max_length=30
     )
     tratamiento = models.BooleanField("¿Se encuentra en algún tratamiento?")
-    lugar_tratamiento = models.CharField("Lugar de Tratamiento",
+    lugar_tratamiento = models.CharField("¿Dónde realiza el tratamiento?",
                                          max_length=256, blank=True)
-    orientador_institucion = models.CharField("¿Quién los orientó a ésta institución?",
-                                              max_length=100, blank=True)
     limitaciones_movimiento = models.IntegerField(
         "¿Existe alguna limitación con sus movimientos?",
         choices=LIMITACIONES_OPTIONS)
 
-    areas_dificultad = None #Multiple choice
+    areas_dificultad = models.CharField("¿Ha presentado su hijo(a) algún tipo de dificultad en éstas áreas?", max_length=256, blank=True)
     had_convulsion = models.SmallIntegerField("¿Ha sentido convulsiones?",
                                             choices=LIMITACIONES_OPTIONS)
+    tipo_crisis = models.CharField("¿Qué tipo de crisis tuvo durante la convlusión", max_length=256, blank=True)
+
+    edad_crisis = models.SmallIntegerField("¿A qué edad fue la primera crisis?", blank=True)
 
     
 
 class Terapia(models.Model):
     """ terapias recibidas por el paciente """
     TERAPIA_CHOICES = ((1, "REHABILITACIÓN FÍSICA"),
-                       (2, "ESTIMULACIÓN TEMPRANA"))
-    tipo = models.SmallIntegerField("tipo de terapia", choices=TERAPIA_CHOICES)
+                       (2, "ESTIMULACIÓN TEMPRANA"),
+                       (3, "NINGUNA"))
+    tipo = models.SmallIntegerField("Tipo de terapia", choices=TERAPIA_CHOICES)
     tiempo_terapia = models.DurationField("¿Cuánto tiempo lleva realizando la terapia")
-
     descripcion = models.ForeignKey(Descripcion)
     
-
-
-class Convulsion(models.Model):
-    """ Convulsion que haya presentado el paciente """
-    crisis = models.CharField("¿Qué tipo de crisis tuvo en la convulsión?", max_length=300)
-    edad = models.IntegerField("¿A qué edad fue la primera crisis?")
-    descripcion = models.ForeignKey(Descripcion)
 
 class Medicamento(models.Model):
     """ Medicamento recetado para convulsiones """
     nombre = models.CharField("nombre del medicamento", max_length=100)
     dosis_diaria = models.IntegerField()
-    convulsion = models.ForeignKey(Convulsion)
+    descripcion = models.ForeignKey(Descripcion)
