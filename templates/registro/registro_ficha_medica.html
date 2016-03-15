@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 {% block title %} Kinderzentrum - Ficha Clínica {% endblock %}
+
 {% block css %}
 	<link rel="stylesheet" href="/static/css/jquery-ui.css" />
     <link rel="stylesheet" href="/static/css/bootstrap.css" />
-    <link rel="stylesheet" href="/static/css/registro.css" />
+    <link rel="stylesheet" href="/static/css/registro.css" />      
 {% endblock css %}
 
 {% block js %}
@@ -91,28 +92,72 @@
 {% endblock js %}
 
 {% block content %}
-<form action="." method="POST">
-	{% csrf_token %}	
+<div class="dotstyle dotstyle-tooltip" style="margin: 4% 0px 1% 40%;">			
+	<ul>
+		<li id="nav1" onclick="setPanelVisible(1)" class="current" ><a href="#">Paciente</a></li>
+		<li id="nav2" onclick="setPanelVisible(2)"><a href="#" >Familiares</a></li>
+		<li id="nav3" onclick="setPanelVisible(3)"><a href="#">Médico</a></li>
+		<li id="nav4" onclick="setPanelVisible(4)"><a href="#">Historial de la madre</a></li>
+		<li id="nav5" onclick="setPanelVisible(5)"><a href="#">Datos del paciente</a></li>		
+		<li id="nav6" onclick="setPanelVisible(6)"><a href="#">Datos de la madre</a></li>		
+		<li id="nav7" onclick="setPanelVisible(7)"><a href="#">Datos del padre</a></li>		
+	</ul>
+</div>
 
-	<div class="progress">
-		<div id="progress-bar" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:0%">
-			0%
-		</div>
-	</div>
+<form action="." method="POST">
+	{% csrf_token %}		
 
 	<div id="panel1" class="show panel panel-default">
 		<div class="panel-heading">Datos del Paciente</div>
-		<div class="panel-body">{{ ficha_datos_form.as_p }}</div>
+		<div class="panel-body">			
+	  		{% for field in ficha_datos_form %}
+	  			<div class="row">
+		  			<!--div class="form-group col-xs-7 col-lg-1"-->
+		  			<div class="form-group span6">
+			    		<label for="code" style="width: 20%;">{{field.label}}</label>
+			    		{% if field.label == "Sexo" %}
+			    			
+			    			{% for choice in field.field.choices%}
+			    				<label class="radio-inline" style="margin: 5px 0px 10px;">
+								  	<input type="radio" name="inlineRadioOptions" id="{{choice.0}}" value="{{choice.0}}" style="margin-left: 0px; cursor: pointer;"> {{choice.1}}
+								</label>
+			    			{% endfor%}
+			      		
+			      		{% else %}
+			      		{{ field }}
+			      		{% endif %}
+	      			</div>
+	      		</div>
+	      	{% endfor %}		   
+		</div>
 	</div>
 
 	<div id="panel2" class="hide panel panel-default">
 		<div class="panel-heading">Datos Familiares</div>
-		<div class="panel-body">{{ ficha_datos_familia_form.as_p }}</div>
+		<div class="panel-body">			
+			{% for field in ficha_datos_familia_form %}
+	  			<div class="row">		  			
+		  			<div class="form-group span6">
+			    		<label for="code" style="width: 20%;">{{field.label}}</label>
+			      		{{ field }}			      		
+	      			</div>
+	      		</div>
+	      	{% endfor %}
+		</div>
 	</div>
 
 	<div id="panel3" class="hide panel panel-default">
 		<div class="panel-heading">Datos del M&eacute;dico</div>
-		<div class="panel-body">{{ ficha_datos_medico_form.as_p }}</div>
+		<div class="panel-body">			
+			{% for field in ficha_datos_medico_form %}
+	  			<div class="row">		  			
+		  			<div class="form-group span6">
+			    		<label for="code" style="width: 20%;">{{field.label}}</label>
+			      		{{ field }}			      		
+	      			</div>
+	      		</div>
+	      	{% endfor %}
+		</div>
 	</div>
 
 	<div id="panel4" class="hide panel panel-default">
@@ -126,33 +171,68 @@
 
 	<div id="panel5" class="hide panel panel-default">
 		<div class="panel-heading">Historial de la Madre</div>
-		<div class="panel-body">
-			{{ historial_madre_form.as_p }}
-		</div>
+		<div class="panel-body">			
+			{% for field in historial_madre_form %}
+	  			<div class="row">		  			
+		  			<div class="form-group span6">
+			    		<label for="code" style="width: 20%;">{{field.label}}</label>
+			      		{{ field }}			      		
+	      			</div>
+	      		</div>
+	      	{% endfor %}	
+		</div>	
+	</div>
 
+	<div id="panel5" class="hide panel panel-default">
 		<div class="panel-heading">Datos del Paciente</div>
-		<div class="panel-body">
-			{{ paciente.as_p }}
+		<div class="panel-body">			
+			{% for field in paciente %}
+	  			<div class="row">		  			
+		  			<div class="form-group span6">
+			    		<label for="code" style="width: 20%;">{{field.label}}</label>
+			      		{{ field }}			      		
+	      			</div>
+	      		</div>
+	      	{% endfor %}
 		</div>
-		<div class="panel-heading">Datos de la Madre</div>
-		<div class="panel-body">
-			{{ madre.as_p }}
+	</div>
+
+	<div id="panel6" class="hide panel panel-default">
+ 		<div class="panel-heading">Datos de la Madre</div>
+		<div class="panel-body">			
+			{% for field in madre %}
+	  			<div class="row">		  			
+		  			<div class="form-group span6">
+			    		<label for="code" style="width: 20%;">{{field.label}}</label>
+			      		{{ field }}			      		
+	      			</div>
+	      		</div>
+	      	{% endfor %}
 		</div>
+	</div>
+
+	<div id="panel7" class="hide panel panel-default">
 		<div class="panel-heading">Datos del Padre</div>
-		<div class="panel-body">
-			{{ padre.as_p }}
+		<div class="panel-body">			
+			{% for field in padre %}
+	  			<div class="row">		  			
+		  			<div class="form-group span6">
+			    		<label for="code" style="width: 20%;">{{field.label}}</label>
+			      		{{ field }}			      		
+	      			</div>
+	      		</div>
+	      	{% endfor %}
 		</div>
 	</div>
 
 	
 	
-	<ul class="pager">
+	<!--ul class="pager">
 		<li id="btn_previous" class="hide previous"><a href="#" onclick="javascript:previousPanel();">Anterior</a></li>
 		<li id="btn_next" class="next"><a href="#" onclick="javascript:nextPanel();">Siguiente</a></li>
-	</ul>
+	</ul-->
 	<input id="enviar" class="hide btn btn-default" type="submit" value="Guardar Datos">
 	
 </form>
-
 
 {% endblock %}

@@ -13,7 +13,7 @@ import datetime
 class Ficha_PacienteForm(forms.Form):
     SEXO=[('masculino','Masculino'),('femenino','Femenino')]
     GRUPO_SANGUINEO = [('o+','O+'),('o-','O-'),('a+','A+'),('a-','A-'),('b+','B+'),('b-','B-'),('ab+','AB+'),('ab-','AB-')]
-    apellidos = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    apellidos = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}),label="Apellidos")
     nombres = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
     nacimiento = forms.DateField(widget=forms.TextInput(attrs=
                                 {

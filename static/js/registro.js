@@ -1,4 +1,4 @@
-var page=1, total_pages=4;
+var page=1, total_pages=7;
 
 function showButton(id,btnClass){
 	var obj = $("#"+id);
@@ -20,12 +20,6 @@ function hidePanel(id){
 	obj.attr("class","hide panel panel-default");
 }
 
-function setProgressBar(prog){
-	var bar = $("#progress-bar");
-	bar.html(prog+" %");
-	bar.attr("style","width: "+prog+"%");	
-}
-
 function nextPanel(){
 	hidePanel("panel"+page);
 	page++;
@@ -35,7 +29,6 @@ function nextPanel(){
 	if(page==total_pages){
 		hideButton("btn_next","next");
 	}	
-	
 }
 
 function previousPanel(){
@@ -50,4 +43,27 @@ function previousPanel(){
 		setProgressBar(0);
 	}
 }
+
+function setPanelVisible(id){
+	var i;	
+	for(i=1; i<=total_pages; i++){
+		if(i==id){
+			var panel = $("#panel"+i);
+			panel.attr("class","show panel panel-default");
+		} else {
+			var panel = $("#panel"+i);
+			panel.attr("class","hide panel panel-default");
+		}
+	}
+	for(i=1; i<=total_pages; i++){
+		if(i==id){
+			var nav_i = $("#nav"+i);
+			nav_i.attr("class","current");
+		} else {
+			var nav_i = $("#nav"+i);
+			nav_i.attr("class","");
+		}
+	}
+}
+
 
