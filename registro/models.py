@@ -11,4 +11,5 @@ from django.db import models
 # from modelos.alimentacion_models import AlimentacionCostumbres
 # from modelos.primeros_dias_model import PrimerosDias
 
-from  modelos.paciente_model import *
+from  modelos.paciente_model import Paciente
+
