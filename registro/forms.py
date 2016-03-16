@@ -71,18 +71,38 @@ class Ficha_DescripcionPacienteForm(forms.Form):
     
 
 class Ficha_HistorialMadreForm(forms.Form):
+    CHOICES_ENFERMEDADES = [('diabetes','Diabetes'),('hipertension','Hipertension'),('infeccion_urinaria','Infecciones en las vias urinarias'),('ninguna','Ninguna')]
+    CHOICES_ENFERMEDADES_ANTES_EMBARA = [('enfer_cardiacas','Enfermedades cardiacas'),('enfer_hepaticas','Enfermedades hepaticas'),('enfer_mentales','Enfermedades mentales'),('proble_azucar','Problemas con el azucar'),('ninguna','Ninguna'),('otro','Otros')]
+    CHOICES_SI_NO = [('si','Si'),('no','No')]
+    CHOICES_ANTICONCEPTIVO = [('pildoras','Pildoras'),('ritmo','Ritmo'),('diu_cobre','Diu de cobre'),('preservativos','Preservativos'),('parches','Parches'),('anillo_vaginal','Anillo vaginal'),('implante_sudermico','Implante sudermico'),('inyectables','Inyectables')]
+    pregunta_5_1 = forms.MultipleChoiceField(required=True, choices=CHOICES_ENFERMEDADES, widget=forms.CheckboxSelectMultiple, label="Indique si durante el embarazo sufrio algunas de las siguientes enfermedades?")
+    otros_5_1_1 = forms.CharField(widget=forms.TextInput(attrs={'oculto':'oculto'}), initial='Especifique',label="Especifique otros")
+    pregunta_5_2 = forms.MultipleChoiceField(required=True, choices=CHOICES_ENFERMEDADES_ANTES_EMBARA, widget=forms.CheckboxSelectMultiple, label="Indique si durante el embarazo sufrio algunas de las siguientes enfermedades?")
+    otros_5_2_1 = forms.CharField(widget=forms.TextInput(attrs={'oculto':'oculto'}), initial='Especifique',label="Especifique otros")
+    pregunta_5_3 = forms.CharField(widget=forms.Textarea(attrs={'rows':'2'}), label="Indique algun tipo de enfermedad cronica")
+    pregunta_5_4 = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="Tuvo usted alguna defuncion fetal antes de concebir al bebe/ninio(a) que trae a consulta?")
+    otros_5_4_1 = forms.IntegerField(widget=forms.NumberInput(attrs={'oculto':'oculto'}), initial='Especifique',label="Cuantas defunciones fetales a tenido durante su vida:")
+    pregunta_5_5 = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="Ha tenido hijos muertos?")
+    otros_5_5_1 = forms.IntegerField(widget=forms.NumberInput(attrs={'oculto':'oculto'}), label="Numero de hijos nacidos muertos:")
+    otros_5_5_2 = forms.IntegerField(widget=forms.NumberInput(attrs={'oculto':'oculto'}), label="Numero de hijos nacidos vivos:")
+    pregunta_5_6 = forms.IntegerField(widget=forms.NumberInput, label="Numero de embarazos:")
+    pregunta_5_7 = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="Utilizo algun metodo anticonceptivo antes de estar embarazada?")
+    otros_5_7_1 = forms.MultipleChoiceField(required=True, choices=CHOICES_ANTICONCEPTIVO, widget=forms.CheckboxSelectMultiple(attrs={'oculto':'oculto'}))
+    pregunta_5_8 = forms.CharField(widget=forms.Textarea(attrs={'rows':'3'}), label="Tuvo usted alguna enfermedad grave, dolencia, accidente o infeccion, antes de concebir a este bebe? (ejemplo: cistitis, dolor pelvico, menstruaciones dolorosas, migranias, etc.)")
     
-        
+    
+    
+    
+    
+    
 
+'''
 class HistorialMadreForm(ModelForm):
     class Meta:
         model = HistorialMadre
         fields = ['defunciones_fetales', 'hijos_nacidos_muertos', 
                   'hijos_nacidos_vivos', 'enfermedades_previas',
                   'anticonceptivos']
-
-
-
 
 class PacienteForm(ModelForm):
     class Meta:
@@ -99,3 +119,4 @@ class PadreForm(ModelForm):
         model = Familiar
         fields = '__all__'
         #exclude = ['tipo']
+'''

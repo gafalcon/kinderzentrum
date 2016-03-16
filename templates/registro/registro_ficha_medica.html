@@ -118,30 +118,11 @@
 	<div id="panel4" class="hide panel panel-default">
 		<div class="panel-heading">Descripcion Paciente</div>
 		<div class="panel-body">{{ descripcion_paciente.as_p }}
-			{% for hidden in descripcion_paciente.hidden_fields %}
-			    {{ hidden }}
-			{% endfor %}
-		</div>
-	</div>
-
-	<div id="panel5" class="hide panel panel-default">
-		<div class="panel-heading">Historial de la Madre</div>
-		<div class="panel-body">
-			{{ historial_madre_form.as_p }}
 		</div>
 
-		<div class="panel-heading">Datos del Paciente</div>
-		<div class="panel-body">
-			{{ paciente.as_p }}
-		</div>
-		<div class="panel-heading">Datos de la Madre</div>
-		<div class="panel-body">
-			{{ madre.as_p }}
-		</div>
-		<div class="panel-heading">Datos del Padre</div>
-		<div class="panel-body">
-			{{ padre.as_p }}
-		</div>
+        <div class="panel-heading">Historial Madre</div>
+        <div class="panel-body">{{ historial_madre_form.as_p }}
+        </div>
 	</div>
 
 	
