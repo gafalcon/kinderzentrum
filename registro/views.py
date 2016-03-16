@@ -13,10 +13,10 @@ def registro_view(request):
     datos = Ficha_PacienteForm()
     datos_familia = Ficha_DatosFamiliaresForm()
     datos_medico = Ficha_DatosMedicoForm()
-    historial_madre = HistorialMadreForm()
-    paciente = PacienteForm()
-    madre = MadreForm()
-    padre = PadreForm()
+    historial_madre = Ficha_HistorialMadreForm()
+    #paciente = PacienteForm()
+    #madre = MadreForm()
+    #padre = PadreForm()
     descripcion_paciente = Ficha_DescripcionPacienteForm()
     alimentacion = AlimentacionForm()
     ctx = {'ficha_datos_medico_form':datos_medico,
@@ -24,9 +24,9 @@ def registro_view(request):
            'ficha_datos_form':datos,
            'descripcion_paciente':descripcion_paciente,
            'historial_madre_form': historial_madre,
-           'paciente': paciente,
-           'padre': padre,
-           'madre': madre,
+           #'paciente': paciente,
+           #'padre': padre,
+           #'madre': madre,
            'mensaje':mensaje,
            'alimentacion': alimentacion,
            'pagina_actual':'registro'}
