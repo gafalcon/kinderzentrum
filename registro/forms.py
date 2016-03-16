@@ -5,6 +5,7 @@ from django.forms.extras.widgets import SelectDateWidget
 from modelos.historial_madre_models import HistorialMadre
 from modelos.familiars_models import Familiar
 from modelos.paciente_model import Paciente
+from modelos.alimentacion_models import AlimentacionCostumbres
 import datetime
 #from django.contrib.auth.models import User
 
@@ -71,7 +72,7 @@ class Ficha_DescripcionPacienteForm(forms.Form):
     
 
 class Ficha_HistorialMadreForm(forms.Form):
-    
+    pass
         
 
 class HistorialMadreForm(ModelForm):
@@ -99,3 +100,52 @@ class PadreForm(ModelForm):
         model = Familiar
         fields = '__all__'
         #exclude = ['tipo']
+
+
+class AlimentacionForm(ModelForm):
+    CHOICES_SI_NO = [('si','Si'),('no','No')]
+    lactancia = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Recibió lactancia materna?")
+    motivo_suspencion_lactancia = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                                            choices=AlimentacionCostumbres.MOTIVO_SUSPENSION_CHOICES,
+                                                            label="¿Por qué suspendió la leche materna?")
+    tiempo_leche_materna = forms.ChoiceField(widget= forms.RadioSelect,choices=AlimentacionCostumbres.TIEMPO_LACTANCIA_CHOICES,
+                                             label="¿Cuánto tiempo recibió leche materna?")
+    afecciones = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices = AlimentacionCostumbres.AFECCIONES_CHOICES,
+                                           label="Indique si el niño ha tenido una de las siguientes afecciones")
+    enfermedades = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices = AlimentacionCostumbres.ENFERMEDADES_CHOICES,
+                                           label="¿Cuáles de las siguientes enfermedades ha presentado el niño(a)? Marque todas las que necesite")
+
+    forma_alimento = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices = AlimentacionCostumbres.FORMA_ALIMENTO_CHOICES,
+                                               label="¿Cuál era la forma o preparación del alimento?")
+
+    apetito = forms.ChoiceField(widget=forms.RadioSelect, choices=AlimentacionCostumbres.APETITO_CHOICES, label="¿Cómo es el apetito del niño?")
+
+    difiere_alimentacion = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Difiere la alimentación del fin de semana de los demás días?")
+    suplementos = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Consumía suplementos alimenticios?")
+
+    class Meta:
+        model = AlimentacionCostumbres
+        fields = '__all__'
+        fields = ['lactancia',
+                  'tiempo_leche_materna',
+                  'motivo_suspencion_lactancia',
+                  'afecciones',
+                  'enfermedades',
+                  'edad_alimentacion_complementaria',
+                  'forma_alimento',
+                  'lugar_desayuno',
+                  'lugar_comida_media_manana',
+                  'lugar_almuerzo',
+                  'lugar_comida_media_tarde',
+                  'lugar_cena',
+                  'lugar_comida_otro',
+                  'alimento_preferido',
+                  'alimento_rechazado',
+                  'suplementos',
+                  'apetito',
+                  'difiere_alimentacion',
+                  'motivo_cambios_alimentacion'
+        ]
+        # widgets = {
+        #      'tiempo_leche_materna': forms.RadioSelect
+        #  }

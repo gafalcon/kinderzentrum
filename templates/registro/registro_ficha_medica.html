@@ -101,6 +101,7 @@
 		<li id="nav5" onclick="setPanelVisible(5)"><a href="#">Datos del paciente</a></li>		
 		<li id="nav6" onclick="setPanelVisible(6)"><a href="#">Datos de la madre</a></li>		
 		<li id="nav7" onclick="setPanelVisible(7)"><a href="#">Datos del padre</a></li>		
+		<li id="nav8" onclick="setPanelVisible(8)"><a href="#">Alimentación y Costumbres</a></li>		
 	</ul>
 </div>
 
@@ -225,7 +226,20 @@
 		</div>
 	</div>
 
-	
+	<div id="panel8" class="hide panel panel-default">
+		<div class="panel-heading">Alimentación y Costumbres</div>
+		<div class="panel-body">			
+			{% for field in alimentacion %}
+			
+		  	<div class="form-group">
+			    <label for="code">{{field.label}}</label> <br/>
+			    {{ field }}			<br/>      		
+	      	</div>
+	      	{% endfor %}
+		</div>
+	</div>
+
+
 	
 	<!--ul class="pager">
 		<li id="btn_previous" class="hide previous"><a href="#" onclick="javascript:previousPanel();">Anterior</a></li>
