@@ -160,7 +160,20 @@
 		</div>
 	</div>
 
-	
+
+	<div id="panel4" class="hide panel panel-default">
+		<div class="panel-heading">Descripcion Paciente</div>
+		<div class="panel-body">			
+			{% for field in descripcion_paciente %}
+	  			<div class="row">		  			
+		  			<div class="form-group span6">
+			    		<label for="code" style="width: 20%;">{{field.label}}</label>
+			      		{{ field }}			      		
+	      			</div>
+	      		</div>
+	      	{% endfor %}
+		</div>
+	</div>
 
 	<div id="panel5" class="hide panel panel-default">
 		<div class="panel-heading">Historial de la Madre</div>
@@ -216,7 +229,6 @@
 	      		</div>
 	      	{% endfor %}
 		</div>
->>>>>>> d7eb3311307b32aaeac9515248920949d7ef8c74
 	</div>
 
 	
