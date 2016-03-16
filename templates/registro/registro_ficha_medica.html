@@ -93,7 +93,7 @@
 
 {% block content %}
 <div class="dotstyle dotstyle-tooltip" style="margin: 4% 0px 1% 40%;">			
-	<ul>
+	<ul id="dots_nav">
 		<li id="nav1" onclick="setPanelVisible(1)" class="current" ><a href="#">Paciente</a></li>
 		<li id="nav2" onclick="setPanelVisible(2)"><a href="#" >Familiares</a></li>
 		<li id="nav3" onclick="setPanelVisible(3)"><a href="#">Médico</a></li>
@@ -168,8 +168,17 @@
 			{% for field in descripcion_paciente %}
 	  			<div class="row">		  			
 		  			<div class="form-group span6">
-			    		<label for="code" style="width: 20%;">{{field.label}}</label>
-			      		{{ field }}			      		
+			    		<label for="code" class="col-xs-2" style="margin-left:2%">{{field.label}}</label>			      		
+			      		{% if field.label == "Que tipo de terapia realiza?" or field.label == "Ha presentado su hijo(a) algun tipo de dificultades en estas aereas? marque todas las opciones que desee." %}		    			
+			    			{% for choice in field.field.choices%}			    				
+			    				{%if choice.0 == 'seguridad_si_mismo' or choice.0 == 'suenio' %}<label class="checkbox-inline" style="margin-left: 3%;">{% else %}<label class="checkbox-inline">{% endif %}
+								  	<input type="checkbox" id="{{choice.0}}" value="{{choice.0}}" style="margin: 3px 0px 0px -90px; cursor: pointer;"> {{choice.1}}
+								</label>								
+			    			{% endfor%}
+			      		
+			      		{% else %}
+			      		{{ field }}	
+			      		{% endif %}
 	      			</div>
 	      		</div>
 	      	{% endfor %}
@@ -182,26 +191,26 @@
 			{% for field in historial_madre_form %}
 	  			<div class="row">		  			
 		  			<div class="form-group span6">
-			    		<label for="code" style="width: 20%;">{{field.label}}</label>
-			      		{{ field }}			      		
+			    		<label for="code" class="col-xs-2" style="width: 20%;">{{field.label}}</label>			      		
+			      		{% if field.label == "Indique si durante el embarazo sufrio algunas de las siguientes enfermedades?" %}	
+			    			{% for choice in field.field.choices%}			    				
+			    				{%if choice.0 == 'ninguna_enf' or choice.0 == 'proble_azucar' %}<label class="checkbox-inline" style="margin-left: 3%;">{% else %}<label class="checkbox-inline">{% endif %}
+								  	<input type="checkbox" id="{{choice.0}}" value="{{choice.0}}" style="margin: 3px 0px 0px -90px; cursor: pointer;"> {{choice.1}}
+								</label>								
+			    			{% endfor%}
+			      		{% elif field.label == "Tuvo usted alguna defuncion fetal antes de concebir al bebe/ninio(a) que trae a consulta?" or field.label == "Ha tenido hijos muertos?" or field.label == "Utilizo algun metodo anticonceptivo antes de estar embarazada?" %}
+			      			{% for choice in field.field.choices%}
+			    				<label class="radio-inline" style="margin: 5px 0px 10px;">
+								  	<input type="radio" name="inlineRadioOptions" id="{{choice.0}}" value="{{choice.0}}" style="cursor: pointer;"> {{choice.1}}
+								</label>
+			    			{% endfor%}
+			      		{% else %}
+			      		{{ field }}	
+			      		{% endif %}	      		
 	      			</div>
 	      		</div>
 	      	{% endfor %}	
 		</div>	
-	</div>
-
-	<div id="panel5" class="hide panel panel-default">
-		<div class="panel-heading">Datos del Paciente</div>
-		<div class="panel-body">			
-			{% for field in paciente %}
-	  			<div class="row">		  			
-		  			<div class="form-group span6">
-			    		<label for="code" style="width: 20%;">{{field.label}}</label>
-			      		{{ field }}			      		
-	      			</div>
-	      		</div>
-	      	{% endfor %}
-		</div>
 	</div>
 
 	<div id="panel6" class="hide panel panel-default">

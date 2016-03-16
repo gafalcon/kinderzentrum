@@ -51,46 +51,46 @@ class Ficha_DescripcionPacienteForm(forms.Form):
     CHOICES = [('papa','Papa'),('mama','Mama'),('abuelos','Abuelos'),('otros','Otros')]
     CHOICES_SI_NO = [('si','Si'),('no','No')]
     CHOICES_TERAPIA = [('rehabilitacion_fisica','Rehabilitacion Fisica'),('estimulacion_temprana','Estimulacion Temprana'),('ninguna','Ninguna')]
-    CHOICES_DIFICULTADES = [('audicion','Audicion'),('vision','Vision'),('lenguaje','Lenguaje'),('seguridad_si_mismo','Seguridad en si mismo'),('comportamiento','Comportamiento'),('alimentacion','Alimentacion'),('suenio','Suenio'),('interaccion_social','Interacion social'),('otro','Otro')]
+    CHOICES_DIFICULTADES = [('audicion','Audición'),('vision','Visión'),('lenguaje','Lenguaje'),('seguridad_si_mismo','Seguridad en sí mismo'),('comportamiento','Comportamiento'),('alimentacion','Alimentación'),('suenio','Sueño'),('interaccion_social','Interacción social'),('otro','Otro')]
     CHOICES_SI_NO_DES = [('desconoce','Desconoce'),('si','Si'),('no','No')]
-    descripcion_pregunta_1 = forms.CharField(widget=forms.Textarea(attrs={'rows':'3'}), label="Que le preocupa de su hijo(a), algo especial que le llame la atencion?")
-    descripcion_pregunta_2 = forms.ChoiceField(choices=CHOICES, widget=forms.Select, label="Quien descubrio estas molestias?")
-    descripcion_otros_2 = forms.CharField(widget=forms.TextInput(attrs={'oculto':'oculto'}), initial='Especifique')
+    descripcion_pregunta_1 = forms.CharField(widget=forms.Textarea(attrs={'class':'form-control','rows':'3'}), label="Que le preocupa de su hijo(a), algo especial que le llame la atencion?")
+    descripcion_pregunta_2 = forms.ChoiceField(choices=CHOICES, widget=forms.Select(attrs={'class':'form-control'}), label="Quien descubrio estas molestias?")
+    descripcion_otros_2 = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','oculto':'oculto'}), initial='Especifique')
     descripcion_pregunta_3 = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="Se encuentra en algun tratamiento?")
-    descripcion_pregunta_4 = forms.CharField(widget=forms.Textarea(attrs={'rows':'3','oculto':'oculto'}), label="En donde realiza el tratamiento?")
+    descripcion_pregunta_4 = forms.CharField(widget=forms.Textarea(attrs={'class':'form-control','rows':'3','oculto':'oculto'}), label="En donde realiza el tratamiento?")
     descripcion_pregunta_5 = forms.MultipleChoiceField(required=True,choices=CHOICES_TERAPIA, widget=forms.CheckboxSelectMultiple, label="Que tipo de terapia realiza?")
-    descripcion_tiempo_rehab_fisica =  forms.CharField(label="Tiempo en terapia de rehabilitacion fisica?", widget=forms.TextInput(attrs={'oculto':'oculto'}), initial='Especifique tiempo')
-    descripcion_tiempo_estimu_temprana = forms.CharField(label="Tiempo en terapia de estimulacion temprana?", widget=forms.TextInput(attrs={'oculto':'oculto'}), initial='Especifique tiempo')
+    descripcion_tiempo_rehab_fisica =  forms.CharField(label="Tiempo en terapia de rehabilitacion fisica?", widget=forms.TextInput(attrs={'class':'form-control','oculto':'oculto'}), initial='Especifique tiempo')
+    descripcion_tiempo_estimu_temprana = forms.CharField(label="Tiempo en terapia de estimulacion temprana?", widget=forms.TextInput(attrs={'class':'form-control','oculto':'oculto'}), initial='Especifique tiempo')
     descripcion_pregunta_6 = forms.MultipleChoiceField(required=True,choices=CHOICES_DIFICULTADES, widget=forms.CheckboxSelectMultiple, label="Ha presentado su hijo(a) algun tipo de dificultades en estas aereas? marque todas las opciones que desee.")
-    descripcion_otros_6 = forms.CharField(widget=forms.TextInput(attrs={'oculto':'oculto'}), initial='Especifique',label="Especifique otros")
-    descripcion_pregunta_7 = forms.ChoiceField(choices=CHOICES_SI_NO_DES, widget=forms.Select, label="Existe alguna limitacion con sus movimientos?")
-    descripcion_pregunta_8 = forms.ChoiceField(choices=CHOICES_SI_NO_DES, widget=forms.Select, label="Ha tenido convulsiones?")
-    descripcion_pregunta_8_1 = forms.CharField(widget=forms.Textarea(attrs={'rows':'2','oculto':'oculto'}), label="Que tipo de crisis tuvo durante la convulsion?")
-    descripcion_pregunta_8_2 = forms.CharField(widget=forms.Textarea(attrs={'rows':'1','oculto':'oculto'}), label="A que edad fue la primera crisis?")
-    descripcion_pregunta_8_3 = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.Select(attrs={'oculto':'oculto'}), label="Tomo medicamentos?")
-    descripcion_pregunta_8_4 = forms.CharField(widget=forms.Textarea(attrs={'rows':'2','oculto':'oculto'}), label="Que medicamentos y dosis diaria tomo?")
+    descripcion_otros_6 = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','oculto':'oculto'}), initial='Especifique',label="Especifique otros")
+    descripcion_pregunta_7 = forms.ChoiceField(choices=CHOICES_SI_NO_DES, widget=forms.Select(attrs={'class':'form-control'}), label="Existe alguna limitacion con sus movimientos?")
+    descripcion_pregunta_8 = forms.ChoiceField(choices=CHOICES_SI_NO_DES, widget=forms.Select(attrs={'class':'form-control'}), label="Ha tenido convulsiones?")
+    descripcion_pregunta_8_1 = forms.CharField(widget=forms.Textarea(attrs={'class':'form-control','rows':'2','oculto':'oculto'}), label="Que tipo de crisis tuvo durante la convulsion?")
+    descripcion_pregunta_8_2 = forms.CharField(widget=forms.Textarea(attrs={'class':'form-control','rows':'1','oculto':'oculto'}), label="A que edad fue la primera crisis?")
+    descripcion_pregunta_8_3 = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.Select(attrs={'class':'form-control','oculto':'oculto'}), label="Tomo medicamentos?")
+    descripcion_pregunta_8_4 = forms.CharField(widget=forms.Textarea(attrs={'class':'form-control','rows':'2','oculto':'oculto'}), label="Que medicamentos y dosis diaria tomo?")
     
 
 class Ficha_HistorialMadreForm(forms.Form):
-    CHOICES_ENFERMEDADES = [('diabetes','Diabetes'),('hipertension','Hipertension'),('infeccion_urinaria','Infecciones en las vias urinarias'),('ninguna','Ninguna')]
+    CHOICES_ENFERMEDADES = [('diabetes','Diabetes'),('hipertension','Hipertension'),('infeccion_urinaria','Infecciones en las vias urinarias'),('ninguna_enf','Ninguna')]
     CHOICES_ENFERMEDADES_ANTES_EMBARA = [('enfer_cardiacas','Enfermedades cardiacas'),('enfer_hepaticas','Enfermedades hepaticas'),('enfer_mentales','Enfermedades mentales'),('proble_azucar','Problemas con el azucar'),('ninguna','Ninguna'),('otro','Otros')]
     CHOICES_SI_NO = [('si','Si'),('no','No')]
     CHOICES_ANTICONCEPTIVO = [('pildoras','Pildoras'),('ritmo','Ritmo'),('diu_cobre','Diu de cobre'),('preservativos','Preservativos'),('parches','Parches'),('anillo_vaginal','Anillo vaginal'),('implante_sudermico','Implante sudermico'),('inyectables','Inyectables')]
     pregunta_5_1 = forms.MultipleChoiceField(required=True, choices=CHOICES_ENFERMEDADES, widget=forms.CheckboxSelectMultiple, label="Indique si durante el embarazo sufrio algunas de las siguientes enfermedades?")
-    otros_5_1_1 = forms.CharField(widget=forms.TextInput(attrs={'oculto':'oculto'}), initial='Especifique',label="Especifique otros")
+    otros_5_1_1 = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','oculto':'oculto'}), initial='Especifique',label="Especifique otros")
     pregunta_5_2 = forms.MultipleChoiceField(required=True, choices=CHOICES_ENFERMEDADES_ANTES_EMBARA, widget=forms.CheckboxSelectMultiple, label="Indique si durante el embarazo sufrio algunas de las siguientes enfermedades?")
-    otros_5_2_1 = forms.CharField(widget=forms.TextInput(attrs={'oculto':'oculto'}), initial='Especifique',label="Especifique otros")
-    pregunta_5_3 = forms.CharField(widget=forms.Textarea(attrs={'rows':'2'}), label="Indique algun tipo de enfermedad cronica")
+    otros_5_2_1 = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','oculto':'oculto'}), initial='Especifique',label="Especifique otros")
+    pregunta_5_3 = forms.CharField(widget=forms.Textarea(attrs={'class':'form-control','rows':'2'}), label="Indique algun tipo de enfermedad cronica")
     pregunta_5_4 = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="Tuvo usted alguna defuncion fetal antes de concebir al bebe/ninio(a) que trae a consulta?")
-    otros_5_4_1 = forms.IntegerField(widget=forms.NumberInput(attrs={'oculto':'oculto'}), initial='Especifique',label="Cuantas defunciones fetales a tenido durante su vida:")
+    otros_5_4_1 = forms.IntegerField(widget=forms.NumberInput(attrs={'class':'form-control','oculto':'oculto'}), initial='Especifique',label="Cuantas defunciones fetales a tenido durante su vida:")
     pregunta_5_5 = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="Ha tenido hijos muertos?")
-    otros_5_5_1 = forms.IntegerField(widget=forms.NumberInput(attrs={'oculto':'oculto'}), label="Numero de hijos nacidos muertos:")
-    otros_5_5_2 = forms.IntegerField(widget=forms.NumberInput(attrs={'oculto':'oculto'}), label="Numero de hijos nacidos vivos:")
-    pregunta_5_6 = forms.IntegerField(widget=forms.NumberInput, label="Numero de embarazos:")
+    otros_5_5_1 = forms.IntegerField(widget=forms.NumberInput(attrs={'class':'form-control','oculto':'oculto'}), label="Numero de hijos nacidos muertos:")
+    otros_5_5_2 = forms.IntegerField(widget=forms.NumberInput(attrs={'class':'form-control','oculto':'oculto'}), label="Numero de hijos nacidos vivos:")
+    pregunta_5_6 = forms.IntegerField(widget=forms.NumberInput(attrs={'class':'form-control'}), label="Numero de embarazos:")
     pregunta_5_7 = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="Utilizo algun metodo anticonceptivo antes de estar embarazada?")
     otros_5_7_1 = forms.MultipleChoiceField(required=True, choices=CHOICES_ANTICONCEPTIVO, widget=forms.CheckboxSelectMultiple(attrs={'oculto':'oculto'}))
-    pregunta_5_8 = forms.CharField(widget=forms.Textarea(attrs={'rows':'3'}), label="Tuvo usted alguna enfermedad grave, dolencia, accidente o infeccion, antes de concebir a este bebe? (ejemplo: cistitis, dolor pelvico, menstruaciones dolorosas, migranias, etc.)")
-    
+    pregunta_5_8 = forms.CharField(widget=forms.Textarea(attrs={'class':'form-control','rows':'3'}), label="Tuvo usted alguna enfermedad grave, dolencia, accidente o infeccion, antes de concebir a este bebe? (ejemplo: cistitis, dolor pelvico, menstruaciones dolorosas, migranias, etc.)")
+   
    
 
 '''
