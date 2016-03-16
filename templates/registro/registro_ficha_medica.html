@@ -162,10 +162,15 @@
 
 	<div id="panel4" class="hide panel panel-default">
 		<div class="panel-heading">Descripcion Paciente</div>
-		<div class="panel-body">{{ descripcion_paciente.as_p }}
-			{% for hidden in descripcion_paciente.hidden_fields %}
-			    {{ hidden }}
-			{% endfor %}
+		<div class="panel-body">			
+			{% for field in descripcion_paciente %}
+	  			<div class="row">		  			
+		  			<div class="form-group span6">
+			    		<label for="code" style="width: 20%;">{{field.label}}</label>
+			      		{{ field }}			      		
+	      			</div>
+	      		</div>
+	      	{% endfor %}
 		</div>
 	</div>
 
