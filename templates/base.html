@@ -10,9 +10,10 @@
     {% endblock css %}
 
 	<script src="/static/js/jquery-1.9.1.js"></script>
-	<script src="/static/js/jquery-ui.js"></script>
+	<script src="/static/js/jquery-ui.js"></script>	
     <script src="/static/js/bootstrap.js"></script>
     <script src="/static/js/registro.js"></script>
+    <script src="/static/js/modernizr.min.js"></script>
     {% block js %}
     {% endblock js %}
 </head>
@@ -22,19 +23,27 @@
 
 	<h1> Kinderzentrum </h1>
 	
-	<nav class="navbar navbar-inverse">
+	<nav class="navbar navbar-default">
 		<div class="container-fluid">
 
 			<div class="navbar-header">
-		      <a class="navbar-brand" href="{% url 'index_view' %}"><img src="../static/images/kz_logo2.png" width=30 height=30></a>
+		      <a class="navbar-brand" href="{% url 'index_view' %}">
+		      	<img src="../static/images/home.png" width=30 height=30 style="margin-top:-5px;">
+		      </a>
 		    </div>
 
 			<ul class="nav navbar-nav">
-
-				<li class="active"><a href="{% url 'index_view' %}"> Inicio </a></li>				
+				{% if pagina_actual %}
+				{% if pagina_actual == "inicio" %}
+				<li class="active">{% else %}<li>{% endif %}
+					<a href="{% url 'index_view' %}"> Inicio </a>
+				</li>
+				{% else %}				
+				<li class="active"><a href="{% url 'index_view' %}"> Inicio </a></li>
+				{% endif %}
 
 				{% if user.is_authenticated %}
-					{% if registro %}<li class="dropdown">{% else %}<li class="active dropdown">{% endif %}
+					{% if pagina_actual == "registro" %}<li class="active dropdown">{% else %}<li class="dropdown">{% endif %}
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#"> Registro <span class="caret"></a>
 						<ul class="dropdown-menu">
 							<li><a href="{% url 'registro_view' %}">Registro de ficha medica</a></li>
