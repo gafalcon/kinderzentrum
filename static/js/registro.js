@@ -1,4 +1,4 @@
-var page=1, total_pages=8;
+var page=1, total_pages=9;
 
 function showButton(id,btnClass){
 	var obj = $("#"+id);

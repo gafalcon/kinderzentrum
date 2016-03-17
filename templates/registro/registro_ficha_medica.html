@@ -85,6 +85,16 @@
     	}	
     });
 
+	  $('input[type=text], [type=number]').addClass('form-control');
+	  $('input[name=numero_hermanos]').change(function(e){
+		  if(e.target.value != "0")
+			  $("#hermanos-formset").show();
+		  else
+			  $("#hermanos-formset").hide();
+		  console.log(e);
+		  console.log(e.target.value);
+	  });
+
   });
 
 
@@ -102,6 +112,7 @@
 		<li id="nav6" onclick="setPanelVisible(6)"><a href="#">Datos de la madre</a></li>		
 		<li id="nav7" onclick="setPanelVisible(7)"><a href="#">Datos del padre</a></li>		
 		<li id="nav8" onclick="setPanelVisible(8)"><a href="#">Alimentación y Costumbres</a></li>		
+		<li id="nav9" onclick="setPanelVisible(9)"><a href="#">Historia Familiar</a></li>		
 	</ul>
 </div>
 
@@ -245,13 +256,49 @@
 		</div>
 	</div>
 
+	<div id="panel9" class="hide panel panel-default">
+		<div class="panel-heading">Datos de Historia Clínica Familiar y Otra Información</div>
+		<div class="panel-body">			
+			{% for field in datos_familiares %}
+		  		<div class="form-group">
+					<label for="code">{{field.label}}</label> <br/>
+					{{ field }}			<br/>      		
+	      		</div>
+				{% if forloop.counter == 1 %}
+					<div id="hermanos-formset" style="display: none;">
+						<h3>Hermanos</h3>
+						{{ hermanos_formset.management_form }}
+						<table class="table table-bordered table-condensed">
+							<tr>
+								<th>Nombres</th>
+								<th>Apellidos</th>
+								<th>Fecha de Nacimiento</th>
+							</tr>
+							{% for form in hermanos_formset %}
+								{{ form.id }}
+								<tr>
+									<td>{{form.nombres}}</td>
+									<td>{{form.apellidos}}</td>
+									<td>{{form.fecha_nacimiento}}</td>
+								</tr>
+							{% endfor %}
+						</table>
+					</div>		
+				{% endif %}
+				
+	      	{% endfor %}
+
+			
+		</div>
+	</div>
+
 
 	
 	<!--ul class="pager">
 		<li id="btn_previous" class="hide previous"><a href="#" onclick="javascript:previousPanel();">Anterior</a></li>
 		<li id="btn_next" class="next"><a href="#" onclick="javascript:nextPanel();">Siguiente</a></li>
 	</ul-->
-	<input id="enviar" class="hide btn btn-default" type="submit" value="Guardar Datos">
+	<input id="enviar" class="btn btn-default" type="submit" value="Guardar Datos">
 	
 </form>
 

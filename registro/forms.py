@@ -3,9 +3,10 @@ from django import forms
 from django.forms import ModelForm
 from django.forms.extras.widgets import SelectDateWidget
 from modelos.historial_madre_models import HistorialMadre
-from modelos.familiars_models import Familiar
+from modelos.familiars_models import Familiar, Hermano, DatosFamiliaresOtros
 from modelos.paciente_model import Paciente
 from modelos.alimentacion_models import AlimentacionCostumbres
+from django.forms import inlineformset_factory
 import datetime
 #from django.contrib.auth.models import User
 
@@ -166,3 +167,27 @@ class AlimentacionForm(ModelForm):
         # widgets = {
         #      'tiempo_leche_materna': forms.RadioSelect
         #  }
+
+class DatosFamiliaresOtrosForm(ModelForm):
+
+    orientacion_a_institucion = forms.ChoiceField(choices=DatosFamiliaresOtros.ORIENTACION_CHOICES,
+                                                  widget=forms.RadioSelect, label="Quién los orientó a ésta institución?")
+    class Meta:
+        CHOICES_SI_NO_DES = [(2,'Si'),(3,'No'), (1,'Desconoce')]
+        model = DatosFamiliaresOtros
+        fields = '__all__'
+        widgets = {
+            'transtorno_hermanos': forms.RadioSelect(choices=CHOICES_SI_NO_DES),
+            'alteracion_desarrollo': forms.RadioSelect(choices=CHOICES_SI_NO_DES)
+        }
+        
+
+
+HermanosFormset = inlineformset_factory(DatosFamiliaresOtros, Hermano,
+                                        fields='__all__',
+                                        can_delete=False,
+                                        widgets={'fecha_nacimiento': forms.TextInput(attrs={'class':'datepicker form-control'}),
+                                                 'nombres': forms.TextInput(attrs={'class': 'form-control'}),
+                                                 'apellidos': forms.TextInput(attrs={'class': 'form-control'})
+                                        }
+) 
