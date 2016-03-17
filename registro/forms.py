@@ -7,6 +7,7 @@ from modelos.familiars_models import Familiar, Hermano, DatosFamiliaresOtros
 from modelos.paciente_model import Paciente
 from modelos.alimentacion_models import AlimentacionCostumbres, SuplementoAlimenticio
 from modelos.primeros_dias_model import PrimerosDias
+from modelos.recien_nacido_model import RecienNacido
 from django.forms import inlineformset_factory
 import datetime
 #from django.contrib.auth.models import User
@@ -219,4 +220,12 @@ class PrimerosDiasForm(ModelForm):
             'examenes': forms.CheckboxSelectMultiple(choices=PrimerosDias.EXAMENES_CHOICES),
             'situaciones_despues_nacimiento': forms.CheckboxSelectMultiple(choices=PrimerosDias.SITUACIONES_CHOICES),
             'lugar_dormir': forms.RadioSelect(choices=PrimerosDias.LUGAR_DORMIR_CHOICES)
+        }
+
+class RecienNacidoForm(ModelForm):
+    class Meta:
+        model = RecienNacido
+        fields = "__all__"
+        widgets = {
+            'apgar_score': forms.RadioSelect(choices=RecienNacido.APGAR_CHOICES)
         }

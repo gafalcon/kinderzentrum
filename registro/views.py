@@ -20,11 +20,12 @@ def registro_view(request):
     #madre = MadreForm()
     #padre = PadreForm()
     descripcion_paciente = Ficha_DescripcionPacienteForm()
+    recien_nacido = RecienNacidoForm()
+    primeros_dias = PrimerosDiasForm()
     alimentacion = AlimentacionForm()
     suplementos_formset = SuplementosFormset(instance=AlimentacionCostumbres())
     datos_familiares = DatosFamiliaresOtrosForm()
     hermanos_formset = HermanosFormset(instance=DatosFamiliaresOtros())
-    primeros_dias = PrimerosDiasForm()
     ctx = {'ficha_datos_medico_form':datos_medico,
            'ficha_datos_familia_form':datos_familia,
            'ficha_datos_form':datos,
@@ -34,6 +35,7 @@ def registro_view(request):
            #'padre': padre,
            #'madre': madre,
            'mensaje':mensaje,
+           'recien_nacido': recien_nacido,
            'alimentacion': alimentacion,
            'suplementos_formset': suplementos_formset,
            'datos_familiares': datos_familiares,

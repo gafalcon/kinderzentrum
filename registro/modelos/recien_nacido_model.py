@@ -15,12 +15,23 @@ class RecienNacido(models.Model):
 
     diametro_encefalico = models.FloatField("diámetro encefálico(cm)")
 
-    apgar_score = models.PositiveSmallIntegerField("¿Cuál fue la puntuación del apgar?")
-    complicaciones_nacimiento = models.CharField(max_length=256, blank=True)
+    APGAR_1 = 0
+    APGAR_5 = 1
+    APGAR_10 = 2
+    APGAR_DESCONOCIDO = 4
+    APGAR_CHOICES = (
+        (APGAR_1, "APGAR 1"),
+        (APGAR_5, "APGAR 5"),
+        (APGAR_10, "APGAR 10"),
+        (APGAR_DESCONOCIDO, "Desconoce")
+    )
+    apgar_score = models.PositiveSmallIntegerField("¿Cuál fue la puntuación del apgar? Si no lo sabe podría ayudarnos con la historia clínica de su hijo(a)") 
+
+    complicaciones_nacimiento = models.CharField("¿El niño(a) tuvo alguna de éstas complicaciones al nacer?", max_length=256, blank=True)
 
     tiempo_apego_precoz = models.CharField("¿Cuánto tiempo duró el apego precoz?", max_length=20, blank=True)
 
-    tiempo_sostener_bebe = models.CharField("¿Cuánto tiempo pasó hasta que uested pudo sostener a su bebé", max_length=50)
+    tiempo_sostener_bebe = models.CharField("¿Cuánto tiempo pasó hasta que usted pudo sostener a su bebé?", max_length=50)
 
     tiempo_internado = models.DurationField("¿Cuánto tiempo permaneció internado(a)")
 

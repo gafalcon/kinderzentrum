@@ -163,7 +163,18 @@
 	      	{% endfor %}
 		</div>
 	</div>
-
+	<div id="panel8" class="hide panel panel-default">
+		<div class="panel-heading">Datos del Recién Nacido</div>
+		<div class="panel-body">			
+			{% for field in recien_nacido %}
+			
+		  	<div class="form-group">
+			    <label for="code">{{field.label}}</label> <br/>
+			    {{ field }}			<br/>      		
+	      	</div>
+	      	{% endfor %}
+		</div>
+	</div>
 	<div id="panel9" class="hide panel panel-default">
 		<div class="panel-heading">Primeros Días de Vida del Niño</div>
 		<div class="panel-body">			
