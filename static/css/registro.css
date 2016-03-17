@@ -33,13 +33,13 @@ ul{
   display:inline;
   margin-left: 3%;
 }
-.span6 label, .span6 input , .span6 select, .span6 ul{
+.span6 label, .span6 input , .span6 select, .span6 ul, .span6 textarea {
   display:inline-block;
 }
 .span6 label {
   width: 20%;
 }
-.span6 input, .span6 select, .span6 ul{
+.span6 input, .span6 select, .span6 ul, .span6 textarea {
   width:70%;  
   margin-bottom: 10px;
 }
@@ -411,6 +411,7 @@ ul{
   left: 50%;
   visibility: hidden;
   padding: 0 10px;
+  width: initial;
   width: -moz-max-content;
   height: auto;
   border-radius: 0;
@@ -453,7 +454,8 @@ ul{
   transform: translateX(-50%) translateY(0%);
   -webkit-transition: -webkit-transform 0.3s ease, opacity 0.3s ease;
   transition: transform 0.3s ease, opacity 0.3s ease;
-  min-width: -moz-max-content;
+  min-width: initial;
+  min-width: -moz-max-content;  
 }
 
 .dotstyle-tooltip li.current {
