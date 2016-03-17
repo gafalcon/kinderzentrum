@@ -19,10 +19,12 @@
 		<li id="nav3" onclick="setPanelVisible(3)"><a href="#">Médico</a></li>
 		<li id="nav4" onclick="setPanelVisible(4)"><a href="#">Historial de la madre</a></li>
 		<li id="nav5" onclick="setPanelVisible(5)"><a href="#">Datos del paciente</a></li>		
-		<li id="nav6" onclick="setPanelVisible(6)"><a href="#">Datos de la madre</a></li>		
-		<li id="nav7" onclick="setPanelVisible(7)"><a href="#">Datos del padre</a></li>		
-		<li id="nav8" onclick="setPanelVisible(8)"><a href="#">Alimentación y Costumbres</a></li>		
-		<li id="nav9" onclick="setPanelVisible(9)"><a href="#">Historia Familiar</a></li>		
+		<li id="nav6" onclick="setPanelVisible(6)"><a href="#">Gestación</a></li>		
+		<li id="nav7" onclick="setPanelVisible(7)"><a href="#">Nacimiento</a></li>		
+		<li id="nav8" onclick="setPanelVisible(8)"><a href="#">Datos del Recién Nacido</a></li>		
+		<li id="nav9" onclick="setPanelVisible(9)"><a href="#">Primeros Días de Vida</a></li>		
+		<li id="nav10" onclick="setPanelVisible(10)"><a href="#">Alimentación y Costumbres</a></li>		
+		<li id="nav11" onclick="setPanelVisible(11)"><a href="#">Historia Familiar</a></li>		
 	</ul>
 </div>
 
@@ -162,7 +164,20 @@
 		</div>
 	</div>
 
-	<div id="panel8" class="hide panel panel-default">
+	<div id="panel9" class="hide panel panel-default">
+		<div class="panel-heading">Primeros Días de Vida del Niño</div>
+		<div class="panel-body">			
+			{% for field in primeros_dias %}
+			
+		  	<div class="form-group">
+			    <label for="code">{{field.label}}</label> <br/>
+			    {{ field }}			<br/>      		
+	      	</div>
+	      	{% endfor %}
+		</div>
+	</div>
+
+	<div id="panel10" class="hide panel panel-default">
 		<div class="panel-heading">Alimentación y Costumbres</div>
 		<div class="panel-body">			
 			{% for field in alimentacion %}
@@ -175,7 +190,7 @@
 		</div>
 	</div>
 
-	<div id="panel9" class="hide panel panel-default">
+	<div id="panel11" class="hide panel panel-default">
 		<div class="panel-heading">Datos de Historia Clínica Familiar y Otra Información</div>
 		<div class="panel-body">			
 			{% for field in datos_familiares %}

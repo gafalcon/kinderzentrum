@@ -6,9 +6,13 @@ from modelos.historial_madre_models import HistorialMadre
 from modelos.familiars_models import Familiar, Hermano, DatosFamiliaresOtros
 from modelos.paciente_model import Paciente
 from modelos.alimentacion_models import AlimentacionCostumbres
+from modelos.primeros_dias_model import PrimerosDias
 from django.forms import inlineformset_factory
 import datetime
 #from django.contrib.auth.models import User
+CHOICES_SI_NO_DES = [(2,'Si'),(3,'No'), (1,'Desconoce')]
+
+CHOICES_SI_NO = [('si','Si'),('no','No')]
 
 
 
@@ -50,11 +54,9 @@ class Ficha_DatosMedicoForm(forms.Form):
 
 class Ficha_DescripcionPacienteForm(forms.Form):
     CHOICES = [('papa','Papa'),('mama','Mama'),('abuelos','Abuelos'),('otros','Otros')]
-    CHOICES_SI_NO = [('si','Si'),('no','No')]
     CHOICES_TERAPIA = [('rehabilitacion_fisica','Rehabilitacion Fisica'),('estimulacion_temprana','Estimulacion Temprana'),('ninguna','Ninguna')]
     CHOICES_DIFICULTADES = [('audicion','Audición'),('vision','Visión'),('lenguaje','Lenguaje'),('seguridad_si_mismo','Seguridad en sí mismo'),('comportamiento','Comportamiento'),('alimentacion','Alimentación'),('suenio','Sueño'),('interaccion_social','Interacción social'),('otro','Otro')]
-    CHOICES_SI_NO_DES = [('desconoce','Desconoce'),('si','Si'),('no','No')]
-    descripcion_pregunta_1 = forms.CharField(widget=forms.Textarea(attrs={'class':'form-control','rows':'3'}), label="Que le preocupa de su hijo(a), algo especial que le llame la atencion?")
+    escripcion_pregunta_1 = forms.CharField(widget=forms.Textarea(attrs={'class':'form-control','rows':'3'}), label="Que le preocupa de su hijo(a), algo especial que le llame la atencion?")
     descripcion_pregunta_2 = forms.ChoiceField(choices=CHOICES, widget=forms.Select(attrs={'class':'form-control'}), label="Quien descubrio estas molestias?")
     descripcion_otros_2 = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','oculto':'oculto'}), initial='Especifique')
     descripcion_pregunta_3 = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="Se encuentra en algun tratamiento?")
@@ -75,7 +77,6 @@ class Ficha_DescripcionPacienteForm(forms.Form):
 class Ficha_HistorialMadreForm(forms.Form):
     CHOICES_ENFERMEDADES = [('diabetes','Diabetes'),('hipertension','Hipertension'),('infeccion_urinaria','Infecciones en las vias urinarias'),('ninguna_enf','Ninguna')]
     CHOICES_ENFERMEDADES_ANTES_EMBARA = [('enfer_cardiacas','Enfermedades cardiacas'),('enfer_hepaticas','Enfermedades hepaticas'),('enfer_mentales','Enfermedades mentales'),('proble_azucar','Problemas con el azucar'),('ninguna','Ninguna'),('otro','Otros')]
-    CHOICES_SI_NO = [('si','Si'),('no','No')]
     CHOICES_ANTICONCEPTIVO = [('pildoras','Pildoras'),('ritmo','Ritmo'),('diu_cobre','Diu de cobre'),('preservativos','Preservativos'),('parches','Parches'),('anillo_vaginal','Anillo vaginal'),('implante_sudermico','Implante sudermico'),('inyectables','Inyectables')]
     pregunta_5_1 = forms.MultipleChoiceField(required=True, choices=CHOICES_ENFERMEDADES, widget=forms.CheckboxSelectMultiple, label="Indique si durante el embarazo sufrio algunas de las siguientes enfermedades?")
     otros_5_1_1 = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','oculto':'oculto'}), initial='Especifique',label="Especifique otros")
@@ -173,7 +174,6 @@ class DatosFamiliaresOtrosForm(ModelForm):
     orientacion_a_institucion = forms.ChoiceField(choices=DatosFamiliaresOtros.ORIENTACION_CHOICES,
                                                   widget=forms.RadioSelect, label="Quién los orientó a ésta institución?")
     class Meta:
-        CHOICES_SI_NO_DES = [(2,'Si'),(3,'No'), (1,'Desconoce')]
         model = DatosFamiliaresOtros
         fields = '__all__'
         widgets = {
@@ -191,3 +191,29 @@ HermanosFormset = inlineformset_factory(DatosFamiliaresOtros, Hermano,
                                                  'apellidos': forms.TextInput(attrs={'class': 'form-control'})
                                         }
 ) 
+
+
+class PrimerosDiasForm(ModelForm):
+    clinica = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿El niño(a) tuvo que permanecer después de su nacimiento en una clínica u hospital?")
+    dormia_toda_noche = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿El recién nacido dormía toda la noche?")
+    class Meta:
+        model = PrimerosDias
+        fields = ['clinica',
+                  'clinica_permanencia',
+                  'dias_permanencia',
+                  'situaciones_despues_nacimiento',
+                  'icteria',
+                  'tratamiento_icteria',
+                  'examenes',
+                  'dormia_toda_noche',
+                  'veces_despertar_noche',
+                  'lugar_dormir',
+                  'descripcion_bebe',
+                  'descripcion_madre'
+        ]
+        widgets = {
+            'icteria': forms.RadioSelect(choices=CHOICES_SI_NO_DES),
+            'examenes': forms.CheckboxSelectMultiple(choices=PrimerosDias.EXAMENES_CHOICES),
+            'situaciones_despues_nacimiento': forms.CheckboxSelectMultiple(choices=PrimerosDias.SITUACIONES_CHOICES),
+            'lugar_dormir': forms.RadioSelect(choices=PrimerosDias.LUGAR_DORMIR_CHOICES)
+        }

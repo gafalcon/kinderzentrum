@@ -22,6 +22,7 @@ def registro_view(request):
     alimentacion = AlimentacionForm()
     datos_familiares = DatosFamiliaresOtrosForm()
     hermanos_formset = HermanosFormset(instance=DatosFamiliaresOtros())
+    primeros_dias = PrimerosDiasForm()
     ctx = {'ficha_datos_medico_form':datos_medico,
            'ficha_datos_familia_form':datos_familia,
            'ficha_datos_form':datos,
@@ -34,5 +35,6 @@ def registro_view(request):
            'alimentacion': alimentacion,
            'datos_familiares': datos_familiares,
            'hermanos_formset': hermanos_formset,
+           'primeros_dias': primeros_dias,
            'pagina_actual':'registro'}
     return render_to_response('registro/registro_ficha_medica.html',ctx,context_instance=RequestContext(request))
