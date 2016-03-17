@@ -80,12 +80,13 @@ class AlimentacionCostumbres(models.Model):
         (FORMA_ALIMENTO_OTRO, "Otro (Especifique)"),
     )
     forma_alimento = models.CharField(max_length=100)
+
     lugar_desayuno = models.CharField("desayuno", max_length=50)
-    lugar_comida_media_manana = models.CharField("media mañana", max_length=50)
+    lugar_comida_media_manana = models.CharField("media mañana", max_length=50, blank=True)
     lugar_almuerzo = models.CharField("almuerzo", max_length=50)
-    lugar_comida_media_tarde = models.CharField("media tarde", max_length=50)
+    lugar_comida_media_tarde = models.CharField("media tarde", max_length=50, blank=True)
     lugar_cena = models.CharField("cena", max_length=50)
-    lugar_comida_otro = models.CharField("otro", max_length=50)
+    lugar_comida_otro = models.CharField("otro", max_length=50, blank=True)
     alimento_preferido = models.CharField("¿Cuál es el alimento preferido por el niño(a)?", max_length=20)
     alimento_rechazado = models.CharField("¿Cuál es el alimento que rechaza el niño(a)?", max_length=20)
 

@@ -2,6 +2,7 @@ from django.shortcuts import render, render_to_response
 from registro.forms import * #Ficha_DatosForm, Ficha_DatosFamiliaresForm, Ficha_DatosMedicoForm, HistorialMadreForm
 from django.template import RequestContext
 from registro.modelos.familiars_models import DatosFamiliaresOtros
+from registro.modelos.alimentacion_models import AlimentacionCostumbres
 
 # Create your views here.
 def registro_view(request):
@@ -20,6 +21,7 @@ def registro_view(request):
     #padre = PadreForm()
     descripcion_paciente = Ficha_DescripcionPacienteForm()
     alimentacion = AlimentacionForm()
+    suplementos_formset = SuplementosFormset(instance=AlimentacionCostumbres())
     datos_familiares = DatosFamiliaresOtrosForm()
     hermanos_formset = HermanosFormset(instance=DatosFamiliaresOtros())
     primeros_dias = PrimerosDiasForm()
@@ -33,6 +35,7 @@ def registro_view(request):
            #'madre': madre,
            'mensaje':mensaje,
            'alimentacion': alimentacion,
+           'suplementos_formset': suplementos_formset,
            'datos_familiares': datos_familiares,
            'hermanos_formset': hermanos_formset,
            'primeros_dias': primeros_dias,

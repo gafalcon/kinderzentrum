@@ -181,11 +181,34 @@
 		<div class="panel-heading">Alimentación y Costumbres</div>
 		<div class="panel-body">			
 			{% for field in alimentacion %}
+				
+		  		<div class="form-group">
+					<label for="code">{{field.label}}</label> <br/>
+					{{ field }}			<br/>      		
+	      		</div>
+				{% if forloop.counter == 16 %}
+					<div id="suplementos-formset" style="display: none;">
+						<h4>Suplementos</h4>
+						{{ suplementos_formset.management_form }}
+						<table class="table table-bordered table-condensed">
+							<tr>
+								<th>Frecuencia</th>
+								<th>Tipo</th>
+								<th>Cantidad</th>
+							</tr>
+							{% for form in suplementos_formset %}
+								{{ form.id }}
+								<tr>
+									<td>{{form.frecuencia}}</td>
+									<td>{{form.tipo}}</td>
+									<td>{{form.cantidad}}</td>
+								</tr>
+							{% endfor %}
+						</table>
+					</div>		
+				{% endif %}
+
 			
-		  	<div class="form-group">
-			    <label for="code">{{field.label}}</label> <br/>
-			    {{ field }}			<br/>      		
-	      	</div>
 	      	{% endfor %}
 		</div>
 	</div>

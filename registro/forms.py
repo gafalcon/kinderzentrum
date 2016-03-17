@@ -5,7 +5,7 @@ from django.forms.extras.widgets import SelectDateWidget
 from modelos.historial_madre_models import HistorialMadre
 from modelos.familiars_models import Familiar, Hermano, DatosFamiliaresOtros
 from modelos.paciente_model import Paciente
-from modelos.alimentacion_models import AlimentacionCostumbres
+from modelos.alimentacion_models import AlimentacionCostumbres, SuplementoAlimenticio
 from modelos.primeros_dias_model import PrimerosDias
 from django.forms import inlineformset_factory
 import datetime
@@ -181,7 +181,10 @@ class DatosFamiliaresOtrosForm(ModelForm):
             'alteracion_desarrollo': forms.RadioSelect(choices=CHOICES_SI_NO_DES)
         }
         
-
+SuplementosFormset = inlineformset_factory(AlimentacionCostumbres, SuplementoAlimenticio,
+                                           fields = '__all__',
+                                           can_delete=False
+)
 
 HermanosFormset = inlineformset_factory(DatosFamiliaresOtros, Hermano,
                                         fields='__all__',

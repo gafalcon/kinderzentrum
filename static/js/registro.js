@@ -72,10 +72,10 @@ $(function() {
 
   	/* Creamos un widget de calendario con jquery-ui */
     $( ".datepicker" ).datepicker({
-      changeMonth: true,
-      changeYear: true,
-      yearRange: "1950:2012",
-      // Podemos poner mas opciones
+		changeMonth: true,
+		changeYear: true,
+		yearRange: "1950:2012",
+		// Podemos poner mas opciones
     });
 
     //ocultamos los campos que no son necesarios a menos que se realice una eleccion 
@@ -84,7 +84,7 @@ $(function() {
     //$('#id_descripcion_pregunta_4').parent().hide();
 
     /*	Si ha seleccionado la opcion de otros, entonces mostramos un casillero adicional
-    	que permite describir de forma especifica la opcion "otros" */
+     que permite describir de forma especifica la opcion "otros" */
     $('select[name=descripcion_pregunta_2]').change(function() { 
     	if ($(this).val() == 'otros'){
     		$('#id_descripcion_otros_2').parent().show();
@@ -144,14 +144,19 @@ $(function() {
     	}	
     });
 
-	  $('input[type=text], [type=number]').addClass('form-control');
-	  $('input[name=numero_hermanos]').change(function(e){
-		  if(e.target.value != "0")
-			  $("#hermanos-formset").show();
-		  else
-			  $("#hermanos-formset").hide();
-		  console.log(e);
-		  console.log(e.target.value);
-	  });
+	$('input[type=text], [type=number]').addClass('form-control');
+	$('input[name=numero_hermanos]').change(function(e){
+		if(e.target.value != "0")
+			$("#hermanos-formset").show();
+		else
+			$("#hermanos-formset").hide();
+	});
+
+	$('input[name=suplementos]').change(function(e){
+		if(e.target.value == "si")
+			$("#suplementos-formset").show();
+		else
+			$("#suplementos-formset").hide();
+	});
 
 });
