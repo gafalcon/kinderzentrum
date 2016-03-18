@@ -223,9 +223,16 @@ class PrimerosDiasForm(ModelForm):
         }
 
 class RecienNacidoForm(ModelForm):
+    hubo_apego_precoz = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Hubo apego precoz(le pusieron a su bebé encima del pecho cuando nació)?")
+    permanecio_internado = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Tuvo el bebé que permanecer internado cuando nació?")
     class Meta:
         model = RecienNacido
-        fields = "__all__"
+        fields = ['edad_madre', 'edad_padre', 'peso', 'tamanio', 'diametro_encefalico', 'apgar_score', 'complicaciones_nacimiento', 'hubo_apego_precoz', 'tiempo_apego_precoz', 'tiempo_sostener_bebe','permanecio_internado', 'tiempo_internado', 'tipo_contacto', 'primera_lactancia'] 
         widgets = {
-            'apgar_score': forms.RadioSelect(choices=RecienNacido.APGAR_CHOICES)
+            'apgar_score': forms.RadioSelect(choices=RecienNacido.APGAR_CHOICES),
+            'complicaciones_nacimiento': forms.CheckboxSelectMultiple(choices=RecienNacido.COMPLICACIONES_CHOICES),
+            'tiempo_apego_precoz': forms.CheckboxSelectMultiple(choices=RecienNacido.APEGO_PRECOZ_CHOICES),
+            'tiempo_sostener_bebe': forms.RadioSelect(choices=RecienNacido.SOSTENER_BEBE_CHOICES),
+            'tipo_contacto': forms.RadioSelect(choices=RecienNacido.CONTACTO_CHOICES),
+            'primera_lactancia': forms.RadioSelect(choices=RecienNacido.PRIMERA_LACTANCIA_CHOICES)
         }
