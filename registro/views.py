@@ -3,12 +3,15 @@ from registro.forms import * #Ficha_DatosForm, Ficha_DatosFamiliaresForm, Ficha_
 from django.template import RequestContext
 from registro.modelos.familiars_models import DatosFamiliaresOtros
 from registro.modelos.alimentacion_models import AlimentacionCostumbres
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 def registro_view(request):
     mensaje = ""
     if request.method == "POST":
         mensaje = "guardando datos"
+        print(request.POST)
+        return HttpResponseRedirect('/')
     else:
         mensaje = "enviando forma"
     #datos 
