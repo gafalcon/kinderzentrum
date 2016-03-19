@@ -20,16 +20,18 @@ CHOICES_SI_NO = [('si','Si'),('no','No')]
 class Ficha_PacienteForm(forms.Form):
     SEXO=[('masculino','Masculino'),('femenino','Femenino')]
     GRUPO_SANGUINEO = [('o+','O+'),('o-','O-'),('a+','A+'),('a-','A-'),('b+','B+'),('b-','B-'),('ab+','AB+'),('ab-','AB-')]
-    apellidos = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}),label="Apellidos")
-    nombres = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    nacimiento = forms.DateField(widget=forms.TextInput(attrs=
-                                {
-                                    'class':'datepicker form-control'
-                                }))
-    sexo = forms.ChoiceField(choices=SEXO, widget=forms.RadioSelect())    
-    nacionalidad = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    lugar_nacimiento = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    grupo_sanguineo = forms.ChoiceField(choices=GRUPO_SANGUINEO, widget=forms.Select(attrs={'class':'form-control'}))
+    apellidos = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required': 'required'}),label="Apellidos")
+    nombres = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required': 'required'}))
+    nacimiento = forms.DateField( input_formats = ['%m/%d/%Y'],
+                                  widget=forms.TextInput(attrs=
+                                                         {
+                                                             'class':'datepicker form-control',
+                                                             'required': 'required'
+                                                         }))
+    sexo = forms.ChoiceField(choices=SEXO, widget=forms.RadioSelect(attrs={'required': 'required'}))    
+    nacionalidad = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required': 'required'}))
+    lugar_nacimiento = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required': 'required'}))
+    grupo_sanguineo = forms.ChoiceField(choices=GRUPO_SANGUINEO, widget=forms.Select(attrs={'class':'form-control', 'required': 'required'}))
 
 class Ficha_DatosFamiliaresForm(forms.Form):
     ESTUDIO=[('primaria','Primaria'),('secundaria','Secundaria'),('universitaria','Universitaria'),('superior','Superior')]

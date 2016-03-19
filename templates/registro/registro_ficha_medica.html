@@ -40,13 +40,15 @@
 		  			<div class="form-group span6">
 			    		<label for="code" style="width: 20%;">{{field.label}}</label>
 			    		{% if field.label == "Sexo" %}
-			    			
-			    			{% for choice in field.field.choices%}
-			    				<label class="radio-inline" style="margin: 5px 0px 10px;">
-								  	<input type="radio" name="inlineRadioOptions" id="{{choice.0}}" value="{{choice.0}}" style="margin-left: 0px; cursor: pointer;"> {{choice.1}}
+			    			{% for radio in ficha_datos_form.sexo%}
+								
+								<label class="radio-inline" style="margin: 5px 0px 10px;" for="{{ radio.id_for_label}}">
+									{{radio.tag}}
+									{{ radio.choice_label }}
 								</label>
-			    			{% endfor%}
-			      		
+
+							{% endfor %}
+						
 			      		{% else %}
 			      		{{ field }}
 			      		{% endif %}
@@ -137,7 +139,7 @@
 	</div>
 
 	<div id="panel6" class="hide panel panel-default">
- 		<div class="panel-heading">Datos de la Madre</div>
+ 		<div class="panel-heading">Desarrollo de la Gestación</div>
 		<div class="panel-body">			
 			{% for field in madre %}
 	  			<div class="row">		  			
@@ -151,7 +153,6 @@
 	</div>
 
 	<div id="panel7" class="hide panel panel-default">
-		<div class="panel-heading">Datos del Padre</div>
 		<div class="panel-body">			
 			{% for field in padre %}
 	  			<div class="row">		  			
