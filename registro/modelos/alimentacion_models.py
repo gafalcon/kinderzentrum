@@ -20,7 +20,7 @@ class AlimentacionCostumbres(models.Model):
         (TIEMPO_LACTANCIA_MESES_19_24, "19 - 24 Meses")
     )
 
-    tiempo_leche_materna = models.PositiveSmallIntegerField(choices=TIEMPO_LACTANCIA_CHOICES)
+    tiempo_leche_materna = models.PositiveSmallIntegerField(choices=TIEMPO_LACTANCIA_CHOICES, blank=True)
 
     MOTIVO_SUSPENSION_RECHAZO = "Rechazo del niño"
     MOTIVO_SUSPENSION_TRABAJO = "Vinculación laboral"

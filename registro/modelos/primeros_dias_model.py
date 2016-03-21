@@ -37,7 +37,7 @@ class PrimerosDias(models.Model):
         (LUGAR_DORMIR_CON_MAMA, "En la cama con mamá"),
         (LUGAR_DORMIR_CON_PADRES, "En la cama con mamá y papá")
     )
-    clinica_permanencia = models.CharField("¿Cuál fue la clínica u hospital en la que permaneció el niño(a)", max_length=100, blank=True)
+    clinica_permanencia = models.CharField("¿Cuál fue la clínica u hospital en la que permaneció el niño(a)?", max_length=100, blank=True)
     dias_permanencia = models.PositiveIntegerField("Indique los días de permanencia", blank=True)
     situaciones_despues_nacimiento = models.CharField("¿Presentó su bebé alguna de éstas situaciones después del nacimiento?", max_length=256, blank=True)
     icteria = models.NullBooleanField("¿Hubo algún tratamiento por icteria")
@@ -45,6 +45,6 @@ class PrimerosDias(models.Model):
     examenes = models.CharField("¿Le realizaron al recién nacido algún tipo de exámen?", max_length=100, blank=True)
     veces_despertar_noche = models.PositiveSmallIntegerField("¿Cuántas veces se despertaba el recién nacido?", default=0)
     lugar_dormir = models.PositiveSmallIntegerField("¿Dónde dormía el bebé?")
-    descripcion_bebe = models.CharField("Describa a su bebé los 3 primeros meses de vida", max_length=256, blank=True)
-    descripcion_madre = models.CharField("¿Cómo se sentía usted esos 3 primeros meses?", max_length=256, blank=True)
+    descripcion_bebe = models.CharField("Describa a su bebé los 3 primeros meses de vida", max_length=256)
+    descripcion_madre = models.CharField("¿Cómo se sentía usted esos 3 primeros meses?", max_length=256)
     

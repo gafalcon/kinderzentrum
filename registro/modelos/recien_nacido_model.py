@@ -74,7 +74,7 @@ class RecienNacido(models.Model):
     )
     tiempo_sostener_bebe = models.PositiveSmallIntegerField("¿Cuánto tiempo pasó hasta que usted pudo sostener a su bebé?")
 
-    tiempo_internado = models.DurationField("¿Cuánto tiempo permaneció internado(a)")
+    tiempo_internado = models.DurationField("¿Cuánto tiempo permaneció internado(a)?", blank=True)
 
     CONTACTO_VISITAS_ESTABLECIDAS = 0
     CONTACTO_VISITAS_CUANDO_QUERIA = 1
@@ -86,7 +86,7 @@ class RecienNacido(models.Model):
         (CONTACTO_SOLO_PARA_DAR_LACTAR , "Sólo para darle de lactar"),
         (CONTACTO_NINGUNA, "Ninguna") 
     )
-    tipo_contacto = models.PositiveSmallIntegerField("¿Qué tipo de contacto tuvo con su bebé mientras estuvo internado?")
+    tipo_contacto = models.PositiveSmallIntegerField("¿Qué tipo de contacto tuvo con su bebé mientras estuvo internado?", blank=True)
 
     PRIMERA_LACTANCIA_BIBERON = 0
     PRIMERA_LACTANCIA_SONDA = 1

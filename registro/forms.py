@@ -131,17 +131,16 @@ class AlimentacionForm(ModelForm):
                                                             choices=AlimentacionCostumbres.MOTIVO_SUSPENSION_CHOICES,
                                                             label="¿Por qué suspendió la leche materna?")
     tiempo_leche_materna = forms.ChoiceField(widget= forms.RadioSelect,choices=AlimentacionCostumbres.TIEMPO_LACTANCIA_CHOICES,
-                                             label="¿Cuánto tiempo recibió leche materna?")
+                                             label="¿Cuánto tiempo recibió leche materna?", required=False)
     afecciones = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices = AlimentacionCostumbres.AFECCIONES_CHOICES,
-                                           label="Indique si el niño ha tenido una de las siguientes afecciones")
+                                           label="Indique si el niño ha tenido una de las siguientes afecciones",
+                                           required=False)
     enfermedades = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices = AlimentacionCostumbres.ENFERMEDADES_CHOICES,
-                                           label="¿Cuáles de las siguientes enfermedades ha presentado el niño(a)? Marque todas las que necesite")
-
+                                             label="¿Cuáles de las siguientes enfermedades ha presentado el niño(a)? Marque todas las que necesite",
+                                             required=False)
     forma_alimento = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices = AlimentacionCostumbres.FORMA_ALIMENTO_CHOICES,
                                                label="¿Cuál era la forma o preparación del alimento?")
-
     apetito = forms.ChoiceField(widget=forms.RadioSelect, choices=AlimentacionCostumbres.APETITO_CHOICES, label="¿Cómo es el apetito del niño?")
-
     difiere_alimentacion = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Difiere la alimentación del fin de semana de los demás días?")
     suplementos = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Consumía suplementos alimenticios?")
 

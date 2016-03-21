@@ -17,9 +17,9 @@ def index_view(request):
         '''
         registro = grupos.filter(name='registro').count() == 1
         ctx = {'registro':registro,'pagina_actual':'inicio'}
-        return render_to_response('base.html', ctx, context_instance=RequestContext(request))
+        return render(request, 'base.html', ctx)
     else:
-        return render_to_response('base.html', context_instance=RequestContext(request))
+        return render(request, 'base.html')
 
 def formulario_view(request):
 	return render_to_response('registro/formulario.html', context_instance=RequestContext(request))
