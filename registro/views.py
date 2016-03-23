@@ -10,7 +10,7 @@ from django.utils.decorators import method_decorator
 # Create your views here.
 
 
-@method_decorator(login_required, name='dispatch')
+#@method_decorator(login_required, name='dispatch')
 class RegistroView(View):
     template_name = 'registro/registro_ficha_medica.html'
 

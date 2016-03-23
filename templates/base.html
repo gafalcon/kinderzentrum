@@ -13,6 +13,7 @@
 	<script src="/static/js/jquery-ui.js"></script>	
     <script src="/static/js/bootstrap.js"></script>
     <script src="/static/js/registro.js"></script>
+    <script src="/static/js/cita.js"></script>
     <script src="/static/js/modernizr.min.js"></script>
     {% block js %}
     {% endblock js %}
@@ -52,6 +53,18 @@
 							<li><a href="#">Mas opciones</a></li>				            
 				        </ul>
 					</li>
+
+					{% if cita %}<li class="dropdown">{% else %}<li class="active dropdown">{% endif %}
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#"> Cita <span class="caret"></a>
+						<ul class="dropdown-menu">
+							<li><a href="{% url 'reservar_cita_view' %}">Reservar cita</a></li>
+							<li><a href="#">Atender cita</a></li>
+							<li><a href="#">M&aacute;s opciones</a></li>				            
+				        </ul>
+					</li>
+					
+
+					
 					
 					{% if resumen %}
 					<li><a href="#"> Resumen </a></li>
