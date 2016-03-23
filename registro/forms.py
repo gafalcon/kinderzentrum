@@ -3,6 +3,7 @@ from django import forms
 from django.forms import ModelForm
 from django.forms.extras.widgets import SelectDateWidget
 from modelos.historial_madre_models import HistorialMadre
+from modelos.nacimiento_models import Nacimiento
 from modelos.familiars_models import Familiar, Hermano, DatosFamiliaresOtros
 from modelos.paciente_model import Paciente
 from modelos.alimentacion_models import AlimentacionCostumbres, SuplementoAlimenticio
@@ -11,16 +12,15 @@ from modelos.recien_nacido_model import RecienNacido
 from django.forms import inlineformset_factory
 import datetime
 #from django.contrib.auth.models import User
-CHOICES_SI_NO_DES = [(2,'Si'),(3,'No'), (1,'Desconoce')]
+CHOICES_SI_NO_DES = [(True,'Si'),(False,'No'), (None,'Desconoce')]
 
-CHOICES_SI_NO = [('si','Si'),('no','No')]
-
-
+CHOICES_SI_NO = ((True, "Si"), (False, "No"))
 
 class Ficha_PacienteForm(forms.Form):
     apellidos = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required': 'required'}),label="Apellidos")
     nombres = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required': 'required'}))
     nacimiento = forms.DateField( input_formats = ['%m/%d/%Y'],
+                                  label='Fecha de nacimiento',
                                   widget=forms.TextInput(attrs=
                                                          {
                                                              'class':'datepicker form-control',
@@ -106,34 +106,25 @@ class Ficha_HistorialMadreForm(forms.Form):
    
    
 
-'''
-class HistorialMadreForm(ModelForm):
+class NacimientoForm(ModelForm):
+    gemelar = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Fue embarazo gemelar?")
+    medicamentos_parto = forms.ChoiceField(choices=CHOICES_SI_NO_DES, widget=forms.RadioSelect, label="¿Se le administró medicamentos o inyección durante el parto?")
+    complicaciones_cordon = forms.ChoiceField(choices=CHOICES_SI_NO_DES, widget=forms.RadioSelect, label="¿Hubieron complicaciones en el cordón umbilical?")
     class Meta:
-        model = HistorialMadre
-        fields = ['defunciones_fetales', 'hijos_nacidos_muertos', 
-                  'hijos_nacidos_vivos', 'enfermedades_previas',
-                  'anticonceptivos']
-
-class PacienteForm(ModelForm):
-    class Meta:
-        model = Paciente
-        exclude = ['descripcion', 'historial_madre', 'gestacion', 'nacimiento', 'medico']
-
-class MadreForm(ModelForm):
-    class Meta:
-        model = Familiar
+        model = Nacimiento
         fields = '__all__'
-
-class PadreForm(ModelForm):
-    class Meta:
-        model = Familiar
-        fields = '__all__'
-        #exclude = ['tipo']
-'''
-
-
+        widgets = {
+            'tipo_lugar_nacimiento': forms.RadioSelect(choices=Nacimiento.TIPO_LUGAR_NACIMIENTO_CHOICES),
+            'metodo_nacimiento': forms.CheckboxSelectMultiple(choices=Nacimiento.METODO_NACIMIENTO_CHOICES),
+            'manera_inicio_parto': forms.RadioSelect(choices=Nacimiento.MANERA_INICIO_PARTO_CHOICES),
+            'tipo_ruptura_fuente': forms.RadioSelect(choices=Nacimiento.TIPO_RUPTURA_FUENTE_CHOICES),
+            'primera_parte_cuerpo': forms.RadioSelect(choices=Nacimiento.PRIMERA_PARTE_CUERPO_CHOICES),
+            'complicaciones': forms.CheckboxSelectMultiple(choices=Nacimiento.COMPLICACIONES_CHOICES),
+            'medicamentos_parto': forms.RadioSelect(choices=CHOICES_SI_NO_DES),
+            'complicaciones_cordon': forms.RadioSelect(choices=CHOICES_SI_NO_DES),
+        } 
+    
 class AlimentacionForm(ModelForm):
-    CHOICES_SI_NO = [('si','Si'),('no','No')]
     lactancia = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Recibió lactancia materna?")
     motivo_suspencion_lactancia = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
                                                             choices=AlimentacionCostumbres.MOTIVO_SUSPENSION_CHOICES,

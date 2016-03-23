@@ -96,8 +96,9 @@ $(function() {
     });
 
     $('#id_descripcion_paciente-descripcion_pregunta_3').on('change', function() {
-   		valor_si_no = $('input[name=descripcion_paciente-descripcion_pregunta_3]:checked', '#id_descripcion_paciente-descripcion_pregunta_3').val(); 
-   		if (valor_si_no == 'si'){
+   		var valor_si_no = $('input[name=descripcion_paciente-descripcion_pregunta_3]:checked', '#id_descripcion_paciente-descripcion_pregunta_3').val(); 
+		console.log(valor_si_no);
+   		if (valor_si_no == 'True'){
    			$('#id_descripcion_paciente-descripcion_pregunta_4').parent().show();
    		}else{
    			$('#id_descripcion_paciente-descripcion_pregunta_4').parent().hide();
@@ -119,7 +120,6 @@ $(function() {
     });
 
     $('input[name=descripcion_paciente-descripcion_pregunta_6]').on('click',function(e) { 
-		console.log(e.target.value);
     	if (e.target.value == 'otro'){
     		if (e.target.checked){
     			$('#id_descripcion_paciente-descripcion_otros_6').parent().show();
@@ -157,7 +157,7 @@ $(function() {
 	$('input[name=familiares_otros-numero_hermanos]').change(function(e){numero_hermanos_changed(e.target.value);});
 
 	function suplementos_changed(value) {
- 		if(value == "si")
+ 		if(value == "True")
 			$("#suplementos-formset").show();
 		else
 			$("#suplementos-formset").hide();       

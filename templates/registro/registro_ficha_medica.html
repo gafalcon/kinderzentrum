@@ -161,15 +161,14 @@
 	</div>
 
 	<div id="panel7" class="hide panel panel-default">
+ 		<div class="panel-heading">Nacimiento</div>
 		<div class="panel-body">			
-			{% for field in padre %}
-	  			<div class="row">		  			
-		  			<div class="form-group span6">
-			    		<label for="code" style="width: 20%;">{{field.label}}</label>
-			      		{{ field }}			      		
-	      			</div>
+			{% for field in nacimiento %}
+		  		<div class="form-group">
+					<label for="code">{{field.label}}</label> <br/>
+					{{ field }}			<br/>      		
 	      		</div>
-	      	{% endfor %}
+	  		{% endfor %}
 		</div>
 	</div>
 	<div id="panel8" class="hide panel panel-default">

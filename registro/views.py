@@ -22,6 +22,7 @@ class RegistroView(View):
         datos_medico = Ficha_DatosMedicoForm(prefix="medico")
         historial_madre = Ficha_HistorialMadreForm(prefix="historial_madre")
         descripcion_paciente = Ficha_DescripcionPacienteForm(prefix="descripcion_paciente")
+        nacimiento = NacimientoForm(prefix="nacimiento")
         recien_nacido = RecienNacidoForm(prefix="recien_nacido")
         primeros_dias = PrimerosDiasForm(prefix="primeros_dias")
         alimentacion = AlimentacionForm(prefix="alimentacion")
@@ -34,6 +35,7 @@ class RegistroView(View):
                        'ficha_datos_form':datos,
                        'descripcion_paciente':descripcion_paciente,
                        'historial_madre_form': historial_madre,
+                       'nacimiento': nacimiento,
                        'recien_nacido': recien_nacido,
                        'alimentacion': alimentacion,
                        'suplementos_formset': suplementos_formset,
@@ -81,6 +83,7 @@ class RegistroView(View):
         datos_medico = Ficha_DatosMedicoForm(request.POST, prefix="medico")
         historial_madre = Ficha_HistorialMadreForm(request.POST, prefix="historial_madre")
         descripcion_paciente = Ficha_DescripcionPacienteForm(request.POST, prefix="descripcion_paciente")
+        nacimiento = NacimientoForm(request.POST, prefix="nacimiento")
         recien_nacido = RecienNacidoForm(request.POST, prefix="recien_nacido")
         primeros_dias = PrimerosDiasForm(request.POST, prefix="primeros_dias")
         alimentacion = AlimentacionForm(request.POST, prefix="alimentacion")
@@ -89,8 +92,9 @@ class RegistroView(View):
         hermanos_formset = HermanosFormset(request.POST, instance=DatosFamiliaresOtros())
 
         if (datos_paciente.is_valid() and
-            datos_medico.is_valid() and
-            datos_familia.is_valid() and
+            #datos_medico.is_valid() and
+            #datos_familia.is_valid() and
+            nacimiento.is_valid() and
             not(
                 recien_nacido.is_valid())):
 
@@ -100,18 +104,21 @@ class RegistroView(View):
             paciente = self.create_paciente(datos_paciente.cleaned_data)
             print("Paciente", paciente)
 
-            print("Medico", datos_medico.cleaned_data)
-            medico = self.create_medico(datos_medico.cleaned_data)
-            print("Medico", medico)
-            medico.save()
+            # print("Medico", datos_medico.cleaned_data)
+            # medico = self.create_medico(datos_medico.cleaned_data)
+            # print("Medico", medico)
+            # medico.save()
 
 
-            print("Familiar", datos_familia.cleaned_data)
-            familiar = self.create_familiar(datos_familia.cleaned_data)
-            print("Familiar", familiar)
-            familiar.save()
+            # print("Familiar", datos_familia.cleaned_data)
+            # familiar = self.create_familiar(datos_familia.cleaned_data)
+            # print("Familiar", familiar)
+
+            print("Nacimiento", nacimiento.cleaned_data)
+            nacimiento = nacimiento.save()
+            print("Nacimiento", nacimiento)
             
-            paciente.medico = medico
+            #paciente.medico = medico
             #print("Recien_nacido", recien_nacido.cleaned_data)
 
 
@@ -124,6 +131,7 @@ class RegistroView(View):
             print("\n\nErrors paciente:", datos_paciente.errors)
             print("\n\nErrors medico:", datos_medico.errors)
             print("\n\nErrors familiares:", datos_familia.errors)
+            print("\n\nErrors nacimiento:", nacimiento.errors)
             print("\n\nErrors recien_nacido:", recien_nacido.errors)
             print("\n\nErrors primeros_dias:", primeros_dias.errors)
             print("\n\nErrors alimentacion:", alimentacion.errors)
@@ -134,6 +142,7 @@ class RegistroView(View):
                            'ficha_datos_medico_form': datos_medico,
                            'descripcion_paciente': descripcion_paciente,
                            'historial_madre_form': historial_madre,
+                           'nacimiento': nacimiento,
                            'recien_nacido': recien_nacido,
                            'alimentacion': alimentacion,
                            'suplementos_formset': suplementos_formset,
