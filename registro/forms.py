@@ -247,6 +247,17 @@ class PrimerosDiasForm(ModelForm):
             'situaciones_despues_nacimiento': forms.CheckboxSelectMultiple(choices=PrimerosDias.SITUACIONES_CHOICES),
             'lugar_dormir': forms.RadioSelect(choices=PrimerosDias.LUGAR_DORMIR_CHOICES)
         }
+    def save(self):
+        model = super(PrimerosDiasForm, self).save(commit=False)
+        if self.cleaned_data.get("clinica") == 'False':
+            model.dias_permanencia = None
+            model.clinica_permanencia = ''
+        if not self.cleaned_data.get("icteria"):
+            model.tratamiento_icteria = ''
+        if self.cleaned_data.get('dormia_toda_noche') == 'True':
+            model.veces_despertar_noche = 0
+        model.save()
+        return model
 
     def clean(self):
         cleaned_data = super(PrimerosDiasForm, self).clean()
@@ -276,7 +287,7 @@ class RecienNacidoForm(ModelForm):
         widgets = {
             'apgar_score': forms.RadioSelect(choices=RecienNacido.APGAR_CHOICES),
             'complicaciones_nacimiento': forms.CheckboxSelectMultiple(choices=RecienNacido.COMPLICACIONES_CHOICES),
-            'tiempo_apego_precoz': forms.CheckboxSelectMultiple(choices=RecienNacido.APEGO_PRECOZ_CHOICES),
+            'tiempo_apego_precoz': forms.RadioSelect(choices=RecienNacido.APEGO_PRECOZ_CHOICES),
             'tiempo_sostener_bebe': forms.RadioSelect(choices=RecienNacido.SOSTENER_BEBE_CHOICES),
             'tipo_contacto': forms.RadioSelect(choices=RecienNacido.CONTACTO_CHOICES),
             'primera_lactancia': forms.RadioSelect(choices=RecienNacido.PRIMERA_LACTANCIA_CHOICES)
@@ -287,10 +298,21 @@ class RecienNacidoForm(ModelForm):
         hubo_apego_precoz = cleaned_data.get('hubo_apego_precoz')
         permanecio_internado = cleaned_data.get('permanecio_internado')
         if(hubo_apego_precoz == 'True'):
-            if not cleaned_data.get('tiempo_apego_precoz'):
-                self.add_error('tiempo_apego_precoz', "Debe llenar éste campo")
+            tiempo =  cleaned_data.get('tiempo_apego_precoz')
+            if not tiempo or tiempo == RecienNacido.APEGO_PRECOZ_NADA:
+                self.add_error('tiempo_apego_precoz', "Debe llenar éste campo con valor distinto a Nada")
         if(permanecio_internado == 'True'):
             if not cleaned_data.get('tiempo_internado'):
                 self.add_error('tiempo_internado', "Debe llenar éste campo")
             if not cleaned_data.get('tipo_contacto'):
                 self.add_error('tipo_contacto', "Debe llenar éste campo")
+
+    def save(self):
+        model = super(RecienNacidoForm, self).save(commit=False)
+        if self.cleaned_data.get('hubo_apego_precoz') == 'False':
+            model.tiempo_apego_precoz = RecienNacido.APEGO_PRECOZ_NADA
+        if self.cleaned_data.get('permanecio_internado') == 'False':
+            model.tiempo_internado = datetime.timedelta()
+            model.tipo_contacto = RecienNacido.CONTACTO_NINGUNA
+        model.save()
+        return model

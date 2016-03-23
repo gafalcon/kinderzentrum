@@ -38,7 +38,7 @@ class PrimerosDias(models.Model):
         (LUGAR_DORMIR_CON_PADRES, "En la cama con mamá y papá")
     )
     clinica_permanencia = models.CharField("¿Cuál fue la clínica u hospital en la que permaneció el niño(a)?", max_length=100, blank=True)
-    dias_permanencia = models.PositiveIntegerField("Indique los días de permanencia", blank=True)
+    dias_permanencia = models.PositiveIntegerField("Indique los días de permanencia", blank=True, null=True)
     situaciones_despues_nacimiento = models.CharField("¿Presentó su bebé alguna de éstas situaciones después del nacimiento?", max_length=256, blank=True)
     icteria = models.NullBooleanField("¿Hubo algún tratamiento por icteria")
     tratamiento_icteria = models.CharField("¿Cuál fue el tratamiento por icteria?", max_length=256, blank=True)

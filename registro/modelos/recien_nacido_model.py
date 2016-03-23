@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
+import datetime
 
 class RecienNacido(models.Model):
     "Datos del recién nacido"
@@ -52,7 +53,7 @@ class RecienNacido(models.Model):
         (APEGO_PRECOZ_MUCHO_TIEMPO, "Mucho Tiempo"),
         (APEGO_PRECOZ_NADA, "Nada")
     )
-    tiempo_apego_precoz = models.PositiveSmallIntegerField("¿Cuánto tiempo duró el apego precoz?", blank=True)
+    tiempo_apego_precoz = models.PositiveSmallIntegerField("¿Cuánto tiempo duró el apego precoz?")
 
     SOSTENER_BEBE_MENOS_10 = 0
     SOSTENER_BEBE_MENOS_30 = 1
@@ -74,7 +75,7 @@ class RecienNacido(models.Model):
     )
     tiempo_sostener_bebe = models.PositiveSmallIntegerField("¿Cuánto tiempo pasó hasta que usted pudo sostener a su bebé?")
 
-    tiempo_internado = models.DurationField("¿Cuánto tiempo permaneció internado(a)?", blank=True)
+    tiempo_internado = models.DurationField("¿Cuánto tiempo permaneció internado(a)?", blank=True, default=datetime.timedelta())
 
     CONTACTO_VISITAS_ESTABLECIDAS = 0
     CONTACTO_VISITAS_CUANDO_QUERIA = 1

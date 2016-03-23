@@ -4,6 +4,7 @@ from django.template import RequestContext
 from registro.modelos.paciente_model import Paciente
 from registro.modelos.familiars_models import DatosFamiliaresOtros
 from registro.modelos.alimentacion_models import AlimentacionCostumbres
+from registro.modelos.recien_nacido_model import RecienNacido
 from registro.modelos.medico_model import Medico
 from django.http import HttpResponseRedirect
 from django.views.generic import View
@@ -23,8 +24,10 @@ class RegistroView(View):
         historial_madre = Ficha_HistorialMadreForm(prefix="historial_madre")
         descripcion_paciente = Ficha_DescripcionPacienteForm(prefix="descripcion_paciente")
         nacimiento = NacimientoForm(prefix="nacimiento")
-        datos_recien_nacido = RecienNacidoForm(prefix="recien_nacido")
-        primeros_dias = PrimerosDiasForm(prefix="primeros_dias")
+        datos_recien_nacido = RecienNacidoForm(prefix="recien_nacido",
+                                               initial={'tiempo_apego_precoz': RecienNacido.APEGO_PRECOZ_NADA,
+                                                        'tipo_contacto': RecienNacido.CONTACTO_NINGUNA})
+        primeros_dias = PrimerosDiasForm(prefix="primeros_dias", initial={'icteria': False})
         alimentacion = AlimentacionForm(prefix="alimentacion")
         suplementos_formset = SuplementosFormset(instance=AlimentacionCostumbres())
         datos_familiares = DatosFamiliaresOtrosForm(prefix="familiares_otros")
@@ -94,11 +97,11 @@ class RegistroView(View):
         if (datos_paciente.is_valid() and
             #datos_medico.is_valid() and
             #datos_familia.is_valid() and
-            #datos_nacimiento.is_valid() and
-            #datos_recien_nacido.is_valid() and
+            # datos_nacimiento.is_valid() and
+            #datos_recien_nacido.is_valid()): 
             #datos_alimentacion.is_valid() and
-            datos_familiares.is_valid()):
-            #datos_primeros_dias.is_valid()):
+            #datos_familiares.is_valid()):
+            datos_primeros_dias.is_valid()):
 
             print("datos_paciente is valid")
 
@@ -114,20 +117,23 @@ class RegistroView(View):
             # familiar = self.create_familiar(datos_familia.cleaned_data)
             # print("Familiar", familiar)
 
-            #nacimiento = datos_nacimiento.save()
+            # nacimiento = datos_nacimiento.save()
             # paciente.nacimiento = nacimiento
             
-            #print("Recien_nacido", datos_recien_nacido.cleaned_data)
             # recien_nacido = datos_recien_nacido.save()
-            # print("Recien nacido", recien_nacido)
             # paciente.recien_nacido = recien_nacido
 
 
-            #print("Primeros dias", datos_primeros_dias.cleaned_data)
+            print("Primeros dias", datos_primeros_dias.cleaned_data)
+            primeros_dias = datos_primeros_dias.save()
+            print("descripcion madre", primeros_dias.descripcion_madre)
+            print("descripcion bebe", primeros_dias.descripcion_bebe)
+            print("clinica_permanencia", primeros_dias.clinica_permanencia)
+            print("tiempo permanencia", primeros_dias.dias_permanencia)
 
             #print("Alimentacion", datos_alimentacion.cleaned_data)
 
-            print("FamiliaresOtros", datos_familiares.cleaned_data)
+            #print("FamiliaresOtros", datos_familiares.cleaned_data)
             #paciente.save()
             #familiar.paciente = paciente
             #familiar.save()
@@ -139,9 +145,9 @@ class RegistroView(View):
             # print("\n\nErrors familiares:", datos_familia.errors)
             # print("\n\nErrors nacimiento:", datos_nacimiento.errors)
             #print("\n\nErrors recien_nacido:", datos_recien_nacido.errors)
-            #print("\n\nErrors primeros_dias:", datos_primeros_dias.errors)
+            print("\n\nErrors primeros_dias:", datos_primeros_dias.errors)
             #print("\n\nErrors alimentacion:", datos_alimentacion.errors)
-            print("Errors DatosFamiliares", datos_familiares.errors)
+            #print("Errors DatosFamiliares", datos_familiares.errors)
             return render(request, self.template_name,
                           {'ficha_datos_form': datos_paciente,
                            'ficha_datos_familia_form': datos_familia,
