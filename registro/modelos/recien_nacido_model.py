@@ -5,9 +5,9 @@ from django.db import models
 class RecienNacido(models.Model):
     "Datos del recién nacido"
 
-    edad_madre = models.PositiveSmallIntegerField("Edad de la madre cuando nació el bebé", blank=True)
+    edad_madre = models.PositiveSmallIntegerField("Edad de la madre cuando nació el bebé", blank=True, null=True)
 
-    edad_padre = models.PositiveSmallIntegerField("Edad del padre cuando nació el bebé", blank=True)
+    edad_padre = models.PositiveSmallIntegerField("Edad del padre cuando nació el bebé", blank=True, null=True)
 
     peso = models.FloatField("peso(gr)")
 

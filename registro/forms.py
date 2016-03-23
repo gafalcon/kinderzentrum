@@ -128,7 +128,7 @@ class AlimentacionForm(ModelForm):
     lactancia = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Recibió lactancia materna?")
     motivo_suspencion_lactancia = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
                                                             choices=AlimentacionCostumbres.MOTIVO_SUSPENSION_CHOICES,
-                                                            label="¿Por qué suspendió la leche materna?")
+                                                            label="¿Por qué suspendió la leche materna?", required=False)
     tiempo_leche_materna = forms.ChoiceField(widget= forms.RadioSelect,choices=AlimentacionCostumbres.TIEMPO_LACTANCIA_CHOICES,
                                              label="¿Cuánto tiempo recibió leche materna?", required=False)
     afecciones = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices = AlimentacionCostumbres.AFECCIONES_CHOICES,
@@ -166,9 +166,19 @@ class AlimentacionForm(ModelForm):
                   'difiere_alimentacion',
                   'motivo_cambios_alimentacion'
         ]
-        # widgets = {
-        #      'tiempo_leche_materna': forms.RadioSelect
-        #  }
+    def clean(self):
+        cleaned_data = super(AlimentacionForm, self).clean()
+        lactancia = cleaned_data.get('lactancia')
+        difiere_alimentacion = cleaned_data.get('difiere_alimentacion')
+        if(lactancia == 'True'):
+            if not cleaned_data.get('tiempo_leche_materna'):
+                self.add_error('tiempo_leche_materna', "Debe llenar éste campo")
+            if not cleaned_data.get('motivo_suspencion_lactancia'):
+                self.add_error('motivo_suspencion_lactancia', "Debe llenar éste campo")
+        if(difiere_alimentacion == 'True'):
+            if not cleaned_data.get('motivos_cambio_alimentacion'):
+                self.add_error('motivo_cambios_alimentacion', "Debe llenar éste campo")
+
 
 class DatosFamiliaresOtrosForm(ModelForm):
 
@@ -181,7 +191,23 @@ class DatosFamiliaresOtrosForm(ModelForm):
             'transtorno_hermanos': forms.RadioSelect(choices=CHOICES_SI_NO_DES),
             'alteracion_desarrollo': forms.RadioSelect(choices=CHOICES_SI_NO_DES)
         }
-        
+    def clean(self):
+        cleaned_data = super(DatosFamiliaresOtrosForm, self).clean()
+        numero_hermanos = cleaned_data.get('numero_hermanos')
+        #difiere_alimentacion = cleaned_data.get('difiere_alimentacion')
+        print("Numer hermanos", numero_hermanos)
+        if(numero_hermanos > 0):
+            trans_hermanos = cleaned_data.get('transtorno_hermanos')
+            if trans_hermanos:
+                hermano_transtorno = cleaned_data.get("hermano_transtorno")
+                if not hermano_transtorno:
+                    self.add_error('hermano_transtorno', "Debe llenar éste campo")
+                elif hermano_transtorno > numero_hermanos or hermano_transtorno <= 0:
+                    self.add_error('hermano_transtorno', "No tiene tantos hermanos")
+                if not cleaned_data.get('transtorno'):
+                    self.add_error('transtorno', "Debe llenar éste campo")
+
+       
 SuplementosFormset = inlineformset_factory(AlimentacionCostumbres, SuplementoAlimenticio,
                                            fields = '__all__',
                                            can_delete=False
@@ -222,6 +248,25 @@ class PrimerosDiasForm(ModelForm):
             'lugar_dormir': forms.RadioSelect(choices=PrimerosDias.LUGAR_DORMIR_CHOICES)
         }
 
+    def clean(self):
+        cleaned_data = super(PrimerosDiasForm, self).clean()
+        clinica = cleaned_data.get('clinica')
+        dormia_toda_noche = cleaned_data.get('dormia_toda_noche')
+        icteria = cleaned_data.get('icteria')
+        if(icteria):
+            if not cleaned_data.get('tratamiento_icteria'):
+                self.add_error('tratamiento_icteria', "Debe llenar éste campo")
+        if(clinica == 'True'):
+            if not cleaned_data.get('clinica_permanencia'):
+                self.add_error('clinica_permanencia', "Debe llenar éste campo")
+            if not cleaned_data.get('dias_permanencia'):
+                self.add_error('dias_permanencia', "Debe llenar éste campo")
+        if(dormia_toda_noche == 'False'):
+            veces = cleaned_data.get('veces_despertar_noche')
+            if not veces or veces <= 0:
+                self.add_error('veces_despertar_noche', "Debe llenar éste campo")
+
+
 class RecienNacidoForm(ModelForm):
     hubo_apego_precoz = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Hubo apego precoz(le pusieron a su bebé encima del pecho cuando nació)?")
     permanecio_internado = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Tuvo el bebé que permanecer internado cuando nació?")
@@ -236,3 +281,16 @@ class RecienNacidoForm(ModelForm):
             'tipo_contacto': forms.RadioSelect(choices=RecienNacido.CONTACTO_CHOICES),
             'primera_lactancia': forms.RadioSelect(choices=RecienNacido.PRIMERA_LACTANCIA_CHOICES)
         }
+
+    def clean(self):
+        cleaned_data = super(RecienNacidoForm, self).clean()
+        hubo_apego_precoz = cleaned_data.get('hubo_apego_precoz')
+        permanecio_internado = cleaned_data.get('permanecio_internado')
+        if(hubo_apego_precoz == 'True'):
+            if not cleaned_data.get('tiempo_apego_precoz'):
+                self.add_error('tiempo_apego_precoz', "Debe llenar éste campo")
+        if(permanecio_internado == 'True'):
+            if not cleaned_data.get('tiempo_internado'):
+                self.add_error('tiempo_internado', "Debe llenar éste campo")
+            if not cleaned_data.get('tipo_contacto'):
+                self.add_error('tipo_contacto', "Debe llenar éste campo")

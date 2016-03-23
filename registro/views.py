@@ -23,7 +23,7 @@ class RegistroView(View):
         historial_madre = Ficha_HistorialMadreForm(prefix="historial_madre")
         descripcion_paciente = Ficha_DescripcionPacienteForm(prefix="descripcion_paciente")
         nacimiento = NacimientoForm(prefix="nacimiento")
-        recien_nacido = RecienNacidoForm(prefix="recien_nacido")
+        datos_recien_nacido = RecienNacidoForm(prefix="recien_nacido")
         primeros_dias = PrimerosDiasForm(prefix="primeros_dias")
         alimentacion = AlimentacionForm(prefix="alimentacion")
         suplementos_formset = SuplementosFormset(instance=AlimentacionCostumbres())
@@ -36,7 +36,7 @@ class RegistroView(View):
                        'descripcion_paciente':descripcion_paciente,
                        'historial_madre_form': historial_madre,
                        'nacimiento': nacimiento,
-                       'recien_nacido': recien_nacido,
+                       'recien_nacido': datos_recien_nacido,
                        'alimentacion': alimentacion,
                        'suplementos_formset': suplementos_formset,
                        'datos_familiares': datos_familiares,
@@ -83,10 +83,10 @@ class RegistroView(View):
         datos_medico = Ficha_DatosMedicoForm(request.POST, prefix="medico")
         historial_madre = Ficha_HistorialMadreForm(request.POST, prefix="historial_madre")
         descripcion_paciente = Ficha_DescripcionPacienteForm(request.POST, prefix="descripcion_paciente")
-        nacimiento = NacimientoForm(request.POST, prefix="nacimiento")
-        recien_nacido = RecienNacidoForm(request.POST, prefix="recien_nacido")
-        primeros_dias = PrimerosDiasForm(request.POST, prefix="primeros_dias")
-        alimentacion = AlimentacionForm(request.POST, prefix="alimentacion")
+        datos_nacimiento = NacimientoForm(request.POST, prefix="nacimiento")
+        datos_recien_nacido = RecienNacidoForm(request.POST, prefix="recien_nacido")
+        datos_primeros_dias = PrimerosDiasForm(request.POST, prefix="primeros_dias")
+        datos_alimentacion = AlimentacionForm(request.POST, prefix="alimentacion")
         suplementos_formset = SuplementosFormset(request.POST, instance=AlimentacionCostumbres())
         datos_familiares = DatosFamiliaresOtrosForm(request.POST, prefix="familiares_otros")
         hermanos_formset = HermanosFormset(request.POST, instance=DatosFamiliaresOtros())
@@ -94,8 +94,11 @@ class RegistroView(View):
         if (datos_paciente.is_valid() and
             #datos_medico.is_valid() and
             #datos_familia.is_valid() and
-            nacimiento.is_valid() and
-            recien_nacido.is_valid()):
+            #datos_nacimiento.is_valid() and
+            #datos_recien_nacido.is_valid() and
+            #datos_alimentacion.is_valid() and
+            datos_familiares.is_valid()):
+            #datos_primeros_dias.is_valid()):
 
             print("datos_paciente is valid")
 
@@ -111,11 +114,20 @@ class RegistroView(View):
             # familiar = self.create_familiar(datos_familia.cleaned_data)
             # print("Familiar", familiar)
 
-            nacimiento = nacimiento.save()
-            paciente.nacimiento = nacimiento
+            #nacimiento = datos_nacimiento.save()
+            # paciente.nacimiento = nacimiento
             
-            #print("Recien_nacido", recien_nacido.cleaned_data)
+            #print("Recien_nacido", datos_recien_nacido.cleaned_data)
+            # recien_nacido = datos_recien_nacido.save()
+            # print("Recien nacido", recien_nacido)
+            # paciente.recien_nacido = recien_nacido
 
+
+            #print("Primeros dias", datos_primeros_dias.cleaned_data)
+
+            #print("Alimentacion", datos_alimentacion.cleaned_data)
+
+            print("FamiliaresOtros", datos_familiares.cleaned_data)
             #paciente.save()
             #familiar.paciente = paciente
             #familiar.save()
@@ -123,26 +135,26 @@ class RegistroView(View):
         else:
             print("datos is invalid")
             print("\n\nErrors paciente:", datos_paciente.errors)
-            print("\n\nErrors medico:", datos_medico.errors)
-            print("\n\nErrors familiares:", datos_familia.errors)
-            print("\n\nErrors nacimiento:", nacimiento.errors)
-            print("\n\nErrors recien_nacido:", recien_nacido.errors)
-            print("\n\nErrors primeros_dias:", primeros_dias.errors)
-            print("\n\nErrors alimentacion:", alimentacion.errors)
-
+            # print("\n\nErrors medico:", datos_medico.errors)
+            # print("\n\nErrors familiares:", datos_familia.errors)
+            # print("\n\nErrors nacimiento:", datos_nacimiento.errors)
+            #print("\n\nErrors recien_nacido:", datos_recien_nacido.errors)
+            #print("\n\nErrors primeros_dias:", datos_primeros_dias.errors)
+            #print("\n\nErrors alimentacion:", datos_alimentacion.errors)
+            print("Errors DatosFamiliares", datos_familiares.errors)
             return render(request, self.template_name,
                           {'ficha_datos_form': datos_paciente,
                            'ficha_datos_familia_form': datos_familia,
                            'ficha_datos_medico_form': datos_medico,
                            'descripcion_paciente': descripcion_paciente,
                            'historial_madre_form': historial_madre,
-                           'nacimiento': nacimiento,
-                           'recien_nacido': recien_nacido,
-                           'alimentacion': alimentacion,
+                           'nacimiento': datos_nacimiento,
+                           'recien_nacido': datos_recien_nacido,
+                           'alimentacion': datos_alimentacion,
                            'suplementos_formset': suplementos_formset,
                            'datos_familiares': datos_familiares,
                            'hermanos_formset': hermanos_formset,
-                           'primeros_dias': primeros_dias,
+                           'primeros_dias': datos_primeros_dias,
                            'pagina_actual': 'registro'
                           })
 

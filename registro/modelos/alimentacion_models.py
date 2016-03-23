@@ -36,7 +36,7 @@ class AlimentacionCostumbres(models.Model):
         (MOTIVO_SUSPENSION_ENFERMEDAD_MADRE, "Enfermedad de la madre"),
         (MOTIVO_SUSPENSION_OTRO, "Otro(Especifique)")
     )
-    motivo_suspencion_lactancia = models.CharField(max_length=100)
+    motivo_suspencion_lactancia = models.CharField(max_length=100, blank=True)
 
     AFECCIONES_ESTRENIMIENTO = "Estreñimiento"
     AFECCIONES_DEPOSICIONES = "Deposiciones Líquidas"

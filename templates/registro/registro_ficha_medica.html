@@ -31,7 +31,7 @@
 <form action="." method="POST">
 	{% csrf_token %}		
 
-	<div id="panel1" class="show panel panel-default">
+	<div id="panel11" class="hide panel panel-default">
 		<div class="panel-heading">Datos del Paciente</div>
 		<div class="panel-body">			
 	  		{% for field in ficha_datos_form %}
@@ -232,7 +232,7 @@
 		</div>
 	</div>
 
-	<div id="panel11" class="hide panel panel-default">
+	<div id="panel1" class="show panel panel-default">
 		<div class="panel-heading">Datos de Historia Clínica Familiar y Otra Información</div>
 		<div class="panel-body">			
 			{% for field in datos_familiares %}

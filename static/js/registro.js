@@ -153,11 +153,14 @@ $(function() {
 			element.hide();
 	}
 
-	value_changed($('input[name=familiares_otros-numero_hermanos]').val() != "0", $("#hermanos-formset"));
-	value_changed($('input[name=familiares_otros-numero_hermanos]').val() != "0", $("#id_familiares_otros-transtorno_hermanos").parent());
+	var num_hermanos = $('input[name=familiares_otros-numero_hermanos]').val();
+	value_changed(num_hermanos != "0" && num_hermanos != '',
+				  $("#hermanos-formset"));
+	value_changed(num_hermanos != "0" && num_hermanos != '',
+				  $("#id_familiares_otros-transtorno_hermanos").parent());
 	$('input[name=familiares_otros-numero_hermanos]').change(function(e){
-		value_changed(e.target.value != "0", $("#hermanos-formset"));
-		value_changed(e.target.value != "0", $("#id_familiares_otros-transtorno_hermanos").parent());
+		value_changed(e.target.value != "0" && e.target.value != '', $("#hermanos-formset"));
+		value_changed(e.target.value != "0" && e.target.value != '', $("#id_familiares_otros-transtorno_hermanos").parent());
 	});
 
 	value_changed($('input:radio[name=alimentacion-suplementos]:checked').val() == "True", $("#suplementos-formset"));
