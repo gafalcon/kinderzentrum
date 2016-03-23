@@ -95,8 +95,7 @@ class RegistroView(View):
             #datos_medico.is_valid() and
             #datos_familia.is_valid() and
             nacimiento.is_valid() and
-            not(
-                recien_nacido.is_valid())):
+            recien_nacido.is_valid()):
 
             print("datos_paciente is valid")
 
@@ -104,23 +103,18 @@ class RegistroView(View):
             paciente = self.create_paciente(datos_paciente.cleaned_data)
             print("Paciente", paciente)
 
-            # print("Medico", datos_medico.cleaned_data)
             # medico = self.create_medico(datos_medico.cleaned_data)
-            # print("Medico", medico)
+            #paciente.medico = medico
             # medico.save()
-
 
             # print("Familiar", datos_familia.cleaned_data)
             # familiar = self.create_familiar(datos_familia.cleaned_data)
             # print("Familiar", familiar)
 
-            print("Nacimiento", nacimiento.cleaned_data)
             nacimiento = nacimiento.save()
-            print("Nacimiento", nacimiento)
+            paciente.nacimiento = nacimiento
             
-            #paciente.medico = medico
             #print("Recien_nacido", recien_nacido.cleaned_data)
-
 
             #paciente.save()
             #familiar.paciente = paciente

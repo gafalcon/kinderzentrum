@@ -146,23 +146,65 @@ $(function() {
     });
 
 	$('input[type=text], [type=number]').addClass('form-control');
-
-	function numero_hermanos_changed(value) {
-        if(value != "0")
-			$("#hermanos-formset").show();
+	function value_changed(bool_value,  element){
+		if(bool_value)
+			element.show();
 		else
-			$("#hermanos-formset").hide();
+			element.hide();
 	}
-	numero_hermanos_changed($('input[name=familiares_otros-numero_hermanos]').val());
-	$('input[name=familiares_otros-numero_hermanos]').change(function(e){numero_hermanos_changed(e.target.value);});
 
-	function suplementos_changed(value) {
- 		if(value == "True")
-			$("#suplementos-formset").show();
-		else
-			$("#suplementos-formset").hide();       
-	}
-	suplementos_changed($('input:radio[name=alimentacion-suplementos]:checked').val());
-	$('input[name=alimentacion-suplementos]').change(function(e){suplementos_changed(e.target.value);});
+	value_changed($('input[name=familiares_otros-numero_hermanos]').val() != "0", $("#hermanos-formset"));
+	value_changed($('input[name=familiares_otros-numero_hermanos]').val() != "0", $("#id_familiares_otros-transtorno_hermanos").parent());
+	$('input[name=familiares_otros-numero_hermanos]').change(function(e){
+		value_changed(e.target.value != "0", $("#hermanos-formset"));
+		value_changed(e.target.value != "0", $("#id_familiares_otros-transtorno_hermanos").parent());
+	});
 
+	value_changed($('input:radio[name=alimentacion-suplementos]:checked').val() == "True", $("#suplementos-formset"));
+	$('input[name=alimentacion-suplementos]').change(function(e){
+		value_changed(e.target.value == "True", $("#suplementos-formset"));
+	});
+
+	value_changed($('input:radio[name=recien_nacido-hubo_apego_precoz]:checked').val() == "True", $("#id_recien_nacido-tiempo_apego_precoz").parent());
+	$('input:radio[name=recien_nacido-hubo_apego_precoz]').change(function(e){
+		value_changed(e.target.value == "True", $("#id_recien_nacido-tiempo_apego_precoz").parent());
+	});
+	value_changed($('input:radio[name=recien_nacido-permanecio_internado]:checked').val() == "True", $("#id_recien_nacido-tiempo_internado").parent());
+	value_changed($('input:radio[name=recien_nacido-permanecio_internado]:checked').val() == "True", $("#id_recien_nacido-tipo_contacto").parent());
+	$('input:radio[name=recien_nacido-permanecio_internado]').change(function(e){
+		value_changed(e.target.value == "True", $("#id_recien_nacido-tiempo_internado").parent());
+		value_changed(e.target.value == "True", $("#id_recien_nacido-tipo_contacto").parent());
+	});
+	value_changed($('input:radio[name=primeros_dias-clinica]:checked').val() == "True", $("#id_primeros_dias-clinica_permanencia").parent());
+	value_changed($('input:radio[name=primeros_dias-clinica]:checked').val() == "True", $("#id_primeros_dias-dias_permanencia").parent());
+	$('input:radio[name=primeros_dias-clinica]').change(function(e){
+		value_changed(e.target.value == "True", $("#id_primeros_dias-clinica_permanencia").parent());
+		value_changed(e.target.value == "True", $("#id_primeros_dias-dias_permanencia").parent());
+	});
+	value_changed($('input:radio[name=primeros_dias-icteria]:checked').val() == "True", $("#id_primeros_dias-tratamiento_icteria").parent());
+	$('input:radio[name=primeros_dias-icteria]').change(function(e){
+		value_changed(e.target.value == "True", $("#id_primeros_dias-tratamiento_icteria").parent());
+	});
+	value_changed($('input:radio[name=primeros_dias-dormia_toda_noche]:checked').val() == "False", $("#id_primeros_dias-veces_despertar_noche").parent());
+	$('input:radio[name=primeros_dias-dormia_toda_noche]').change(function(e){
+		value_changed(e.target.value == "False", $("#id_primeros_dias-veces_despertar_noche").parent());
+	});
+	value_changed($('input:radio[name=alimentacion-lactancia]:checked').val() == "True", $("#id_alimentacion-tiempo_leche_materna").parent());
+	value_changed($('input:radio[name=alimentacion-lactancia]:checked').val() == "True", $("#id_alimentacion-motivo_suspencion_lactancia").parent());
+	$('input:radio[name=alimentacion-lactancia]').change(function(e){
+		value_changed(e.target.value == "True", $("#id_alimentacion-tiempo_leche_materna").parent());
+		value_changed(e.target.value == "True", $("#id_alimentacion-motivo_suspencion_lactancia").parent());
+	});
+	value_changed($('input:radio[name=alimentacion-difiere_alimentacion]:checked').val() == "True", $("#id_alimentacion-motivo_cambios_alimentacion").parent());
+	$('input:radio[name=alimentacion-difiere_alimentacion]').change(function(e){
+		value_changed(e.target.value == "True", $("#id_alimentacion-motivo_cambios_alimentacion").parent());
+	});
+	value_changed($('input:radio[name=familiares_otros-transtorno_hermanos]:checked').val() == "True", $("#id_familiares_otros-hermano_transtorno").parent());
+	value_changed($('input:radio[name=familiares_otros-transtorno_hermanos]:checked').val() == "True", $("#id_familiares_otros-transtorno").parent());
+	value_changed($('input:radio[name=familiares_otros-transtorno_hermanos]:checked').val() == "True", $("#id_familiares_otros-alteracion_desarrollo").parent());
+	$('input:radio[name=familiares_otros-transtorno_hermanos]').change(function(e){
+		value_changed(e.target.value == "True", $("#id_familiares_otros-hermano_transtorno").parent());
+		value_changed(e.target.value == "True", $("#id_familiares_otros-transtorno").parent());
+		value_changed(e.target.value == "True", $("#id_familiares_otros-alteracion_desarrollo").parent());
+	});
 });
