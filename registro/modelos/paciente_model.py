@@ -17,34 +17,18 @@ from .primeros_dias_model import PrimerosDias
 class Paciente(models.Model):
     """Modelo que representa a un paciente de la clinica"""
 
-    GRUPO_SANGUINEO_CHOICES = (
-        ("A+", "A+"),
-        ("O+", "O+"),
-        ("O-", "O-") #Faltan mas opciones
-    )
+    GRUPO_SANGUINEO_CHOICES = [('o+','O+'),
+                               ('o-','O-'),
+                               ('a+','A+'),
+                               ('a-','A-'),
+                               ('b+','B+'),
+                               ('b-','B-'),
+                               ('ab+','AB+'),
+                               ('ab-','AB-')]
+
     SEXO_CHOICES = (
         ("M", "Masculino"),
         ("F", "Femenino")
-    )
-
-    VIVE_CON_PADRES = 0
-    VIVE_CON_PAPA = 1
-    VIVE_CON_MAMA = 2
-    VIVE_CON_APODERADO = 3
-    VIVE_CON_PADRE_ADOPTIVO = 4
-    VIVE_CON_ABUELOS = 5
-    VIVE_CON_GUARDERIA = 6
-    VIVE_CON_OTROS = 7
-    VIVE_CON_CHOICES = (
-        (VIVE_CON_PADRES, "Padres"),
-        (VIVE_CON_PAPA, "Papá"),
-        (VIVE_CON_MAMA, "Mamá"),
-        (VIVE_CON_APODERADO, "Apoderado"),
-        (VIVE_CON_PADRE_ADOPTIVO, "Padre adoptivo"),
-        (VIVE_CON_ABUELOS, "Abuelos"),
-        (VIVE_CON_GUARDERIA, "Guardería"),
-        (VIVE_CON_OTROS, "Otros")
-
     )
     nombres = models.CharField(max_length=256)
     apellidos = models.CharField(max_length=256)

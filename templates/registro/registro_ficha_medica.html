@@ -68,6 +68,13 @@
 			      		{{ field }}			      		
 	      			</div>
 	      		</div>
+
+				{% if forloop.counter == 4 %}
+					<h4>Trabajo</h4>
+				{% endif %}
+				{% if forloop.counter == 7 %}
+					<h4>Domicilio</h4>
+				{% endif %}
 	      	{% endfor %}
 		</div>
 	</div>
@@ -82,6 +89,7 @@
 			      		{{ field }}			      		
 	      			</div>
 	      		</div>
+
 	      	{% endfor %}
 		</div>
 	</div>

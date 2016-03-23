@@ -1,8 +1,10 @@
 from django.shortcuts import render, render_to_response
 from registro.forms import * #Ficha_DatosForm, Ficha_DatosFamiliaresForm, Ficha_DatosMedicoForm, HistorialMadreForm
 from django.template import RequestContext
+from registro.modelos.paciente_model import Paciente
 from registro.modelos.familiars_models import DatosFamiliaresOtros
 from registro.modelos.alimentacion_models import AlimentacionCostumbres
+from registro.modelos.medico_model import Medico
 from django.http import HttpResponseRedirect
 from django.views.generic import View
 from django.contrib.auth.decorators import login_required
@@ -41,10 +43,40 @@ class RegistroView(View):
                        'pagina_actual':'registro'}
         )
 
-    
+    def create_paciente(self, form_data):
+        return Paciente(
+            nombres = form_data['nombres'],
+            apellidos = form_data['apellidos'],
+            fecha_nacimiento = form_data['nacimiento'],
+            nacionalidad = form_data['nacionalidad'],
+            grupo_sanguineo = form_data['grupo_sanguineo'],
+            sexo = form_data['sexo']
+        )
+
+    def create_familiar(self, form_data):
+        return Familiar(
+            nombres = form_data['nombres'],
+            apellidos = form_data.get('apellidos'),
+            parentesco = form_data.get('parentesco'),
+            nivel_estudio = form_data.get('nivel_estudio'),
+            direccion = form_data.get('direccion'),
+            telefonos = form_data.get('telefono'),
+            empresa = form_data.get('empresa'),
+            direccion_empresa = form_data.get('direccion_empresa'),
+            jornada = form_data.get('jornada')
+        )
+
+    def create_medico(self, form_data):
+        return Medico(
+            nombres = form_data['nombres'],
+            apellidos = form_data['apellidos'],
+            area = form_data['area'],
+            direccion = form_data['direccion'],
+            telefonos = form_data['telefono']
+        )
 
     def post(self, request, *args, **kwargs):
-        datos = Ficha_PacienteForm(request.POST, prefix="paciente")
+        datos_paciente = Ficha_PacienteForm(request.POST, prefix="paciente")
         datos_familia = Ficha_DatosFamiliaresForm(request.POST, prefix="familiares")
         datos_medico = Ficha_DatosMedicoForm(request.POST, prefix="medico")
         historial_madre = Ficha_HistorialMadreForm(request.POST, prefix="historial_madre")
@@ -56,15 +88,40 @@ class RegistroView(View):
         datos_familiares = DatosFamiliaresOtrosForm(request.POST, prefix="familiares_otros")
         hermanos_formset = HermanosFormset(request.POST, instance=DatosFamiliaresOtros())
 
-        if datos.is_valid() and datos_medico.is_valid() and datos_familia.is_valid() and recien_nacido.is_valid():
-            print("datos is valid")
-            print("Paciente", datos.cleaned_data)
+        if (datos_paciente.is_valid() and
+            datos_medico.is_valid() and
+            datos_familia.is_valid() and
+            not(
+                recien_nacido.is_valid())):
+
+            print("datos_paciente is valid")
+
+            print("Paciente", datos_paciente.cleaned_data)
+            paciente = self.create_paciente(datos_paciente.cleaned_data)
+            print("Paciente", paciente)
+
             print("Medico", datos_medico.cleaned_data)
-            print("Familiares", datos_familia.cleaned_data)
-            print("Recien_nacido", recien_nacido.cleaned_data)
+            medico = self.create_medico(datos_medico.cleaned_data)
+            print("Medico", medico)
+            medico.save()
+
+
+            print("Familiar", datos_familia.cleaned_data)
+            familiar = self.create_familiar(datos_familia.cleaned_data)
+            print("Familiar", familiar)
+            familiar.save()
+            
+            paciente.medico = medico
+            #print("Recien_nacido", recien_nacido.cleaned_data)
+
+
+            #paciente.save()
+            #familiar.paciente = paciente
+            #familiar.save()
+            return HttpResponseRedirect('/')
         else:
             print("datos is invalid")
-            print("\n\nErrors paciente:", datos.errors)
+            print("\n\nErrors paciente:", datos_paciente.errors)
             print("\n\nErrors medico:", datos_medico.errors)
             print("\n\nErrors familiares:", datos_familia.errors)
             print("\n\nErrors recien_nacido:", recien_nacido.errors)
@@ -72,7 +129,7 @@ class RegistroView(View):
             print("\n\nErrors alimentacion:", alimentacion.errors)
 
             return render(request, self.template_name,
-                          {'ficha_datos_form': datos,
+                          {'ficha_datos_form': datos_paciente,
                            'ficha_datos_familia_form': datos_familia,
                            'ficha_datos_medico_form': datos_medico,
                            'descripcion_paciente': descripcion_paciente,
@@ -85,7 +142,6 @@ class RegistroView(View):
                            'primeros_dias': primeros_dias,
                            'pagina_actual': 'registro'
                           })
-        return HttpResponseRedirect('/')
 
        
 

@@ -18,8 +18,6 @@ CHOICES_SI_NO = [('si','Si'),('no','No')]
 
 
 class Ficha_PacienteForm(forms.Form):
-    SEXO=[('masculino','Masculino'),('femenino','Femenino')]
-    GRUPO_SANGUINEO = [('o+','O+'),('o-','O-'),('a+','A+'),('a-','A-'),('b+','B+'),('b-','B-'),('ab+','AB+'),('ab-','AB-')]
     apellidos = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required': 'required'}),label="Apellidos")
     nombres = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required': 'required'}))
     nacimiento = forms.DateField( input_formats = ['%m/%d/%Y'],
@@ -28,24 +26,34 @@ class Ficha_PacienteForm(forms.Form):
                                                              'class':'datepicker form-control',
                                                              'required': 'required'
                                                          }))
-    sexo = forms.ChoiceField(choices=SEXO, widget=forms.RadioSelect(attrs={'required': 'required'}))    
+    sexo = forms.ChoiceField(choices=Paciente.SEXO_CHOICES, widget=forms.RadioSelect(attrs={'required': 'required'}))    
     nacionalidad = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required': 'required'}))
     lugar_nacimiento = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required': 'required'}))
-    grupo_sanguineo = forms.ChoiceField(choices=GRUPO_SANGUINEO, widget=forms.Select(attrs={'class':'form-control', 'required': 'required'}))
+    grupo_sanguineo = forms.ChoiceField(choices=Paciente.GRUPO_SANGUINEO_CHOICES, widget=forms.Select(attrs={'class':'form-control', 'required': 'required'}))
 
 class Ficha_DatosFamiliaresForm(forms.Form):
-    ESTUDIO=[('primaria','Primaria'),('secundaria','Secundaria'),('universitaria','Universitaria'),('superior','Superior')]
     apellidos = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
     nombres = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
     parentesco = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    nivel_estudio = forms.ChoiceField(choices=ESTUDIO, widget=forms.Select(attrs={'class':'form-control'}))
+    nivel_estudio = forms.ChoiceField(choices=Familiar.NIVEL_ESTUDIO_CHOICES,
+                                      widget=forms.Select(attrs={'class':'form-control'}),
+                                      label='Nivel de estudio')
     #trabajo
-    empresa = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    direccion = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    empresa = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    empresa = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}),
+                              label='Nombre de empresa',
+                              required=False)
+    direccion_empresa= forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}),
+                                       required=False,
+                                       label='Dirección')
+    jornada = forms.ChoiceField(choices=Familiar.JORNADA_TRABAJO_CHOICES,
+                                widget=forms.Select(attrs={'class': 'form-control'}),
+                                label='Jornada de Trabajo',
+                                required=False)
     #domicilio
-    direccion_domicilio = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    telefono = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    direccion = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}),
+                                label='Dirección')
+    telefono = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}),
+                               label='Teléfono')
 
 class Ficha_DatosMedicoForm(forms.Form):
     apellidos = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
