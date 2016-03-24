@@ -177,8 +177,15 @@
 			{% for field in recien_nacido %}
 			
 		  	<div class="form-group">
-			    <label for="code">{{field.label}}</label> <br/>
-			    {{ field }}			<br/>      		
+				{% if forloop.counter == 8 %}
+					<div id="otra-complicacion" style="display: none;">
+						{{ field }}
+					</div>
+				{% else %}
+					<label for="code">{{field.label}}</label> <br/>
+					{{ field }}		      		
+				{% endif %}
+
 	      	</div>
 	      	{% endfor %}
 		</div>
@@ -189,8 +196,14 @@
 			{% for field in primeros_dias %}
 			
 		  	<div class="form-group">
-			    <label for="code">{{field.label}}</label> <br/>
-			    {{ field }}			<br/>      		
+				{% if forloop.counter == 5 or forloop.counter == 9 %}
+					<div style="display:none;">
+						{{ field }}
+					</div>
+				{% else %}
+					<label for="code">{{field.label}}</label> <br/>
+					{{ field }}		
+				{% endif %}
 	      	</div>
 	      	{% endfor %}
 		</div>
@@ -202,10 +215,17 @@
 			{% for field in alimentacion %}
 				
 		  		<div class="form-group">
-					<label for="code">{{field.label}}</label> <br/>
-					{{ field }}			<br/>      		
+					{% if forloop.counter == 4 or forloop.counter == 6 or forloop.counter == 8 or forloop.counter == 11 %}
+						<div style="display:none;">
+							{{field}}
+						</div>
+					{% else %}
+						<label for="code">{{field.label}}</label> <br/>
+						{{ field }}	
+					{% endif %}
+
 	      		</div>
-				{% if forloop.counter == 16 %}
+				{% if forloop.counter == 20 %}
 					<div id="suplementos-formset" style="display: none;">
 						<h4>Suplementos</h4>
 						{{ suplementos_formset.management_form }}

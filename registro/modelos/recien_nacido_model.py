@@ -40,7 +40,7 @@ class RecienNacido(models.Model):
         (COMPLICACIONES_SANGRE, COMPLICACIONES_SANGRE),
         (COMPLICACIONES_INTRAVENOSA, COMPLICACIONES_INTRAVENOSA),
         (COMPLICACIONES_CIRUGIA, COMPLICACIONES_CIRUGIA),
-        (COMPLICACIONES_OTRO, "Otro")
+        (COMPLICACIONES_OTRO, "Otro (Especifique)")
     )
 
     complicaciones_nacimiento = models.CharField("¿El niño(a) tuvo alguna de éstas complicaciones al nacer?", max_length=256, blank=True)

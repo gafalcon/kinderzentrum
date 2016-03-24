@@ -124,6 +124,143 @@ class NacimientoForm(ModelForm):
             'complicaciones_cordon': forms.RadioSelect(choices=CHOICES_SI_NO_DES),
         } 
     
+
+class RecienNacidoForm(ModelForm):
+    hubo_apego_precoz = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Hubo apego precoz(le pusieron a su bebé encima del pecho cuando nació)?")
+    permanecio_internado = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Tuvo el bebé que permanecer internado cuando nació?")
+    otra_complicacion = forms.CharField(required=False)
+    class Meta:
+        model = RecienNacido
+        fields = ['edad_madre', 'edad_padre', 'peso', 'tamanio', 'diametro_encefalico', 'apgar_score', 'complicaciones_nacimiento', 'otra_complicacion', 'hubo_apego_precoz', 'tiempo_apego_precoz', 'tiempo_sostener_bebe','permanecio_internado', 'tiempo_internado', 'tipo_contacto', 'primera_lactancia'] 
+        widgets = {
+            'apgar_score': forms.RadioSelect(choices=RecienNacido.APGAR_CHOICES),
+            'complicaciones_nacimiento': forms.CheckboxSelectMultiple(choices=RecienNacido.COMPLICACIONES_CHOICES),
+            'tiempo_apego_precoz': forms.RadioSelect(choices=RecienNacido.APEGO_PRECOZ_CHOICES),
+            'tiempo_sostener_bebe': forms.RadioSelect(choices=RecienNacido.SOSTENER_BEBE_CHOICES),
+            'tipo_contacto': forms.RadioSelect(choices=RecienNacido.CONTACTO_CHOICES),
+            'primera_lactancia': forms.RadioSelect(choices=RecienNacido.PRIMERA_LACTANCIA_CHOICES)
+        }
+
+    def clean(self):
+        cleaned_data = super(RecienNacidoForm, self).clean()
+        hubo_apego_precoz = cleaned_data.get('hubo_apego_precoz')
+        permanecio_internado = cleaned_data.get('permanecio_internado')
+        complicaciones = cleaned_data.get("complicaciones_nacimiento")
+        if(hubo_apego_precoz == 'True'):
+            tiempo =  cleaned_data.get('tiempo_apego_precoz')
+            if not tiempo or tiempo == RecienNacido.APEGO_PRECOZ_NADA:
+                self.add_error('tiempo_apego_precoz', "Debe llenar éste campo con valor distinto a Nada")
+        if(permanecio_internado == 'True'):
+            if not cleaned_data.get('tiempo_internado'):
+                self.add_error('tiempo_internado', "Debe llenar éste campo")
+            if not cleaned_data.get('tipo_contacto'):
+                self.add_error('tipo_contacto', "Debe llenar éste campo")
+        if(complicaciones and complicaciones.find("Otro") != -1):
+            if not cleaned_data.get('otra_complicacion'):
+                self.add_error('otra_complicacion', "Debe llenar éste campo")
+
+    def save(self, complicaciones_list=None):
+        model = super(RecienNacidoForm, self).save(commit=False)
+        if self.cleaned_data.get('hubo_apego_precoz') == 'False':
+            model.tiempo_apego_precoz = RecienNacido.APEGO_PRECOZ_NADA
+        if self.cleaned_data.get('permanecio_internado') == 'False':
+            model.tiempo_internado = datetime.timedelta()
+            model.tipo_contacto = RecienNacido.CONTACTO_NINGUNA
+        complicaciones = self.cleaned_data.get("complicaciones_nacimiento")
+        if complicaciones and  complicaciones.find("Otro") != -1 and complicaciones_list:
+            complicaciones_list.append(self.cleaned_data.get("otra_complicacion"))
+        if complicaciones:
+            model.complicaciones_nacimiento = ','.join(complicaciones_list)
+        model.save()
+        return model
+
+class PrimerosDiasForm(ModelForm):
+    clinica = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿El niño(a) tuvo que permanecer después de su nacimiento en una clínica u hospital?")
+    dormia_toda_noche = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿El recién nacido dormía toda la noche?")
+    otra_situacion = forms.CharField(required=False)
+    otro_examen = forms.CharField(required=False)
+    examenes = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                         choices=PrimerosDias.EXAMENES_CHOICES,
+                                         label="¿Le realizaron al recién nacido algún tipo de exámen?",
+                                         required=False)
+    situaciones_despues_nacimiento = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
+                                         choices=PrimerosDias.SITUACIONES_CHOICES,
+                                         label="¿Presentó su bebé alguna de éstas situaciones después del nacimiento?",
+                                         required=False)
+
+    class Meta:
+        model = PrimerosDias
+        fields = ['clinica',
+                  'clinica_permanencia',
+                  'dias_permanencia',
+                  'situaciones_despues_nacimiento',
+                  'otra_situacion',
+                  'icteria',
+                  'tratamiento_icteria',
+                  'examenes',
+                  'otro_examen',
+                  'dormia_toda_noche',
+                  'veces_despertar_noche',
+                  'lugar_dormir',
+                  'descripcion_bebe',
+                  'descripcion_madre'
+        ]
+        widgets = {
+            'icteria': forms.RadioSelect(choices=CHOICES_SI_NO_DES),
+            'situaciones_despues_nacimiento': forms.CheckboxSelectMultiple(choices=PrimerosDias.SITUACIONES_CHOICES),
+            'lugar_dormir': forms.RadioSelect(choices=PrimerosDias.LUGAR_DORMIR_CHOICES)
+        }
+    def save(self):
+        model = super(PrimerosDiasForm, self).save(commit=False)
+        situaciones = self.cleaned_data.get('situaciones_despues_nacimiento')
+        examenes = self.cleaned_data.get('examenes')
+        if self.cleaned_data.get("clinica") == 'False':
+            model.dias_permanencia = None
+            model.clinica_permanencia = ''
+        if not self.cleaned_data.get("icteria"):
+            model.tratamiento_icteria = ''
+        if self.cleaned_data.get('dormia_toda_noche') == 'True':
+            model.veces_despertar_noche = 0
+        if situaciones and "Otro" in situaciones:
+            situaciones.append(self.cleaned_data.get('otra_situacion'))
+        if examenes and "Otro" in examenes:
+            examenes.append(self.cleaned_data.get('otro_examen'))
+        if not examenes is None:
+            model.examenes = ','.join(examenes)
+        if not situaciones is None:
+            model.situaciones_despues_nacimiento = ','.join(situaciones)
+        model.save()
+        return model
+
+    def clean(self):
+        cleaned_data = super(PrimerosDiasForm, self).clean()
+        clinica = cleaned_data.get('clinica')
+        dormia_toda_noche = cleaned_data.get('dormia_toda_noche')
+        icteria = cleaned_data.get('icteria')
+        situaciones = cleaned_data.get('situaciones_despues_nacimiento')
+        examenes = cleaned_data.get('examenes')
+        print("Examenes", examenes)
+        print("situaciones", situaciones)
+        if(icteria):
+            if not cleaned_data.get('tratamiento_icteria'):
+                self.add_error('tratamiento_icteria', "Debe llenar éste campo")
+        if(clinica == 'True'):
+            if not cleaned_data.get('clinica_permanencia'):
+                self.add_error('clinica_permanencia', "Debe llenar éste campo")
+            if not cleaned_data.get('dias_permanencia'):
+                self.add_error('dias_permanencia', "Debe llenar éste campo")
+        if(dormia_toda_noche == 'False'):
+            veces = cleaned_data.get('veces_despertar_noche')
+            if not veces or veces <= 0:
+                self.add_error('veces_despertar_noche', "Debe llenar éste campo")
+        if(situaciones and "Otro" in situaciones):
+            if not cleaned_data.get('otra_situacion'):
+                self.add_error('otra_situacion', "Debe llenar éste campo")
+        if(examenes and "Otro" in examenes):
+            if not cleaned_data.get('otro_examen'):
+                self.add_error('otro_examen', "Debe llenar éste campo")
+
+
 class AlimentacionForm(ModelForm):
     lactancia = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Recibió lactancia materna?")
     motivo_suspencion_lactancia = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,
@@ -142,42 +279,81 @@ class AlimentacionForm(ModelForm):
     apetito = forms.ChoiceField(widget=forms.RadioSelect, choices=AlimentacionCostumbres.APETITO_CHOICES, label="¿Cómo es el apetito del niño?")
     difiere_alimentacion = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Difiere la alimentación del fin de semana de los demás días?")
     suplementos = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Consumía suplementos alimenticios?")
+    otro_motivo_suspencion_lactancia = forms.CharField(required=False)
+    otra_afeccion = forms.CharField(required=False)
+    otra_enfermedad = forms.CharField(required=False)
+    otra_forma_alimento = forms.CharField(required=False)
 
     class Meta:
         model = AlimentacionCostumbres
         fields = '__all__'
-        fields = ['lactancia',
-                  'tiempo_leche_materna',
-                  'motivo_suspencion_lactancia',
-                  'afecciones',
-                  'enfermedades',
-                  'edad_alimentacion_complementaria',
-                  'forma_alimento',
-                  'lugar_desayuno',
-                  'lugar_comida_media_manana',
-                  'lugar_almuerzo',
-                  'lugar_comida_media_tarde',
-                  'lugar_cena',
-                  'lugar_comida_otro',
-                  'alimento_preferido',
-                  'alimento_rechazado',
-                  'suplementos',
-                  'apetito',
-                  'difiere_alimentacion',
-                  'motivo_cambios_alimentacion'
+        fields = ['lactancia','tiempo_leche_materna','motivo_suspencion_lactancia',
+                  'otro_motivo_suspencion_lactancia','afecciones','otra_afeccion','enfermedades',
+                  'otra_enfermedad','edad_alimentacion_complementaria','forma_alimento',
+                  'otra_forma_alimento','lugar_desayuno','lugar_comida_media_manana',
+                  'lugar_almuerzo','lugar_comida_media_tarde','lugar_cena','lugar_comida_otro',
+                  'alimento_preferido','alimento_rechazado','suplementos','apetito',
+                  'difiere_alimentacion','motivo_cambios_alimentacion'
         ]
     def clean(self):
         cleaned_data = super(AlimentacionForm, self).clean()
         lactancia = cleaned_data.get('lactancia')
         difiere_alimentacion = cleaned_data.get('difiere_alimentacion')
+        motivo_suspencion_lactancia = cleaned_data.get('motivo_suspencion_lactancia')
+        afecciones = cleaned_data.get('afecciones')
+        enfermedades = cleaned_data.get('enfermedades')
+        forma_alimento = cleaned_data.get('forma_alimento')
         if(lactancia == 'True'):
             if not cleaned_data.get('tiempo_leche_materna'):
                 self.add_error('tiempo_leche_materna', "Debe llenar éste campo")
             if not cleaned_data.get('motivo_suspencion_lactancia'):
                 self.add_error('motivo_suspencion_lactancia', "Debe llenar éste campo")
         if(difiere_alimentacion == 'True'):
-            if not cleaned_data.get('motivos_cambio_alimentacion'):
+            if not cleaned_data.get('motivo_cambios_alimentacion'):
                 self.add_error('motivo_cambios_alimentacion', "Debe llenar éste campo")
+        if motivo_suspencion_lactancia and "Otro" in motivo_suspencion_lactancia:
+            if not cleaned_data.get('otro_motivo_suspencion_lactancia'):
+                self.add_error('otro_motivo_suspencion_lactancia', "Debe llenar éste campo")
+        if afecciones and "Otros" in afecciones:
+            if not cleaned_data.get('otra_afeccion'):
+                self.add_error('otra_afeccion', "Debe llenar éste campo")
+        if enfermedades and "Otro" in enfermedades:
+            if not cleaned_data.get('otra_enfermedad'):
+                self.add_error('otra_enfermedad', "Debe llenar éste campo")
+        if forma_alimento and "Otro" in forma_alimento:
+            if not cleaned_data.get('otra_forma_alimento'):
+                self.add_error("otra_forma_alimento", "Debe llenar éste campo")
+
+    def save(self):
+        model = super(AlimentacionForm, self).save(commit=False)
+        motivo_suspencion_lactancia = self.cleaned_data.get('motivo_suspencion_lactancia')
+        afecciones = self.cleaned_data.get('afecciones')
+        enfermedades = self.cleaned_data.get('enfermedades')
+        forma_alimento = self.cleaned_data.get('forma_alimento')
+        if self.cleaned_data.get('lactancia') == 'False':
+            model.tiempo_leche_materna = None
+            model.motivo_suspencion_lactancia = None
+            model.otro_motivo_suspencion_lactancia = ''
+        elif motivo_suspencion_lactancia:
+            model.motivo_suspencion_lactancia = ','.join(motivo_suspencion_lactancia)
+        if self.cleaned_data.get('difiere_alimentacion') == 'False':
+            model.motivo_cambios_alimentacion = ''
+        if motivo_suspencion_lactancia and "Otro" in motivo_suspencion_lactancia:
+            motivo_suspencion_lactancia.append(self.cleaned_data.get('otro_motivo_suspencion_lactancia'))
+        if afecciones and "Otros" in afecciones:
+            afecciones.append(self.cleaned_data.get('otra_afeccion'))
+        if enfermedades and "Otro" in enfermedades:
+            enfermedades.append(self.cleaned_data.get('otra_enfermedad'))
+        if forma_alimento and "Otro" in forma_alimento:
+            forma_alimento.append(self.cleaned_data.get('otra_forma_alimento'))
+        if not afecciones is None:
+            model.afecciones = ','.join(afecciones)
+        if not enfermedades is None:
+            model.enfermedades = ','.join(enfermedades)
+        if forma_alimento:
+            model.forma_alimento = ','.join(forma_alimento)
+        model.save()
+        return model
 
 
 class DatosFamiliaresOtrosForm(ModelForm):
@@ -223,96 +399,7 @@ HermanosFormset = inlineformset_factory(DatosFamiliaresOtros, Hermano,
 ) 
 
 
-class PrimerosDiasForm(ModelForm):
-    clinica = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿El niño(a) tuvo que permanecer después de su nacimiento en una clínica u hospital?")
-    dormia_toda_noche = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿El recién nacido dormía toda la noche?")
-    class Meta:
-        model = PrimerosDias
-        fields = ['clinica',
-                  'clinica_permanencia',
-                  'dias_permanencia',
-                  'situaciones_despues_nacimiento',
-                  'icteria',
-                  'tratamiento_icteria',
-                  'examenes',
-                  'dormia_toda_noche',
-                  'veces_despertar_noche',
-                  'lugar_dormir',
-                  'descripcion_bebe',
-                  'descripcion_madre'
-        ]
-        widgets = {
-            'icteria': forms.RadioSelect(choices=CHOICES_SI_NO_DES),
-            'examenes': forms.CheckboxSelectMultiple(choices=PrimerosDias.EXAMENES_CHOICES),
-            'situaciones_despues_nacimiento': forms.CheckboxSelectMultiple(choices=PrimerosDias.SITUACIONES_CHOICES),
-            'lugar_dormir': forms.RadioSelect(choices=PrimerosDias.LUGAR_DORMIR_CHOICES)
-        }
-    def save(self):
-        model = super(PrimerosDiasForm, self).save(commit=False)
-        if self.cleaned_data.get("clinica") == 'False':
-            model.dias_permanencia = None
-            model.clinica_permanencia = ''
-        if not self.cleaned_data.get("icteria"):
-            model.tratamiento_icteria = ''
-        if self.cleaned_data.get('dormia_toda_noche') == 'True':
-            model.veces_despertar_noche = 0
-        model.save()
-        return model
-
-    def clean(self):
-        cleaned_data = super(PrimerosDiasForm, self).clean()
-        clinica = cleaned_data.get('clinica')
-        dormia_toda_noche = cleaned_data.get('dormia_toda_noche')
-        icteria = cleaned_data.get('icteria')
-        if(icteria):
-            if not cleaned_data.get('tratamiento_icteria'):
-                self.add_error('tratamiento_icteria', "Debe llenar éste campo")
-        if(clinica == 'True'):
-            if not cleaned_data.get('clinica_permanencia'):
-                self.add_error('clinica_permanencia', "Debe llenar éste campo")
-            if not cleaned_data.get('dias_permanencia'):
-                self.add_error('dias_permanencia', "Debe llenar éste campo")
-        if(dormia_toda_noche == 'False'):
-            veces = cleaned_data.get('veces_despertar_noche')
-            if not veces or veces <= 0:
-                self.add_error('veces_despertar_noche', "Debe llenar éste campo")
 
 
-class RecienNacidoForm(ModelForm):
-    hubo_apego_precoz = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Hubo apego precoz(le pusieron a su bebé encima del pecho cuando nació)?")
-    permanecio_internado = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Tuvo el bebé que permanecer internado cuando nació?")
-    class Meta:
-        model = RecienNacido
-        fields = ['edad_madre', 'edad_padre', 'peso', 'tamanio', 'diametro_encefalico', 'apgar_score', 'complicaciones_nacimiento', 'hubo_apego_precoz', 'tiempo_apego_precoz', 'tiempo_sostener_bebe','permanecio_internado', 'tiempo_internado', 'tipo_contacto', 'primera_lactancia'] 
-        widgets = {
-            'apgar_score': forms.RadioSelect(choices=RecienNacido.APGAR_CHOICES),
-            'complicaciones_nacimiento': forms.CheckboxSelectMultiple(choices=RecienNacido.COMPLICACIONES_CHOICES),
-            'tiempo_apego_precoz': forms.RadioSelect(choices=RecienNacido.APEGO_PRECOZ_CHOICES),
-            'tiempo_sostener_bebe': forms.RadioSelect(choices=RecienNacido.SOSTENER_BEBE_CHOICES),
-            'tipo_contacto': forms.RadioSelect(choices=RecienNacido.CONTACTO_CHOICES),
-            'primera_lactancia': forms.RadioSelect(choices=RecienNacido.PRIMERA_LACTANCIA_CHOICES)
-        }
 
-    def clean(self):
-        cleaned_data = super(RecienNacidoForm, self).clean()
-        hubo_apego_precoz = cleaned_data.get('hubo_apego_precoz')
-        permanecio_internado = cleaned_data.get('permanecio_internado')
-        if(hubo_apego_precoz == 'True'):
-            tiempo =  cleaned_data.get('tiempo_apego_precoz')
-            if not tiempo or tiempo == RecienNacido.APEGO_PRECOZ_NADA:
-                self.add_error('tiempo_apego_precoz', "Debe llenar éste campo con valor distinto a Nada")
-        if(permanecio_internado == 'True'):
-            if not cleaned_data.get('tiempo_internado'):
-                self.add_error('tiempo_internado', "Debe llenar éste campo")
-            if not cleaned_data.get('tipo_contacto'):
-                self.add_error('tipo_contacto', "Debe llenar éste campo")
 
-    def save(self):
-        model = super(RecienNacidoForm, self).save(commit=False)
-        if self.cleaned_data.get('hubo_apego_precoz') == 'False':
-            model.tiempo_apego_precoz = RecienNacido.APEGO_PRECOZ_NADA
-        if self.cleaned_data.get('permanecio_internado') == 'False':
-            model.tiempo_internado = datetime.timedelta()
-            model.tipo_contacto = RecienNacido.CONTACTO_NINGUNA
-        model.save()
-        return model

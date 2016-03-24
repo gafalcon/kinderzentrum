@@ -99,11 +99,9 @@ class RegistroView(View):
             #datos_familia.is_valid() and
             # datos_nacimiento.is_valid() and
             #datos_recien_nacido.is_valid()): 
-            #datos_alimentacion.is_valid() and
+            datos_alimentacion.is_valid() and
             #datos_familiares.is_valid()):
             datos_primeros_dias.is_valid()):
-
-            print("datos_paciente is valid")
 
             print("Paciente", datos_paciente.cleaned_data)
             paciente = self.create_paciente(datos_paciente.cleaned_data)
@@ -120,18 +118,14 @@ class RegistroView(View):
             # nacimiento = datos_nacimiento.save()
             # paciente.nacimiento = nacimiento
             
-            # recien_nacido = datos_recien_nacido.save()
+            # recien_nacido = datos_recien_nacido.save(complicaciones_list=request.POST.getlist("recien_nacido-complicaciones_nacimiento"))
             # paciente.recien_nacido = recien_nacido
-
 
             print("Primeros dias", datos_primeros_dias.cleaned_data)
             primeros_dias = datos_primeros_dias.save()
-            print("descripcion madre", primeros_dias.descripcion_madre)
-            print("descripcion bebe", primeros_dias.descripcion_bebe)
-            print("clinica_permanencia", primeros_dias.clinica_permanencia)
-            print("tiempo permanencia", primeros_dias.dias_permanencia)
 
-            #print("Alimentacion", datos_alimentacion.cleaned_data)
+            print("Alimentacion", datos_alimentacion.cleaned_data)
+            alimentacion = datos_alimentacion.save()
 
             #print("FamiliaresOtros", datos_familiares.cleaned_data)
             #paciente.save()

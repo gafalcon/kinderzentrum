@@ -20,7 +20,7 @@ class AlimentacionCostumbres(models.Model):
         (TIEMPO_LACTANCIA_MESES_19_24, "19 - 24 Meses")
     )
 
-    tiempo_leche_materna = models.PositiveSmallIntegerField(choices=TIEMPO_LACTANCIA_CHOICES, blank=True)
+    tiempo_leche_materna = models.PositiveSmallIntegerField(blank=True, null=True)
 
     MOTIVO_SUSPENSION_RECHAZO = "Rechazo del niño"
     MOTIVO_SUSPENSION_TRABAJO = "Vinculación laboral"
@@ -36,7 +36,7 @@ class AlimentacionCostumbres(models.Model):
         (MOTIVO_SUSPENSION_ENFERMEDAD_MADRE, "Enfermedad de la madre"),
         (MOTIVO_SUSPENSION_OTRO, "Otro(Especifique)")
     )
-    motivo_suspencion_lactancia = models.CharField(max_length=100, blank=True)
+    motivo_suspencion_lactancia = models.CharField(max_length=100, blank=True, null=True)
 
     AFECCIONES_ESTRENIMIENTO = "Estreñimiento"
     AFECCIONES_DEPOSICIONES = "Deposiciones Líquidas"

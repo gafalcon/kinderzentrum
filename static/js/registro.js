@@ -178,6 +178,21 @@ $(function() {
 		value_changed(e.target.value == "True", $("#id_recien_nacido-tiempo_internado").parent());
 		value_changed(e.target.value == "True", $("#id_recien_nacido-tipo_contacto").parent());
 	});
+	value_changed($("#id_recien_nacido-complicaciones_nacimiento_5").is(":checked"), $("#otra-complicacion"));
+	$('input[name=recien_nacido-complicaciones_nacimiento]').change(function(e){
+		value_changed($("#id_recien_nacido-complicaciones_nacimiento_5").is(":checked"), $("#otra-complicacion"));
+	});
+
+	value_changed($("#id_primeros_dias-situaciones_despues_nacimiento_4").is(":checked"), $("#id_primeros_dias-otra_situacion").parent());
+	$('input[name=primeros_dias-situaciones_despues_nacimiento]').change(function(e){
+		value_changed($("#id_primeros_dias-situaciones_despues_nacimiento_4").is(":checked"), $("#id_primeros_dias-otra_situacion").parent());
+	});
+
+	value_changed($("#id_primeros_dias-examenes_2").is(":checked"), $("#id_primeros_dias-otro_examen").parent());
+	$('input[name=primeros_dias-examenes]').change(function(e){
+		value_changed($("#id_primeros_dias-examenes_2").is(":checked"), $("#id_primeros_dias-otro_examen").parent());
+	});
+
 	value_changed($('input:radio[name=primeros_dias-clinica]:checked').val() == "True", $("#id_primeros_dias-clinica_permanencia").parent());
 	value_changed($('input:radio[name=primeros_dias-clinica]:checked').val() == "True", $("#id_primeros_dias-dias_permanencia").parent());
 	$('input:radio[name=primeros_dias-clinica]').change(function(e){
@@ -194,14 +209,38 @@ $(function() {
 	});
 	value_changed($('input:radio[name=alimentacion-lactancia]:checked').val() == "True", $("#id_alimentacion-tiempo_leche_materna").parent());
 	value_changed($('input:radio[name=alimentacion-lactancia]:checked').val() == "True", $("#id_alimentacion-motivo_suspencion_lactancia").parent());
+	value_changed($('input:radio[name=alimentacion-lactancia]:checked').val() == "True", $("#id_alimentacion-otro_motivo_suspencion_lactancia"));
 	$('input:radio[name=alimentacion-lactancia]').change(function(e){
 		value_changed(e.target.value == "True", $("#id_alimentacion-tiempo_leche_materna").parent());
 		value_changed(e.target.value == "True", $("#id_alimentacion-motivo_suspencion_lactancia").parent());
+		value_changed(e.target.value == "True", $("#id_alimentacion-otro_motivo_suspencion_lactancia"));
 	});
 	value_changed($('input:radio[name=alimentacion-difiere_alimentacion]:checked').val() == "True", $("#id_alimentacion-motivo_cambios_alimentacion").parent());
 	$('input:radio[name=alimentacion-difiere_alimentacion]').change(function(e){
 		value_changed(e.target.value == "True", $("#id_alimentacion-motivo_cambios_alimentacion").parent());
 	});
+
+	value_changed($("#id_alimentacion-motivo_suspencion_lactancia_5").is(":checked"), $("#id_alimentacion-otro_motivo_suspencion_lactancia").parent());
+	$('input[name=alimentacion-motivo_suspencion_lactancia]').change(function(e){
+		value_changed($("#id_alimentacion-motivo_suspencion_lactancia_5").is(":checked"), $("#id_alimentacion-otro_motivo_suspencion_lactancia").parent());
+	});
+	value_changed($("#id_alimentacion-afecciones_2").is(":checked"), $("#id_alimentacion-otra_afeccion").parent());
+	$('input[name=alimentacion-afecciones]').change(function(e){
+		value_changed($("#id_alimentacion-afecciones_2").is(":checked"), $("#id_alimentacion-otra_afeccion").parent());
+	});
+	value_changed($("#id_alimentacion-enfermedades_3").is(":checked"), $("#id_alimentacion-otra_enfermedad").parent());
+	$('input[name=alimentacion-enfermedades]').change(function(e){
+		value_changed($("#id_alimentacion-enfermedades_3").is(":checked"), $("#id_alimentacion-otra_enfermedad").parent());
+	});
+	value_changed($("#id_alimentacion-forma_alimento_7").is(":checked"), $("#id_alimentacion-otra_forma_alimento").parent());
+	$('input[name=alimentacion-forma_alimento]').change(function(e){
+		value_changed($("#id_alimentacion-forma_alimento_7").is(":checked"), $("#id_alimentacion-otra_forma_alimento").parent());
+	});
+
+
+
+
+	
 	value_changed($('input:radio[name=familiares_otros-transtorno_hermanos]:checked').val() == "True", $("#id_familiares_otros-hermano_transtorno").parent());
 	value_changed($('input:radio[name=familiares_otros-transtorno_hermanos]:checked').val() == "True", $("#id_familiares_otros-transtorno").parent());
 	value_changed($('input:radio[name=familiares_otros-transtorno_hermanos]:checked').val() == "True", $("#id_familiares_otros-alteracion_desarrollo").parent());
