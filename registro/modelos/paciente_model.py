@@ -19,8 +19,13 @@ class Paciente(models.Model):
 
     GRUPO_SANGUINEO_CHOICES = (
         ("A+", "A+"),
+        ("A-", "A-"),
         ("O+", "O+"),
-        ("O-", "O-") #Faltan mas opciones
+        ("O-", "O-"),
+        ("B+", "B+"),
+        ("B-", "B-"),
+        ("AB+", "AB+"), 
+        ("AB-", "AB-")       
     )
     SEXO_CHOICES = (
         ("M", "Masculino"),

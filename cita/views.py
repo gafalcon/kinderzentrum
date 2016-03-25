@@ -8,22 +8,57 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 #from django.utils.decorators import method_decorator
 
-# Create your views here.
-# def reservar_cita_view(request):
-#     return render(request, 'cita/reservar_cita.html',{})
-#
 
 class ReservarCitaView(View):
     template_name = 'cita/reservar_cita.html'
 
     def get(self, request, *args, **kwargs):
-        datos = Ficha_DatosForm(prefix="paciente")
-        TipoTerapia = Ficha_TerapiaForm(prefix="tipoterapia")
-        Terapista = Ficha_TerapistaForm(prefix="terapista")
-        
+        paciente = Ficha_DatosForm(prefix="paciente")
+        tipoTerapia = Ficha_TerapiaForm(prefix="tipoterapia")
+        terapista = Ficha_TerapistaForm(prefix="terapista")
+
         return render(request, self.template_name,
-                      {'ficha_datos_form':datos,
-                       'ficha_terapia_form':TipoTerapia,
-                       'ficha_terapista_form':Terapista,
-                       'pagina_actual':'cita'}
+              {'ficha_datos_form':paciente,
+               'ficha_terapia_form':tipoTerapia,
+               'ficha_terapista_form':terapista,
+               'pagina_actual':'cita'}
         )
+
+
+    def post(self, request, *args, **kwargs):
+        paciente = Ficha_DatosForm(prefix="paciente")
+        tipoTerapia = Ficha_TerapiaForm(prefix="tipoterapia")
+        terapista = Ficha_TerapistaForm(prefix="terapista")
+
+        if paciente.is_valid() and tipoTerapia.is_valid() and terapista.is_valid():
+            paciente_data = paciente.cleaned_data
+            tipoTerapia_data = tipoTerapia.cleaned_data
+            terapista_data = terapista.cleaned_data
+
+            print("datos is valid")
+            print("datos", paciente_data)
+            print("TipoTerapia", tipoTerapia_data)
+            print("Terapista", terapista_data)
+
+            # PacienteId = ...
+            # cita = Cita()
+            # cita.paciente_id = nombrePacienteinteger
+            # cita.save()
+            #...
+
+            return render(request, self.template_name,
+                      {'ficha_datos_form':paciente,
+                       'ficha_terapia_form':tipoTerapia,
+                       'ficha_terapista_form':terapista,
+                       'pagina_actual':'cita'}
+            )
+            
+
+        else:
+            print("datos is invalid")
+            print("\n\nErrors paciente:", paciente.errors)
+            print("\n\nErrors TipoTerapia:", tipoTerapia.errors)
+            print("\n\nErrors Terapista:", terapista.errors)
+            
+        return HttpResponseRedirect('/cita')
+        

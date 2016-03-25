@@ -37,7 +37,12 @@ class Terapia(models.Model):
     """ terapias recibidas por el paciente """
     TERAPIA_CHOICES = ((1, "REHABILITACIÓN FÍSICA"),
                        (2, "ESTIMULACIÓN TEMPRANA"),
-                       (3, "NINGUNA"))
+                       (3, "INTEGRACIÓN SENSORIAL"),
+                       (4, "HIPOTERAPIA"),
+                       (5, "LENGUAJE"),
+                       (6, "PSICOPEDAGÓGICA"),
+                       (7, "TERAPIA FAMILIAR"),
+                       (8, "NINGUNA"))
     tipo = models.SmallIntegerField("Tipo de terapia", choices=TERAPIA_CHOICES)
     tiempo_terapia = models.DurationField("¿Cuánto tiempo lleva realizando la terapia")
     descripcion = models.ForeignKey(Descripcion)
