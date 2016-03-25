@@ -18,6 +18,7 @@ def registro_view(request):
     #madre = MadreForm()
     #padre = PadreForm()
     descripcion_paciente = Ficha_DescripcionPacienteForm()
+    alimentacion = AlimentacionForm()
     ctx = {'ficha_datos_medico_form':datos_medico,
            'ficha_datos_familia_form':datos_familia,
            'ficha_datos_form':datos,
@@ -27,5 +28,6 @@ def registro_view(request):
            #'padre': padre,
            #'madre': madre,
            'mensaje':mensaje,
+           'alimentacion': alimentacion,
            'pagina_actual':'registro'}
     return render_to_response('registro/registro_ficha_medica.html',ctx,context_instance=RequestContext(request))

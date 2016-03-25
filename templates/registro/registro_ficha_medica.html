@@ -56,7 +56,12 @@
     			$('#id_descripcion_tiempo_estimu_temprana').parent().show();
     		else
     			$('#id_descripcion_tiempo_estimu_temprana').parent().hide();
-    	}
+    	}else if(e.target.value == "ninguna"){
+            if (e.target.checked){
+                $('#id_descripcion_tiempo_estimu_temprana').parent().hide();
+                $('#id_descripcion_tiempo_rehab_fisica').parent().hide();
+            }
+        }
     });
 
     $('input[name=descripcion_pregunta_6]').on('click',function(e) { 
@@ -93,14 +98,18 @@
 
 {% block content %}
 <div class="dotstyle dotstyle-tooltip" style="margin: 4% 0px 1% 40%;">			
-	<ul>
+	<ul id="dots_nav">
 		<li id="nav1" onclick="setPanelVisible(1)" class="current" ><a href="#">Paciente</a></li>
 		<li id="nav2" onclick="setPanelVisible(2)"><a href="#" >Familiares</a></li>
 		<li id="nav3" onclick="setPanelVisible(3)"><a href="#">Médico</a></li>
-		<li id="nav4" onclick="setPanelVisible(4)"><a href="#">Historial de la madre</a></li>
-		<li id="nav5" onclick="setPanelVisible(5)"><a href="#">Datos del paciente</a></li>		
-		<li id="nav6" onclick="setPanelVisible(6)"><a href="#">Datos de la madre</a></li>		
-		<li id="nav7" onclick="setPanelVisible(7)"><a href="#">Datos del padre</a></li>		
+		<li id="nav4" onclick="setPanelVisible(4)"><a href="#">Descripción del paciente</a></li>
+		<li id="nav5" onclick="setPanelVisible(5)"><a href="#">Historial de la madre</a></li>		
+		<li id="nav6" onclick="setPanelVisible(6)"><a href="#">Desarrollo de la gestación</a></li>		
+		<li id="nav7" onclick="setPanelVisible(7)"><a href="#">Nacimiento del niño(a)</a></li>		
+		<li id="nav8" onclick="setPanelVisible(8)"><a href="#">Datos del recién nacido</a></li>	
+        <li id="nav9" onclick="setPanelVisible(9)"><a href="#">Primero días de vida del niño(a)</a></li>
+        <li id="nav10" onclick="setPanelVisible(10)"><a href="#">Alimentación y costumbres</a></li>
+        <li id="nav11" onclick="setPanelVisible(11)"><a href="#">Historia clínica familiar y otra información</a></li>	
 	</ul>
 </div>
 
@@ -167,8 +176,17 @@
 			{% for field in descripcion_paciente %}
 	  			<div class="row">		  			
 		  			<div class="form-group span6">
-			    		<label for="code" style="width: 20%;">{{field.label}}</label>
-			      		{{ field }}			      		
+			    		<label for="code" class="col-xs-2" style="margin-left:2%">{{field.label}}</label>			      		
+			      		{% if field.label == "Que tipo de terapia realiza?" or field.label == "Ha presentado su hijo(a) algun tipo de dificultades en estas aereas? marque todas las opciones que desee." %}		    			
+			    			{% for choice in field.field.choices%}			    				
+			    				{%if choice.0 == 'seguridad_si_mismo' or choice.0 == 'suenio' %}<label class="checkbox-inline" style="margin-left: 3%;">{% else %}<label class="checkbox-inline">{% endif %}
+								  	<input type="checkbox" id="{{choice.0}}" value="{{choice.0}}" style="margin: 3px 0px 0px -90px; cursor: pointer;" name="{{ field.html_name }}"> {{choice.1}}
+								</label>								
+			    			{% endfor%}
+			      		
+			      		{% else %}
+			      		{{ field }}	
+			      		{% endif %}
 	      			</div>
 	      		</div>
 	      	{% endfor %}
@@ -181,32 +199,32 @@
 			{% for field in historial_madre_form %}
 	  			<div class="row">		  			
 		  			<div class="form-group span6">
-			    		<label for="code" style="width: 20%;">{{field.label}}</label>
-			      		{{ field }}			      		
+			    		<label for="code" class="col-xs-2" style="width: 20%;">{{field.label}}</label>			      		
+			      		{% if field.label == "Indique si durante el embarazo sufrio algunas de las siguientes enfermedades?" %}	
+			    			{% for choice in field.field.choices%}			    				
+			    				{%if choice.0 == 'ninguna_enf' or choice.0 == 'proble_azucar' %}<label class="checkbox-inline" style="margin-left: 3%;">{% else %}<label class="checkbox-inline">{% endif %}
+								  	<input type="checkbox" id="{{choice.0}}" value="{{choice.0}}" style="margin: 3px 0px 0px -90px; cursor: pointer;"> {{choice.1}}
+								</label>								
+			    			{% endfor%}
+			      		{% elif field.label == "Tuvo usted alguna defuncion fetal antes de concebir al bebe/ninio(a) que trae a consulta?" or field.label == "Ha tenido hijos muertos?" or field.label == "Utilizo algun metodo anticonceptivo antes de estar embarazada?" %}
+			      			{% for choice in field.field.choices%}
+			    				<label class="radio-inline" style="margin: 5px 0px 10px;">
+								  	<input type="radio" name="inlineRadioOptions" id="{{choice.0}}" value="{{choice.0}}" style="cursor: pointer;"> {{choice.1}}
+								</label>
+			    			{% endfor%}
+			      		{% else %}
+			      		{{ field }}	
+			      		{% endif %}	      		
 	      			</div>
 	      		</div>
 	      	{% endfor %}	
 		</div>	
 	</div>
 
-	<div id="panel5" class="hide panel panel-default">
-		<div class="panel-heading">Datos del Paciente</div>
-		<div class="panel-body">			
-			{% for field in paciente %}
-	  			<div class="row">		  			
-		  			<div class="form-group span6">
-			    		<label for="code" style="width: 20%;">{{field.label}}</label>
-			      		{{ field }}			      		
-	      			</div>
-	      		</div>
-	      	{% endfor %}
-		</div>
-	</div>
-
 	<div id="panel6" class="hide panel panel-default">
- 		<div class="panel-heading">Datos de la Madre</div>
+ 		<div class="panel-heading">Desarrollo de la gestación</div>
 		<div class="panel-body">			
-			{% for field in madre %}
+			{% for field in gestacion %}
 	  			<div class="row">		  			
 		  			<div class="form-group span6">
 			    		<label for="code" style="width: 20%;">{{field.label}}</label>
@@ -218,20 +236,44 @@
 	</div>
 
 	<div id="panel7" class="hide panel panel-default">
-		<div class="panel-heading">Datos del Padre</div>
-		<div class="panel-body">			
-			{% for field in padre %}
-	  			<div class="row">		  			
-		  			<div class="form-group span6">
-			    		<label for="code" style="width: 20%;">{{field.label}}</label>
-			      		{{ field }}			      		
-	      			</div>
-	      		</div>
-	      	{% endfor %}
+		<div class="panel-heading">Nacimiento del niño(a)</div>
+		<div class="panel-body">	
+        COO		
 		</div>
 	</div>
 
-	
+	<div id="panel8" class="hide panel panel-default">
+		<div class="panel-heading">Datos del recién nacido</div>
+		<div class="panel-body">			
+		</div>
+	</div>
+
+    <div id="panel9" class="hide panel panel-default">
+        <div class="panel-heading">Primero días de vida del niño(a)</div>
+        <div class="panel-body">
+            DW
+        </div>
+    </div>
+
+    <div id="panel10" class="hide panel panel-default">
+        <div class="panel-heading">Alimentación y Costumbres</div>
+        <div class="panel-body">            
+            {% for field in alimentacion %}
+            <div class="form-group">
+                <label for="code">{{field.label}}</label> <br/>
+                {{ field }}         <br/>           
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="panel11" class="hide panel panel-default">
+        <div class="panel-heading">Datos de la historia clínica familiar y otra información</div>
+        <div class="panel-body">
+            JC
+        </div>
+    </div>
+
 	
 	<!--ul class="pager">
 		<li id="btn_previous" class="hide previous"><a href="#" onclick="javascript:previousPanel();">Anterior</a></li>
