@@ -629,3 +629,7 @@ ul{
   transform: translateY(200%);
 }
 
+input[name=paciente-sexo] {
+	margin-left: 0px !important;
+	cursor: pointer;
+}

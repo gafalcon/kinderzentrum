@@ -8,28 +8,33 @@ class Familiar(models.Model):
     
     ESTUDIO_PRIMARIA = 0
     ESTUDIO_SECUNDARIA = 1
-    ESTUDIO_SUPERIOR = 2
+    ESTUDIO_UNIVERSIDAD = 2
+    ESTUDIO_SUPERIOR = 3
+
     NIVEL_ESTUDIO_CHOICES = (
         (ESTUDIO_PRIMARIA, "Primaria"),
         (ESTUDIO_SECUNDARIA, "Secundaria"),
-        (ESTUDIO_SUPERIOR, "Superior")
+        (ESTUDIO_UNIVERSIDAD, "Universidad"),
+        (ESTUDIO_SUPERIOR, "Superior"),
     )
 
-    TRABAJO_TIEMPO_COMPLETO = 0
-    TRABAJO_MEDIO_TIEMPO = 1 
-    TRABAJO_POR_HORAS = 2
+    TRABAJO_NO_TRABAJA = 0
+    TRABAJO_TIEMPO_COMPLETO = 1
+    TRABAJO_MEDIO_TIEMPO = 2 
+    TRABAJO_POR_HORAS = 3
     JORNADA_TRABAJO_CHOICES = (
+        (TRABAJO_NO_TRABAJA, ""),
         (TRABAJO_TIEMPO_COMPLETO, "Tiempo completo"),
         (TRABAJO_MEDIO_TIEMPO, "Medio tiempo"),
         (TRABAJO_POR_HORAS, "Por horas")
     )
 
-    parentezco = models.CharField(max_length=50)
+    parentesco = models.CharField(max_length=50)
     nombres = models.CharField(max_length=256)
     apellidos = models.CharField(max_length=256)
-    nivel_estudio = models.CharField("nivel de estudio",
-                                    choices=NIVEL_ESTUDIO_CHOICES,
-                                    max_length=20)
+    nivel_estudio = models.PositiveSmallIntegerField("nivel de estudio",
+                                                     choices=NIVEL_ESTUDIO_CHOICES)
+    
     direccion = models.CharField("dirección", max_length=256)
     telefonos = models.CharField("teléfono", max_length=50)
     empresa = models.CharField("lugar de trabajo",
@@ -48,17 +53,30 @@ class Familiar(models.Model):
 class DatosFamiliaresOtros(models.Model):
     "Datos de historia clinica familiar y otra informacion"
 
-    numero_hermanos = models.PositiveSmallIntegerField()
-    transtorno_hermanos = models.CharField(max_length=10)
-    hermano_transtorno = models.PositiveSmallIntegerField()
-    transtorno = models.CharField(max_length=10)
-    alteracion_desarrollo = models.CharField(max_length=10)
-    tipo_enfermedad_parientes = models.CharField(max_length=256)
-    orientacion_a_institucion = models.CharField(max_length=100)
+    ORIENTACION_RADIO = "Radio"
+    ORIENTACION_TV = "Tv"
+    ORIENTACION_PERIODICO = "Periódico"
+    ORIENTACION_OTRO = "Otro"
+    ORIENTACION_CONOCIDO = "Invitación de un conocido"
+    ORIENTACION_CHOICES = (
+        (ORIENTACION_RADIO, ORIENTACION_RADIO),
+        (ORIENTACION_TV, ORIENTACION_TV),
+        (ORIENTACION_PERIODICO, ORIENTACION_PERIODICO),
+        (ORIENTACION_CONOCIDO, ORIENTACION_CONOCIDO),
+        (ORIENTACION_OTRO, "Otro (Especifique)")
+    )
+    
+    numero_hermanos = models.PositiveSmallIntegerField("Número de hermanos")
+    transtorno_hermanos = models.NullBooleanField("¿Alguno de los hermanos tiene algún tipo de transtorno?")
+    hermano_transtorno = models.PositiveSmallIntegerField("¿Cuál de los hermanos? (Orden en que nació)", blank=True)
+    transtorno = models.CharField("Qué transtorno?", max_length=50, blank=True)
+    alteracion_desarrollo = models.NullBooleanField("¿Ha existido algún tipo de alteración en su desarrollo?")
+    tipo_enfermedad_parientes = models.CharField("Detallar el tipo de enfermedad que se ha presentado en los parientes", max_length=256, blank=True)
+    orientacion_a_institucion = models.CharField("Quién los orientó a ésta institución?", max_length=100)
 
 class Hermano(models.Model):
     "Datos de hermano"
     nombres = models.CharField(max_length=100)
     apellidos = models.CharField(max_length=100)
-    fecha_nacimiento = models.DateField()
+    fecha_nacimiento = models.DateField("Fecha de nacimiento")
     datos_familiares = models.ForeignKey(DatosFamiliaresOtros, on_delete=models.CASCADE)

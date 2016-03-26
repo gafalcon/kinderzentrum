@@ -20,7 +20,7 @@ class AlimentacionCostumbres(models.Model):
         (TIEMPO_LACTANCIA_MESES_19_24, "19 - 24 Meses")
     )
 
-    tiempo_leche_materna = models.PositiveSmallIntegerField(choices=TIEMPO_LACTANCIA_CHOICES)
+    tiempo_leche_materna = models.PositiveSmallIntegerField(blank=True, null=True)
 
     MOTIVO_SUSPENSION_RECHAZO = "Rechazo del niño"
     MOTIVO_SUSPENSION_TRABAJO = "Vinculación laboral"
@@ -36,7 +36,7 @@ class AlimentacionCostumbres(models.Model):
         (MOTIVO_SUSPENSION_ENFERMEDAD_MADRE, "Enfermedad de la madre"),
         (MOTIVO_SUSPENSION_OTRO, "Otro(Especifique)")
     )
-    motivo_suspencion_lactancia = models.CharField(max_length=100)
+    motivo_suspencion_lactancia = models.CharField(max_length=100, blank=True, null=True)
 
     AFECCIONES_ESTRENIMIENTO = "Estreñimiento"
     AFECCIONES_DEPOSICIONES = "Deposiciones Líquidas"
@@ -80,12 +80,13 @@ class AlimentacionCostumbres(models.Model):
         (FORMA_ALIMENTO_OTRO, "Otro (Especifique)"),
     )
     forma_alimento = models.CharField(max_length=100)
+
     lugar_desayuno = models.CharField("desayuno", max_length=50)
-    lugar_comida_media_manana = models.CharField("media mañana", max_length=50)
+    lugar_comida_media_manana = models.CharField("media mañana", max_length=50, blank=True)
     lugar_almuerzo = models.CharField("almuerzo", max_length=50)
-    lugar_comida_media_tarde = models.CharField("media tarde", max_length=50)
+    lugar_comida_media_tarde = models.CharField("media tarde", max_length=50, blank=True)
     lugar_cena = models.CharField("cena", max_length=50)
-    lugar_comida_otro = models.CharField("otro", max_length=50)
+    lugar_comida_otro = models.CharField("otro", max_length=50, blank=True)
     alimento_preferido = models.CharField("¿Cuál es el alimento preferido por el niño(a)?", max_length=20)
     alimento_rechazado = models.CharField("¿Cuál es el alimento que rechaza el niño(a)?", max_length=20)
 
