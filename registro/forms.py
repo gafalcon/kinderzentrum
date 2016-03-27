@@ -2,7 +2,7 @@
 from django import forms
 from django.forms import ModelForm
 from django.forms.extras.widgets import SelectDateWidget
-from modelos.historial_madre_models import HistorialMadre
+from modelos.historial_madre_models import HistorialMadre, Gestacion
 from modelos.nacimiento_models import Nacimiento
 from modelos.familiars_models import Familiar, Hermano, DatosFamiliaresOtros
 from modelos.paciente_model import Paciente
@@ -184,6 +184,22 @@ class Ficha_HistorialMadreForm(forms.Form):
     otros_5_7_1 = forms.MultipleChoiceField(required=True, choices=CHOICES_ANTICONCEPTIVO, widget=forms.CheckboxSelectMultiple(attrs={'oculto':'oculto'}))
     pregunta_5_8 = forms.CharField(widget=forms.Textarea(attrs={'class':'form-control','rows':'3'}), label="Tuvo usted alguna enfermedad grave, dolencia, accidente o infeccion, antes de concebir a este bebe? (ejemplo: cistitis, dolor pelvico, menstruaciones dolorosas, migranias, etc.)")
    
+
+class DesarrolloDeLaGestacionForm(ModelForm):
+    curso_prenatal = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="Asistió a algún curso prenatal?")
+    
+
+    class Meta:
+        model = Gestacion
+        fields = ['sentimientos','num_embarazo','curso_prenatal','momento_desc_embarazo',
+                  'lugar_curso_prenatal','carga_horaria','vacuna_tetano','comunicacion_bebe',
+                  ]
+        widgets = {'sentimientos': forms.CheckboxSelectMultiple(choices=model.CHOICES_SENTIMIENTOS),
+                   'momento_desc_embarazo': forms.Select(choices=model.CHOICES_MOMENTO),
+                   'vacuna_tetano': forms.RadioSelect(choices=CHOICES_SI_NO),
+                   'comunicacion_bebe': forms.CheckboxSelectMultiple(choices=model.CHOICES_COMUNICA_BEBE)
+
+        }
    
 class Ficha_DesarrolloDeLaGestacionForm(forms.Form):
     CHOICES_SENTIMIENTOS = [('felicidad','Felicidad'),('miedo','Miedo'),('júbilo','Júbilo'),('ansiedad','Ansiedad'),('estres','Estres'),('incertidumbre','Incertidumbre')]
@@ -219,7 +235,7 @@ class Ficha_DesarrolloDeLaGestacionForm(forms.Form):
     pregunta_6_9_e = forms.MultipleChoiceField(choices=CHOICES_TRIMESTRES, widget=forms.CheckboxSelectMultiple(attrs={'class':'form-control'}), label="Trabajar:")
     
     
-    
+
     
    
     

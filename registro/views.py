@@ -29,7 +29,7 @@ class RegistroView(View):
         #descripcion_paciente = Ficha_DescripcionPacienteForm(prefix="descripcion_paciente")
         descripcion_paciente = DescripcionPacienteForm(prefix="descripcion_paciente")
         medicamento_formset = MedicamentoFormset(instance=Descripcion())
-
+        gestacion = DesarrolloDeLaGestacionForm(prefix="gestacion")
         nacimiento = NacimientoForm(prefix="nacimiento")
         datos_recien_nacido = RecienNacidoForm(prefix="recien_nacido",
                                                initial={'tiempo_apego_precoz': RecienNacido.APEGO_PRECOZ_NADA,
@@ -46,6 +46,7 @@ class RegistroView(View):
                        'descripcion_paciente':descripcion_paciente,
                        'medicamento_formset':medicamento_formset,
                        'historial_madre_form': historial_madre,
+                       'gestacion': gestacion,
                        'nacimiento': nacimiento,
                        'recien_nacido': datos_recien_nacido,
                        'alimentacion': alimentacion,
@@ -97,7 +98,7 @@ class RegistroView(View):
         #descripcion_paciente = Ficha_DescripcionPacienteForm(request.POST, prefix="descripcion_paciente")
         descripcion_paciente = DescripcionPacienteForm(request.POST, prefix="descripcion_paciente")
         medicamento_formset = MedicamentoFormset(request.POST, instance=Descripcion())
-
+        gestacion = DesarrolloDeLaGestacionForm(request.POST, prefix="gestacion")
         datos_nacimiento = NacimientoForm(request.POST, prefix="nacimiento")
         datos_recien_nacido = RecienNacidoForm(request.POST, prefix="recien_nacido")
         datos_primeros_dias = PrimerosDiasForm(request.POST, prefix="primeros_dias")
@@ -164,6 +165,7 @@ class RegistroView(View):
                            'descripcion_paciente': descripcion_paciente,
                            'medicamento_formset':medicamento_formset,
                            'historial_madre_form': historial_madre,
+                           'gestacion': gestacion,
                            'nacimiento': datos_nacimiento,
                            'recien_nacido': datos_recien_nacido,
                            'alimentacion': datos_alimentacion,
