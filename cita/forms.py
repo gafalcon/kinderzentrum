@@ -1,23 +1,43 @@
-
+# -*- coding: utf-8 -*-
 from django import forms
 from django.forms import ModelForm
 from django.forms.extras.widgets import SelectDateWidget
-#from django.forms import ModelForm
+#from django.core.exceptions import ValidationError
+#import datetime
 
-# -*- coding: UTF8 -*-
+# def validate_current_century(value):
+#     if value < 2000 or value > 2050:
+#         raise ValidationError(u'%s is not a valid year!' % value)
+
 class Ficha_DatosForm(forms.Form):
-    
-    Paciente = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required': 'required'}),label="Paciente")
-
-class Ficha_TerapiaForm(forms.Form):
-
-    TIPOTERAPIACHOICES = (('1', 'Lenguaje'), ('2', 'Psicopedagogica'))
-    TipoTerapia = forms.ChoiceField(widget = forms.Select(), choices= TIPOTERAPIACHOICES, required=True,  label='TipoTerapia')
-
-class Ficha_TerapistaForm(forms.Form):
-
-    TERAPISTACHOICES = (('1', 'Kerly Maldonado'), ('2', 'Silvia Sanchez'))
-    Terapista = forms.ChoiceField(widget = forms.Select(), choices= TERAPISTACHOICES, required=True,  label='Terapista')
-
-
-    
+    TIPOTERAPIACHOICES = ((1, "REHABILITACIÓN FÍSICA"),
+                         (2, "ESTIMULACIÓN TEMPRANA"),
+                         (3, "INTEGRACIÓN SENSORIAL"),
+                         (4, "HIPOTERAPIA"),
+                         (5, "LENGUAJE"),
+                         (6, "PSICOPEDAGÓGICA"),
+                         (7, "TERAPIA FAMILIAR"),
+                         (8, "NINGUNA"))
+    TERAPISTACHOICES = (('1', 'Kerly Maldonado'), 
+                        ('2', 'Silvia Sánchez'))
+    HORARIOCHOICES = (('08:00 - 09:00', '08:00 - 09:00'),
+                      ('09:00 - 10:00', '09:00 - 10:00'),
+                      ('10:00 - 11:00', '10:00 - 11:00'),
+                      ('11:00 - 12:00', '11:00 - 12:00'),
+                      ('12:00 - 13:00', '12:00 - 13:00'),
+                      ('13:00 - 14:00', '13:00 - 14:00'),
+                      ('14:00 - 15:00', '14:00 - 15:00'),
+                      ('15:00 - 16:00', '15:00 - 16:00'),
+                      ('16:00 - 17:00', '16:00 - 17:00'),
+                      ('17:00 - 18:00', '17:00 - 18:00'),
+                      ('18:00 - 19:00', '18:00 - 19:00')
+                      )
+    #Paciente = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'autocomplete':'on', 'required': 'required'}),label="Paciente")
+    Paciente = forms.IntegerField(widget=forms.TextInput(attrs={'class':'form-control', 'autocomplete':'on', 'required': 'required'}),label="Paciente")
+    TipoTerapia = forms.ChoiceField(choices=TIPOTERAPIACHOICES, widget=forms.Select(attrs={'class':'form-control', 'required': 'required'}), 
+                                 label='Tipo de terapia')
+    Terapista = forms.ChoiceField(choices=TERAPISTACHOICES, widget=forms.Select(attrs={'class':'form-control', 'required': 'required'}), label='Terapista')
+    fecha_cita = forms.DateField(required=False, 
+                                 label='Fecha',
+                                 widget=SelectDateWidget(empty_label=("Año", "Mes", "Día"),years=range(2000, 2050)))   
+    Horario = forms.ChoiceField(choices=HORARIOCHOICES, widget=forms.Select(attrs={'class':'form-control', 'required': 'required'}))

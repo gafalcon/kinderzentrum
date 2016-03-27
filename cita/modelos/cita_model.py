@@ -14,12 +14,13 @@ class Cita(models.Model):
     fecha_cita = models.DateTimeField( auto_now = True )
     hora_inicio = models.CharField(max_length=8)
     hora_fin = models.CharField(max_length=8)
-    terapia_id = models.OneToOneField(Terapia)
-    terapista_id = models.ForeignKey(Terapista, on_delete=models.CASCADE)
-    paciente_id = models.ForeignKey(Paciente, on_delete=models.CASCADE)
     cancelo_cita = models.CharField(max_length=1)
     asistio_cita = models.CharField(max_length=1)
     valor_sesion = models.PositiveIntegerField()
+    terapia_id = models.OneToOneField(Terapia)
+    terapista_id = models.ForeignKey(Terapista, on_delete=models.CASCADE)
+    paciente_id = models.ForeignKey(Paciente, on_delete=models.CASCADE)
+    
     
 
 

@@ -22,7 +22,7 @@ class Ficha_PacienteForm(forms.Form):
     GRUPO_SANGUINEO = [('o+','O+'),('o-','O-'),('a+','A+'),('a-','A-'),('b+','B+'),('b-','B-'),('ab+','AB+'),('ab-','AB-')]
     apellidos = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required': 'required'}),label="Apellidos")
     nombres = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required': 'required'}))
-    nacimiento = forms.DateField( input_formats = ['%m/%d/%Y'],
+    nacimiento = forms.DateField( input_formats = ['hh mm ss'],
                                   widget=forms.TextInput(attrs=
                                                          {
                                                              'class':'datepicker form-control',
