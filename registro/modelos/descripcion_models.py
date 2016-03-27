@@ -4,6 +4,9 @@ from django.db import models
 class Descripcion(models.Model):
     """ Descripcion del problema del paciente """
     LIMITACIONES_OPTIONS = ((1, "SI"), (2, "NO"), (3, "DESCONOCE"))
+    DESCUBRIO_MOLESTIAS_OPTIONS = [('papa','Papa'),('mama','Mama'),('abuelos','Abuelos'),('otros','Otros')]
+    DIFICULTADES_OPTIONS = [('audicion','Audición'),('vision','Visión'),('lenguaje','Lenguaje'),('seguridad_si_mismo','Seguridad en sí mismo'),('comportamiento','Comportamiento'),('alimentacion','Alimentación'),('suenio','Sueño'),('interaccion_social','Interacción social'),('otro','Otro')]
+    
     preocupacion = models.CharField(
         "¿Qué le preocupa de su hijo? Algo especial que le llame la atención",
         max_length=500
@@ -27,7 +30,7 @@ class Descripcion(models.Model):
     areas_dificultad = models.CharField("¿Ha presentado su hijo(a) algún tipo de dificultad en éstas áreas?", max_length=256, blank=True)
     had_convulsion = models.SmallIntegerField("¿Ha sentido convulsiones?",
                                             choices=LIMITACIONES_OPTIONS)
-    tipo_crisis = models.CharField("¿Qué tipo de crisis tuvo durante la convlusión", max_length=256, blank=True)
+    tipo_crisis = models.CharField("¿Qué tipo de crisis tuvo durante la convulsión", max_length=256, blank=True)
 
     edad_crisis = models.SmallIntegerField("¿A qué edad fue la primera crisis?", blank=True)
 
@@ -35,9 +38,9 @@ class Descripcion(models.Model):
 
 class Terapia(models.Model):
     """ terapias recibidas por el paciente """
-    TERAPIA_CHOICES = ((1, "REHABILITACIÓN FÍSICA"),
-                       (2, "ESTIMULACIÓN TEMPRANA"),
-                       (3, "NINGUNA"))
+    TERAPIA_CHOICES = ((1, "Rehabilitación Física"),
+                       (2, "Estimulación Temprana"),
+                       (3, "Ninguna"))
     tipo = models.SmallIntegerField("Tipo de terapia", choices=TERAPIA_CHOICES)
     tiempo_terapia = models.DurationField("¿Cuánto tiempo lleva realizando la terapia")
     descripcion = models.ForeignKey(Descripcion)

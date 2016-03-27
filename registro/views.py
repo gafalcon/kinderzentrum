@@ -1,5 +1,5 @@
 from django.shortcuts import render, render_to_response
-from registro.forms import * #Ficha_DatosForm, Ficha_DatosFamiliaresForm, Ficha_DatosMedicoForm, HistorialMadreForm
+from registro.forms import *
 from django.template import RequestContext
 from registro.modelos.paciente_model import Paciente
 from registro.modelos.familiars_models import DatosFamiliaresOtros
@@ -10,6 +10,7 @@ from django.http import HttpResponseRedirect
 from django.views.generic import View
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.forms import formset_factory
 # Create your views here.
 
 
@@ -19,11 +20,16 @@ class RegistroView(View):
     def get(self, request, *args, **kwargs):
         #datos = Ficha_PacienteForm(prefix="paciente")
         datos = PacienteForm(prefix="paciente")
-        datos_familia = Ficha_DatosFamiliaresForm(prefix="familiares")
+        #datos_familia = Ficha_DatosFamiliaresForm(prefix="familiares")
+        datos_familia = DatosFamiliaresFormset(data=data_formsets)
         #datos_medico = Ficha_DatosMedicoForm(prefix="medico")
-        datos_medico = DatosMedicoForm(prefix="medico")
+        #datos_medico = DatosMedicoForm(prefix="medico")
+        datos_medico = DatosMedicoFormset(data=data_formsets)
         historial_madre = Ficha_HistorialMadreForm(prefix="historial_madre")
-        descripcion_paciente = Ficha_DescripcionPacienteForm(prefix="descripcion_paciente")
+        #descripcion_paciente = Ficha_DescripcionPacienteForm(prefix="descripcion_paciente")
+        descripcion_paciente = DescripcionPacienteForm(prefix="descripcion_paciente")
+        medicamento_formset = MedicamentoFormset(instance=Descripcion())
+
         nacimiento = NacimientoForm(prefix="nacimiento")
         datos_recien_nacido = RecienNacidoForm(prefix="recien_nacido",
                                                initial={'tiempo_apego_precoz': RecienNacido.APEGO_PRECOZ_NADA,
@@ -34,10 +40,11 @@ class RegistroView(View):
         datos_familiares = DatosFamiliaresOtrosForm(prefix="familiares_otros")
         hermanos_formset = HermanosFormset(instance=DatosFamiliaresOtros())
         return render(request, self.template_name,
-                      {'ficha_datos_medico_form':datos_medico,
-                       'ficha_datos_familia_form':datos_familia,
+                      {'datos_medico_formset':datos_medico,
+                       'datos_familia_formset':datos_familia,
                        'ficha_datos_form':datos,
                        'descripcion_paciente':descripcion_paciente,
+                       'medicamento_formset':medicamento_formset,
                        'historial_madre_form': historial_madre,
                        'nacimiento': nacimiento,
                        'recien_nacido': datos_recien_nacido,
@@ -48,7 +55,7 @@ class RegistroView(View):
                        'primeros_dias': primeros_dias,
                        'pagina_actual':'registro'}
         )
-    '''
+    
     def create_paciente(self, form_data):
         return Paciente(
             nombres = form_data['nombres'],
@@ -58,7 +65,7 @@ class RegistroView(View):
             grupo_sanguineo = form_data['grupo_sanguineo'],
             sexo = form_data['sexo']
         )
-    '''
+    
     def create_familiar(self, form_data):
         return Familiar(
             nombres = form_data['nombres'],
@@ -82,11 +89,15 @@ class RegistroView(View):
         )
 
     def post(self, request, *args, **kwargs):
-        datos_paciente = Ficha_PacienteForm(request.POST, prefix="paciente")
-        datos_familia = Ficha_DatosFamiliaresForm(request.POST, prefix="familiares")
-        datos_medico = Ficha_DatosMedicoForm(request.POST, prefix="medico")
+        datos_paciente = PacienteForm(request.POST, prefix="paciente")
+        datos_familia = DatosFamiliaresForm(request.POST, prefix="familiares")
+        datos_medico = DatosMedicoFormset(request.POST)
+        #datos_medico = DatosMedicoForm(request.POST, prefix="medico")
         historial_madre = Ficha_HistorialMadreForm(request.POST, prefix="historial_madre")
-        descripcion_paciente = Ficha_DescripcionPacienteForm(request.POST, prefix="descripcion_paciente")
+        #descripcion_paciente = Ficha_DescripcionPacienteForm(request.POST, prefix="descripcion_paciente")
+        descripcion_paciente = DescripcionPacienteForm(request.POST, prefix="descripcion_paciente")
+        medicamento_formset = MedicamentoFormset(request.POST, instance=Descripcion())
+
         datos_nacimiento = NacimientoForm(request.POST, prefix="nacimiento")
         datos_recien_nacido = RecienNacidoForm(request.POST, prefix="recien_nacido")
         datos_primeros_dias = PrimerosDiasForm(request.POST, prefix="primeros_dias")
@@ -96,7 +107,7 @@ class RegistroView(View):
         hermanos_formset = HermanosFormset(request.POST, instance=DatosFamiliaresOtros())
 
         if (datos_paciente.is_valid() and
-            #datos_medico.is_valid() and
+            datos_medico.is_valid() and
             #datos_familia.is_valid() and
             # datos_nacimiento.is_valid() and
             #datos_recien_nacido.is_valid()): 
@@ -108,7 +119,10 @@ class RegistroView(View):
             paciente = self.create_paciente(datos_paciente.cleaned_data)
             print("Paciente", paciente)
 
-            # medico = self.create_medico(datos_medico.cleaned_data)
+            #recorremos cada uno de los forms de cada medico
+            for form in datos_medico:
+                print "Medico",form.cleaned_data
+            #medico = self.create_medico(datos_medico.cleaned_data)
             #paciente.medico = medico
             # medico.save()
 
@@ -145,9 +159,10 @@ class RegistroView(View):
             #print("Errors DatosFamiliares", datos_familiares.errors)
             return render(request, self.template_name,
                           {'ficha_datos_form': datos_paciente,
-                           'ficha_datos_familia_form': datos_familia,
-                           'ficha_datos_medico_form': datos_medico,
+                           'datos_familia_formset': datos_familia,
+                           'datos_medico_formset': datos_medico,
                            'descripcion_paciente': descripcion_paciente,
+                           'medicamento_formset':medicamento_formset,
                            'historial_madre_form': historial_madre,
                            'nacimiento': datos_nacimiento,
                            'recien_nacido': datos_recien_nacido,

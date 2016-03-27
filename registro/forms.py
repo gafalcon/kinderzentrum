@@ -11,7 +11,8 @@ from modelos.primeros_dias_model import PrimerosDias
 from modelos.recien_nacido_model import RecienNacido
 from modelos.medico_model import Medico
 from modelos.paciente_model import Paciente
-from django.forms import inlineformset_factory
+from modelos.descripcion_models import Descripcion, Terapia, Medicamento
+from django.forms import inlineformset_factory, formset_factory
 import datetime
 #from django.contrib.auth.models import User
 CHOICES_SI_NO_DES = [(True,'Si'),(False,'No'), (None,'Desconoce')]
@@ -51,7 +52,7 @@ class PacienteForm(ModelForm):
             
         }
         
-
+'''
 class Ficha_DatosFamiliaresForm(forms.Form):
     apellidos = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
     nombres = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
@@ -75,6 +76,27 @@ class Ficha_DatosFamiliaresForm(forms.Form):
                                 label='Dirección')
     telefono = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}),
                                label='Teléfono')
+'''
+class DatosFamiliaresForm(ModelForm):
+    class Meta:
+        model = Familiar
+        fields = ['parentesco','nombres','apellidos','nivel_estudio','direccion','telefonos',
+                    'empresa','direccion_empresa','jornada']
+        widgets = {'nivel_estudio': forms.Select(choices=Familiar.NIVEL_ESTUDIO_CHOICES,attrs={'class':'form-control'}),
+                   'jornada': forms.Select(choices=Familiar.JORNADA_TRABAJO_CHOICES, attrs={'class': 'form-control'})
+                }
+
+    def clean(self):
+        cleaned_data = super(DatosFamiliaresForm, self).clean()
+        parentesco = cleaned_data.get('parentesco')
+        nombres = cleaned_data.get('nombres')
+        apellidos = cleaned_data.get('apellidos')
+        nivel_estudio = cleaned_data.get('nivel_estudio')
+        direccion = cleaned_data.get('direccion')
+        telefonos = cleaned_data.get('telefonos')
+        empresa = cleaned_data.get('empresa')
+        direccion_empresa = cleaned_data.get('direccion_empresa')
+        jornada = cleaned_data.get('jornada')
 
 
 class DatosMedicoForm(ModelForm):
@@ -99,7 +121,7 @@ class Ficha_DatosMedicoForm(forms.Form):
     direccion = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
     telefono = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
 ''' 
-
+'''
 class Ficha_DescripcionPacienteForm(forms.Form):
     CHOICES = [('papa','Papa'),('mama','Mama'),('abuelos','Abuelos'),('otros','Otros')]
     CHOICES_TERAPIA = [('rehabilitacion_fisica','Rehabilitacion Fisica'),('estimulacion_temprana','Estimulacion Temprana'),('ninguna','Ninguna')]
@@ -121,8 +143,27 @@ class Ficha_DescripcionPacienteForm(forms.Form):
     descripcion_pregunta_8_2 = forms.CharField(widget=forms.Textarea(attrs={'rows':'1','oculto':'oculto','class':'form-control'}), label="A que edad fue la primera crisis?")
     descripcion_pregunta_8_3 = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.Select(attrs={'oculto':'oculto'}), label="Tomo medicamentos?")
     descripcion_pregunta_8_4 = forms.CharField(widget=forms.Textarea(attrs={'rows':'2','oculto':'oculto','class':'form-control'}), label="Que medicamentos y dosis diaria tomo?")
-    
+'''   
 
+class DescripcionPacienteForm(ModelForm):
+    otro_disc_molestias = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}), initial='Especifique')
+    tipo_terapia = forms.MultipleChoiceField(required=True, choices=Terapia.TERAPIA_CHOICES, widget=forms.CheckboxSelectMultiple, label="Que tipo de terapia realiza?")
+    tiempo_rehab_fisica =  forms.CharField(label="Tiempo en terapia de rehabilitacion fisica?", widget=forms.TextInput(attrs={'class':'form-control'}), initial='Especifique tiempo')
+    tiempo_estimu_temprana = forms.CharField(label="Tiempo en terapia de estimulacion temprana?", widget=forms.TextInput(attrs={'class':'form-control'}), initial='Especifique tiempo')
+    areas_dificultad = forms.MultipleChoiceField(required=True,choices=Descripcion.DIFICULTADES_OPTIONS, widget=forms.CheckboxSelectMultiple, label="Ha presentado su hijo(a) algun tipo de dificultades en estas aereas? marque todas las opciones que desee.")
+    otro_dificultad = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}), initial='Especifique',label="Otras dififultades")
+    tomo_medicamentos = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.Select(), label="Tomo medicamentos?")
+    class Meta:
+        model = Descripcion
+        fields = ['preocupacion','disc_molestias','otro_disc_molestias',
+                  'edad_disc_molestia','tratamiento',
+                  'lugar_tratamiento','tipo_terapia','tiempo_rehab_fisica',
+                  'tiempo_estimu_temprana','areas_dificultad','otro_dificultad',
+                  'limitaciones_movimiento','had_convulsion',
+                  'tipo_crisis','edad_crisis','tomo_medicamentos']
+        widgets = {'disc_molestias': forms.Select(choices=model.DESCUBRIO_MOLESTIAS_OPTIONS),
+                   'tratamiento': forms.RadioSelect(choices=CHOICES_SI_NO),
+                   }
 
 class Ficha_HistorialMadreForm(forms.Form):
     CHOICES_ENFERMEDADES = [('diabetes','Diabetes'),('hipertension','Hipertension'),('infeccion_urinaria','Infecciones en las vias urinarias'),('ninguna_enf','Ninguna')]
@@ -479,8 +520,17 @@ HermanosFormset = inlineformset_factory(DatosFamiliaresOtros, Hermano,
                                         }
 ) 
 
+MedicamentoFormset = inlineformset_factory(Descripcion, Medicamento,
+                                       fields='__all__',
+                                       can_delete=False
+                                       )
 
+DatosMedicoFormset = formset_factory(DatosMedicoForm, extra=2)
+DatosFamiliaresFormset = formset_factory(DatosFamiliaresForm, extra=2)
 
-
+data_formsets = {'form-TOTAL_FORMS': '2',
+               'form-INITIAL_FORMS': '0',
+               'form-MAX_NUM_FORMS': '',
+                }
 
 

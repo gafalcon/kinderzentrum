@@ -60,29 +60,36 @@
 
 	<div id="panel2" class="hide panel panel-default">
 		<div class="panel-heading">Datos Familiares</div>
+        {{ datos_familia_formset.management_form }}
+        {% for form in datos_familia_formset %}
 		<div class="panel-body">			
-			{% for field in ficha_datos_familia_form %}
+			{% for field in form %}
 	  			<div class="row">		  			
 		  			<div class="form-group span6">
 			    		<label for="code" style="width: 20%;">{{field.label}}</label>
 			      		{{ field }}			      		
 	      			</div>
 	      		</div>
-
-				{% if forloop.counter == 4 %}
-					<h4>Trabajo</h4>
-				{% endif %}
-				{% if forloop.counter == 7 %}
+                <!-- Colocar etiqueta de Domicilio luego del campo nivel de estudio -->
+				{% if field.name == "nivel_estudio" %}
 					<h4>Domicilio</h4>
+				{% endif %}
+                <!-- Colocar etiqueta de Trabajo luego del campo telefonos (domicilio) -->
+				{% if field.name == "telefonos" %}
+					<h4>Trabajo</h4>
 				{% endif %}
 	      	{% endfor %}
 		</div>
+        <hr>
+        {% endfor %}
 	</div>
 
 	<div id="panel3" class="hide panel panel-default">
-		<div class="panel-heading">Datos del M&eacute;dico</div>
-		<div class="panel-body">			
-			{% for field in ficha_datos_medico_form %}
+		<div class="panel-heading">Datos del Médico</div>
+        {{ datos_medico_formset.management_form }}
+        {% for form in datos_medico_formset %}
+		<div class="panel-body formset-medico">			
+			{% for field in form %}
 	  			<div class="row">		  			
 		  			<div class="form-group span6">
 			    		<label for="code" style="width: 20%;">{{field.label}}</label>
@@ -92,29 +99,55 @@
 
 	      	{% endfor %}
 		</div>
+        <hr>
+        {% endfor %}
 	</div>
 
 
 	<div id="panel4" class="hide panel panel-default">
 		<div class="panel-heading">Descripcion del niño</div>
-		<div class="panel-body">			
+
+        <div class="panel-body">			
 			{% for field in descripcion_paciente %}
 	  			<div class="row">		  			
 		  			<div class="form-group span6">
 			    		<label for="code" class="col-xs-2" style="margin-left:2%">{{field.label}}</label>			      		
-			      		{% if field.label == "Que tipo de terapia realiza?" or field.label == "Ha presentado su hijo(a) algun tipo de dificultades en estas aereas? marque todas las opciones que desee." %}		    			
-			    			{% for choice in field.field.choices%}			    				
-			    				{%if choice.0 == 'seguridad_si_mismo' or choice.0 == 'suenio' %}<label class="checkbox-inline" style="margin-left: 3%;">{% else %}<label class="checkbox-inline">{% endif %}
+			      		{% if field.name == "terapia" or field.name == "areas_dificultad" %}
+			    			{% for choice in field.field.choices %}			    				
+			    				{%if choice.0 == 'seguridad_si_mismo' or choice.0 == 'suenio' %}
+                                <label class="checkbox-inline" style="margin-left: 3%;">{% else %}
+                                <label class="checkbox-inline">
+                                {% endif %}
 								  	<input type="checkbox" id="{{choice.0}}" value="{{choice.0}}" style="margin: 3px 0px 0px -90px; cursor: pointer;" name="{{ field.html_name }}"> {{choice.1}}
 								</label>								
 			    			{% endfor%}
 			      		
-			      		{% else %}
-			      		{{ field }}	
+                       	{% else %}
+
+			      		 {{ field }}	
+
 			      		{% endif %}
 	      			</div>
+
 	      		</div>
 	      	{% endfor %}
+            <div id="medicamentos-formset">
+                                <h4>Medicamentos</h4>
+                                {{ medicamento_formset.management_form }}
+                                <table class="table table-bordered table-condensed">
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Dosis diaria</th>
+                                    </tr>
+                                    {% for form in medicamento_formset %}
+                                        {{ form.id }}
+                                        <tr>
+                                            <td>{{form.nombre}}</td>
+                                            <td>{{form.dosis_diaria}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
 		</div>
 	</div>
 
