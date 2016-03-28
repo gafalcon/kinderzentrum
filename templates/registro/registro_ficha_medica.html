@@ -12,7 +12,7 @@
 {% endblock js %}
 
 {% block content %}
-<div class="dotstyle dotstyle-tooltip" style="margin: 4% 0px 1% 40%;">			
+<div class="dotstyle dotstyle-tooltip" style="margin: 4% 0px 1% 30%;">			
 	<ul id="dots_nav">
 		<li id="nav1" onclick="setPanelVisible(1)" class="current" ><a href="#">Paciente</a></li>
 		<li id="nav2" onclick="setPanelVisible(2)"><a href="#" >Familiares</a></li>
@@ -82,6 +82,7 @@
 		</div>
         <hr>
         {% endfor %}
+         <button type="button" class="btn btn-primary btn-block">Agregar nuevo familiar</button>
 	</div>
 
 	<div id="panel3" class="hide panel panel-default">
@@ -101,35 +102,17 @@
 		</div>
         <hr>
         {% endfor %}
+        <button type="button" class="btn btn-primary btn-block">Agregar nuevo médico</button>
 	</div>
-
 
 	<div id="panel4" class="hide panel panel-default">
 		<div class="panel-heading">Descripcion del niño</div>
-
         <div class="panel-body">			
-			{% for field in descripcion_paciente %}
-	  			<div class="row">		  			
-		  			<div class="form-group span6">
-			    		<label for="code" class="col-xs-2" style="margin-left:2%">{{field.label}}</label>			      		
-			      		{% if field.name == "terapia" or field.name == "areas_dificultad" %}
-			    			{% for choice in field.field.choices %}			    				
-			    				{%if choice.0 == 'seguridad_si_mismo' or choice.0 == 'suenio' %}
-                                <label class="checkbox-inline" style="margin-left: 3%;">{% else %}
-                                <label class="checkbox-inline">
-                                {% endif %}
-								  	<input type="checkbox" id="{{choice.0}}" value="{{choice.0}}" style="margin: 3px 0px 0px -90px; cursor: pointer;" name="{{ field.html_name }}"> {{choice.1}}
-								</label>								
-			    			{% endfor%}
-			      		
-                       	{% else %}
-
-			      		 {{ field }}	
-
-			      		{% endif %}
-	      			</div>
-
-	      		</div>
+			{% for field in descripcion_paciente %}			
+	  			<div class="form-group">
+		    		<label for="code">{{field.label}}</label>			      		
+		      			{{ field }}	
+      			</div>
 	      	{% endfor %}
             <div id="medicamentos-formset">
                                 <h4>Medicamentos</h4>
@@ -154,27 +137,11 @@
 	<div id="panel5" class="hide panel panel-default">
 		<div class="panel-heading">Historial de la Madre</div>
 		<div class="panel-body">			
-			{% for field in historial_madre_form %}
-	  			<div class="row">		  			
-		  			<div class="form-group span6">
-			    		<label for="code" class="col-xs-2" style="width: 20%;">{{field.label}}</label>			      		
-			      		{% if field.label == "Indique si durante el embarazo sufrio algunas de las siguientes enfermedades?" %}	
-			    			{% for choice in field.field.choices%}			    				
-			    				{%if choice.0 == 'ninguna_enf' or choice.0 == 'proble_azucar' %}<label class="checkbox-inline" style="margin-left: 3%;">{% else %}<label class="checkbox-inline">{% endif %}
-								  	<input type="checkbox" id="{{choice.0}}" value="{{choice.0}}" style="margin: 3px 0px 0px -90px; cursor: pointer;"> {{choice.1}}
-								</label>								
-			    			{% endfor%}
-			      		{% elif field.label == "Tuvo usted alguna defuncion fetal antes de concebir al bebe/ninio(a) que trae a consulta?" or field.label == "Ha tenido hijos muertos?" or field.label == "Utilizo algun metodo anticonceptivo antes de estar embarazada?" %}
-			      			{% for choice in field.field.choices%}
-			    				<label class="radio-inline" style="margin: 5px 0px 10px;">
-								  	<input type="radio" name="inlineRadioOptions" id="{{choice.0}}" value="{{choice.0}}" style="cursor: pointer;"> {{choice.1}}
-								</label>
-			    			{% endfor%}
-			      		{% else %}
-			      		{{ field }}	
-			      		{% endif %}	      		
-	      			</div>
-	      		</div>
+			{% for field in historial_madre_form %}	  				  		
+	  			<div class="form-group">
+		    		<label for="code">{{field.label}}</label>			      		
+		      		{{ field }}			      		
+      			</div>	      		
 	      	{% endfor %}	
 		</div>	
 	</div>
@@ -182,58 +149,52 @@
 	<div id="panel6" class="hide panel panel-default">
  		<div class="panel-heading">Desarrollo de la Gestación</div>
 		<div class="panel-body">			
-			{% for field in gestacion %}
-	  			<div class="row">		  			
-		  			<div class="form-group span6">
-			    		<label for="code" style="width: 20%;">{{field.label}}</label>
-			      		{{ field }}			      		
-	      			</div>
-	      		</div>
+			{% for field in gestacion %}	  			
+	  			<div class="form-group">
+		    		<label for="code">{{field.label}}</label>
+		      		{{ field }}			      		
+      			</div>
 	      	{% endfor %}
-
-                              
-                    <div class="form-group span6">
-                        <label for="code" style="width: 20%;">Presentó algunas de las situaciones durante la gestación? Marque el trimestre cuando sucedió</label>
-                        
-                        {{ situacion_gestacion.management_form }}
-                        <table class="table table-bordered table-condensed">
+                             
+                <div class="form-group">
+                    <label for="code">Presentó algunas de las situaciones durante la gestación? Marque el trimestre cuando sucedió</label>
+                    
+                    {{ situacion_gestacion.management_form }}
+                    <table class="table table-bordered table-condensed">
+                        <tr>
+                            <th>Situación presentada</th>
+                            <th>Periodo</th>
+                            
+                        </tr>
+                        {% for form in situacion_gestacion %}
+                            {{ form.id }}
                             <tr>
-                                <th>Situación presentada</th>
-                                <th>Periodo</th>
-                                
+                                <td>{{form.nombre_situacion}}</td>
+                                <td>{{form.periodo}}</td>
                             </tr>
-                            {% for form in situacion_gestacion %}
-                                {{ form.id }}
-                                <tr>
-                                    <td>{{form.nombre_situacion}}</td>
-                                    <td>{{form.periodo}}</td>
-                                </tr>
-                            {% endfor %}       
-                            </table>
-                    </div>
-            
-                              
-                    <div class="form-group span6">
-                        <label for="code" style="width: 20%;">Seleccione si ha realizado las siguientes actividades durante el embarazo</label>
-                        
-                        {{ actividad_gestacion.management_form }}
-                        <table class="table table-bordered table-condensed">
+                        {% endfor %}       
+                        </table>
+                </div>
+                                 
+                <div class="form-group">
+                    <label for="code">Seleccione si ha realizado las siguientes actividades durante el embarazo</label>
+                    
+                    {{ actividad_gestacion.management_form }}
+                    <table class="table table-bordered table-condensed">
+                        <tr>
+                            <th>Situación presentada</th>
+                            <th>Periodo</th>
+                            
+                        </tr>
+                        {% for form in actividad_gestacion %}
+                            {{ form.id }}
                             <tr>
-                                <th>Situación presentada</th>
-                                <th>Periodo</th>
-                                
+                                <td>{{form.nombre_actividad}}</td>
+                                <td>{{form.periodo}}</td>
                             </tr>
-                            {% for form in actividad_gestacion %}
-                                {{ form.id }}
-                                <tr>
-                                    <td>{{form.nombre_actividad}}</td>
-                                    <td>{{form.periodo}}</td>
-                                </tr>
-                            {% endfor %}       
-                            </table>
-                    </div>
-            
-            
+                        {% endfor %}       
+                        </table>
+                </div>
 		</div>
 	</div>
 
@@ -242,8 +203,8 @@
         <div class="panel-body">            
             {% for field in nacimiento %}
                 <div class="form-group">
-                    <label for="code">{{field.label}}</label> <br/>
-                    {{ field }}         <br/>           
+                    <label for="code">{{field.label}}</label>
+                    {{ field }}          
                 </div>
             {% endfor %}
         </div>

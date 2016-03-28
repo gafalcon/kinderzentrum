@@ -152,7 +152,7 @@ class DescripcionPacienteForm(ModelForm):
     tiempo_estimu_temprana = forms.CharField(label="Tiempo en terapia de estimulacion temprana?", widget=forms.TextInput(attrs={'class':'form-control'}), initial='Especifique tiempo')
     areas_dificultad = forms.MultipleChoiceField(required=True,choices=Descripcion.DIFICULTADES_OPTIONS, widget=forms.CheckboxSelectMultiple, label="Ha presentado su hijo(a) algun tipo de dificultades en estas aereas? marque todas las opciones que desee.")
     otro_dificultad = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}), initial='Especifique',label="Otras dififultades")
-    tomo_medicamentos = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.Select(), label="Tomo medicamentos?")
+    tomo_medicamentos = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.Select(attrs={'class':'form-control'}), label="Tomo medicamentos?")
     class Meta:
         model = Descripcion
         fields = ['preocupacion','disc_molestias','otro_disc_molestias',
@@ -161,8 +161,10 @@ class DescripcionPacienteForm(ModelForm):
                   'tiempo_estimu_temprana','areas_dificultad','otro_dificultad',
                   'limitaciones_movimiento','had_convulsion',
                   'tipo_crisis','edad_crisis','tomo_medicamentos']
-        widgets = {'disc_molestias': forms.Select(choices=model.DESCUBRIO_MOLESTIAS_OPTIONS),
+        widgets = {'disc_molestias': forms.Select(choices=model.DESCUBRIO_MOLESTIAS_OPTIONS, attrs={'class':'form-control'}),
                    'tratamiento': forms.RadioSelect(choices=CHOICES_SI_NO),
+                   'limitaciones_movimiento': forms.Select(choices=model.LIMITACIONES_OPTIONS, attrs={'class':'form-control'}),
+                   'had_convulsion': forms.Select(choices=model.LIMITACIONES_OPTIONS, attrs={'class':'form-control'})
                    }
 
 class Ficha_HistorialMadreForm(forms.Form):
@@ -195,7 +197,7 @@ class DesarrolloDeLaGestacionForm(ModelForm):
                   'lugar_curso_prenatal','carga_horaria','vacuna_tetano','comunicacion_bebe',
                   ]
         widgets = {'sentimientos': forms.CheckboxSelectMultiple(choices=model.CHOICES_SENTIMIENTOS),
-                   'momento_desc_embarazo': forms.Select(choices=model.CHOICES_MOMENTO),
+                   'momento_desc_embarazo': forms.Select(choices=model.CHOICES_MOMENTO,attrs={'class':'form-control'}),
                    'vacuna_tetano': forms.RadioSelect(choices=CHOICES_SI_NO),
                    'comunicacion_bebe': forms.CheckboxSelectMultiple(choices=model.CHOICES_COMUNICA_BEBE)
 
@@ -205,13 +207,13 @@ class SituacionGestacionForm(ModelForm):
     class Meta:
         model = Situacion_Gestacion
         fields=['nombre_situacion','periodo']
-        widgets={'periodo': forms.Select(choices=CHOICES_TRIMESTRES)}
+        widgets={'periodo': forms.Select(choices=CHOICES_TRIMESTRES,attrs={'class':'form-control'})}
 
 class ActividadGestacionForm(ModelForm):
     class Meta:
         model = Actividad_Gestacion
         fields=['nombre_actividad','periodo']
-        widgets={'periodo': forms.Select(choices=CHOICES_TRIMESTRES)}
+        widgets={'periodo': forms.Select(choices=CHOICES_TRIMESTRES,attrs={'class':'form-control'})}
 
 '''  
 class Ficha_DesarrolloDeLaGestacionForm(forms.Form):
