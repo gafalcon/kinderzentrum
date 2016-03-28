@@ -25,6 +25,7 @@ class ReservarCitaView(View):
 
         if paciente.is_valid():
             paciente_data = paciente.cleaned_data
+            paciente_data.save()
 
             print("datos is valid")
             print("datos", paciente_data)
