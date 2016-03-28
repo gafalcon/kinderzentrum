@@ -6,6 +6,7 @@ from registro.modelos.familiars_models import DatosFamiliaresOtros
 from registro.modelos.alimentacion_models import AlimentacionCostumbres
 from registro.modelos.recien_nacido_model import RecienNacido
 from registro.modelos.medico_model import Medico
+from registro.modelos.historial_madre_models import Actividad_Gestacion, Situacion_Gestacion
 from django.http import HttpResponseRedirect
 from django.views.generic import View
 from django.contrib.auth.decorators import login_required
@@ -30,6 +31,8 @@ class RegistroView(View):
         descripcion_paciente = DescripcionPacienteForm(prefix="descripcion_paciente")
         medicamento_formset = MedicamentoFormset(instance=Descripcion())
         gestacion = DesarrolloDeLaGestacionForm(prefix="gestacion")
+        actividad_gestacion = ActividadGestacionFormset(initial=[{'nombre_actividad':x} for x in Actividad_Gestacion.ACTIVIDADES_CHOICES])
+        situacion_gestacion = SituacionGestacionFormset(initial=[{'nombre_situacion':x} for x in Situacion_Gestacion.SITUACIONES_CHOICES])
         nacimiento = NacimientoForm(prefix="nacimiento")
         datos_recien_nacido = RecienNacidoForm(prefix="recien_nacido",
                                                initial={'tiempo_apego_precoz': RecienNacido.APEGO_PRECOZ_NADA,
@@ -47,6 +50,8 @@ class RegistroView(View):
                        'medicamento_formset':medicamento_formset,
                        'historial_madre_form': historial_madre,
                        'gestacion': gestacion,
+                       'actividad_gestacion':actividad_gestacion,
+                       'situacion_gestacion':situacion_gestacion,
                        'nacimiento': nacimiento,
                        'recien_nacido': datos_recien_nacido,
                        'alimentacion': alimentacion,
@@ -99,6 +104,9 @@ class RegistroView(View):
         descripcion_paciente = DescripcionPacienteForm(request.POST, prefix="descripcion_paciente")
         medicamento_formset = MedicamentoFormset(request.POST, instance=Descripcion())
         gestacion = DesarrolloDeLaGestacionForm(request.POST, prefix="gestacion")
+        actividad_gestacion = ActividadGestacionFormset(request.POST, instance=Gestacion())
+        situacion_gestacion = SituacionGestacionFormset(request.POST, instance=Gestacion())
+
         datos_nacimiento = NacimientoForm(request.POST, prefix="nacimiento")
         datos_recien_nacido = RecienNacidoForm(request.POST, prefix="recien_nacido")
         datos_primeros_dias = PrimerosDiasForm(request.POST, prefix="primeros_dias")
@@ -166,6 +174,8 @@ class RegistroView(View):
                            'medicamento_formset':medicamento_formset,
                            'historial_madre_form': historial_madre,
                            'gestacion': gestacion,
+                           'actividad_gestacion':actividad_gestacion,
+                           'situacion_gestacion':situacion_gestacion,
                            'nacimiento': datos_nacimiento,
                            'recien_nacido': datos_recien_nacido,
                            'alimentacion': datos_alimentacion,

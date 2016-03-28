@@ -190,6 +190,50 @@
 	      			</div>
 	      		</div>
 	      	{% endfor %}
+
+                              
+                    <div class="form-group span6">
+                        <label for="code" style="width: 20%;">Presentó algunas de las situaciones durante la gestación? Marque el trimestre cuando sucedió</label>
+                        
+                        {{ situacion_gestacion.management_form }}
+                        <table class="table table-bordered table-condensed">
+                            <tr>
+                                <th>Situación presentada</th>
+                                <th>Periodo</th>
+                                
+                            </tr>
+                            {% for form in situacion_gestacion %}
+                                {{ form.id }}
+                                <tr>
+                                    <td>{{form.nombre_situacion}}</td>
+                                    <td>{{form.periodo}}</td>
+                                </tr>
+                            {% endfor %}       
+                            </table>
+                    </div>
+            
+                              
+                    <div class="form-group span6">
+                        <label for="code" style="width: 20%;">Seleccione si ha realizado las siguientes actividades durante el embarazo</label>
+                        
+                        {{ actividad_gestacion.management_form }}
+                        <table class="table table-bordered table-condensed">
+                            <tr>
+                                <th>Situación presentada</th>
+                                <th>Periodo</th>
+                                
+                            </tr>
+                            {% for form in actividad_gestacion %}
+                                {{ form.id }}
+                                <tr>
+                                    <td>{{form.nombre_actividad}}</td>
+                                    <td>{{form.periodo}}</td>
+                                </tr>
+                            {% endfor %}       
+                            </table>
+                    </div>
+            
+            
 		</div>
 	</div>
 

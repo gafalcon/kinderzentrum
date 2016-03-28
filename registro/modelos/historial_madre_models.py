@@ -21,7 +21,7 @@ class HistorialMadre(models.Model):
 
 
 class Gestacion(models.Model):
-    CHOICES_SENTIMIENTOS = [('felicidad','Felicidad'),('miedo','Miedo'),('júbilo','Júbilo'),('ansiedad','Ansiedad'),('estres','Estres'),('incertidumbre','Incertidumbre')]
+    CHOICES_SENTIMIENTOS = [('felicidad','Felicidad'),('miedo','Miedo'),('júbilo','Júbilo'),('ansiedad','Ansiedad'),('estres','Estrés'),('incertidumbre','Incertidumbre')]
     CHOICES_MOMENTO = [('pocos_dias','A los pocos días'),('primer_mes','El primer mes'),('segundo_mes','El segundo mes'),('tercer_mes','El tercer mes'),('cuarto_mes','El cuarto mes'),('quinto_mes','El quinto mes'),('sexto_mes','El sexto mes'),('septimo_mes','El séptimo mes')]
     CHOICES_COMUNICA_BEBE = [('canto','Canto'),('cuentos','Cuentos'),('musica','Música (audífonos para gestación)'),('caricias','Caricias'),('estimulacion_intrauterina','Estimulación intrauterina (luces en barriga o clash overflow)'),('ninguno','Ninguno')]
     
@@ -39,7 +39,7 @@ class Actividad_Gestacion(models.Model):
     ACTIVIDADES_CHOICES = ('Fumar','Ingerir Alcohol','Consumir drogas','Realizar radiografías','Trabajar')
     tipo = models.SmallIntegerField()
     periodo = models.SmallIntegerField(choices=CHOICES_TRIMESTRES)
-    nombre_actividad = models.CharField(max_length=100, blank=False, default="---")
+    nombre_actividad = models.CharField(max_length=100, blank=True)
     gestacion = models.ForeignKey(Gestacion, on_delete=models.CASCADE)
 
 class Situacion_Gestacion(models.Model):
@@ -51,6 +51,6 @@ class Situacion_Gestacion(models.Model):
                            'Nauseas','Otras enfermedades')
     tipo = models.SmallIntegerField()
     periodo = models.SmallIntegerField(choices=CHOICES_TRIMESTRES)
-    nombre_situacion = models.CharField(max_length=100, blank=False, default="---")
+    nombre_situacion = models.CharField(max_length=100, blank=True)
     gestacion = models.ForeignKey(Gestacion, on_delete=models.CASCADE)
 

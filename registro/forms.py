@@ -2,7 +2,7 @@
 from django import forms
 from django.forms import ModelForm
 from django.forms.extras.widgets import SelectDateWidget
-from modelos.historial_madre_models import HistorialMadre, Gestacion
+from modelos.historial_madre_models import HistorialMadre, Gestacion, Actividad_Gestacion, Situacion_Gestacion, CHOICES_TRIMESTRES
 from modelos.nacimiento_models import Nacimiento
 from modelos.familiars_models import Familiar, Hermano, DatosFamiliaresOtros
 from modelos.paciente_model import Paciente
@@ -191,7 +191,7 @@ class DesarrolloDeLaGestacionForm(ModelForm):
 
     class Meta:
         model = Gestacion
-        fields = ['sentimientos','num_embarazo','curso_prenatal','momento_desc_embarazo',
+        fields = ['sentimientos','momento_desc_embarazo','num_embarazo','curso_prenatal',
                   'lugar_curso_prenatal','carga_horaria','vacuna_tetano','comunicacion_bebe',
                   ]
         widgets = {'sentimientos': forms.CheckboxSelectMultiple(choices=model.CHOICES_SENTIMIENTOS),
@@ -200,7 +200,20 @@ class DesarrolloDeLaGestacionForm(ModelForm):
                    'comunicacion_bebe': forms.CheckboxSelectMultiple(choices=model.CHOICES_COMUNICA_BEBE)
 
         }
-   
+
+class SituacionGestacionForm(ModelForm):
+    class Meta:
+        model = Situacion_Gestacion
+        fields=['nombre_situacion','periodo']
+        widgets={'periodo': forms.Select(choices=CHOICES_TRIMESTRES)}
+
+class ActividadGestacionForm(ModelForm):
+    class Meta:
+        model = Actividad_Gestacion
+        fields=['nombre_actividad','periodo']
+        widgets={'periodo': forms.Select(choices=CHOICES_TRIMESTRES)}
+
+'''  
 class Ficha_DesarrolloDeLaGestacionForm(forms.Form):
     CHOICES_SENTIMIENTOS = [('felicidad','Felicidad'),('miedo','Miedo'),('júbilo','Júbilo'),('ansiedad','Ansiedad'),('estres','Estres'),('incertidumbre','Incertidumbre')]
     CHOICES_MOMENTO = [('pocos_dias','A los pocos días'),('primer_mes','El primer mes'),('segundo_mes','El segundo mes'),('tercer_mes','El tercer mes'),('cuarto_mes','El cuarto mes'),('quinto_mes','El quinto mes'),('sexto_mes','El sexto mes'),('septimo_mes','El séptimo mes')]
@@ -233,15 +246,7 @@ class Ficha_DesarrolloDeLaGestacionForm(forms.Form):
     pregunta_6_9_c = forms.MultipleChoiceField(choices=CHOICES_TRIMESTRES, widget=forms.CheckboxSelectMultiple(attrs={'class':'form-control'}), label="Consumir drogas:")
     pregunta_6_9_d = forms.MultipleChoiceField(choices=CHOICES_TRIMESTRES, widget=forms.CheckboxSelectMultiple(attrs={'class':'form-control'}), label="Realizar radiografías:")
     pregunta_6_9_e = forms.MultipleChoiceField(choices=CHOICES_TRIMESTRES, widget=forms.CheckboxSelectMultiple(attrs={'class':'form-control'}), label="Trabajar:")
-    
-    
-
-    
-   
-    
-    
-    
-    
+'''   
     
 
 class NacimientoForm(ModelForm):
@@ -541,8 +546,14 @@ MedicamentoFormset = inlineformset_factory(Descripcion, Medicamento,
                                        can_delete=False
                                        )
 
+ActividadGestacionFormset = formset_factory(ActividadGestacionForm, max_num=5)
+
+SituacionGestacionFormset = formset_factory(SituacionGestacionForm, max_num=11)
+
 DatosMedicoFormset = formset_factory(DatosMedicoForm, extra=2)
 DatosFamiliaresFormset = formset_factory(DatosFamiliaresForm, extra=2)
+
+
 
 data_formsets = {'form-TOTAL_FORMS': '2',
                'form-INITIAL_FORMS': '0',
