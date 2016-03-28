@@ -104,8 +104,8 @@ class RegistroView(View):
         descripcion_paciente = DescripcionPacienteForm(request.POST, prefix="descripcion_paciente")
         medicamento_formset = MedicamentoFormset(request.POST, instance=Descripcion())
         gestacion = DesarrolloDeLaGestacionForm(request.POST, prefix="gestacion")
-        actividad_gestacion = ActividadGestacionFormset(request.POST, instance=Gestacion())
-        situacion_gestacion = SituacionGestacionFormset(request.POST, instance=Gestacion())
+        actividad_gestacion = ActividadGestacionFormset(request.POST)
+        situacion_gestacion = SituacionGestacionFormset(request.POST)
 
         datos_nacimiento = NacimientoForm(request.POST, prefix="nacimiento")
         datos_recien_nacido = RecienNacidoForm(request.POST, prefix="recien_nacido")
