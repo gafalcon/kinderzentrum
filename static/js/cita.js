@@ -51,3 +51,41 @@ function previousPanel(){
 	}
 }
 
+function setPanelVisible(id){
+	var i;	
+	for(i=1; i<=total_pages; i++){
+		if(i==id){
+			var panel = $("#panel"+i);
+			panel.attr("class","show panel panel-default");
+		} else {
+			var panel = $("#panel"+i);
+			panel.attr("class","hide panel panel-default");
+		}
+	}
+	for(i=1; i<=total_pages; i++){
+		if(i==id){
+			var nav_i = $("#nav"+i);
+			nav_i.attr("class","current");
+		} else {
+			var nav_i = $("#nav"+i);
+			nav_i.attr("class","");
+		}
+	}
+}
+
+$(function() {
+
+  	/* Creamos un widget de calendario con jquery-ui */
+    $( ".datepicker2" ).datepicker({
+		changeMonth: true,
+		changeYear: true,
+		yearRange: "2000:2030",
+		dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+		monthNamesShort: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+		'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+		dateFormat: 'dd/mm/yy',
+		//mas opciones
+    });
+
+    });
+

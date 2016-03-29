@@ -11,13 +11,13 @@ from django.forms.extras.widgets import SelectDateWidget
 
 class Ficha_DatosForm(forms.Form):
     TIPOTERAPIACHOICES = ((1, "REHABILITACIÓN FÍSICA"),
-                         (2, "ESTIMULACIÓN TEMPRANA"),
-                         (3, "INTEGRACIÓN SENSORIAL"),
-                         (4, "HIPOTERAPIA"),
-                         (5, "LENGUAJE"),
-                         (6, "PSICOPEDAGÓGICA"),
-                         (7, "TERAPIA FAMILIAR"),
-                         (8, "NINGUNA"))
+                          (2, "ESTIMULACIÓN TEMPRANA"),
+                          (3, "INTEGRACIÓN SENSORIAL"),
+                          (4, "HIPOTERAPIA"),
+                          (5, "LENGUAJE"),
+                          (6, "PSICOPEDAGÓGICA"),
+                          (7, "TERAPIA FAMILIAR"),
+                          (8, "NINGUNA"))
     TERAPISTACHOICES = (('1', 'Kerly Maldonado'), 
                         ('2', 'Silvia Sánchez'))
     HORARIOCHOICES = (('08:00 - 09:00', '08:00 - 09:00'),
@@ -37,7 +37,10 @@ class Ficha_DatosForm(forms.Form):
     TipoTerapia = forms.ChoiceField(choices=TIPOTERAPIACHOICES, widget=forms.Select(attrs={'class':'form-control', 'required': 'required'}), 
                                  label='Tipo de terapia')
     Terapista = forms.ChoiceField(choices=TERAPISTACHOICES, widget=forms.Select(attrs={'class':'form-control', 'required': 'required'}), label='Terapista')
-    fecha_cita = forms.DateField(required=False, 
-                                 label='Fecha',
-                                 widget=SelectDateWidget(empty_label=("Año", "Mes", "Día"),years=range(2000, 2050)))   
+    fecha_cita = forms.DateField( input_formats = ['%m/%d/%Y'],
+                                  widget=forms.TextInput(attrs=
+                                                         {
+                                                             'class':'datepicker2',
+                                                             'required': 'required'
+                                                         }))
     Horario = forms.ChoiceField(choices=HORARIOCHOICES, widget=forms.Select(attrs={'class':'form-control', 'required': 'required'}))
