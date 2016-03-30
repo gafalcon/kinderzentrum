@@ -37,7 +37,8 @@
                </div>
               </div>
          {% endfor %}
-        </div>
+         <input type="submit" value="Submit" />
+    </div>
   </div>
 
 
@@ -52,14 +53,54 @@
               </div>
             </div>
           {% endfor %}
+          <button type="button" id = "mostrar">Aceptar</button>
     </div>
+
+    <div id = "panel-datos" class="panel-datos" style="display:none;">
+
+    <table id = "table_even">
+    <tr>
+        <th>Paciente&nbsp;&nbsp;</th>
+        <th>Fecha&nbsp;&nbsp;</th>
+        <th>Hora&nbsp;&nbsp;</th>        
+    </tr>
+    
+    <tr> 
+        <td>Raul Rodriguez</td>       
+        <td>Miercoles 30/marzo/2016</td>
+        <td>08:00 - 09:00</td>
+        <td><button type="button" >Editar</button></td>
+        <td><button type="button" >Eliminar</button></td>
+    </tr>
+    <tr> 
+        <td>Sonia Mendoza</td>       
+        <td>Miercoles 30/marzo/2016</td>
+        <td>09:00 - 10:00</td>
+         <td><button type="button" >Editar</button></td>
+        <td><button type="button" >Eliminar</button></td>
+        
+    </tr>
+   
+    </table>
+    </div>
+
+
   </div>
 
-	<input id="enviar" class="btn btn-default" type="submit" value="Aceptar"/>	
+	<!--input id="enviar" class="btn btn-default" type="submit" value="Aceptar"/-->	
 </form>
 
 {% endblock %}
 
 {% block js %}
+<script>
+$(document).ready(function(){
+    $("#mostrar").on( "click", function() {
+      $('#panel-datos').show(); //muestro mediante id
+     
+     });
+   
+  });
 
+</script>
 {% endblock js %}
