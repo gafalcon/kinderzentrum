@@ -20,7 +20,7 @@
 <div class="dotstyle dotstyle-tooltip" style="margin: 4% 0px 1% 40%;">      
   <ul id="dots_nav">
     <li id="nav1" onclick="setPanelVisible(1)" class="current" ><a href="#">Reservar Cita</a></li>
-    <li id="nav2" onclick="setPanelVisible(2)"><a href="#" >Consultar Citas</a></li>
+    <li id="nav2" onclick="setPanelVisible(2)"><a href="#" >Consultar Citas por terapista</a></li>
   </ul>
 </div>
 
@@ -38,8 +38,24 @@
               </div>
          {% endfor %}
         </div>
-      </div>
-	<input id="enviar" class="btn btn-default" type="submit" value="Guardar Datos"/>	
+  </div>
+
+
+  <div id="panel2" class="hide panel panel-default">
+    <div class="panel-heading">Consulta de citas por Terapista</div>
+    <div class="panel-body">      
+      {% for field in ficha_cons_cita_terap_form %}
+          <div class="row">           
+            <div class="form-group span6">
+              <label for="code" style="width: 20%;">{{field.label}}</label>
+                {{ field }}               
+              </div>
+            </div>
+          {% endfor %}
+    </div>
+  </div>
+
+	<input id="enviar" class="btn btn-default" type="submit" value="Aceptar"/>	
 </form>
 
 {% endblock %}

@@ -44,3 +44,24 @@ class Ficha_DatosForm(forms.Form):
                                                              'required': 'required'
                                                          }))
     Horario = forms.ChoiceField(choices=HORARIOCHOICES, widget=forms.Select(attrs={'class':'form-control', 'required': 'required'}))
+
+
+class Ficha_ConsCitaTerapistaForm(forms.Form):
+
+    TERAPISTACHOICES = (('1', 'Kerly Maldonado'), 
+                        ('2', 'Silvia Sánchez'))
+    Terapista  = forms.ChoiceField(choices=TERAPISTACHOICES, widget=forms.Select(attrs={'class':'form-control', 'required': 'required'}), label='Terapista')
+    fecha_cita_inicio = forms.DateField(  input_formats = ['%d/%m/%Y'],
+                                          label = "Fecha inicial",
+                                          widget=forms.TextInput(attrs=
+                                          {
+                                            'class':'datepicker2',
+                                            'required': 'required'
+                                          }))
+    fecha_cita_fin = forms.DateField( input_formats = ['%d/%m/%Y'],
+                                      label = "Fecha final",
+                                      widget=forms.TextInput(attrs=
+                                      {
+                                        'class':'datepicker2',
+                                        'required': 'required'
+                                      }))
