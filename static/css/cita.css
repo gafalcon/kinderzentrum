@@ -633,3 +633,55 @@ input[name=paciente-sexo] {
 	margin-left: 0px !important;
 	cursor: pointer;
 }
+
+#panel-datos{
+  width: 100%;
+  height: 100px;
+  background-color: #FFFFE0;
+}
+
+table {
+  font: 14px/24px Verdana, Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  }
+
+th {
+  padding: 0 0.5em;
+  text-align: left;
+
+  }
+
+tr.yellow td {
+  border-top: 1px solid #FB7A31;
+  border-bottom: 1px solid #FB7A31;
+  background: #FFC;
+  }
+
+td {
+  border-bottom: 1px solid #CCC;
+  padding: 0 0.5em;
+  }
+
+td:first-child {
+  width: 190px;
+  }
+
+td+td {
+  border-left: 1px solid #CCC;
+  text-align: center;
+  }
+
+
+#table_even tr:nth-child(odd) td {
+    background-color: #fbfbfb
+} /*odd*/
+
+#table_even tr:nth-child(even) td {
+    background-color: #e8ecee
+} /* even*/
+
+#table_even tr:hover td {
+    background-color: #fffbae;
+} /* hovering */
+
