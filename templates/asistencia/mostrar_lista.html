@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %} Kinderzentrum {% endblock %}
+{% block css %}
+	<link rel="stylesheet" href="/static/css/jquery-ui.css" />
+    <link rel="stylesheet" href="/static/css/bootstrap.css" />
+    <link rel="stylesheet" href="/static/css/cita.css" />
+{% endblock css %}
+
+{% load static %}
+{% load table_tags %}
+
+{% block content %}
+    <div class="container" style="margin-top: 10px">
+            <h2>Asistencia niños</h2>
+            <br />
+            {% render_table paciente %}
+        </div>
+{% endblock content %}

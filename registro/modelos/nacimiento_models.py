@@ -16,4 +16,4 @@ class Nacimiento(models.Model):
     primera_parte_cuerpo = models.CharField(max_length=50)
     complicaciones = models.CharField(max_length=200)
     complicaciones_cordon = models.CharField(max_length=10)
-    medicamentos_parto = models.Field(max_length=10)
+    #medicamentos_parto = models.Field(max_length=10)
