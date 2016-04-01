@@ -60,3 +60,4 @@ target/
 .tern*
 .~lock*
 *org
+env

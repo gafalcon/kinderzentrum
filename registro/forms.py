@@ -9,8 +9,9 @@ from modelos.paciente_model import Paciente
 from modelos.alimentacion_models import AlimentacionCostumbres, SuplementoAlimenticio
 from modelos.primeros_dias_model import PrimerosDias
 from modelos.recien_nacido_model import RecienNacido
-from django.forms import inlineformset_factory
+from django.forms import inlineformset_factory, BaseInlineFormSet
 import datetime
+
 #from django.contrib.auth.models import User
 CHOICES_SI_NO_DES = [(True,'Si'),(False,'No'), (None,'Desconoce')]
 
@@ -360,6 +361,7 @@ class DatosFamiliaresOtrosForm(ModelForm):
 
     orientacion_a_institucion = forms.ChoiceField(choices=DatosFamiliaresOtros.ORIENTACION_CHOICES,
                                                   widget=forms.RadioSelect, label="Quién los orientó a ésta institución?")
+    otro_orientador = forms.CharField(required=False)
     class Meta:
         model = DatosFamiliaresOtros
         fields = '__all__'
@@ -370,9 +372,11 @@ class DatosFamiliaresOtrosForm(ModelForm):
     def clean(self):
         cleaned_data = super(DatosFamiliaresOtrosForm, self).clean()
         numero_hermanos = cleaned_data.get('numero_hermanos')
-        #difiere_alimentacion = cleaned_data.get('difiere_alimentacion')
-        print("Numer hermanos", numero_hermanos)
-        if(numero_hermanos > 0):
+        orientador =  cleaned_data.get('orientacion_a_institucion')
+        if orientador and orientador == DatosFamiliaresOtros.ORIENTACION_OTRO:
+            if not cleaned_data.get('otro_orientador'):
+                self.add_error('otro_orientador', "Debe llenar éste campo")
+        if numero_hermanos > 0:
             trans_hermanos = cleaned_data.get('transtorno_hermanos')
             if trans_hermanos:
                 hermano_transtorno = cleaned_data.get("hermano_transtorno")
@@ -383,21 +387,58 @@ class DatosFamiliaresOtrosForm(ModelForm):
                 if not cleaned_data.get('transtorno'):
                     self.add_error('transtorno', "Debe llenar éste campo")
 
+    def save(self):
+        model = super(DatosFamiliaresOtrosForm, self).save(commit=False)
+        orientador = self.cleaned_data.get('orientacion_a_institucion')
+        numero_hermanos = self.cleaned_data.get('numero_hermanos')
+        if orientador == DatosFamiliaresOtros.ORIENTACION_OTRO:
+            model.orientacion_a_institucion = self.cleaned_data.get('otro_orientador')
+        if numero_hermanos <= 0:
+            model.transtorno_hermanos = None
+            model.hermano_transtorno = 0
+            model.transtorno = ''
+        model.save()
+        return model
+
        
+class SuplementoFormset(BaseInlineFormSet):
+    def __init__(self, *args, **kwargs):
+        super(SuplementoFormset, self).__init__(*args, **kwargs)
+        for form in self.forms:
+            form.empty_permitted = False
+
 SuplementosFormset = inlineformset_factory(AlimentacionCostumbres, SuplementoAlimenticio,
-                                           fields = '__all__',
-                                           can_delete=False
+                                           formset=SuplementoFormset,
+                                           fields='__all__',
+                                           can_delete=False,
+                                           extra=1
 )
+
+class HermanoFormset(BaseInlineFormSet):
+    def __init__(self, *args, **kwargs):
+        super(HermanoFormset, self).__init__(*args, **kwargs) 
+        for form in self.forms:
+            form.empty_permitted = False
+
+
+class HermanoForm(ModelForm):
+    fecha_nacimiento = forms.DateField(input_formats=['%m/%d/%Y'],
+                                       label='Fecha de nacimiento',
+                                       widget=forms.TextInput(attrs={'class':'datepicker form-control'}))
+    class Meta:
+        model = Hermano
+        fields = '__all__'
 
 HermanosFormset = inlineformset_factory(DatosFamiliaresOtros, Hermano,
                                         fields='__all__',
-                                        can_delete=False,
-                                        widgets={'fecha_nacimiento': forms.TextInput(attrs={'class':'datepicker form-control'}),
-                                                 'nombres': forms.TextInput(attrs={'class': 'form-control'}),
-                                                 'apellidos': forms.TextInput(attrs={'class': 'form-control'})
-                                        }
-) 
-
+                                        form=HermanoForm,
+                                        formset=HermanoFormset,
+                                        can_delete=False)
+                                        # widgets={'fecha_nacimiento': forms.TextInput(attrs={'class':'datepicker form-control'}),
+                                        #          'nombres': forms.TextInput(attrs={'class': 'form-control'}),
+                                        #          'apellidos': forms.TextInput(attrs={'class': 'form-control'})
+                                        # }
+ 
 
 
 

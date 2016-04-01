@@ -236,14 +236,16 @@
 								<th>Cantidad</th>
 							</tr>
 							{% for form in suplementos_formset %}
-								{{ form.id }}
-								<tr>
+								<tr class="row-suplemento">
+									{{ form.id }}
 									<td>{{form.frecuencia}}</td>
 									<td>{{form.tipo}}</td>
 									<td>{{form.cantidad}}</td>
 								</tr>
 							{% endfor %}
 						</table>
+						<button id="btn-add-suplemento" class="btn-default btn">Agregar otro</button>
+						<button id="btn-delete-suplemento" class="btn-default btn">Eliminar</button>
 					</div>		
 				{% endif %}
 
@@ -257,8 +259,15 @@
 		<div class="panel-body">			
 			{% for field in datos_familiares %}
 		  		<div class="form-group">
-					<label for="code">{{field.label}}</label> <br/>
-					{{ field }}			<br/>      		
+					{% if forloop.counter == 8 %}
+						<div style="display:none;">
+							{{ field }}
+						</div>
+					{% else %}
+						<label for="code">{{field.label}}</label> <br/>
+						{{ field }}
+					{% endif %}
+
 	      		</div>
 				{% if forloop.counter == 1 %}
 					<div id="hermanos-formset" style="display: none;">
@@ -271,8 +280,8 @@
 								<th>Fecha de Nacimiento</th>
 							</tr>
 							{% for form in hermanos_formset %}
-								{{ form.id }}
-								<tr>
+								<tr class="row-hermanos">
+									{{ form.id }}
 									<td>{{form.nombres}}</td>
 									<td>{{form.apellidos}}</td>
 									<td>{{form.fecha_nacimiento}}</td>

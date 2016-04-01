@@ -68,7 +68,7 @@ class DatosFamiliaresOtros(models.Model):
     
     numero_hermanos = models.PositiveSmallIntegerField("Número de hermanos")
     transtorno_hermanos = models.NullBooleanField("¿Alguno de los hermanos tiene algún tipo de transtorno?")
-    hermano_transtorno = models.PositiveSmallIntegerField("¿Cuál de los hermanos? (Orden en que nació)", blank=True)
+    hermano_transtorno = models.PositiveSmallIntegerField("¿Cuál de los hermanos? (Orden en que nació)", blank=True, null=True)
     transtorno = models.CharField("Qué transtorno?", max_length=50, blank=True)
     alteracion_desarrollo = models.NullBooleanField("¿Ha existido algún tipo de alteración en su desarrollo?")
     tipo_enfermedad_parientes = models.CharField("Detallar el tipo de enfermedad que se ha presentado en los parientes", max_length=256, blank=True)
