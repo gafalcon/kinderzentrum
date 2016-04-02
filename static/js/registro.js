@@ -74,7 +74,7 @@ $(function() {
     $( ".datepicker" ).datepicker({
 		changeMonth: true,
 		changeYear: true,
-		yearRange: "1950:2012",
+		yearRange: "1950:2012"
 		// Podemos poner mas opciones
     });
 

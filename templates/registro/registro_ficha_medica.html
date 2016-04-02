@@ -12,7 +12,7 @@
 {% endblock js %}
 
 {% block content %}
-<div class="dotstyle dotstyle-tooltip" style="margin: 4% 0px 1% 40%;">			
+<div class="dotstyle dotstyle-tooltip" style="margin: 4% 0px 1% 30%;">			
 	<ul id="dots_nav">
 		<li id="nav1" onclick="setPanelVisible(1)" class="current" ><a href="#">Paciente</a></li>
 		<li id="nav2" onclick="setPanelVisible(2)"><a href="#" >Familiares</a></li>
@@ -24,7 +24,7 @@
 		<li id="nav8" onclick="setPanelVisible(8)"><a href="#">Datos del Recién Nacido</a></li>		
 		<li id="nav9" onclick="setPanelVisible(9)"><a href="#">Primeros Días de Vida</a></li>		
 		<li id="nav10" onclick="setPanelVisible(10)"><a href="#">Alimentación y Costumbres</a></li>		
-		<li id="nav11" onclick="setPanelVisible(11)"><a href="#">Historia Familiar</a></li>		
+		<li id="nav11" onclick="setPanelVisible(11)"><a href="#">Historia Familiar</a></li>
 	</ul>
 </div>
 
@@ -39,11 +39,11 @@
 		  			<!--div class="form-group col-xs-7 col-lg-1"-->
 		  			<div class="form-group span6">
 			    		<label for="code" style="width: 20%;">{{field.label}}</label>
-			    		{% if field.label == "Sexo" %}
-			    			{% for radio in ficha_datos_form.sexo%}
+			    		{% if field.name == "sexo" %}
+			    			{% for radio in field %}
 								
 								<label class="radio-inline" style="margin: 5px 0px 10px;" for="{{ radio.id_for_label}}">
-									{{radio.tag}}
+									{{ radio.tag }}
 									{{ radio.choice_label }}
 								</label>
 
@@ -60,29 +60,37 @@
 
 	<div id="panel2" class="hide panel panel-default">
 		<div class="panel-heading">Datos Familiares</div>
+        {{ datos_familia_formset.management_form }}
+        {% for form in datos_familia_formset %}
 		<div class="panel-body">			
-			{% for field in ficha_datos_familia_form %}
+			{% for field in form %}
 	  			<div class="row">		  			
 		  			<div class="form-group span6">
 			    		<label for="code" style="width: 20%;">{{field.label}}</label>
 			      		{{ field }}			      		
 	      			</div>
 	      		</div>
-
-				{% if forloop.counter == 4 %}
-					<h4>Trabajo</h4>
-				{% endif %}
-				{% if forloop.counter == 7 %}
+                <!-- Colocar etiqueta de Domicilio luego del campo nivel de estudio -->
+				{% if field.name == "nivel_estudio" %}
 					<h4>Domicilio</h4>
+				{% endif %}
+                <!-- Colocar etiqueta de Trabajo luego del campo telefonos (domicilio) -->
+				{% if field.name == "telefonos" %}
+					<h4>Trabajo</h4>
 				{% endif %}
 	      	{% endfor %}
 		</div>
+        <hr>
+        {% endfor %}
+         <button type="button" class="btn btn-primary btn-block">Agregar nuevo familiar</button>
 	</div>
 
 	<div id="panel3" class="hide panel panel-default">
-		<div class="panel-heading">Datos del M&eacute;dico</div>
-		<div class="panel-body">			
-			{% for field in ficha_datos_medico_form %}
+		<div class="panel-heading">Datos del Médico</div>
+        {{ datos_medico_formset.management_form }}
+        {% for form in datos_medico_formset %}
+		<div class="panel-body formset-medico">			
+			{% for field in form %}
 	  			<div class="row">		  			
 		  			<div class="form-group span6">
 			    		<label for="code" style="width: 20%;">{{field.label}}</label>
@@ -92,56 +100,48 @@
 
 	      	{% endfor %}
 		</div>
+        <hr>
+        {% endfor %}
+        <button type="button" class="btn btn-primary btn-block">Agregar nuevo médico</button>
 	</div>
-
 
 	<div id="panel4" class="hide panel panel-default">
 		<div class="panel-heading">Descripcion del niño</div>
-		<div class="panel-body">			
-			{% for field in descripcion_paciente %}
-	  			<div class="row">		  			
-		  			<div class="form-group span6">
-			    		<label for="code" class="col-xs-2" style="margin-left:2%">{{field.label}}</label>			      		
-			      		{% if field.label == "Que tipo de terapia realiza?" or field.label == "Ha presentado su hijo(a) algun tipo de dificultades en estas aereas? marque todas las opciones que desee." %}		    			
-			    			{% for choice in field.field.choices%}			    				
-			    				{%if choice.0 == 'seguridad_si_mismo' or choice.0 == 'suenio' %}<label class="checkbox-inline" style="margin-left: 3%;">{% else %}<label class="checkbox-inline">{% endif %}
-								  	<input type="checkbox" id="{{choice.0}}" value="{{choice.0}}" style="margin: 3px 0px 0px -90px; cursor: pointer;"> {{choice.1}}
-								</label>								
-			    			{% endfor%}
-			      		
-			      		{% else %}
-			      		{{ field }}	
-			      		{% endif %}
-	      			</div>
-	      		</div>
+        <div class="panel-body">			
+			{% for field in descripcion_paciente %}			
+	  			<div class="form-group">
+		    		<label for="code">{{field.label}}</label>			      		
+		      			{{ field }}	
+      			</div>
 	      	{% endfor %}
+            <div id="medicamentos-formset">
+                                <h4>Medicamentos</h4>
+                                {{ medicamento_formset.management_form }}
+                                <table class="table table-bordered table-condensed">
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Dosis diaria</th>
+                                    </tr>
+                                    {% for form in medicamento_formset %}
+                                        {{ form.id }}
+                                        <tr>
+                                            <td>{{form.nombre}}</td>
+                                            <td>{{form.dosis_diaria}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
 		</div>
 	</div>
 
 	<div id="panel5" class="hide panel panel-default">
 		<div class="panel-heading">Historial de la Madre</div>
 		<div class="panel-body">			
-			{% for field in historial_madre_form %}
-	  			<div class="row">		  			
-		  			<div class="form-group span6">
-			    		<label for="code" class="col-xs-2" style="width: 20%;">{{field.label}}</label>			      		
-			      		{% if field.label == "Indique si durante el embarazo sufrio algunas de las siguientes enfermedades?" %}	
-			    			{% for choice in field.field.choices%}			    				
-			    				{%if choice.0 == 'ninguna_enf' or choice.0 == 'proble_azucar' %}<label class="checkbox-inline" style="margin-left: 3%;">{% else %}<label class="checkbox-inline">{% endif %}
-								  	<input type="checkbox" id="{{choice.0}}" value="{{choice.0}}" style="margin: 3px 0px 0px -90px; cursor: pointer;"> {{choice.1}}
-								</label>								
-			    			{% endfor%}
-			      		{% elif field.label == "Tuvo usted alguna defuncion fetal antes de concebir al bebe/ninio(a) que trae a consulta?" or field.label == "Ha tenido hijos muertos?" or field.label == "Utilizo algun metodo anticonceptivo antes de estar embarazada?" %}
-			      			{% for choice in field.field.choices%}
-			    				<label class="radio-inline" style="margin: 5px 0px 10px;">
-								  	<input type="radio" name="inlineRadioOptions" id="{{choice.0}}" value="{{choice.0}}" style="cursor: pointer;"> {{choice.1}}
-								</label>
-			    			{% endfor%}
-			      		{% else %}
-			      		{{ field }}	
-			      		{% endif %}	      		
-	      			</div>
-	      		</div>
+			{% for field in historial_madre_form %}	  				  		
+	  			<div class="form-group">
+		    		<label for="code">{{field.label}}</label>			      		
+		      		{{ field }}			      		
+      			</div>	      		
 	      	{% endfor %}	
 		</div>	
 	</div>
@@ -149,28 +149,67 @@
 	<div id="panel6" class="hide panel panel-default">
  		<div class="panel-heading">Desarrollo de la Gestación</div>
 		<div class="panel-body">			
-			{% for field in madre %}
-	  			<div class="row">		  			
-		  			<div class="form-group span6">
-			    		<label for="code" style="width: 20%;">{{field.label}}</label>
-			      		{{ field }}			      		
-	      			</div>
-	      		</div>
+			{% for field in gestacion %}	  			
+	  			<div class="form-group">
+		    		<label for="code">{{field.label}}</label>
+		      		{{ field }}			      		
+      			</div>
 	      	{% endfor %}
+                             
+                <div class="form-group">
+                    <label for="code">Presentó algunas de las situaciones durante la gestación? Marque el trimestre cuando sucedió</label>
+                    
+                    {{ situacion_gestacion.management_form }}
+                    <table class="table table-bordered table-condensed">
+                        <tr>
+                            <th>Situación presentada</th>
+                            <th>Periodo</th>
+                            
+                        </tr>
+                        {% for form in situacion_gestacion %}
+                            {{ form.id }}
+                            <tr>
+                                <td>{{form.nombre_situacion}}</td>
+                                <td>{{form.periodo}}</td>
+                            </tr>
+                        {% endfor %}       
+                        </table>
+                </div>
+                                 
+                <div class="form-group">
+                    <label for="code">Seleccione si ha realizado las siguientes actividades durante el embarazo</label>
+                    
+                    {{ actividad_gestacion.management_form }}
+                    <table class="table table-bordered table-condensed">
+                        <tr>
+                            <th>Situación presentada</th>
+                            <th>Periodo</th>
+                            
+                        </tr>
+                        {% for form in actividad_gestacion %}
+                            {{ form.id }}
+                            <tr>
+                                <td>{{form.nombre_actividad}}</td>
+                                <td>{{form.periodo}}</td>
+                            </tr>
+                        {% endfor %}       
+                        </table>
+                </div>
 		</div>
 	</div>
 
-	<div id="panel7" class="hide panel panel-default">
- 		<div class="panel-heading">Nacimiento</div>
-		<div class="panel-body">			
-			{% for field in nacimiento %}
-		  		<div class="form-group">
-					<label for="code">{{field.label}}</label> <br/>
-					{{ field }}			<br/>      		
-	      		</div>
-	  		{% endfor %}
-		</div>
-	</div>
+    <div id="panel7" class="hide panel panel-default">
+        <div class="panel-heading">Nacimiento del niño(a)</div>
+        <div class="panel-body">            
+            {% for field in nacimiento %}
+                <div class="form-group">
+                    <label for="code">{{field.label}}</label>
+                    {{ field }}          
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+	
 	<div id="panel8" class="hide panel panel-default">
 		<div class="panel-heading">Datos del Recién Nacido</div>
 		<div class="panel-body">			
@@ -296,7 +335,6 @@
 			
 		</div>
 	</div>
-
 
 	
 	<!--ul class="pager">

@@ -23,7 +23,7 @@ class Familiar(models.Model):
     TRABAJO_MEDIO_TIEMPO = 2 
     TRABAJO_POR_HORAS = 3
     JORNADA_TRABAJO_CHOICES = (
-        (TRABAJO_NO_TRABAJA, ""),
+        (TRABAJO_NO_TRABAJA, "No Trabaja"),
         (TRABAJO_TIEMPO_COMPLETO, "Tiempo completo"),
         (TRABAJO_MEDIO_TIEMPO, "Medio tiempo"),
         (TRABAJO_POR_HORAS, "Por horas")
