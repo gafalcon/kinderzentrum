@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %} Kinderzentrum - Administración de usuarios {% endblock %}
+
+{% block css %}
+
+    <link rel="stylesheet" href="/static/css/bootstrap.css" />
+  
+{% endblock css %}
+
+{% block js %}
+
+{% endblock js %}
+
+{% block content %}
+
+{% if registro_usuario %}
+	<div id="registro_usuario">
+		<form action="." method="POST">
+			{% csrf_token %}	
+			<div id="errorMsg" class="fade-in one">{{ mensaje }}</div>
+			{{ registro_usuario.as_p }}
+			<input id="loginBtn" type="submit" value="Guardar">
+		</form>
+	</div>
+{% endif %}
+
+{% endblock %}

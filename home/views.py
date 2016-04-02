@@ -3,7 +3,8 @@ from django.shortcuts import render, render_to_response
 from django.contrib.auth import login, logout, authenticate
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
-from home.forms import LoginForm, Ficha_DatosForm, Ficha_DatosFamiliaresForm, Ficha_DatosMedicoForm
+from home.forms import *
+from django.views.generic import View
 
 # Create your views here.
 
@@ -21,8 +22,6 @@ def index_view(request):
     else:
         return render(request, 'base.html')
 
-def formulario_view(request):
-	return render_to_response('registro/formulario.html', context_instance=RequestContext(request))
 
 def login_view(request):
     mensaje = ""
@@ -45,13 +44,23 @@ def login_view(request):
         ctx = {'form':form,'mensaje':mensaje}
         return render_to_response('home/login.html',ctx,context_instance=RequestContext(request))
 
-
-def ficha_view(request):
-	if request.method == "POST":
-		form = FichaForm(request.POST)
-
     
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect('/')
+
+
+
+class AdminUsuariosView(View):
+    template_name = 'home/admin_usuarios.html'
+    def get(self, request, *args, **kwargs):
+        registro_usuario = RegistroUsuario()
+        ctx = {'registro_usuario':registro_usuario}
+        return render(request, self.template_name, ctx)
+
+    def post(self, request, *args, **kwargs):
+        registro_usuario = RegistroUsuario(request.POST)
+        ctx = {'registro_usuario':registro_usuario}
+        return render(request, self.template_name, ctx)
+
 
