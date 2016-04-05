@@ -85,9 +85,8 @@ class RegistroView(View):
 
     def post(self, request, *args, **kwargs):
         datos_paciente = PacienteForm(request.POST, prefix="paciente")
-        datos_familia = DatosFamiliaresForm(request.POST, prefix="familiares")
+        datos_familia = DatosFamiliaresFormset(request.POST, prefix="familiares")
         datos_medico = DatosMedicoFormset(request.POST, prefix="medico")
-        #datos_medico = DatosMedicoForm(request.POST, prefix="medico")
         historial_madre = Ficha_HistorialMadreForm(request.POST, prefix="historial_madre")
         #descripcion_paciente = Ficha_DescripcionPacienteForm(request.POST, prefix="descripcion_paciente")
         descripcion_paciente = DescripcionPacienteForm(request.POST, prefix="descripcion_paciente")
@@ -104,7 +103,26 @@ class RegistroView(View):
         datos_familiares = DatosFamiliaresOtrosForm(request.POST, prefix="familiares_otros")
         hermanos_formset = HermanosFormset(request.POST, instance=DatosFamiliaresOtros())
 
-        if datos_paciente.is_valid(): #and
+        print "num familiares forms: ", len(datos_familia.forms)
+        if (datos_paciente.is_valid() and
+            datos_familia.is_valid() and
+            datos_medico.is_valid()): #and
+            paciente = datos_paciente.save(commit=False)
+            familiares_instances = datos_familia.save(commit=False)
+            medicos_instances = datos_medico.save(commit = False)
+            print "familiares instances", type(familiares_instances), len(familiares_instances)
+            print "medicos instances", type(medicos_instances), len(medicos_instances)
+            print paciente
+            # for familiar in familiares_instances:
+            #     familiar.paciente = paciente
+            #     familiar.save()
+            # for medico in medico_instances:
+            #     medico.paciente = paciente
+            #     medico.save()
+
+
+            
+            return HttpResponseRedirect('/')
             # # datos_familia.is_valid() and
             # datos_medico.is_valid() and
             # # datos_nacimiento.is_valid() and
@@ -138,7 +156,6 @@ class RegistroView(View):
             #     #recorremos cada uno de los forms de cada medico
             #     for form in datos_medico:
             #         print "Medico", form.cleaned_data
-                return HttpResponseRedirect('/')
 
 
             # print("Familiar", datos_familia.cleaned_data)
@@ -168,8 +185,8 @@ class RegistroView(View):
 
         print("datos is invalid")
         print("\n\nErrors paciente:", datos_paciente.errors)
-        # print("\n\nErrors medico:", datos_medico.errors)
-        # print("\n\nErrors familiares:", datos_familia.errors)
+        print("\n\nErrors familiares:", datos_familia.errors)
+        print("\n\nErrors medico:", datos_medico.errors)
         # print("\n\nErrors nacimiento:", datos_nacimiento.errors)
         #print("\n\nErrors recien_nacido:", datos_recien_nacido.errors)
         #print("\n\nErrors primeros_dias:", datos_primeros_dias.errors)

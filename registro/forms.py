@@ -31,8 +31,8 @@ class Ficha_PacienteForm(forms.Form):
 '''
 
 class PacienteForm(ModelForm):
-    grupo_sanguineo = forms.ChoiceField(choices=Paciente.GRUPO_SANGUINEO_CHOICES,
-                                        widget=forms.Select(attrs={'class':'form-control', 'required': 'required'}))
+    # grupo_sanguineo = forms.ChoiceField(choices=Paciente.GRUPO_SANGUINEO_CHOICES,
+    #                                     widget=forms.Select(attrs={'class':'form-control', 'required': 'required'}))
     fecha_nacimiento = forms.DateField(input_formats=['%m/%d/%Y'],
                                        label='Fecha de nacimiento',
                                        widget=forms.TextInput(attrs=
@@ -49,7 +49,9 @@ class PacienteForm(ModelForm):
                   'fecha_nacimiento',
                   'nacionalidad',
                   'grupo_sanguineo']
-        widgets = {'sexo': forms.RadioSelect(choices=Paciente.SEXO_CHOICES)}
+        widgets = {'sexo': forms.RadioSelect(choices=Paciente.SEXO_CHOICES),
+                   'grupo_sanguineo': forms.Select(attrs={'class':'form-control', 'required': 'required'})
+        }
 
 '''
 class Ficha_DatosFamiliaresForm(forms.Form):
@@ -101,16 +103,8 @@ class DatosFamiliaresForm(ModelForm):
 class DatosMedicoForm(ModelForm):
     class Meta:
         model = Medico
-        fields = '__all__'
-
-    def clean(self):
-        cleaned_data = super(DatosMedicoForm, self).clean()
-        nombres = cleaned_data.get('nombres')
-        apellidos = cleaned_data.get('apellidos')
-        direccion = cleaned_data.get('direccion')
-        telefonos = cleaned_data.get('telefonos')
-        area = cleaned_data.get('area')
-
+        # fields = '__all__'
+        exclude = ('paciente',)
 
 '''
 class Ficha_DatosMedicoForm(forms.Form):

@@ -34,7 +34,7 @@ class Familiar(models.Model):
     apellidos = models.CharField(max_length=256)
     nivel_estudio = models.PositiveSmallIntegerField("nivel de estudio",
                                                      choices=NIVEL_ESTUDIO_CHOICES)
-    
+
     direccion = models.CharField("dirección", max_length=256)
     telefonos = models.CharField("teléfono", max_length=50)
     empresa = models.CharField("lugar de trabajo",
@@ -43,7 +43,7 @@ class Familiar(models.Model):
     direccion_empresa = models.CharField("dirección de empresa",
                                          max_length=256,
                                          blank=True)
-    jornada = models.PositiveSmallIntegerField("jornada de trabajo", choices = JORNADA_TRABAJO_CHOICES)
+    jornada = models.PositiveSmallIntegerField("jornada de trabajo", choices=JORNADA_TRABAJO_CHOICES)
     paciente = models.ForeignKey('Paciente', on_delete=models.CASCADE)
 
     def __unicode__(self):

@@ -299,10 +299,11 @@ $(function() {
 	});
 
 	function addFormset(prefix, regex){
+		console.log("Add formset");
         var formCount = parseInt($("#id_"+prefix+"-TOTAL_FORMS").val());
 		var row = $(".formset-"+prefix+":first").clone(false);
 		$(row).insertAfter(".formset-"+prefix+":last").slideDown();
-		$(row).find("input[type=text]").val('');
+		$(row).find("input[type=text]").attr('value', '').val('');
 		var row_html = $(row).html();
 		$(row).html(row_html.replace(regex, prefix+"-"+formCount));
         $("#id_"+prefix+"-TOTAL_FORMS").val(formCount + 1);

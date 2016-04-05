@@ -39,10 +39,10 @@ class Paciente(models.Model):
     nacionalidad = models.CharField(max_length=30)
     grupo_sanguineo = models.CharField("grupo sanguineo",
                                        choices=GRUPO_SANGUINEO_CHOICES,
-                                       max_length=4, blank=False)
+                                       max_length=4, blank=False, default='o+')
     sexo = models.CharField(choices=SEXO_CHOICES, max_length=1, blank=False, default="--")
 
-    medico = models.OneToOneField(Medico)
+    #medico = models.OneToOneField(Medico)
     descripcion = models.OneToOneField(Descripcion)
     historial_madre = models.OneToOneField(HistorialMadre)
     gestacion = models.OneToOneField(Gestacion)

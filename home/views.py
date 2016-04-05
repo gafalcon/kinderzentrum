@@ -22,7 +22,7 @@ def index_view(request):
         return render(request, 'base.html')
 
 def formulario_view(request):
-	return render_to_response('registro/formulario.html', context_instance=RequestContext(request))
+    return render_to_response('registro/formulario.html', context_instance=RequestContext(request))
 
 def login_view(request):
     mensaje = ""
