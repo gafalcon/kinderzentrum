@@ -24,20 +24,22 @@ CHOICES_SI_NO = ((True, "Si"), (False, "No"))
 class Ficha_PacienteForm(forms.Form):
     apellidos = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required': 'required'}),label="Apellidos")
     nombres = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required': 'required'}))
-    nacimiento = forms.DateField( input_formats = ['%m/%d/%Y'],
-                                  label='Fecha de nacimiento',
-                                  widget=forms.TextInput(attrs=
-                                                         {
-                                                             'class':'datepicker form-control',
-                                                             'required': 'required'
-                                                         }))
+    
     sexo = forms.ChoiceField(choices=Paciente.SEXO_CHOICES, widget=forms.RadioSelect(attrs={'required': 'required'}))    
     nacionalidad = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required': 'required'}))
     lugar_nacimiento = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required': 'required'}))
-    grupo_sanguineo = forms.ChoiceField(choices=Paciente.GRUPO_SANGUINEO_CHOICES, widget=forms.Select(attrs={'class':'form-control', 'required': 'required'}))
 '''
 
 class PacienteForm(ModelForm):
+    grupo_sanguineo = forms.ChoiceField(choices=Paciente.GRUPO_SANGUINEO_CHOICES,
+                                        widget=forms.Select(attrs={'class':'form-control', 'required': 'required'}))
+    fecha_nacimiento = forms.DateField(input_formats=['%m/%d/%Y'],
+                                       label='Fecha de nacimiento',
+                                       widget=forms.TextInput(attrs=
+                                                              {
+                                                                  'class':'datepicker form-control',
+                                                                  'required': 'required'
+                                                              }))
     class Meta:
         model = Paciente
         fields = ['nombres',
@@ -46,13 +48,9 @@ class PacienteForm(ModelForm):
                   'lugar_nacimiento',
                   'fecha_nacimiento',
                   'nacionalidad',
-                  'grupo_sanguineo'
-                  ]
-        widgets = {'sexo': forms.RadioSelect(choices=Paciente.SEXO_CHOICES),
-                   'grupo_sanguineo': forms.Select(choices=Paciente.GRUPO_SANGUINEO_CHOICES, attrs={'class':'form-control', 'required': 'required'}),
-            
-        }
-        
+                  'grupo_sanguineo']
+        widgets = {'sexo': forms.RadioSelect(choices=Paciente.SEXO_CHOICES)}
+
 '''
 class Ficha_DatosFamiliaresForm(forms.Form):
     apellidos = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
@@ -81,23 +79,23 @@ class Ficha_DatosFamiliaresForm(forms.Form):
 class DatosFamiliaresForm(ModelForm):
     class Meta:
         model = Familiar
-        fields = ['parentesco','nombres','apellidos','nivel_estudio','direccion','telefonos',
-                    'empresa','direccion_empresa','jornada']
+        fields = ['parentesco', 'nombres', 'apellidos', 'nivel_estudio', 'direccion','telefonos',
+                  'empresa', 'direccion_empresa', 'jornada']
         widgets = {'nivel_estudio': forms.Select(choices=Familiar.NIVEL_ESTUDIO_CHOICES,attrs={'class':'form-control'}),
                    'jornada': forms.Select(choices=Familiar.JORNADA_TRABAJO_CHOICES, attrs={'class': 'form-control'})
                 }
 
-    def clean(self):
-        cleaned_data = super(DatosFamiliaresForm, self).clean()
-        parentesco = cleaned_data.get('parentesco')
-        nombres = cleaned_data.get('nombres')
-        apellidos = cleaned_data.get('apellidos')
-        nivel_estudio = cleaned_data.get('nivel_estudio')
-        direccion = cleaned_data.get('direccion')
-        telefonos = cleaned_data.get('telefonos')
-        empresa = cleaned_data.get('empresa')
-        direccion_empresa = cleaned_data.get('direccion_empresa')
-        jornada = cleaned_data.get('jornada')
+    # def clean(self):
+    #     cleaned_data = super(DatosFamiliaresForm, self).clean()
+    #     parentesco = cleaned_data.get('parentesco')
+    #     nombres = cleaned_data.get('nombres')
+    #     apellidos = cleaned_data.get('apellidos')
+    #     nivel_estudio = cleaned_data.get('nivel_estudio')
+    #     direccion = cleaned_data.get('direccion')
+    #     telefonos = cleaned_data.get('telefonos')
+    #     empresa = cleaned_data.get('empresa')
+    #     direccion_empresa = cleaned_data.get('direccion_empresa')
+    #     jornada = cleaned_data.get('jornada')
 
 
 class DatosMedicoForm(ModelForm):
@@ -588,7 +586,7 @@ ActividadGestacionFormset = formset_factory(ActividadGestacionForm, max_num=5)
 
 SituacionGestacionFormset = formset_factory(SituacionGestacionForm, max_num=11)
 
-DatosMedicoFormset = formset_factory(DatosMedicoForm, extra=2)
+DatosMedicoFormset = formset_factory(DatosMedicoForm, extra=1)
 DatosFamiliaresFormset = formset_factory(DatosFamiliaresForm, extra=2)
 
 data_formsets = {'form-TOTAL_FORMS': '2',

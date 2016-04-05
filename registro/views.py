@@ -19,15 +19,14 @@ from django.forms import formset_factory
 class RegistroView(View):
     template_name = 'registro/registro_ficha_medica.html'
     def get(self, request, *args, **kwargs):
-        #datos = Ficha_PacienteForm(prefix="paciente")
         datos = PacienteForm(prefix="paciente")
-        #datos_familia = Ficha_DatosFamiliaresForm(prefix="familiares")
-        datos_familia = DatosFamiliaresFormset(data=data_formsets)
-        #datos_medico = Ficha_DatosMedicoForm(prefix="medico")
-        #datos_medico = DatosMedicoForm(prefix="medico")
-        datos_medico = DatosMedicoFormset(data=data_formsets)
+        # datos_familia = DatosFamiliaresFormset(data=data_formsets, prefix="familiares")
+        # datos_medico = DatosMedicoFormset(data=data_formsets, prefix="medico")
+
+        datos_familia = DatosFamiliaresFormset(prefix="familiares")
+        datos_medico = DatosMedicoFormset(prefix="medico")
+
         historial_madre = Ficha_HistorialMadreForm(prefix="historial_madre")
-        #descripcion_paciente = Ficha_DescripcionPacienteForm(prefix="descripcion_paciente")
         descripcion_paciente = DescripcionPacienteForm(prefix="descripcion_paciente")
         medicamento_formset = MedicamentoFormset(instance=Descripcion())
         gestacion = DesarrolloDeLaGestacionForm(prefix="gestacion")
@@ -59,19 +58,9 @@ class RegistroView(View):
                        'datos_familiares': datos_familiares,
                        'hermanos_formset': hermanos_formset,
                        'primeros_dias': primeros_dias,
-                       'pagina_actual':'registro'}
-        )
-    
-    def create_paciente(self, form_data):
-        return Paciente(
-            nombres = form_data['nombres'],
-            apellidos = form_data['apellidos'],
-            fecha_nacimiento = form_data['nacimiento'],
-            nacionalidad = form_data['nacionalidad'],
-            grupo_sanguineo = form_data['grupo_sanguineo'],
-            sexo = form_data['sexo']
-        )
-    
+                       'pagina_actual':'registro'})
+
+
     def create_familiar(self, form_data):
         return Familiar(
             nombres = form_data['nombres'],
@@ -97,7 +86,7 @@ class RegistroView(View):
     def post(self, request, *args, **kwargs):
         datos_paciente = PacienteForm(request.POST, prefix="paciente")
         datos_familia = DatosFamiliaresForm(request.POST, prefix="familiares")
-        datos_medico = DatosMedicoFormset(request.POST)
+        datos_medico = DatosMedicoFormset(request.POST, prefix="medico")
         #datos_medico = DatosMedicoForm(request.POST, prefix="medico")
         historial_madre = Ficha_HistorialMadreForm(request.POST, prefix="historial_madre")
         #descripcion_paciente = Ficha_DescripcionPacienteForm(request.POST, prefix="descripcion_paciente")
@@ -115,40 +104,40 @@ class RegistroView(View):
         datos_familiares = DatosFamiliaresOtrosForm(request.POST, prefix="familiares_otros")
         hermanos_formset = HermanosFormset(request.POST, instance=DatosFamiliaresOtros())
 
-        if (datos_paciente.is_valid() and
-            # datos_familia.is_valid() and
-            datos_medico.is_valid() and
-            # datos_nacimiento.is_valid() and
-            # datos_recien_nacido.is_valid() and
-            # datos_primeros_dias.is_valid() and
-            datos_alimentacion.is_valid() and
-            datos_familiares.is_valid()):
+        if datos_paciente.is_valid(): #and
+            # # datos_familia.is_valid() and
+            # datos_medico.is_valid() and
+            # # datos_nacimiento.is_valid() and
+            # # datos_recien_nacido.is_valid() and
+            # # datos_primeros_dias.is_valid() and
+            # datos_alimentacion.is_valid() and
+            # datos_familiares.is_valid()):
 
-            num_hermanos = datos_familiares.cleaned_data.get('numero_hermanos', 0)
-            print("Num hermanos", num_hermanos)
-            suplementos = datos_alimentacion.cleaned_data.get('suplementos')
-            print "\n\n\nSuplementos", suplementos
+            # num_hermanos = datos_familiares.cleaned_data.get('numero_hermanos', 0)
+            # print("Num hermanos", num_hermanos)
+            # suplementos = datos_alimentacion.cleaned_data.get('suplementos')
+            # print "\n\n\nSuplementos", suplementos
 
-            if ((num_hermanos <= 0 or (num_hermanos > 0 and hermanos_formset.is_valid())) and
-                    (not suplementos or (suplementos and suplementos_formset.is_valid()))):
+            # if ((num_hermanos <= 0 or (num_hermanos > 0 and hermanos_formset.is_valid())) and
+            #         (not suplementos or (suplementos and suplementos_formset.is_valid()))):
 
-                print("Paciente", datos_paciente.cleaned_data)
-                paciente = self.create_paciente(datos_paciente.cleaned_data)
-                print("num hermanos forms", len(hermanos_formset.forms))
-                print("FamiliaresOtros", datos_familiares.cleaned_data)
-                familiares = datos_familiares.save()
-                paciente.datos_familiares = familiares
+            #     print("Paciente", datos_paciente.cleaned_data)
+            #     paciente = self.create_paciente(datos_paciente.cleaned_data)
+            #     print("num hermanos forms", len(hermanos_formset.forms))
+            #     print("FamiliaresOtros", datos_familiares.cleaned_data)
+            #     familiares = datos_familiares.save()
+            #     paciente.datos_familiares = familiares
 
 
-                if num_hermanos > 0:
-                    for i in range(0, num_hermanos):
-                        hermano = (hermanos_formset.forms[i]).save(commit=False)
-                        hermano.datos_familiares = familiares
-                        hermano.save()
-            
-                #recorremos cada uno de los forms de cada medico
-                for form in datos_medico:
-                    print "Medico", form.cleaned_data
+            #     if num_hermanos > 0:
+            #         for i in range(0, num_hermanos):
+            #             hermano = (hermanos_formset.forms[i]).save(commit=False)
+            #             hermano.datos_familiares = familiares
+            #             hermano.save()
+
+            #     #recorremos cada uno de los forms de cada medico
+            #     for form in datos_medico:
+            #         print "Medico", form.cleaned_data
                 return HttpResponseRedirect('/')
 
 
@@ -183,7 +172,7 @@ class RegistroView(View):
         # print("\n\nErrors familiares:", datos_familia.errors)
         # print("\n\nErrors nacimiento:", datos_nacimiento.errors)
         #print("\n\nErrors recien_nacido:", datos_recien_nacido.errors)
-        print("\n\nErrors primeros_dias:", datos_primeros_dias.errors)
+        #print("\n\nErrors primeros_dias:", datos_primeros_dias.errors)
         #print("\n\nErrors alimentacion:", datos_alimentacion.errors)
         #print("Errors DatosFamiliares", datos_familiares.errors)
         return render(request, self.template_name,

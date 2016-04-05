@@ -62,7 +62,8 @@
 		<div class="panel-heading">Datos Familiares</div>
         {{ datos_familia_formset.management_form }}
         {% for form in datos_familia_formset %}
-		<div class="panel-body">			
+		<div  class="panel-body formset-familiares">			
+			<h3>Familiar</h3>
 			{% for field in form %}
 	  			<div class="row">		  			
 		  			<div class="form-group span6">
@@ -76,13 +77,13 @@
 				{% endif %}
                 <!-- Colocar etiqueta de Trabajo luego del campo telefonos (domicilio) -->
 				{% if field.name == "telefonos" %}
-					<h4>Trabajo</h4>
+				<h4>Trabajo</h4>
 				{% endif %}
 	      	{% endfor %}
 		</div>
         <hr>
         {% endfor %}
-         <button type="button" class="btn btn-primary btn-block">Agregar nuevo familiar</button>
+         <button id="btn-add-familiar" type="button" class="btn btn-primary btn-block">Agregar nuevo familiar</button>
 	</div>
 
 	<div id="panel3" class="hide panel panel-default">
@@ -90,6 +91,7 @@
         {{ datos_medico_formset.management_form }}
         {% for form in datos_medico_formset %}
 		<div class="panel-body formset-medico">			
+			<h3>Médico</h3>
 			{% for field in form %}
 	  			<div class="row">		  			
 		  			<div class="form-group span6">
@@ -102,7 +104,7 @@
 		</div>
         <hr>
         {% endfor %}
-        <button type="button" class="btn btn-primary btn-block">Agregar nuevo médico</button>
+        <button id="btn-add-medico" type="button" class="btn btn-primary btn-block">Agregar nuevo médico</button>
 	</div>
 
 	<div id="panel4" class="hide panel panel-default">
@@ -275,7 +277,7 @@
 								<th>Cantidad</th>
 							</tr>
 							{% for form in suplementos_formset %}
-								<tr class="row-suplemento">
+								<tr class="formset-suplementoalimenticio_set">
 									{{ form.id }}
 									<td>{{form.frecuencia}}</td>
 									<td>{{form.tipo}}</td>

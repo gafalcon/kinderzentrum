@@ -257,8 +257,6 @@ $(function() {
 	$('input[name=familiares_otros-numero_hermanos]').change(function(e){
 		var num_hermanos = parseInt(e.target.value);
 		var formCount = $("#id_hermano_set-TOTAL_FORMS").val();
-		console.log("num_hermanos: " + num_hermanos);
-		console.log("formCount: "+ formCount);
 
 		if(num_hermanos != formCount && num_hermanos != 0){
 			if(num_hermanos > formCount){
@@ -300,27 +298,27 @@ $(function() {
 
 	});
 
-	function addInlineSuplementoForm(){
-		var prefix = "suplementoalimenticio_set";
-		var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
-		var row = $(".row-suplemento:first").clone(false);
-		$(row).removeAttr('id').hide().insertAfter(".row-suplemento:last").slideDown(300);
-        // Update the total form count
-		$(row).find("#id_suplementoalimenticio_set-0-frecuencia").
-			attr("name", "suplementoalimenticio_set-"+formCount +"-frecuencia").
-			attr("id", "id_suplementoalimenticio_set-"+formCount+"-frecuencia").val('');
-		$(row).find("#id_suplementoalimenticio_set-0-tipo").
-			attr("name", "suplementoalimenticio_set-"+formCount +"-tipo").
-			attr("id", "id_suplementoalimenticio_set-"+formCount+"-tipo").val('');
-		$(row).find("#id_suplementoalimenticio_set-0-cantidad").
-			attr("name", "suplementoalimenticio_set-"+formCount +"-cantidad").
-			attr("id", "id_suplementoalimenticio_set-"+formCount+"-cantidad").val('');
-		$(row).find("#id_suplementoalimenticio_set-0-id").
-			attr("id", "id_suplementoalimenticio_set-"+formCount+"-id").
-			attr("name", "suplementoalimenticio_set-"+formCount+"-id").val('');
-        $("#id_" + prefix + "-TOTAL_FORMS").val(formCount + 1);
+	function addFormset(prefix, regex){
+        var formCount = parseInt($("#id_"+prefix+"-TOTAL_FORMS").val());
+		var row = $(".formset-"+prefix+":first").clone(false);
+		$(row).insertAfter(".formset-"+prefix+":last").slideDown();
+		$(row).find("input[type=text]").val('');
+		var row_html = $(row).html();
+		$(row).html(row_html.replace(regex, prefix+"-"+formCount));
+        $("#id_"+prefix+"-TOTAL_FORMS").val(formCount + 1);
+
 	}
-	$("#btn-add-suplemento").click(addInlineSuplementoForm);
+	$("#btn-add-suplemento").click(function (e) {
+        addFormset("suplementoalimenticio_set", /suplementoalimenticio_set-0/g);
+	});
+
+	$("#btn-add-familiar").click(function (e) {
+        addFormset("familiares", /familiares-0/g);
+	});
+
+	$("#btn-add-medico").click(function (e) {
+        addFormset("medico", /medico-0/g);
+	});
 
 	$("#btn-delete-suplemento").click(function() {
         var prefix = "suplementoalimenticio_set";
