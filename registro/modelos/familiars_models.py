@@ -34,7 +34,7 @@ class Familiar(models.Model):
     apellidos = models.CharField(max_length=256)
     nivel_estudio = models.PositiveSmallIntegerField("nivel de estudio",
                                                      choices=NIVEL_ESTUDIO_CHOICES)
-    
+
     direccion = models.CharField("dirección", max_length=256)
     telefonos = models.CharField("teléfono", max_length=50)
     empresa = models.CharField("lugar de trabajo",
@@ -43,7 +43,7 @@ class Familiar(models.Model):
     direccion_empresa = models.CharField("dirección de empresa",
                                          max_length=256,
                                          blank=True)
-    jornada = models.PositiveSmallIntegerField("jornada de trabajo", choices = JORNADA_TRABAJO_CHOICES)
+    jornada = models.PositiveSmallIntegerField("jornada de trabajo", choices=JORNADA_TRABAJO_CHOICES)
     paciente = models.ForeignKey('Paciente', on_delete=models.CASCADE)
 
     def __unicode__(self):
@@ -68,7 +68,7 @@ class DatosFamiliaresOtros(models.Model):
     
     numero_hermanos = models.PositiveSmallIntegerField("Número de hermanos")
     transtorno_hermanos = models.NullBooleanField("¿Alguno de los hermanos tiene algún tipo de transtorno?")
-    hermano_transtorno = models.PositiveSmallIntegerField("¿Cuál de los hermanos? (Orden en que nació)", blank=True)
+    hermano_transtorno = models.PositiveSmallIntegerField("¿Cuál de los hermanos? (Orden en que nació)", blank=True, null=True)
     transtorno = models.CharField("Qué transtorno?", max_length=50, blank=True)
     alteracion_desarrollo = models.NullBooleanField("¿Ha existido algún tipo de alteración en su desarrollo?")
     tipo_enfermedad_parientes = models.CharField("Detallar el tipo de enfermedad que se ha presentado en los parientes", max_length=256, blank=True)

@@ -35,14 +35,14 @@ class Paciente(models.Model):
     lugar_nacimiento = models.CharField("lugar de nacimiento", max_length=30)
     fecha_nacimiento = models.DateField("fecha de nacimiento")
     fecha_registro = models.DateField("fecha de registro",
-                                     auto_now_add=True) #Autoregistro con la fecha de creacion
+                                      auto_now_add=True) #Autoregistro con la fecha de creacion
     nacionalidad = models.CharField(max_length=30)
     grupo_sanguineo = models.CharField("grupo sanguineo",
-                                        choices=GRUPO_SANGUINEO_CHOICES,
-                                        max_length=4)
+                                       choices=GRUPO_SANGUINEO_CHOICES,
+                                       max_length=4, blank=False, default='o+')
     sexo = models.CharField(choices=SEXO_CHOICES, max_length=1, blank=False, default="--")
 
-    medico = models.OneToOneField(Medico)
+    #medico = models.OneToOneField(Medico)
     descripcion = models.OneToOneField(Descripcion)
     historial_madre = models.OneToOneField(HistorialMadre)
     gestacion = models.OneToOneField(Gestacion)

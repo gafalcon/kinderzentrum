@@ -74,7 +74,7 @@ $(function() {
     $( ".datepicker" ).datepicker({
 		changeMonth: true,
 		changeYear: true,
-		yearRange: "1950:2012",
+		yearRange: "1950:2012"
 		// Podemos poner mas opciones
     });
 
@@ -83,67 +83,6 @@ $(function() {
     //$('#id_descripcion_otros').parent().hide();
     //$('#id_descripcion_pregunta_4').parent().hide();
 
-    /*	Si ha seleccionado la opcion de otros, entonces mostramos un casillero adicional
-     que permite describir de forma especifica la opcion "otros" */
-    $('select[name=descripcion_paciente-descripcion_pregunta_2]').change(function() { 
-    	if ($(this).val() == 'otros'){
-    		$('#id_descripcion_paciente-descripcion_otros_2').parent().show();
-    		$('#id_descripcion_paciente-descripcion_otros_2').val("Especifique");
-    		//console.log('mostrar casilla de otros');
-    	}else{
-    		$('#id_descripcion_paciente-descripcion_otros_2').parent().hide();
-    	}	
-    });
-
-    $('#id_descripcion_paciente-descripcion_pregunta_3').on('change', function() {
-   		var valor_si_no = $('input[name=descripcion_paciente-descripcion_pregunta_3]:checked', '#id_descripcion_paciente-descripcion_pregunta_3').val(); 
-		console.log(valor_si_no);
-   		if (valor_si_no == 'True'){
-   			$('#id_descripcion_paciente-descripcion_pregunta_4').parent().show();
-   		}else{
-   			$('#id_descripcion_paciente-descripcion_pregunta_4').parent().hide();
-   		}
-	});
-
-    $('input[name=descripcion_paciente-descripcion_pregunta_5').on('click', function(e){
-    	if(e.target.value == "rehabilitacion_fisica"){
-    		if (e.target.checked)
-    			$('#id_descripcion_paciente-descripcion_tiempo_rehab_fisica').parent().show();
-    		else
-    			$('#id_descripcion_paciente-descripcion_tiempo_rehab_fisica').parent().hide();
-    	}else if(e.target.value == "estimulacion_temprana"){
-    		if (e.target.checked)
-    			$('#id_descripcion_paciente-descripcion_tiempo_estimu_temprana').parent().show();
-    		else
-    			$('#id_descripcion_paciente-descripcion_tiempo_estimu_temprana').parent().hide();
-    	}
-    });
-
-    $('input[name=descripcion_paciente-descripcion_pregunta_6]').on('click',function(e) { 
-    	if (e.target.value == 'otro'){
-    		if (e.target.checked){
-    			$('#id_descripcion_paciente-descripcion_otros_6').parent().show();
-    			$('#id_descripcion_paciente-descripcion_otros_6').val("Especifique");
-    		}else
-    			$('#id_descripcion_paciente-descripcion_otros_6').parent().hide();
-    		//console.log('mostrar casilla de otros');
-    	}
-    });
-
-    $('select[name=descripcion_paciente-descripcion_pregunta_8]').change(function() { 
-    	if ($(this).val() == 2){
-    		$('#id_descripcion_paciente-descripcion_pregunta_8_1').parent().show();
-    		$('#id_descripcion_paciente-descripcion_pregunta_8_2').parent().show();
-    		$('#id_descripcion_paciente-descripcion_pregunta_8_3').parent().show();
-    		$('#id_descripcion_paciente-descripcion_pregunta_8_4').parent().show();
-    		//console.log('mostrar casilla de otros');
-    	}else{
-    		$('#id_descripcion_paciente-descripcion_pregunta_8_1').parent().hide();
-    		$('#id_descripcion_paciente-descripcion_pregunta_8_2').parent().hide();
-    		$('#id_descripcion_paciente-descripcion_pregunta_8_3').parent().hide();
-    		$('#id_descripcion_paciente-descripcion_pregunta_8_4').parent().hide();
-    	}	
-    });
 
 	$('input[type=text], [type=number]').addClass('form-control');
 	function value_changed(bool_value,  element){
@@ -152,15 +91,47 @@ $(function() {
 		else
 			element.hide();
 	}
+    /*	Si ha seleccionado la opcion de otros, entonces mostramos un casillero adicional
+     que permite describir de forma especifica la opcion "otros" */
+	value_changed($('select[name=descripcion_paciente-disc_molestias]').val() == 'otros', $('#id_descripcion_paciente-otro_disc_molestias').parent());
+    $('select[name=descripcion_paciente-disc_molestias]').change(function() { 
+		value_changed($(this).val() == 'otros', $('#id_descripcion_paciente-otro_disc_molestias').parent());
+    });
+	value_changed($('input:radio[name=descripcion_paciente-tratamiento]:checked').val() == "True", $("#id_descripcion_paciente-lugar_tratamiento").parent());
+	$('input:radio[name=descripcion_paciente-tratamiento]').on('change', function(e) {
+		value_changed(e.target.value == "True", $("#id_descripcion_paciente-lugar_tratamiento").parent());
+	});
 
-	var num_hermanos = $('input[name=familiares_otros-numero_hermanos]').val();
-	value_changed(num_hermanos != "0" && num_hermanos != '',
-				  $("#hermanos-formset"));
-	value_changed(num_hermanos != "0" && num_hermanos != '',
-				  $("#id_familiares_otros-transtorno_hermanos").parent());
-	$('input[name=familiares_otros-numero_hermanos]').change(function(e){
-		value_changed(e.target.value != "0" && e.target.value != '', $("#hermanos-formset"));
-		value_changed(e.target.value != "0" && e.target.value != '', $("#id_familiares_otros-transtorno_hermanos").parent());
+	value_changed($("#id_descripcion_paciente-tipo_terapia_0").is(":checked"), $("#id_descripcion_paciente-tiempo_rehab_fisica").parent());
+	value_changed($("#id_descripcion_paciente-tipo_terapia_1").is(":checked"), $("#id_descripcion_paciente-tiempo_estimu_temprana").parent());
+    $('input[name=descripcion_paciente-tipo_terapia').on('click', function(e){
+    	if(e.target.value == 1)
+			value_changed(e.target.checked, $("#id_descripcion_paciente-tiempo_rehab_fisica").parent());
+    	else if(e.target.value == 2)
+			value_changed(e.target.checked, $("#id_descripcion_paciente-tiempo_estimu_temprana").parent());
+    });
+
+	value_changed($("#id_descripcion_paciente-areas_dificultad_8").is(":checked"), $("#id_descripcion_paciente-otro_dificultad").parent());
+    $('input[name=descripcion_paciente-areas_dificultad]').on('click',function(e) { 
+		value_changed($("#id_descripcion_paciente-areas_dificultad_8").is(":checked"), $("#id_descripcion_paciente-otro_dificultad").parent());
+    });
+	value_changed($('select[name=descripcion_paciente-had_convulsion]').val() == 1, $("#id_descripcion_paciente-tipo_crisis").parent());
+	value_changed($('select[name=descripcion_paciente-had_convulsion]').val() == 1, $("#id_descripcion_paciente-edad_crisis").parent());
+    $('select[name=descripcion_paciente-had_convulsion]').change(function() { 
+		value_changed($(this).val() == 1, $("#id_descripcion_paciente-tipo_crisis").parent());
+		value_changed($(this).val() == 1, $("#id_descripcion_paciente-edad_crisis").parent());
+    });
+
+	value_changed($("select[name=descripcion_paciente-tomo_medicamentos]").val() == "True", $("#medicamentos-formset"));
+	$("select[name=descripcion_paciente-tomo_medicamentos]").change(function (e) {
+		value_changed($(this).val() == "True", $("#medicamentos-formset"));
+	});
+
+	value_changed($('input:radio[name=gestacion-curso_prenatal]:checked').val() == "True", $("#id_gestacion-lugar_curso_prenatal").parent());
+	value_changed($('input:radio[name=gestacion-curso_prenatal]:checked').val() == "True", $("#id_gestacion-carga_horaria").parent());
+	$('input:radio[name=gestacion-curso_prenatal]').change(function (e) {
+        value_changed(e.target.value == "True", $("#id_gestacion-lugar_curso_prenatal").parent());
+        value_changed(e.target.value == "True", $("#id_gestacion-carga_horaria").parent());
 	});
 
 	value_changed($('input:radio[name=alimentacion-suplementos]:checked').val() == "True", $("#suplementos-formset"));
@@ -237,16 +208,116 @@ $(function() {
 		value_changed($("#id_alimentacion-forma_alimento_7").is(":checked"), $("#id_alimentacion-otra_forma_alimento").parent());
 	});
 
+	value_changed($("#id_familiares_otros-orientacion_a_institucion_4").is(":checked"), $("#id_familiares_otros-otro_orientador").parent());
+	$('input[name=familiares_otros-orientacion_a_institucion]').change(function(e){
+		value_changed($("#id_familiares_otros-orientacion_a_institucion_4").is(":checked"), $("#id_familiares_otros-otro_orientador").parent());
+	});
 
-
-
-	
-	value_changed($('input:radio[name=familiares_otros-transtorno_hermanos]:checked').val() == "True", $("#id_familiares_otros-hermano_transtorno").parent());
-	value_changed($('input:radio[name=familiares_otros-transtorno_hermanos]:checked').val() == "True", $("#id_familiares_otros-transtorno").parent());
-	value_changed($('input:radio[name=familiares_otros-transtorno_hermanos]:checked').val() == "True", $("#id_familiares_otros-alteracion_desarrollo").parent());
 	$('input:radio[name=familiares_otros-transtorno_hermanos]').change(function(e){
 		value_changed(e.target.value == "True", $("#id_familiares_otros-hermano_transtorno").parent());
 		value_changed(e.target.value == "True", $("#id_familiares_otros-transtorno").parent());
 		value_changed(e.target.value == "True", $("#id_familiares_otros-alteracion_desarrollo").parent());
 	});
+
+	var num_hermanos = $('input[name=familiares_otros-numero_hermanos]').val();
+	value_changed(num_hermanos != "0" && num_hermanos != '',
+				  $("#hermanos-formset"));
+	value_changed(num_hermanos != "0" && num_hermanos != '',
+				  $("#id_familiares_otros-transtorno_hermanos").parent());
+
+	value_changed(num_hermanos != "0" && num_hermanos != '' &&
+				  $('input:radio[name=familiares_otros-transtorno_hermanos]:checked').val() == "True",
+				  $("#id_familiares_otros-hermano_transtorno").parent()); 
+	value_changed(num_hermanos != "0" && num_hermanos != '' &&
+				  $('input:radio[name=familiares_otros-transtorno_hermanos]:checked').val() == "True",
+				  $("#id_familiares_otros-transtorno").parent());
+	value_changed(num_hermanos != "0" && num_hermanos != '' &&
+				  $('input:radio[name=familiares_otros-transtorno_hermanos]:checked').val() == "True",
+				  $("#id_familiares_otros-alteracion_desarrollo").parent());
+	$('input[name=familiares_otros-numero_hermanos]').change(function(e){
+		var num_hermanos = parseInt(e.target.value);
+		var formCount = $("#id_hermano_set-TOTAL_FORMS").val();
+
+		if(num_hermanos != formCount && num_hermanos != 0){
+			if(num_hermanos > formCount){
+				for(var i = formCount; i < num_hermanos; i++){
+					var row = $(".row-hermanos:first").clone(false);
+					row.insertAfter(".row-hermanos:last").slideDown(300);
+					$(row).find("#id_hermano_set-0-id").
+						attr("name", "hermano_set-"+i+"-id").
+						attr("id", "id_hermano_set-"+i+"-id").val('');
+					$(row).find("#id_hermano_set-0-nombres").
+						attr("name", "hermano_set-"+i+"-nombres").
+						attr("id", "id_hermano_set-"+i+"-nombres").val('');
+					$(row).find("#id_hermano_set-0-apellidos").
+						attr("name", "hermano_set-"+i+"-apellidos").
+						attr("id", "id_hermano_set-"+i+"-apellidos").val('');
+					$(row).find("#id_hermano_set-0-fecha_nacimiento").
+						attr("name", "hermano_set-"+i+"-fecha_nacimiento").
+						attr("id", "id_hermano_set-"+i+"-fecha_nacimiento").val('');
+				}
+			}else if(formCount > num_hermanos){
+				for( var i=num_hermanos; i < formCount; i++){
+					$(".row-hermanos:last").remove();
+				}
+			}
+			$("#id_hermano_set-TOTAL_FORMS").val(num_hermanos);
+		}
+		
+		value_changed(e.target.value != "0" && e.target.value != '', $("#hermanos-formset"));
+		value_changed(e.target.value != "0" && e.target.value != '', $("#id_familiares_otros-transtorno_hermanos").parent());
+		value_changed(e.target.value != "0" && e.target.value != '' &&
+					  $('input:radio[name=familiares_otros-transtorno_hermanos]:checked').val() == "True",
+					  $("#id_familiares_otros-hermano_transtorno").parent());
+		value_changed(e.target.value != "0" && e.target.value != '' &&
+					  $('input:radio[name=familiares_otros-transtorno_hermanos]:checked').val() == "True",
+					  $("#id_familiares_otros-transtorno").parent());
+		value_changed(e.target.value != "0" && e.target.value != '' &&
+					  $('input:radio[name=familiares_otros-transtorno_hermanos]:checked').val() == "True",
+					  $("#id_familiares_otros-alteracion_desarrollo").parent());
+
+	});
+
+	function addFormset(prefix, regex){
+        var formCount = parseInt($("#id_"+prefix+"-TOTAL_FORMS").val());
+		var row = $(".formset-"+prefix+":first").clone(false);
+		$(row).insertAfter(".formset-"+prefix+":last").slideDown();
+		$(row).find("input[type=text]").attr('value', '').val('');
+		var row_html = $(row).html();
+		$(row).html(row_html.replace(regex, prefix+"-"+formCount));
+        $("#id_"+prefix+"-TOTAL_FORMS").val(formCount + 1);
+	}
+	function deleteFormset(prefix) {
+		var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+		if(formCount > 1){
+			$(".formset-"+prefix+":last").remove();
+			$("#id_" + prefix + "-TOTAL_FORMS").val(formCount - 1);
+		}    
+	}
+	$("#btn-add-suplemento").click(function (e) {
+        addFormset("suplementoalimenticio_set", /suplementoalimenticio_set-0/g);
+	});
+
+	$("#btn-add-familiar").click(function (e) {
+        addFormset("familiares", /familiares-0/g);
+	});
+
+	$("#btn-add-medico").click(function (e) {
+        addFormset("medico", /medico-0/g);
+	});
+
+	$("#btn-add-medicamento").click(function(e){
+		addFormset("medicamento_set", /medicamento_set-0/g);
+	});
+
+	$("#btn-delete-suplemento").click(function() {
+		deleteFormset("suplementoalimenticio_set");
+	});
+
+	$("#btn-delete-medicamento").click(function (arg) {
+        deleteFormset("medicamento_set");
+	});
+
+	
+
 });

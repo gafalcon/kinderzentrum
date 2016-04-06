@@ -11,6 +11,7 @@ class Medico(models.Model):
     direccion = models.CharField(max_length=256)
     telefonos = models.CharField(max_length=50)
     area = models.CharField(max_length=100)
+    paciente = models.ForeignKey('Paciente', on_delete=models.CASCADE)
 
     def __unicode__(self):
         return self.apellidos + " " + self.nombres

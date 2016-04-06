@@ -31,6 +31,7 @@
 <form action="." method="POST">
 	{% csrf_token %}		
 
+	<!-- Paciente -->
 	<div id="panel1" class="show panel panel-default">
 		<div class="panel-heading">Datos del Paciente</div>
 		<div class="panel-body">			
@@ -58,11 +59,13 @@
 		</div>
 	</div>
 
+    <!-- Familiares -->
 	<div id="panel2" class="hide panel panel-default">
 		<div class="panel-heading">Datos Familiares</div>
         {{ datos_familia_formset.management_form }}
         {% for form in datos_familia_formset %}
-		<div class="panel-body">			
+		<div  class="panel-body formset-familiares">			
+			<h3>Familiar</h3>
 			{% for field in form %}
 	  			<div class="row">		  			
 		  			<div class="form-group span6">
@@ -76,20 +79,22 @@
 				{% endif %}
                 <!-- Colocar etiqueta de Trabajo luego del campo telefonos (domicilio) -->
 				{% if field.name == "telefonos" %}
-					<h4>Trabajo</h4>
+				<h4>Trabajo</h4>
 				{% endif %}
 	      	{% endfor %}
 		</div>
         <hr>
         {% endfor %}
-         <button type="button" class="btn btn-primary btn-block">Agregar nuevo familiar</button>
+         <button id="btn-add-familiar" type="button" class="btn btn-primary btn-block">Agregar nuevo familiar</button>
 	</div>
 
+	<!-- Medico -->
 	<div id="panel3" class="hide panel panel-default">
 		<div class="panel-heading">Datos del Médico</div>
         {{ datos_medico_formset.management_form }}
         {% for form in datos_medico_formset %}
 		<div class="panel-body formset-medico">			
+			<h3>Médico</h3>
 			{% for field in form %}
 	  			<div class="row">		  			
 		  			<div class="form-group span6">
@@ -102,38 +107,48 @@
 		</div>
         <hr>
         {% endfor %}
-        <button type="button" class="btn btn-primary btn-block">Agregar nuevo médico</button>
+        <button id="btn-add-medico" type="button" class="btn btn-primary btn-block">Agregar nuevo médico</button>
 	</div>
 
+	<!-- Descripcion del niño -->
 	<div id="panel4" class="hide panel panel-default">
 		<div class="panel-heading">Descripcion del niño</div>
         <div class="panel-body">			
 			{% for field in descripcion_paciente %}			
 	  			<div class="form-group">
-		    		<label for="code">{{field.label}}</label>			      		
+					{% if forloop.counter == 3 %}
+						<div id="otro-descubridor" style="display:none;">
+							{{ field }}
+						</div>
+					{% else %}
+		    			<label for="code">{{field.label}}</label>			      		
 		      			{{ field }}	
+					{% endif %}
       			</div>
 	      	{% endfor %}
             <div id="medicamentos-formset">
-                                <h4>Medicamentos</h4>
-                                {{ medicamento_formset.management_form }}
-                                <table class="table table-bordered table-condensed">
-                                    <tr>
-                                        <th>Nombre</th>
-                                        <th>Dosis diaria</th>
-                                    </tr>
-                                    {% for form in medicamento_formset %}
-                                        {{ form.id }}
-                                        <tr>
-                                            <td>{{form.nombre}}</td>
-                                            <td>{{form.dosis_diaria}}</td>
-                                        </tr>
-                                    {% endfor %}
-                                </table>
-                            </div>
+                <h4>Medicamentos</h4>
+                {{ medicamento_formset.management_form }}
+                <table class="table table-bordered table-condensed">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Dosis diaria</th>
+                    </tr>
+                    {% for form in medicamento_formset %}
+                        {{ form.id }}
+                        <tr class="formset-medicamento_set">
+                            <td>{{form.nombre}}</td>
+                            <td>{{form.dosis_diaria}}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+				<button id="btn-add-medicamento" type="button" class="btn-default btn">Agregar otro</button>
+				<button id="btn-delete-medicamento" type="button" class="btn-default btn">Eliminar</button>
+            </div>
 		</div>
 	</div>
 
+	<!-- Historial madre -->
 	<div id="panel5" class="hide panel panel-default">
 		<div class="panel-heading">Historial de la Madre</div>
 		<div class="panel-body">			
@@ -229,6 +244,8 @@
 	      	{% endfor %}
 		</div>
 	</div>
+
+    <!-- Primeros dias de vida -->
 	<div id="panel9" class="hide panel panel-default">
 		<div class="panel-heading">Primeros Días de Vida del Niño</div>
 		<div class="panel-body">			
@@ -248,6 +265,7 @@
 		</div>
 	</div>
 
+    <!-- Alimentacion y costumbres -->
 	<div id="panel10" class="hide panel panel-default">
 		<div class="panel-heading">Alimentación y Costumbres</div>
 		<div class="panel-body">			
@@ -275,14 +293,16 @@
 								<th>Cantidad</th>
 							</tr>
 							{% for form in suplementos_formset %}
-								{{ form.id }}
-								<tr>
+								<tr class="formset-suplementoalimenticio_set">
+									{{ form.id }}
 									<td>{{form.frecuencia}}</td>
 									<td>{{form.tipo}}</td>
 									<td>{{form.cantidad}}</td>
 								</tr>
 							{% endfor %}
 						</table>
+						<button id="btn-add-suplemento" type="button" class="btn-default btn">Agregar otro</button>
+						<button id="btn-delete-suplemento" type="button" class="btn-default btn">Eliminar</button>
 					</div>		
 				{% endif %}
 
@@ -296,8 +316,15 @@
 		<div class="panel-body">			
 			{% for field in datos_familiares %}
 		  		<div class="form-group">
-					<label for="code">{{field.label}}</label> <br/>
-					{{ field }}			<br/>      		
+					{% if forloop.counter == 8 %}
+						<div style="display:none;">
+							{{ field }}
+						</div>
+					{% else %}
+						<label for="code">{{field.label}}</label> <br/>
+						{{ field }}
+					{% endif %}
+
 	      		</div>
 				{% if forloop.counter == 1 %}
 					<div id="hermanos-formset" style="display: none;">
@@ -310,8 +337,8 @@
 								<th>Fecha de Nacimiento</th>
 							</tr>
 							{% for form in hermanos_formset %}
-								{{ form.id }}
-								<tr>
+								<tr class="row-hermanos">
+									{{ form.id }}
 									<td>{{form.nombres}}</td>
 									<td>{{form.apellidos}}</td>
 									<td>{{form.fecha_nacimiento}}</td>
