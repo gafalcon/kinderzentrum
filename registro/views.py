@@ -78,30 +78,27 @@ class RegistroView(View):
         hermanos_formset = HermanosFormset(request.POST, instance=DatosFamiliaresOtros())
 
         print "num familiares forms: ", len(datos_familia.forms)
-        if (datos_paciente.is_valid() and
-            datos_familia.is_valid() and
-            datos_medico.is_valid()): #and
-            paciente = datos_paciente.save(commit=False)
-            familiares_instances = datos_familia.save(commit=False)
-            medicos_instances = datos_medico.save(commit = False)
-            print paciente
+        # if (datos_paciente.is_valid() and
+        #     datos_familia.is_valid() and
+        #     datos_medico.is_valid()): #and
+
+        if descripcion_paciente.is_valid() and medicamento_formset.is_valid():
+            # paciente = datos_paciente.save(commit=False)
+            # familiares_instances = datos_familia.save(commit=False)
+            # medicos_instances = datos_medico.save(commit = False)
             # for familiar in familiares_instances:
             #     familiar.paciente = paciente
             #     familiar.save()
             # for medico in medico_instances:
             #     medico.paciente = paciente
             #     medico.save()
-
-
-            
+            print descripcion_paciente.cleaned_data
+            # descripcion = descripcion_paciente.save()
+            # medicamentos_instances = medicamento_formset.save(commit=False)
+            # for medicamento in medicamentos_instances:
+            #     medicamento.descripcion = descripcion
+            #     medicamento.save()
             return HttpResponseRedirect('/')
-            # # datos_familia.is_valid() and
-            # datos_medico.is_valid() and
-            # # datos_nacimiento.is_valid() and
-            # # datos_recien_nacido.is_valid() and
-            # # datos_primeros_dias.is_valid() and
-            # datos_alimentacion.is_valid() and
-            # datos_familiares.is_valid()):
 
             # num_hermanos = datos_familiares.cleaned_data.get('numero_hermanos', 0)
             # print("Num hermanos", num_hermanos)
@@ -156,9 +153,10 @@ class RegistroView(View):
             #familiar.save()
 
         print("datos is invalid")
-        print("\n\nErrors paciente:", datos_paciente.errors)
-        print("\n\nErrors familiares:", datos_familia.errors)
-        print("\n\nErrors medico:", datos_medico.errors)
+        # print("\n\nErrors paciente:", datos_paciente.errors)
+        # print("\n\nErrors familiares:", datos_familia.errors)
+        # print("\n\nErrors medico:", datos_medico.errors)
+        print ("Errors descripcion", descripcion_paciente.errors)
         # print("\n\nErrors nacimiento:", datos_nacimiento.errors)
         #print("\n\nErrors recien_nacido:", datos_recien_nacido.errors)
         #print("\n\nErrors primeros_dias:", datos_primeros_dias.errors)

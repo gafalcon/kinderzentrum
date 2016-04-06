@@ -16,7 +16,7 @@ class Descripcion(models.Model):
         blank=True,
         max_length=256
     )
-    edad_disc_molestia = models.IntegerField(
+    edad_disc_molestia = models.PositiveSmallIntegerField(
         "¿A qué edad notaron estas molestias?",
         blank=True,
     )
@@ -27,12 +27,14 @@ class Descripcion(models.Model):
         "¿Existe alguna limitación con sus movimientos?",
         choices=LIMITACIONES_OPTIONS)
 
-    areas_dificultad = models.CharField("¿Ha presentado su hijo(a) algún tipo de dificultad en éstas áreas?", max_length=256, blank=True)
+    areas_dificultad = models.CharField("¿Ha presentado su hijo(a) algún tipo de dificultad en éstas áreas?",
+                                        max_length=256, blank=True)
     had_convulsion = models.SmallIntegerField("¿Ha sentido convulsiones?",
-                                            choices=LIMITACIONES_OPTIONS)
-    tipo_crisis = models.CharField("¿Qué tipo de crisis tuvo durante la convulsión", max_length=256, blank=True)
+                                              choices=LIMITACIONES_OPTIONS)
+    tipo_crisis = models.CharField("¿Qué tipo de crisis tuvo durante la convulsión?",
+                                   max_length=256, blank=True)
 
-    edad_crisis = models.SmallIntegerField("¿A qué edad fue la primera crisis?", blank=True)
+    edad_crisis = models.PositiveSmallIntegerField("¿A qué edad fue la primera crisis?", blank=True)
 
     
 

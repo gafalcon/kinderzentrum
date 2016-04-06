@@ -20,16 +20,6 @@ CHOICES_SI_NO_DES = [(True, 'Si'), (False, 'No'), (None, 'Desconoce')]
 
 CHOICES_SI_NO = ((True, "Si"), (False, "No"))
 
-'''
-class Ficha_PacienteForm(forms.Form):
-    apellidos = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required': 'required'}),label="Apellidos")
-    nombres = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required': 'required'}))
-    
-    sexo = forms.ChoiceField(choices=Paciente.SEXO_CHOICES, widget=forms.RadioSelect(attrs={'required': 'required'}))    
-    nacionalidad = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required': 'required'}))
-    lugar_nacimiento = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required': 'required'}))
-'''
-
 class PacienteForm(ModelForm):
     # grupo_sanguineo = forms.ChoiceField(choices=Paciente.GRUPO_SANGUINEO_CHOICES,
     #                                     widget=forms.Select(attrs={'class':'form-control', 'required': 'required'}))
@@ -53,31 +43,7 @@ class PacienteForm(ModelForm):
                    'grupo_sanguineo': forms.Select(attrs={'class':'form-control', 'required': 'required'})
         }
 
-'''
-class Ficha_DatosFamiliaresForm(forms.Form):
-    apellidos = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    nombres = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    parentesco = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    nivel_estudio = forms.ChoiceField(choices=Familiar.NIVEL_ESTUDIO_CHOICES,
-                                      widget=forms.Select(attrs={'class':'form-control'}),
-                                      label='Nivel de estudio')
-    #trabajo
-    empresa = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}),
-                              label='Nombre de empresa',
-                              required=False)
-    direccion_empresa= forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}),
-                                       required=False,
-                                       label='Dirección')
-    jornada = forms.ChoiceField(choices=Familiar.JORNADA_TRABAJO_CHOICES,
-                                widget=forms.Select(attrs={'class': 'form-control'}),
-                                label='Jornada de Trabajo',
-                                required=False)
-    #domicilio
-    direccion = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}),
-                                label='Dirección')
-    telefono = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}),
-                               label='Teléfono')
-'''
+
 class DatosFamiliaresForm(ModelForm):
     class Meta:
         model = Familiar
@@ -87,24 +53,32 @@ class DatosFamiliaresForm(ModelForm):
                    'jornada': forms.Select(choices=Familiar.JORNADA_TRABAJO_CHOICES, attrs={'class': 'form-control'})
                 }
 
+
 class DatosMedicoForm(ModelForm):
     class Meta:
         model = Medico
         # fields = '__all__'
         exclude = ('paciente',)
 
+
 class DescripcionPacienteForm(ModelForm):
-    otro_disc_molestias = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Especifique quién descubrió las molestias'}))
+    otro_disc_molestias = forms.CharField(widget=forms.TextInput(
+        attrs={'class':'form-control', 'placeholder': 'Especifique quién descubrió las molestias'}),
+                                          required=False
+    )
     tipo_terapia = forms.MultipleChoiceField(required=True, choices=Terapia.TERAPIA_CHOICES, widget=forms.CheckboxSelectMultiple, label="Que tipo de terapia realiza?")
     tiempo_rehab_fisica = forms.CharField(label="Tiempo en terapia de rehabilitacion fisica",
-                                          widget=forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Especifique el tiempo'}))
+                                          widget=forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Especifique el tiempo'}),
+                                          required=False)
     tiempo_estimu_temprana = forms.CharField(label="Tiempo en terapia de estimulacion temprana",
-                                             widget=forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Especifique el tiempo'}))
-    areas_dificultad = forms.MultipleChoiceField(required=True, choices=Descripcion.DIFICULTADES_OPTIONS,
+                                             widget=forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Especifique el tiempo'}),
+                                             required=False)
+    areas_dificultad = forms.MultipleChoiceField(required=False, choices=Descripcion.DIFICULTADES_OPTIONS,
                                                  widget=forms.CheckboxSelectMultiple,
                                                  label="Ha presentado su hijo(a) algun tipo de dificultades en estas áreas? marque todas las opciones que desee.")
     otro_dificultad = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Especifique'}),
-                                      label="Otras dififultades")
+                                      label="Otras dififultades",
+                                      required=False)
     tomo_medicamentos = forms.ChoiceField(choices=CHOICES_SI_NO,
                                           widget=forms.Select(attrs={'class':'form-control'}),
                                           label="¿Tomó medicamentos?")
@@ -121,6 +95,65 @@ class DescripcionPacienteForm(ModelForm):
                    'limitaciones_movimiento': forms.Select(choices=model.LIMITACIONES_OPTIONS, attrs={'class':'form-control'}),
                    'had_convulsion': forms.Select(choices=model.LIMITACIONES_OPTIONS, attrs={'class':'form-control'})
                    }
+    def clean(self):
+        cleaned_data = super(DescripcionPacienteForm, self).clean()
+        disc_molestias = cleaned_data.get('disc_molestias')
+        tratamiento = cleaned_data.get('tratamiento')
+        tipo_terapia = cleaned_data.get('tipo_terapia')
+        areas_dificultad = cleaned_data.get('areas_dificultad')
+        had_convulsion = cleaned_data.get('had_convulsion')
+        tomo_medicamentos = cleaned_data.get('tomo_medicamentos')
+        print "tomo medi", tomo_medicamentos, type(tomo_medicamentos)
+        if disc_molestias == 'otros':
+            if not cleaned_data.get('otro_disc_molestias'):
+                self.add_error('otro_disc_molestias', 'Debe llenar éste campo')
+        if tratamiento:
+            if not cleaned_data.get('lugar_tratamiento'):
+                self.add_error('lugar_tratamiento', 'Debe llenar éste campo')
+        if tipo_terapia:
+            if '1' in tipo_terapia and not cleaned_data.get('tiempo_rehab_fisica'):
+                self.add_error('tiempo_rehab_fisica', 'Debe llenar éste campo')
+            if '2' in tipo_terapia and not cleaned_data.get('tiempo_estimu_temprana'):
+                self.add_error('tiempo_estimu_temprana', 'Debe llenar éste campo')
+
+        if areas_dificultad and 'otro' in areas_dificultad:
+            if not cleaned_data.get('otro_dificultad'):
+                self.add_error('otro_dificultad', 'Debe llenar éste campo')
+        if had_convulsion == 1:
+            if not cleaned_data.get('tipo_crisis'):
+                self.add_error('tipo_crisis', 'Debe llenar éste campo')
+            if not cleaned_data.get('edad_crisis'):
+                self.add_error('edad_crisis', 'Debe llenar éste campo')
+
+    def save(self):
+        model = super(DescripcionPacienteForm, self).save(commit=False)
+        tipo_terapia = self.cleaned_data.get('tipo_terapia')
+        areas_dificultad = self.cleaned_data.get('areas_dificultad')
+        if self.cleaned_data.get('disc_molestias') == 'otro':
+            model.disc_molestias = self.cleaned_data.get('otro_disc_molestias')
+        if not self.cleaned_data.get('tratamiento'):
+            model.lugar_tratamiento = None
+        if self.cleaned_data.get('had_convulsion') != 1:
+            model.tipo_crisis = None
+            model.edad_crisis = None
+        if areas_dificultad and 'otro' in areas_dificultad:
+            areas_dificultad.append(self.cleaned_data.get('otro_dificultad'))
+        if not areas_dificultad is None:
+            model.areas_dificultad = ','.join(areas_dificultad)
+
+        model.save()
+        if '1' in tipo_terapia:
+            terapia = Terapia(tipo=1,
+                              tiempo_terapia=self.cleaned_data.get('tiempo_rehab_fisica'),
+                              descripcion=model)
+            terapia.save()
+        if '2' in tipo_terapia:
+            terapia = Terapia(tipo=2,
+                              tiempo_terapia=self.cleaned_data.get('tiempo_estimu_temprana'),
+                              descripcion=model)
+            terapia.save()
+        return model
+
 
 class Ficha_HistorialMadreForm(forms.Form):
     CHOICES_ENFERMEDADES = [('diabetes','Diabetes'),('hipertension','Hipertension'),('infeccion_urinaria','Infecciones en las vias urinarias'),('ninguna_enf','Ninguna')]
@@ -158,11 +191,13 @@ class DesarrolloDeLaGestacionForm(ModelForm):
 
         }
 
+
 class SituacionGestacionForm(ModelForm):
     class Meta:
         model = Situacion_Gestacion
         fields=['nombre_situacion','periodo']
         widgets={'periodo': forms.Select(choices=CHOICES_TRIMESTRES,attrs={'class':'form-control'})}
+
 
 class ActividadGestacionForm(ModelForm):
     class Meta:
@@ -273,6 +308,7 @@ class RecienNacidoForm(ModelForm):
             model.complicaciones_nacimiento = ','.join(complicaciones_list)
         model.save()
         return model
+
 
 class PrimerosDiasForm(ModelForm):
     clinica = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿El niño(a) tuvo que permanecer después de su nacimiento en una clínica u hospital?")
@@ -520,7 +556,6 @@ class HermanoFormset(BaseInlineFormSet):
         for form in self.forms:
             form.empty_permitted = False
 
-
 class HermanoForm(ModelForm):
     fecha_nacimiento = forms.DateField(input_formats=['%m/%d/%Y'],
                                        label='Fecha de nacimiento',
@@ -537,7 +572,8 @@ HermanosFormset = inlineformset_factory(DatosFamiliaresOtros, Hermano,
                                         can_delete=False)
 MedicamentoFormset = inlineformset_factory(Descripcion, Medicamento,
                                            fields='__all__',
-                                           can_delete=False)
+                                           can_delete=False,
+                                           extra=1)
 ActividadGestacionFormset = formset_factory(ActividadGestacionForm, max_num=5)
 
 SituacionGestacionFormset = formset_factory(SituacionGestacionForm, max_num=11)
