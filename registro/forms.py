@@ -3,7 +3,7 @@ import datetime
 from django import forms
 from django.forms import ModelForm
 from django.forms.extras.widgets import SelectDateWidget
-from django.forms import inlineformset_factory, BaseInlineFormSet, formset_factory
+from django.forms import inlineformset_factory, BaseInlineFormSet, formset_factory, modelformset_factory
 from registro.modelos.historial_madre_models import HistorialMadre, Gestacion, Actividad_Gestacion, Situacion_Gestacion, CHOICES_TRIMESTRES
 from modelos.nacimiento_models import Nacimiento
 from modelos.familiars_models import Familiar, Hermano, DatosFamiliaresOtros
@@ -87,65 +87,27 @@ class DatosFamiliaresForm(ModelForm):
                    'jornada': forms.Select(choices=Familiar.JORNADA_TRABAJO_CHOICES, attrs={'class': 'form-control'})
                 }
 
-    # def clean(self):
-    #     cleaned_data = super(DatosFamiliaresForm, self).clean()
-    #     parentesco = cleaned_data.get('parentesco')
-    #     nombres = cleaned_data.get('nombres')
-    #     apellidos = cleaned_data.get('apellidos')
-    #     nivel_estudio = cleaned_data.get('nivel_estudio')
-    #     direccion = cleaned_data.get('direccion')
-    #     telefonos = cleaned_data.get('telefonos')
-    #     empresa = cleaned_data.get('empresa')
-    #     direccion_empresa = cleaned_data.get('direccion_empresa')
-    #     jornada = cleaned_data.get('jornada')
-
-
 class DatosMedicoForm(ModelForm):
     class Meta:
         model = Medico
         # fields = '__all__'
         exclude = ('paciente',)
 
-'''
-class Ficha_DatosMedicoForm(forms.Form):
-    apellidos = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    nombres = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    area = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    direccion = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    telefono = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-''' 
-'''
-class Ficha_DescripcionPacienteForm(forms.Form):
-    CHOICES = [('papa','Papa'),('mama','Mama'),('abuelos','Abuelos'),('otros','Otros')]
-    CHOICES_TERAPIA = [('rehabilitacion_fisica','Rehabilitacion Fisica'),('estimulacion_temprana','Estimulacion Temprana'),('ninguna','Ninguna')]
-    CHOICES_DIFICULTADES = [('audicion','Audición'),('vision','Visión'),('lenguaje','Lenguaje'),('seguridad_si_mismo','Seguridad en sí mismo'),('comportamiento','Comportamiento'),('alimentacion','Alimentación'),('suenio','Sueño'),('interaccion_social','Interacción social'),('otro','Otro')]
-    CHOICES_SI_NO_DES = [('desconoce','Desconoce'),('si','Si'),('no','No')]
-    descripcion_pregunta_1 = forms.CharField(widget=forms.Textarea(attrs={'rows':'2','class':'form-control'}), label="Que le preocupa de su hijo(a), algo especial que le llame la atencion?")
-    descripcion_pregunta_2 = forms.ChoiceField(choices=CHOICES, widget=forms.Select, label="Quien descubrio estas molestias?")
-    descripcion_otros_2 = forms.CharField(widget=forms.TextInput(attrs={'oculto':'oculto','class':'form-control'}), initial='Especifique')
-    descripcion_pregunta_3 = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="Se encuentra en algun tratamiento?")
-    descripcion_pregunta_4 = forms.CharField(widget=forms.Textarea(attrs={'rows':'2','oculto':'oculto','class':'form-control'}), label="En donde realiza el tratamiento?")
-    descripcion_pregunta_5 = forms.MultipleChoiceField(required=True,choices=CHOICES_TERAPIA, widget=forms.CheckboxSelectMultiple, label="Que tipo de terapia realiza?")
-    descripcion_tiempo_rehab_fisica =  forms.CharField(label="Tiempo en terapia de rehabilitacion fisica?", widget=forms.TextInput(attrs={'oculto':'oculto','class':'form-control'}), initial='Especifique tiempo')
-    descripcion_tiempo_estimu_temprana = forms.CharField(label="Tiempo en terapia de estimulacion temprana?", widget=forms.TextInput(attrs={'oculto':'oculto','class':'form-control'}), initial='Especifique tiempo')
-    descripcion_pregunta_6 = forms.MultipleChoiceField(required=True,choices=CHOICES_DIFICULTADES, widget=forms.CheckboxSelectMultiple, label="Ha presentado su hijo(a) algun tipo de dificultades en estas aereas? marque todas las opciones que desee.")
-    descripcion_otros_6 = forms.CharField(widget=forms.TextInput(attrs={'oculto':'oculto','class':'form-control'}), initial='Especifique',label="Especifique otros")
-    descripcion_pregunta_7 = forms.ChoiceField(choices=CHOICES_SI_NO_DES, widget=forms.Select, label="Existe alguna limitacion con sus movimientos?")
-    descripcion_pregunta_8 = forms.ChoiceField(choices=CHOICES_SI_NO_DES, widget=forms.Select, label="Ha tenido convulsiones?")
-    descripcion_pregunta_8_1 = forms.CharField(widget=forms.Textarea(attrs={'rows':'2','oculto':'oculto','class':'form-control'}), label="Que tipo de crisis tuvo durante la convulsion?")
-    descripcion_pregunta_8_2 = forms.CharField(widget=forms.Textarea(attrs={'rows':'1','oculto':'oculto','class':'form-control'}), label="A que edad fue la primera crisis?")
-    descripcion_pregunta_8_3 = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.Select(attrs={'oculto':'oculto'}), label="Tomo medicamentos?")
-    descripcion_pregunta_8_4 = forms.CharField(widget=forms.Textarea(attrs={'rows':'2','oculto':'oculto','class':'form-control'}), label="Que medicamentos y dosis diaria tomo?")
-'''   
-
 class DescripcionPacienteForm(ModelForm):
-    otro_disc_molestias = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}), initial='Especifique')
+    otro_disc_molestias = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Especifique quién descubrió las molestias'}))
     tipo_terapia = forms.MultipleChoiceField(required=True, choices=Terapia.TERAPIA_CHOICES, widget=forms.CheckboxSelectMultiple, label="Que tipo de terapia realiza?")
-    tiempo_rehab_fisica =  forms.CharField(label="Tiempo en terapia de rehabilitacion fisica?", widget=forms.TextInput(attrs={'class':'form-control'}), initial='Especifique tiempo')
-    tiempo_estimu_temprana = forms.CharField(label="Tiempo en terapia de estimulacion temprana?", widget=forms.TextInput(attrs={'class':'form-control'}), initial='Especifique tiempo')
-    areas_dificultad = forms.MultipleChoiceField(required=True,choices=Descripcion.DIFICULTADES_OPTIONS, widget=forms.CheckboxSelectMultiple, label="Ha presentado su hijo(a) algun tipo de dificultades en estas aereas? marque todas las opciones que desee.")
-    otro_dificultad = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}), initial='Especifique',label="Otras dififultades")
-    tomo_medicamentos = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.Select(attrs={'class':'form-control'}), label="Tomo medicamentos?")
+    tiempo_rehab_fisica = forms.CharField(label="Tiempo en terapia de rehabilitacion fisica",
+                                          widget=forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Especifique el tiempo'}))
+    tiempo_estimu_temprana = forms.CharField(label="Tiempo en terapia de estimulacion temprana",
+                                             widget=forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Especifique el tiempo'}))
+    areas_dificultad = forms.MultipleChoiceField(required=True, choices=Descripcion.DIFICULTADES_OPTIONS,
+                                                 widget=forms.CheckboxSelectMultiple,
+                                                 label="Ha presentado su hijo(a) algun tipo de dificultades en estas áreas? marque todas las opciones que desee.")
+    otro_dificultad = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Especifique'}),
+                                      label="Otras dififultades")
+    tomo_medicamentos = forms.ChoiceField(choices=CHOICES_SI_NO,
+                                          widget=forms.Select(attrs={'class':'form-control'}),
+                                          label="¿Tomó medicamentos?")
     class Meta:
         model = Descripcion
         fields = ['preocupacion','disc_molestias','otro_disc_molestias',
@@ -580,8 +542,8 @@ ActividadGestacionFormset = formset_factory(ActividadGestacionForm, max_num=5)
 
 SituacionGestacionFormset = formset_factory(SituacionGestacionForm, max_num=11)
 
-DatosMedicoFormset = formset_factory(DatosMedicoForm, extra=1)
-DatosFamiliaresFormset = formset_factory(DatosFamiliaresForm, extra=2)
+DatosMedicoFormset = modelformset_factory(Medico, form=DatosMedicoForm, extra=1)
+DatosFamiliaresFormset = modelformset_factory(Familiar, form=DatosFamiliaresForm, extra=2)
 
 data_formsets = {'form-TOTAL_FORMS': '2',
                  'form-INITIAL_FORMS': '0',

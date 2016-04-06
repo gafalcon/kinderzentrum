@@ -20,9 +20,6 @@ class RegistroView(View):
     template_name = 'registro/registro_ficha_medica.html'
     def get(self, request, *args, **kwargs):
         datos = PacienteForm(prefix="paciente")
-        # datos_familia = DatosFamiliaresFormset(data=data_formsets, prefix="familiares")
-        # datos_medico = DatosMedicoFormset(data=data_formsets, prefix="medico")
-
         datos_familia = DatosFamiliaresFormset(prefix="familiares")
         datos_medico = DatosMedicoFormset(prefix="medico")
 
@@ -60,29 +57,6 @@ class RegistroView(View):
                        'primeros_dias': primeros_dias,
                        'pagina_actual':'registro'})
 
-
-    def create_familiar(self, form_data):
-        return Familiar(
-            nombres = form_data['nombres'],
-            apellidos = form_data.get('apellidos'),
-            parentesco = form_data.get('parentesco'),
-            nivel_estudio = form_data.get('nivel_estudio'),
-            direccion = form_data.get('direccion'),
-            telefonos = form_data.get('telefono'),
-            empresa = form_data.get('empresa'),
-            direccion_empresa = form_data.get('direccion_empresa'),
-            jornada = form_data.get('jornada')
-        )
-
-    def create_medico(self, form_data):
-        return Medico(
-            nombres = form_data['nombres'],
-            apellidos = form_data['apellidos'],
-            area = form_data['area'],
-            direccion = form_data['direccion'],
-            telefonos = form_data['telefono']
-        )
-
     def post(self, request, *args, **kwargs):
         datos_paciente = PacienteForm(request.POST, prefix="paciente")
         datos_familia = DatosFamiliaresFormset(request.POST, prefix="familiares")
@@ -110,8 +84,6 @@ class RegistroView(View):
             paciente = datos_paciente.save(commit=False)
             familiares_instances = datos_familia.save(commit=False)
             medicos_instances = datos_medico.save(commit = False)
-            print "familiares instances", type(familiares_instances), len(familiares_instances)
-            print "medicos instances", type(medicos_instances), len(medicos_instances)
             print paciente
             # for familiar in familiares_instances:
             #     familiar.paciente = paciente

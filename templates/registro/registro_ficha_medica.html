@@ -31,6 +31,7 @@
 <form action="." method="POST">
 	{% csrf_token %}		
 
+	<!-- Paciente -->
 	<div id="panel1" class="show panel panel-default">
 		<div class="panel-heading">Datos del Paciente</div>
 		<div class="panel-body">			
@@ -58,6 +59,7 @@
 		</div>
 	</div>
 
+    <!-- Familiares -->
 	<div id="panel2" class="hide panel panel-default">
 		<div class="panel-heading">Datos Familiares</div>
         {{ datos_familia_formset.management_form }}
@@ -86,6 +88,7 @@
          <button id="btn-add-familiar" type="button" class="btn btn-primary btn-block">Agregar nuevo familiar</button>
 	</div>
 
+	<!-- Medico -->
 	<div id="panel3" class="hide panel panel-default">
 		<div class="panel-heading">Datos del Médico</div>
         {{ datos_medico_formset.management_form }}
@@ -107,35 +110,45 @@
         <button id="btn-add-medico" type="button" class="btn btn-primary btn-block">Agregar nuevo médico</button>
 	</div>
 
+	<!-- Descripcion del niño -->
 	<div id="panel4" class="hide panel panel-default">
 		<div class="panel-heading">Descripcion del niño</div>
         <div class="panel-body">			
 			{% for field in descripcion_paciente %}			
 	  			<div class="form-group">
-		    		<label for="code">{{field.label}}</label>			      		
+					{% if forloop.counter == 3 %}
+						<div id="otro-descubridor" style="display:none;">
+							{{ field }}
+						</div>
+					{% else %}
+		    			<label for="code">{{field.label}}</label>			      		
 		      			{{ field }}	
+					{% endif %}
       			</div>
 	      	{% endfor %}
             <div id="medicamentos-formset">
-                                <h4>Medicamentos</h4>
-                                {{ medicamento_formset.management_form }}
-                                <table class="table table-bordered table-condensed">
-                                    <tr>
-                                        <th>Nombre</th>
-                                        <th>Dosis diaria</th>
-                                    </tr>
-                                    {% for form in medicamento_formset %}
-                                        {{ form.id }}
-                                        <tr>
-                                            <td>{{form.nombre}}</td>
-                                            <td>{{form.dosis_diaria}}</td>
-                                        </tr>
-                                    {% endfor %}
-                                </table>
-                            </div>
+                <h4>Medicamentos</h4>
+                {{ medicamento_formset.management_form }}
+                <table class="table table-bordered table-condensed">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Dosis diaria</th>
+                    </tr>
+                    {% for form in medicamento_formset %}
+                        {{ form.id }}
+                        <tr class="formset-medicamento_set">
+                            <td>{{form.nombre}}</td>
+                            <td>{{form.dosis_diaria}}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+				<button id="btn-add-medicamento" type="button" class="btn-default btn">Agregar otro</button>
+				<button id="btn-delete-medicamento" type="button" class="btn-default btn">Eliminar</button>
+            </div>
 		</div>
 	</div>
 
+	<!-- Historial madre -->
 	<div id="panel5" class="hide panel panel-default">
 		<div class="panel-heading">Historial de la Madre</div>
 		<div class="panel-body">			
@@ -231,6 +244,8 @@
 	      	{% endfor %}
 		</div>
 	</div>
+
+    <!-- Primeros dias de vida -->
 	<div id="panel9" class="hide panel panel-default">
 		<div class="panel-heading">Primeros Días de Vida del Niño</div>
 		<div class="panel-body">			
@@ -250,6 +265,7 @@
 		</div>
 	</div>
 
+    <!-- Alimentacion y costumbres -->
 	<div id="panel10" class="hide panel panel-default">
 		<div class="panel-heading">Alimentación y Costumbres</div>
 		<div class="panel-body">			
@@ -285,8 +301,8 @@
 								</tr>
 							{% endfor %}
 						</table>
-						<button id="btn-add-suplemento" class="btn-default btn">Agregar otro</button>
-						<button id="btn-delete-suplemento" class="btn-default btn">Eliminar</button>
+						<button id="btn-add-suplemento" type="button" class="btn-default btn">Agregar otro</button>
+						<button id="btn-delete-suplemento" type="button" class="btn-default btn">Eliminar</button>
 					</div>		
 				{% endif %}
 

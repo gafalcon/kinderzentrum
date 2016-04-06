@@ -83,67 +83,6 @@ $(function() {
     //$('#id_descripcion_otros').parent().hide();
     //$('#id_descripcion_pregunta_4').parent().hide();
 
-    /*	Si ha seleccionado la opcion de otros, entonces mostramos un casillero adicional
-     que permite describir de forma especifica la opcion "otros" */
-    $('select[name=descripcion_paciente-descripcion_pregunta_2]').change(function() { 
-    	if ($(this).val() == 'otros'){
-    		$('#id_descripcion_paciente-descripcion_otros_2').parent().show();
-    		$('#id_descripcion_paciente-descripcion_otros_2').val("Especifique");
-    		//console.log('mostrar casilla de otros');
-    	}else{
-    		$('#id_descripcion_paciente-descripcion_otros_2').parent().hide();
-    	}	
-    });
-
-    $('#id_descripcion_paciente-descripcion_pregunta_3').on('change', function() {
-   		var valor_si_no = $('input[name=descripcion_paciente-descripcion_pregunta_3]:checked', '#id_descripcion_paciente-descripcion_pregunta_3').val(); 
-		console.log(valor_si_no);
-   		if (valor_si_no == 'True'){
-   			$('#id_descripcion_paciente-descripcion_pregunta_4').parent().show();
-   		}else{
-   			$('#id_descripcion_paciente-descripcion_pregunta_4').parent().hide();
-   		}
-	});
-
-    $('input[name=descripcion_paciente-descripcion_pregunta_5').on('click', function(e){
-    	if(e.target.value == "rehabilitacion_fisica"){
-    		if (e.target.checked)
-    			$('#id_descripcion_paciente-descripcion_tiempo_rehab_fisica').parent().show();
-    		else
-    			$('#id_descripcion_paciente-descripcion_tiempo_rehab_fisica').parent().hide();
-    	}else if(e.target.value == "estimulacion_temprana"){
-    		if (e.target.checked)
-    			$('#id_descripcion_paciente-descripcion_tiempo_estimu_temprana').parent().show();
-    		else
-    			$('#id_descripcion_paciente-descripcion_tiempo_estimu_temprana').parent().hide();
-    	}
-    });
-
-    $('input[name=descripcion_paciente-descripcion_pregunta_6]').on('click',function(e) { 
-    	if (e.target.value == 'otro'){
-    		if (e.target.checked){
-    			$('#id_descripcion_paciente-descripcion_otros_6').parent().show();
-    			$('#id_descripcion_paciente-descripcion_otros_6').val("Especifique");
-    		}else
-    			$('#id_descripcion_paciente-descripcion_otros_6').parent().hide();
-    		//console.log('mostrar casilla de otros');
-    	}
-    });
-
-    $('select[name=descripcion_paciente-descripcion_pregunta_8]').change(function() { 
-    	if ($(this).val() == 2){
-    		$('#id_descripcion_paciente-descripcion_pregunta_8_1').parent().show();
-    		$('#id_descripcion_paciente-descripcion_pregunta_8_2').parent().show();
-    		$('#id_descripcion_paciente-descripcion_pregunta_8_3').parent().show();
-    		$('#id_descripcion_paciente-descripcion_pregunta_8_4').parent().show();
-    		//console.log('mostrar casilla de otros');
-    	}else{
-    		$('#id_descripcion_paciente-descripcion_pregunta_8_1').parent().hide();
-    		$('#id_descripcion_paciente-descripcion_pregunta_8_2').parent().hide();
-    		$('#id_descripcion_paciente-descripcion_pregunta_8_3').parent().hide();
-    		$('#id_descripcion_paciente-descripcion_pregunta_8_4').parent().hide();
-    	}	
-    });
 
 	$('input[type=text], [type=number]').addClass('form-control');
 	function value_changed(bool_value,  element){
@@ -152,8 +91,42 @@ $(function() {
 		else
 			element.hide();
 	}
+    /*	Si ha seleccionado la opcion de otros, entonces mostramos un casillero adicional
+     que permite describir de forma especifica la opcion "otros" */
+	value_changed($('select[name=descripcion_paciente-disc_molestias]').val() == 'otros', $('#id_descripcion_paciente-otro_disc_molestias').parent());
+    $('select[name=descripcion_paciente-disc_molestias]').change(function() { 
+		value_changed($(this).val() == 'otros', $('#id_descripcion_paciente-otro_disc_molestias').parent());
+    });
+	value_changed($('input:radio[name=descripcion_paciente-tratamiento]:checked').val() == "True", $("#id_descripcion_paciente-lugar_tratamiento").parent());
+	$('input:radio[name=descripcion_paciente-tratamiento]').on('change', function(e) {
+		value_changed(e.target.value == "True", $("#id_descripcion_paciente-lugar_tratamiento").parent());
+	});
 
-	
+	value_changed($("#id_descripcion_paciente-tipo_terapia_0").is(":checked"), $("#id_descripcion_paciente-tiempo_rehab_fisica").parent());
+	value_changed($("#id_descripcion_paciente-tipo_terapia_1").is(":checked"), $("#id_descripcion_paciente-tiempo_estimu_temprana").parent());
+    $('input[name=descripcion_paciente-tipo_terapia').on('click', function(e){
+    	if(e.target.value == 1)
+			value_changed(e.target.checked, $("#id_descripcion_paciente-tiempo_rehab_fisica").parent());
+    	else if(e.target.value == 2)
+			value_changed(e.target.checked, $("#id_descripcion_paciente-tiempo_estimu_temprana").parent());
+    });
+
+	value_changed($("#id_descripcion_paciente-areas_dificultad_8").is(":checked"), $("#id_descripcion_paciente-otro_dificultad").parent());
+    $('input[name=descripcion_paciente-areas_dificultad]').on('click',function(e) { 
+		value_changed($("#id_descripcion_paciente-areas_dificultad_8").is(":checked"), $("#id_descripcion_paciente-otro_dificultad").parent());
+    });
+	value_changed($('select[name=descripcion_paciente-had_convulsion]').val() == 1, $("#id_descripcion_paciente-tipo_crisis").parent());
+	value_changed($('select[name=descripcion_paciente-had_convulsion]').val() == 1, $("#id_descripcion_paciente-edad_crisis").parent());
+    $('select[name=descripcion_paciente-had_convulsion]').change(function() { 
+		value_changed($(this).val() == 1, $("#id_descripcion_paciente-tipo_crisis").parent());
+		value_changed($(this).val() == 1, $("#id_descripcion_paciente-edad_crisis").parent());
+    });
+
+	value_changed($("select[name=descripcion_paciente-tomo_medicamentos]").val() == "True", $("#medicamentos-formset"));
+	$("select[name=descripcion_paciente-tomo_medicamentos]").change(function (e) {
+		value_changed($(this).val() == "True", $("#medicamentos-formset"));
+	});
+
 	value_changed($('input:radio[name=alimentacion-suplementos]:checked').val() == "True", $("#suplementos-formset"));
 	$('input[name=alimentacion-suplementos]').change(function(e){
 		value_changed(e.target.value == "True", $("#suplementos-formset"));
@@ -299,7 +272,6 @@ $(function() {
 	});
 
 	function addFormset(prefix, regex){
-		console.log("Add formset");
         var formCount = parseInt($("#id_"+prefix+"-TOTAL_FORMS").val());
 		var row = $(".formset-"+prefix+":first").clone(false);
 		$(row).insertAfter(".formset-"+prefix+":last").slideDown();
@@ -307,7 +279,13 @@ $(function() {
 		var row_html = $(row).html();
 		$(row).html(row_html.replace(regex, prefix+"-"+formCount));
         $("#id_"+prefix+"-TOTAL_FORMS").val(formCount + 1);
-
+	}
+	function deleteFormset(prefix) {
+		var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
+		if(formCount > 1){
+			$(".formset-"+prefix+":last").remove();
+			$("#id_" + prefix + "-TOTAL_FORMS").val(formCount - 1);
+		}    
 	}
 	$("#btn-add-suplemento").click(function (e) {
         addFormset("suplementoalimenticio_set", /suplementoalimenticio_set-0/g);
@@ -321,13 +299,16 @@ $(function() {
         addFormset("medico", /medico-0/g);
 	});
 
+	$("#btn-add-medicamento").click(function(e){
+		addFormset("medicamento_set", /medicamento_set-0/g);
+	});
+
 	$("#btn-delete-suplemento").click(function() {
-        var prefix = "suplementoalimenticio_set";
-		var formCount = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
-		if(formCount > 1){
-			$(".row-suplemento:last").remove();
-			$("#id_" + prefix + "-TOTAL_FORMS").val(formCount - 1);
-		}
+		deleteFormset("suplementoalimenticio_set");
+	});
+
+	$("#btn-delete-medicamento").click(function (arg) {
+        deleteFormset("medicamento_set");
 	});
 
 	
