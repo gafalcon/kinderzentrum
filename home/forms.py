@@ -14,7 +14,7 @@ class RegistroUsuario(forms.Form):
     nombre = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Nombres','autofocus':'autofocus'}))
     apellido = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Apellidos'}))
     username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Usuario'}))
-    password = forms.CharField(widget=forms.PasswordInput(render_value=False, attrs={'placeholder': 'Contraseña'}))
-    repeat_password = forms.CharField(widget=forms.PasswordInput(render_value=False, attrs={'placeholder': 'Contraseña'}))
-    email = forms.CharField(widget=forms.EmailInput(attrs={'placeholder': 'email@email.com'}))
+    password = forms.CharField(widget=forms.PasswordInput(render_value=False, attrs={'placeholder': 'Contraseña','class':'form-control'}))
+    repeat_password = forms.CharField(widget=forms.PasswordInput(render_value=False, attrs={'placeholder': 'Contraseña','class':'form-control'}))
+    email = forms.CharField(widget=forms.EmailInput(attrs={'placeholder': 'email@email.com','class':'form-control'}))
         

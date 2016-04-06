@@ -5,18 +5,22 @@ from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from home.forms import *
 from django.views.generic import View
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.models import User, Group, Permission
 
 # Create your views here.
 
 
 def index_view(request):
     if request.user.is_authenticated():
-        grupos = request.user.groups.all()
+        #grupos = request.user.groups.all()
+        user = request.user
         '''
         Aqui vamos a colocar las condiciones para que se habiliten las condiciones que el usuario
         va a usar
         '''
-        registro = grupos.filter(name='registro').count() == 1
+        registro = user.has_module_perms('registro')
+        #registro = grupos.filter(name='registro').count() == 1
         ctx = {'registro':registro,'pagina_actual':'inicio'}
         return render(request, 'base.html', ctx)
     else:
@@ -51,8 +55,10 @@ def logout_view(request):
 
 
 
-class AdminUsuariosView(View):
+class AdminUsuariosView(PermissionRequiredMixin, View):
+    permission_required = ('auth.add_user')
     template_name = 'home/admin_usuarios.html'
+
     def get(self, request, *args, **kwargs):
         registro_usuario = RegistroUsuario()
         ctx = {'registro_usuario':registro_usuario}
