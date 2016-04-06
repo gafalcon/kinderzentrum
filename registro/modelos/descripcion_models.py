@@ -70,7 +70,7 @@ class Terapista(models.Model):
     grupo_sanguineo = models.CharField("grupo sanguineo",
                                         choices=GRUPO_SANGUINEO_CHOICES,
                                         max_length=4)
-    terapia = models.ForeignKey(Terapia, null=True, on_delete=models.CASCADE)
+    terapia = models.ForeignKey(Terapia_Paciente, null=True, on_delete=models.CASCADE)
 
     def __unicode__(self):
         return self.apellidos + " " + self.nombres
