@@ -1,18 +1,147 @@
 {% extends 'base.html' %}
 {% block title %} Kinderzentrum {% endblock %}
-{% block css %}
-	<link rel="stylesheet" href="/static/css/jquery-ui.css" />
-    <link rel="stylesheet" href="/static/css/bootstrap.css" />
-    <link rel="stylesheet" href="/static/css/cita.css" />
-{% endblock css %}
 
 {% load static %}
-{% load table_tags %}
 
 {% block content %}
-    <div class="container" style="margin-top: 10px">
-            <h2>Asistencia niños</h2>
-            <br />
-            {% render_table paciente %}
+    <div class="panel panel-primary" style="margin-left: 5%; margin-right: 5%">
+        <div class="panel-heading">Filtros de búsqueda</div>
+        <div class="panel-body">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Nombre del niño</label>
+                    <div class="col-sm-10">
+                       <input type="text" class="form-control" id="inputEmail3" placeholder="nombre">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputPassword3" class="col-sm-2 control-label">Terapia</label>
+                    <div class="col-sm-4">
+                       <select class="form-control">
+                              <option>1</option>
+                              <option>2</option>
+                              <option>3</option>
+                              <option>4</option>
+                              <option>5</option>
+                        </select>
+                    </div>
+
+                    <label for="inputPassword3" class="col-sm-2 control-label">Terapista</label>
+                    <div class="col-sm-4">
+                       <select class="form-control">
+                              <option>1</option>
+                              <option>2</option>
+                              <option>3</option>
+                              <option>4</option>
+                              <option>5</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Fecha desde:</label>
+                    <div class="col-sm-4">
+                       <input type="date" class="form-control" id="inputEmail3">
+                    </div>
+                    <label for="inputEmail3" class="col-sm-2 control-label">Fecha hasta:</label>
+                    <div class="col-sm-4">
+                       <input type="date" class="form-control" id="inputEmail3">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div style="text-align: center">
+                        <button id="bt_buscar" type="submit" class="btn btn-primary" data-loading-text="Loading..." autocomplete="off" aria-label="Left Align">
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
+
+    </div>
+    
+    <div class="panel panel-primary" style="margin-left: 5%; margin-right: 5%">
+        <div class="panel-heading">Tabla</div>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <div class="container" style="margin-top: 10px">
+                    <table id="table_id" class="table table-striped">
+                        <thead>
+                            <th>Id</th>
+                            <th>Bebe</th>
+                            <th>Terapia</th>
+                            <th>Estado</th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock content %}
+
+{% block script %}
+    <script>
+        var editor; // use a global for the submit and return data rendering in the examples
+        $(document).ready( function () {
+            $('#table_id').DataTable({
+                bPaginate: true,
+                searching: true,
+                ordering:  true,
+                data: {{paciente|safe}},
+                columns: [
+                    { data: "id" },
+                    { data: "bebe" },
+                    { data: "terapia" },
+                    { data: "estado" }
+                ],
+                select: true
+            });
+            var table = $('#table_id').DataTable();
+            new $.fn.dataTable.Buttons( table, {
+                buttons: [
+                    'copy', 'excel', 'pdf'
+                ]
+            } );
+            table.buttons().container().appendTo( $('.col-sm-6:eq(0)', table.table().container() ) );
+
+            editor = new $.fn.dataTable.Editor( {
+                table: "#table_id",
+                idSrc:  'id',
+                fields: [
+                    {
+                        label: "Id:",
+                        name: "id"
+                    }, {
+                        label: "Bebe:",
+                        name: "bebe"
+                    }, {
+                        label: "Terapia:",
+                        name: "terapia"
+                    }, {
+                        label: "Estado:",
+                        name: "estado",
+                        type:  "radio",
+                        options: [
+                                { label: 'Agendado',  value: 'A' },
+                                { label: 'Cancelado', value: 'C' },
+                                { label: 'Asistio', value: 'S' },
+                                { label: 'No asistio', value: 'N' }
+                        ]
+                    }]
+             });
+            // Activate the bubble editor on click of a table cell
+            $('#table_id').on( 'click', 'tbody td:nth-child(4)', function (e) {
+                editor.buttons('Actualizar').bubble( this, {buttons: true} );
+            } );
+        } );
+
+        $('#bt_buscar').on('click', function () {
+            var $btn = $(this).button('loading')
+            // business logic...
+            $btn.button('reset')
+        })
+    </script>
+
+
+{% endblock script %}

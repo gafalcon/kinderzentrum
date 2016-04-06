@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-#from .models import Medico, Paciente
+from modelos.cita_model import Cita
 
 
-#admin.site.register(Paciente)
+admin.site.register(Cita)

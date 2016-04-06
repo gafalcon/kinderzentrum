@@ -1,3 +1,6 @@
 from django.contrib import admin
+from asistencia.models import Bebe,Terapia,Cit
 
-# Register your models here.
+admin.site.register(Bebe)
+admin.site.register(Terapia)
+admin.site.register(Cit)

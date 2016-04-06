@@ -40,7 +40,6 @@ INSTALLED_APPS = (
     'registro',
     'cita',
     'asistencia',
-    'table',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -72,6 +71,7 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'kinderzentrum.wsgi.application'
 
 
@@ -97,7 +97,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'es-EC'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Lima'
 
 USE_I18N = True
 
