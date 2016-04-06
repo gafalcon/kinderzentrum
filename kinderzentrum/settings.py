@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'registro',
     'cita',
     'asistencia',
+    'pago',
 )
 
 MIDDLEWARE_CLASSES = (
