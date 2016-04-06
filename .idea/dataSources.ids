@@ -11,7 +11,6 @@
       <primary-key columns="id"/>
       <foreign-key name="#FAKE_asistencia_bebe_1" columns="terapia_id" ref-table="asistencia_terapia" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
       <exported-key name="#FAKE_asistencia_cit_1" table="asistencia_cit" schema="" catalog="" columns="bebe_id"/>
-      <exported-key name="#FAKE_asistencia_cit_1" table="asistencia_cit" schema="" catalog="" columns="bebe_id"/>
       <index name="asistencia_bebe_3b02ef56" unique="true" columns="terapia_id"/>
     </table>
     <table name="asistencia_cit" schema="" catalog="" type="TABLE">

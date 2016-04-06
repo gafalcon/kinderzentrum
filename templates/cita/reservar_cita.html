@@ -1,106 +1,57 @@
 {% extends 'base.html' %}
-
-{% block title %} Kinderzentrum - Reservar cita {% endblock %}
+{% block title %} Kinderzentrum - Atender cita {% endblock %}
 {% block css %}
 
-    <link rel="stylesheet" href="/static/css/jquery-ui.css" />
-    <link rel="stylesheet" href="/static/css/bootstrap.css" />
-    <!--
-    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet"/>    
-    <link rel="stylesheet" type="text/css" media="screen"
-    href="/static/css/bootstrap-datetimepicker.min.css"/>
-    -->
-    <link rel="stylesheet" href="/static/css/cita.css" />
-    <link rel="stylesheet" href="/static/css/calendar.css" />
-
+  <link rel="stylesheet" href="/static/css/bootstrap.css" />
+  <link rel="stylesheet" href="/static/css/cita/cita.css" />
+  <!--
+  <link rel='stylesheet' type='text/css' href='/static/css/cita/reset.css' />
+  -->
+  <link rel='stylesheet' type='text/css' href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/start/jquery-ui.css' />
+  <link rel='stylesheet' type='text/css' href='/static/css/cita/jquery.weekcalendar.css' />
+  <!--
+  <link rel='stylesheet' type='text/css' href='/static/css/cita/demo.css' />
+   -->
 {% endblock css %}
 
+{% block js %}
+
+    <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js'></script>
+  <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js'></script>
+  <script type='text/javascript' src='/static/js/cita/jquery.weekcalendar.js'></script>
+  <script type='text/javascript' src='/static/js/cita/demo.js'></script>
+
+{% endblock js %}
+
 {% block content %}
+<div id = "titulo">Calendario semanal</div>
 
-<div class="dotstyle dotstyle-tooltip" style="margin: 4% 0px 1% 40%;">      
-  <ul id="dots_nav">
-    <li id="nav1" onclick="setPanelVisible(1)" class="current" ><a href="#">Reservar Cita</a></li>
-    <li id="nav2" onclick="setPanelVisible(2)"><a href="#" >Consultar Citas por terapista</a></li>
-  </ul>
-</div>
-
-<form action="." method="POST">
-	{% csrf_token %}	
-    <div id="panel1" class="show panel panel-default">
-		<div class="panel-heading">Datos de la cita</div>
-    <div class="panel-body">    
-         {% for field in ficha_datos_form %}
-              <div class="row">           
-               <div class="form-group span6">
-                  <label for="code" style="width: 20%;">{{field.label}}</label>
-                    {{ field }}  
-               </div>
-              </div>
-         {% endfor %}
-         <input type="submit" value="Submit" />
-    </div>
+  <div id='calendar'></div>
+  <div id="event_edit_container">
+    <form>
+      <input type="hidden" />
+      <ul>
+        <li>
+          <span>Date: </span><span class="date_holder"></span>
+        </li>
+        <li>
+          <label for="start">Start Time: </label><select name="start"><option value="">Select Start Time</option></select>
+        </li>
+        <li>
+          <label for="end">End Time: </label><select name="end"><option value="">Select End Time</option></select>
+        </li>
+        <li>
+          <label for="title">Title: </label><input type="text" name="title" />
+        </li>
+        <li>
+          <label for="body">Body: </label><textarea name="body"></textarea>
+        </li>
+      </ul>
+    </form>
   </div>
-
-
-  <div id="panel2" class="hide panel panel-default">
-    <div class="panel-heading">Consulta de citas por Terapista</div>
-    <div class="panel-body">      
-      {% for field in ficha_cons_cita_terap_form %}
-          <div class="row">           
-            <div class="form-group span6">
-              <label for="code" style="width: 20%;">{{field.label}}</label>
-                {{ field }}               
-              </div>
-            </div>
-          {% endfor %}
-          <button type="button" id = "mostrar">Aceptar</button>
-    </div>
-
-    <div id = "panel-datos" class="panel-datos" style="display:none;">
-
-    <table id = "table_even">
-    <tr>
-        <th>Paciente&nbsp;&nbsp;</th>
-        <th>Fecha&nbsp;&nbsp;</th>
-        <th>Hora&nbsp;&nbsp;</th>        
-    </tr>
-    
-    <tr> 
-        <td>Raul Rodriguez</td>       
-        <td>Miercoles 30/marzo/2016</td>
-        <td>08:00 - 09:00</td>
-        <td><button type="button" >Editar</button></td>
-        <td><button type="button" >Eliminar</button></td>
-    </tr>
-    <tr> 
-        <td>Sonia Mendoza</td>       
-        <td>Miercoles 30/marzo/2016</td>
-        <td>09:00 - 10:00</td>
-         <td><button type="button" >Editar</button></td>
-        <td><button type="button" >Eliminar</button></td>
-        
-    </tr>
-   
-    </table>
-    </div>
-
+  <div id="about">
 
   </div>
 
-	<!--input id="enviar" class="btn btn-default" type="submit" value="Aceptar"/-->	
-</form>
 
 {% endblock %}
-
-{% block js %}
-<script>
-$(document).ready(function(){
-    $("#mostrar").on( "click", function() {
-      $('#panel-datos').show(); //muestro mediante id
-     
-     });
-   
-  });
-
-</script>
-{% endblock js %}

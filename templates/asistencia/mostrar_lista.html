@@ -7,11 +7,12 @@
     <div class="panel panel-primary" style="margin-left: 5%; margin-right: 5%">
         <div class="panel-heading">Filtros de búsqueda</div>
         <div class="panel-body">
-            <form class="form-horizontal">
+            <form class="form-horizontal" action="{% url  question.id %}" method="post">
+                {% csrf_token %}
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">Nombre del niño</label>
+                    <label for="input_nombre" class="col-sm-2 control-label">Nombre del niño</label>
                     <div class="col-sm-10">
-                       <input type="text" class="form-control" id="inputEmail3" placeholder="nombre">
+                       <input type="text" class="form-control" id="input_nombre" placeholder="nombre">
                     </div>
                 </div>
                 <div class="form-group">
@@ -49,7 +50,7 @@
                 </div>
                 <div class="form-group">
                     <div style="text-align: center">
-                        <button id="bt_buscar" type="submit" class="btn btn-primary" data-loading-text="Loading..." autocomplete="off" aria-label="Left Align">
+                        <button id="bt_buscar" type="submit" class="btn btn-primary" data-loading-text="Loading..." autocomplete="off" aria-label="Left Align" >
                             <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar
                         </button>
                     </div>

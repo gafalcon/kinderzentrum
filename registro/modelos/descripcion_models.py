@@ -33,7 +33,7 @@ class Descripcion(models.Model):
 
     
 
-class Terapia(models.Model):
+class Terapia_Paciente(models.Model):
     """ terapias recibidas por el paciente """
     TERAPIA_CHOICES = ((1, "REHABILITACIÓN FÍSICA"),
                        (2, "ESTIMULACIÓN TEMPRANA"),
