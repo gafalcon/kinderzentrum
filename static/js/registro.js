@@ -74,8 +74,13 @@ $(function() {
     $( ".datepicker" ).datepicker({
 		changeMonth: true,
 		changeYear: true,
-		yearRange: "1950:2012"
-		// Podemos poner mas opciones
+		yearRange: "1995:2030",
+		// Podemos poner más opciones
+		dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+		monthNamesShort: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+		'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+		dateFormat: 'dd/mm/yy',
+		
     });
 
     //ocultamos los campos que no son necesarios a menos que se realice una eleccion 

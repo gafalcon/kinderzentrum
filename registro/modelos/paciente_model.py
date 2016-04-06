@@ -16,15 +16,16 @@ from .primeros_dias_model import PrimerosDias
 
 class Paciente(models.Model):
     """Modelo que representa a un paciente de la clinica"""
-
-    GRUPO_SANGUINEO_CHOICES = [('o+','O+'),
-                               ('o-','O-'),
-                               ('a+','A+'),
-                               ('a-','A-'),
-                               ('b+','B+'),
-                               ('b-','B-'),
-                               ('ab+','AB+'),
-                               ('ab-','AB-')]
+    GRUPO_SANGUINEO_CHOICES = (
+        ("A+", "A+"),
+        ("A-", "A-"),
+        ("O+", "O+"),
+        ("O-", "O-"),
+        ("B+", "B+"),
+        ("B-", "B-"),
+        ("AB+", "AB+"), 
+        ("AB-", "AB-")       
+    )
 
     SEXO_CHOICES = (
         ("M", "Masculino"),

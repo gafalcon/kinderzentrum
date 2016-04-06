@@ -15,6 +15,7 @@ from django.forms import formset_factory
 # Create your views here.
 
 
+
 @method_decorator(login_required, name="dispatch")
 class RegistroView(View):
     template_name = 'registro/registro_ficha_medica.html'

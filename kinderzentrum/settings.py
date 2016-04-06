@@ -38,6 +38,9 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'registro',
+    'cita',
+    'asistencia',
+    'pago',
     'django_extensions',
     'debug_toolbar'
 )
@@ -71,6 +74,7 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'kinderzentrum.wsgi.application'
 
 
@@ -96,7 +100,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'es-EC'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Lima'
 
 USE_I18N = True
 

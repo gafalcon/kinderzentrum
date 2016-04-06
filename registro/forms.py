@@ -16,6 +16,49 @@ from modelos.paciente_model import Paciente
 from modelos.descripcion_models import Descripcion, Terapia, Medicamento
 
 #from django.contrib.auth.models import User
+'''
+CHOICES_SI_NO_DES = [(2,'Si'),(3,'No'), (1,'Desconoce')]
+
+CHOICES_SI_NO = [('si','Si'),('no','No')]
+
+class Ficha_PacienteForm(forms.Form):
+    SEXO=[('masculino','Masculino'),('femenino','Femenino')]
+    GRUPO_SANGUINEO = [('o+','O+'),('o-','O-'),('a+','A+'),('a-','A-'),('b+','B+'),('b-','B-'),('ab+','AB+'),('ab-','AB-')]
+    apellidos = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required': 'required'}),label="Apellidos")
+    nombres = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required': 'required'}))
+    nacimiento = forms.DateField( input_formats = ['hh mm ss'],
+                                  widget=forms.TextInput(attrs=
+                                                         {
+                                                             'class':'datepicker form-control',
+                                                             'required': 'required'
+                                                         }))
+    sexo = forms.ChoiceField(choices=SEXO, widget=forms.RadioSelect(attrs={'required': 'required'}))    
+    nacionalidad = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required': 'required'}))
+    lugar_nacimiento = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required': 'required'}))
+    grupo_sanguineo = forms.ChoiceField(choices=GRUPO_SANGUINEO, widget=forms.Select(attrs={'class':'form-control', 'required': 'required'}))
+
+class Ficha_DatosFamiliaresForm(forms.Form):
+    ESTUDIO=[('primaria','Primaria'),('secundaria','Secundaria'),('universitaria','Universitaria'),('superior','Superior')]
+    apellidos = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    nombres = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    parentesco = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    nivel_estudio = forms.ChoiceField(choices=ESTUDIO, widget=forms.Select(attrs={'class':'form-control'}))
+    #trabajo
+    empresa = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    direccion = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    empresa = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    #domicilio
+    direccion_domicilio = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    telefono = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+
+class Ficha_DatosMedicoForm(forms.Form):
+    apellidos = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    nombres = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    area = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    direccion = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    telefono = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+   
+'''
 CHOICES_SI_NO_DES = [(True, 'Si'), (False, 'No'), (None, 'Desconoce')]
 
 CHOICES_SI_NO = ((True, "Si"), (False, "No"))
@@ -160,7 +203,9 @@ class Ficha_HistorialMadreForm(forms.Form):
     CHOICES_ANTICONCEPTIVO = [('pildoras','Pildoras'),('ritmo','Ritmo'),('diu_cobre','Diu de cobre'),('preservativos','Preservativos'),('parches','Parches'),('anillo_vaginal','Anillo vaginal'),('implante_sudermico','Implante sudermico'),('inyectables','Inyectables')]
     pregunta_5_1 = forms.MultipleChoiceField(required=True, choices=CHOICES_ENFERMEDADES, widget=forms.CheckboxSelectMultiple, label="Indique si durante el embarazo sufrio algunas de las siguientes enfermedades?")
     otros_5_1_1 = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','oculto':'oculto'}), initial='Especifique',label="Especifique otros")
+
     pregunta_5_2 = forms.MultipleChoiceField(required=True, choices=CHOICES_ENFERMEDADES_ANTES_EMBARA, widget=forms.CheckboxSelectMultiple, label="Indique si durante el embarazo sufrio algunas de las siguientes enfermedades?")
+    
     otros_5_2_1 = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','oculto':'oculto'}), initial='Especifique',label="Especifique otros")
     pregunta_5_3 = forms.CharField(widget=forms.Textarea(attrs={'class':'form-control','rows':'2'}), label="Indique algun tipo de enfermedad cronica")
     pregunta_5_4 = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="Tuvo usted alguna defuncion fetal antes de concebir al bebe/ninio(a) que trae a consulta?")

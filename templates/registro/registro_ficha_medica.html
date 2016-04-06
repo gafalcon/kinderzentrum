@@ -34,6 +34,7 @@
 	<!-- Paciente -->
 	<div id="panel1" class="show panel panel-default">
 		<div class="panel-heading">Datos del Paciente</div>
+		
 		<div class="panel-body">			
 	  		{% for field in ficha_datos_form %}
 	  			<div class="row">
@@ -67,12 +68,14 @@
 		<div  class="panel-body formset-familiares">			
 			<h3>Familiar</h3>
 			{% for field in form %}
+				{% if field.name != "id" %}
 	  			<div class="row">		  			
 		  			<div class="form-group span6">
-			    		<label for="code" style="width: 20%;">{{field.label}}</label>
+						<label for="code" style="width: 20%;">{{field.label}}</label>
 			      		{{ field }}			      		
 	      			</div>
 	      		</div>
+	      		{% endif %}
                 <!-- Colocar etiqueta de Domicilio luego del campo nivel de estudio -->
 				{% if field.name == "nivel_estudio" %}
 					<h4>Domicilio</h4>
@@ -96,13 +99,14 @@
 		<div class="panel-body formset-medico">			
 			<h3>Médico</h3>
 			{% for field in form %}
+			{% if field.name != "id" %}
 	  			<div class="row">		  			
 		  			<div class="form-group span6">
 			    		<label for="code" style="width: 20%;">{{field.label}}</label>
 			      		{{ field }}			      		
 	      			</div>
 	      		</div>
-
+	      	{% endif %}
 	      	{% endfor %}
 		</div>
         <hr>

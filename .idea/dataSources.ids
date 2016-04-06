@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="Django default" uuid="70e4273a-5e5a-443d-911c-5562207b8e7f">
+    <database-info product="SQLite" version="3.8.9" jdbc-version="2.1" driver-name="SQLiteJDBC" driver-version="native"/>
+    <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed"/>
+    <schema name="" catalog=""/>
+    <table name="asistencia_bebe" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="nombre" sqlType="VARCHAR(200)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="terapia_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_asistencia_bebe_1" columns="terapia_id" ref-table="asistencia_terapia" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <exported-key name="#FAKE_asistencia_cit_1" table="asistencia_cit" schema="" catalog="" columns="bebe_id"/>
+      <index name="asistencia_bebe_3b02ef56" unique="true" columns="terapia_id"/>
+    </table>
+    <table name="asistencia_cit" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="fecha_registro" sqlType="DATETIME" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="fecha_cita" sqlType="DATE" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="hora_inicio" sqlType="TIME" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="hora_fin" sqlType="TIME" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="indicaciones" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="bebe_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="estado" sqlType="VARCHAR(2)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_asistencia_cit_1" columns="bebe_id" ref-table="asistencia_bebe" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="asistencia_cit_8f4ae4ef" unique="true" columns="bebe_id"/>
+    </table>
+    <table name="asistencia_terapia" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="costo" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="nombre" sqlType="VARCHAR(200)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <exported-key name="#FAKE_asistencia_bebe_1" table="asistencia_bebe" schema="" catalog="" columns="terapia_id"/>
+      <exported-key name="#FAKE_asistencia_bebe_1" table="asistencia_bebe" schema="" catalog="" columns="terapia_id"/>
+    </table>
+    <table name="auth_group" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="name" sqlType="VARCHAR(80)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <exported-key name="#FAKE_auth_group_permissions_2" table="auth_group_permissions" schema="" catalog="" columns="group_id"/>
+      <exported-key name="#FAKE_auth_user_groups_1" table="auth_user_groups" schema="" catalog="" columns="group_id"/>
+      <exported-key name="#FAKE_auth_group_permissions_2" table="auth_group_permissions" schema="" catalog="" columns="group_id"/>
+      <exported-key name="#FAKE_auth_user_groups_1" table="auth_user_groups" schema="" catalog="" columns="group_id"/>
+    </table>
+    <table name="auth_group_permissions" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="group_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="permission_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_auth_group_permissions_1" columns="permission_id" ref-table="auth_permission" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_auth_group_permissions_2" columns="group_id" ref-table="auth_group" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="auth_group_permissions_8373b171" unique="true" columns="permission_id"/>
+      <index name="auth_group_permissions_0e939a4f" unique="true" columns="group_id"/>
+      <index name="auth_group_permissions_group_id_0cd325b0_uniq" unique="true" columns="group_id,permission_id"/>
+    </table>
+    <table name="auth_permission" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="content_type_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="codename" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_auth_permission_1" columns="content_type_id" ref-table="django_content_type" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <exported-key name="#FAKE_auth_group_permissions_1" table="auth_group_permissions" schema="" catalog="" columns="permission_id"/>
+      <exported-key name="#FAKE_auth_user_user_permissions_1" table="auth_user_user_permissions" schema="" catalog="" columns="permission_id"/>
+      <exported-key name="#FAKE_auth_group_permissions_1" table="auth_group_permissions" schema="" catalog="" columns="permission_id"/>
+      <exported-key name="#FAKE_auth_user_user_permissions_1" table="auth_user_user_permissions" schema="" catalog="" columns="permission_id"/>
+      <index name="auth_permission_417f1b1c" unique="true" columns="content_type_id"/>
+      <index name="auth_permission_content_type_id_01ab375a_uniq" unique="true" columns="content_type_id,codename"/>
+    </table>
+    <table name="auth_user" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="password" sqlType="VARCHAR(128)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="last_login" sqlType="DATETIME" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+      <column name="is_superuser" sqlType="BOOL" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="first_name" sqlType="VARCHAR(30)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="last_name" sqlType="VARCHAR(30)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="email" sqlType="VARCHAR(254)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="is_staff" sqlType="BOOL" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="is_active" sqlType="BOOL" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="date_joined" sqlType="DATETIME" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="username" sqlType="VARCHAR(30)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <exported-key name="#FAKE_auth_user_groups_2" table="auth_user_groups" schema="" catalog="" columns="user_id"/>
+      <exported-key name="#FAKE_auth_user_user_permissions_2" table="auth_user_user_permissions" schema="" catalog="" columns="user_id"/>
+      <exported-key name="#FAKE_django_admin_log_1" table="django_admin_log" schema="" catalog="" columns="user_id"/>
+      <exported-key name="#FAKE_auth_user_groups_2" table="auth_user_groups" schema="" catalog="" columns="user_id"/>
+      <exported-key name="#FAKE_auth_user_user_permissions_2" table="auth_user_user_permissions" schema="" catalog="" columns="user_id"/>
+      <exported-key name="#FAKE_django_admin_log_1" table="django_admin_log" schema="" catalog="" columns="user_id"/>
+    </table>
+    <table name="auth_user_groups" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="user_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="group_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_auth_user_groups_1" columns="group_id" ref-table="auth_group" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_auth_user_groups_2" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="auth_user_groups_0e939a4f" unique="true" columns="group_id"/>
+      <index name="auth_user_groups_e8701ad4" unique="true" columns="user_id"/>
+      <index name="auth_user_groups_user_id_94350c0c_uniq" unique="true" columns="user_id,group_id"/>
+    </table>
+    <table name="auth_user_user_permissions" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="user_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="permission_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_auth_user_user_permissions_1" columns="permission_id" ref-table="auth_permission" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_auth_user_user_permissions_2" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="auth_user_user_permissions_8373b171" unique="true" columns="permission_id"/>
+      <index name="auth_user_user_permissions_e8701ad4" unique="true" columns="user_id"/>
+      <index name="auth_user_user_permissions_user_id_14a6b632_uniq" unique="true" columns="user_id,permission_id"/>
+    </table>
+    <table name="cita_cita" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="fecha_registro" sqlType="DATETIME" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="fecha_cita" sqlType="DATETIME" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="hora_inicio" sqlType="TIME" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="hora_fin" sqlType="TIME" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="cancelo_cita" sqlType="BOOL" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="asistio_cita" sqlType="VARCHAR(1)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="indicaciones" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="terapista_id_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="paciente_id_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_cita_cita_1" columns="paciente_id_id" ref-table="registro_paciente" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_cita_cita_2" columns="terapista_id_id" ref-table="registro_terapista" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="cita_cita_252b7c91" unique="true" columns="paciente_id_id"/>
+      <index name="cita_cita_3782fd72" unique="true" columns="terapista_id_id"/>
+    </table>
+    <table name="django_admin_log" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="object_id" sqlType="TEXT" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+      <column name="object_repr" sqlType="VARCHAR(200)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="action_flag" sqlType="SMALLINT UNSIGNED" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="change_message" sqlType="TEXT" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="content_type_id" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
+      <column name="user_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="action_time" sqlType="DATETIME" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_django_admin_log_1" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_django_admin_log_2" columns="content_type_id" ref-table="django_content_type" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="django_admin_log_e8701ad4" unique="true" columns="user_id"/>
+      <index name="django_admin_log_417f1b1c" unique="true" columns="content_type_id"/>
+    </table>
+    <table name="django_content_type" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="app_label" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="model" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <exported-key name="#FAKE_auth_permission_1" table="auth_permission" schema="" catalog="" columns="content_type_id"/>
+      <exported-key name="#FAKE_django_admin_log_2" table="django_admin_log" schema="" catalog="" columns="content_type_id"/>
+      <exported-key name="#FAKE_auth_permission_1" table="auth_permission" schema="" catalog="" columns="content_type_id"/>
+      <exported-key name="#FAKE_django_admin_log_2" table="django_admin_log" schema="" catalog="" columns="content_type_id"/>
+      <index name="django_content_type_app_label_76bd3d3b_uniq" unique="true" columns="app_label,model"/>
+    </table>
+    <table name="django_migrations" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="app" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="VARCHAR(255)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="applied" sqlType="DATETIME" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+    </table>
+    <table name="django_session" schema="" catalog="" type="TABLE">
+      <column name="session_key" sqlType="VARCHAR(40)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="session_data" sqlType="TEXT" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="expire_date" sqlType="DATETIME" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <primary-key columns="session_key"/>
+      <index name="django_session_de54fa62" unique="true" columns="expire_date"/>
+    </table>
+    <table name="registro_actividad_gestacion" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="tipo" sqlType="SMALLINT" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="periodo" sqlType="SMALLINT" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="gestacion_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_registro_actividad_gestacion_1" columns="gestacion_id" ref-table="registro_gestacion" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="registro_actividad_gestacion_d4e22335" unique="true" columns="gestacion_id"/>
+    </table>
+    <table name="registro_alimentacioncostumbres" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="motivo_suspencion_lactancia" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="afecciones" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="enfermedades" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="edad_alimentacion_complementaria" sqlType="SMALLINT UNSIGNED" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="forma_alimento" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="lugar_desayuno" sqlType="VARCHAR(50)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="lugar_comida_media_manana" sqlType="VARCHAR(50)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="lugar_almuerzo" sqlType="VARCHAR(50)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="lugar_comida_media_tarde" sqlType="VARCHAR(50)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="lugar_cena" sqlType="VARCHAR(50)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="lugar_comida_otro" sqlType="VARCHAR(50)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="alimento_preferido" sqlType="VARCHAR(20)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="alimento_rechazado" sqlType="VARCHAR(20)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="apetito" sqlType="SMALLINT UNSIGNED" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="motivo_cambios_alimentacion" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="tiempo_leche_materna" sqlType="SMALLINT UNSIGNED" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <exported-key name="#FAKE_registro_paciente_9" table="registro_paciente" schema="" catalog="" columns="alimentacion_id"/>
+      <exported-key name="#FAKE_registro_suplementoalimenticio_1" table="registro_suplementoalimenticio" schema="" catalog="" columns="alimentacion_id"/>
+      <exported-key name="#FAKE_registro_paciente_9" table="registro_paciente" schema="" catalog="" columns="alimentacion_id"/>
+      <exported-key name="#FAKE_registro_suplementoalimenticio_1" table="registro_suplementoalimenticio" schema="" catalog="" columns="alimentacion_id"/>
+    </table>
+    <table name="registro_datosfamiliaresotros" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="numero_hermanos" sqlType="SMALLINT UNSIGNED" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="hermano_transtorno" sqlType="SMALLINT UNSIGNED" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="transtorno" sqlType="VARCHAR(50)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="alteracion_desarrollo" sqlType="BOOL" precision="0" scale="-1" nullable="true" jdbcType="4"/>
+      <column name="tipo_enfermedad_parientes" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="orientacion_a_institucion" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="transtorno_hermanos" sqlType="BOOL" precision="0" scale="-1" nullable="true" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <exported-key name="#FAKE_registro_hermano_1" table="registro_hermano" schema="" catalog="" columns="datos_familiares_id"/>
+      <exported-key name="#FAKE_registro_paciente_8" table="registro_paciente" schema="" catalog="" columns="datos_familiares_id"/>
+      <exported-key name="#FAKE_registro_hermano_1" table="registro_hermano" schema="" catalog="" columns="datos_familiares_id"/>
+      <exported-key name="#FAKE_registro_paciente_8" table="registro_paciente" schema="" catalog="" columns="datos_familiares_id"/>
+    </table>
+    <table name="registro_descripcion" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="preocupacion" sqlType="VARCHAR(500)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="disc_molestias" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="edad_disc_molestia" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="tratamiento" sqlType="BOOL" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="lugar_tratamiento" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="limitaciones_movimiento" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="areas_dificultad" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="had_convulsion" sqlType="SMALLINT" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="tipo_crisis" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="edad_crisis" sqlType="SMALLINT" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <exported-key name="#FAKE_registro_medicamento_1" table="registro_medicamento" schema="" catalog="" columns="descripcion_id"/>
+      <exported-key name="#FAKE_registro_paciente_7" table="registro_paciente" schema="" catalog="" columns="descripcion_id"/>
+      <exported-key name="#FAKE_registro_terapia_1" table="registro_terapia" schema="" catalog="" columns="descripcion_id"/>
+      <exported-key name="#FAKE_registro_medicamento_1" table="registro_medicamento" schema="" catalog="" columns="descripcion_id"/>
+      <exported-key name="#FAKE_registro_paciente_7" table="registro_paciente" schema="" catalog="" columns="descripcion_id"/>
+      <exported-key name="#FAKE_registro_terapia_1" table="registro_terapia" schema="" catalog="" columns="descripcion_id"/>
+    </table>
+    <table name="registro_familiar" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="parentezco" sqlType="VARCHAR(50)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="nombres" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="apellidos" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="nivel_estudio" sqlType="VARCHAR(20)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="direccion" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="telefonos" sqlType="VARCHAR(50)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="empresa" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="direccion_empresa" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="jornada" sqlType="SMALLINT UNSIGNED" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="paciente_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_registro_familiar_1" columns="paciente_id" ref-table="registro_paciente" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="registro_familiar_f7989c29" unique="true" columns="paciente_id"/>
+    </table>
+    <table name="registro_gestacion" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="sentimientos" sqlType="VARCHAR(200)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="num_embarazo" sqlType="SMALLINT UNSIGNED" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="momento_desc_embarazo" sqlType="SMALLINT UNSIGNED" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="lugar_curso_prenatal" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="carga_horaria" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="nauseas_trimestre" sqlType="SMALLINT" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="vacuna_tetano" sqlType="BOOL" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="comunicacion_bebe" sqlType="VARCHAR(500)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <exported-key name="#FAKE_registro_actividad_gestacion_1" table="registro_actividad_gestacion" schema="" catalog="" columns="gestacion_id"/>
+      <exported-key name="#FAKE_registro_paciente_6" table="registro_paciente" schema="" catalog="" columns="gestacion_id"/>
+      <exported-key name="#FAKE_registro_situacion_gestacion_1" table="registro_situacion_gestacion" schema="" catalog="" columns="gestacion_id"/>
+      <exported-key name="#FAKE_registro_actividad_gestacion_1" table="registro_actividad_gestacion" schema="" catalog="" columns="gestacion_id"/>
+      <exported-key name="#FAKE_registro_paciente_6" table="registro_paciente" schema="" catalog="" columns="gestacion_id"/>
+      <exported-key name="#FAKE_registro_situacion_gestacion_1" table="registro_situacion_gestacion" schema="" catalog="" columns="gestacion_id"/>
+    </table>
+    <table name="registro_hermano" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="nombres" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="apellidos" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="datos_familiares_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="fecha_nacimiento" sqlType="DATE" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_registro_hermano_1" columns="datos_familiares_id" ref-table="registro_datosfamiliaresotros" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="registro_hermano_4379df7b" unique="true" columns="datos_familiares_id"/>
+    </table>
+    <table name="registro_historialmadre" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="enfermedades_previas" sqlType="VARCHAR(200)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="enfermedades_durante_embarazo" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="enfermedad_cronica" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="defunciones_fetales" sqlType="SMALLINT UNSIGNED" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="hijos_nacidos_muertos" sqlType="SMALLINT UNSIGNED" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="hijos_nacidos_vivos" sqlType="SMALLINT UNSIGNED" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="embarazos" sqlType="SMALLINT UNSIGNED" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="anticonceptivos" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="enfermedades_antes_concepcion" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <exported-key name="#FAKE_registro_paciente_5" table="registro_paciente" schema="" catalog="" columns="historial_madre_id"/>
+      <exported-key name="#FAKE_registro_paciente_5" table="registro_paciente" schema="" catalog="" columns="historial_madre_id"/>
+    </table>
+    <table name="registro_medicamento" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="nombre" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="dosis_diaria" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="descripcion_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_registro_medicamento_1" columns="descripcion_id" ref-table="registro_descripcion" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="registro_medicamento_4104d333" unique="true" columns="descripcion_id"/>
+    </table>
+    <table name="registro_medico" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="nombres" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="apellidos" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="direccion" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="telefonos" sqlType="VARCHAR(50)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="area" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <exported-key name="#FAKE_registro_paciente_4" table="registro_paciente" schema="" catalog="" columns="medico_id"/>
+      <exported-key name="#FAKE_registro_paciente_4" table="registro_paciente" schema="" catalog="" columns="medico_id"/>
+    </table>
+    <table name="registro_nacimiento" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="nombre_lugar_nacimiento" sqlType="VARCHAR(500)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="tipo_lugar_nacimiento" sqlType="VARCHAR(20)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="semana_gestacion" sqlType="SMALLINT UNSIGNED" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="metodo_nacimiento" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="manera_inicio_parto" sqlType="VARCHAR(30)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="tipo_ruptura_fuente" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="sentimientos_parto" sqlType="VARCHAR(500)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="sentimientos_nacimiento" sqlType="VARCHAR(500)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="duracion_nacimiento" sqlType="SMALLINT UNSIGNED" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="gemelar" sqlType="BOOL" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="primera_parte_cuerpo" sqlType="VARCHAR(50)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="complicaciones" sqlType="VARCHAR(200)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="complicaciones_cordon" sqlType="VARCHAR(10)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <exported-key name="#FAKE_registro_paciente_3" table="registro_paciente" schema="" catalog="" columns="nacimiento_id"/>
+      <exported-key name="#FAKE_registro_paciente_3" table="registro_paciente" schema="" catalog="" columns="nacimiento_id"/>
+    </table>
+    <table name="registro_paciente" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="nombres" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="apellidos" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="lugar_nacimiento" sqlType="VARCHAR(30)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="fecha_nacimiento" sqlType="DATE" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="fecha_registro" sqlType="DATE" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="nacionalidad" sqlType="VARCHAR(30)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="sexo" sqlType="VARCHAR(1)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="alimentacion_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="datos_familiares_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="descripcion_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="gestacion_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="historial_madre_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="medico_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="nacimiento_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="primeros_dias_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="recien_nacido_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="grupo_sanguineo" sqlType="VARCHAR(4)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_registro_paciente_1" columns="recien_nacido_id" ref-table="registro_reciennacido" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_registro_paciente_2" columns="primeros_dias_id" ref-table="registro_primerosdias" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_registro_paciente_3" columns="nacimiento_id" ref-table="registro_nacimiento" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_registro_paciente_4" columns="medico_id" ref-table="registro_medico" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_registro_paciente_5" columns="historial_madre_id" ref-table="registro_historialmadre" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_registro_paciente_6" columns="gestacion_id" ref-table="registro_gestacion" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_registro_paciente_7" columns="descripcion_id" ref-table="registro_descripcion" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_registro_paciente_8" columns="datos_familiares_id" ref-table="registro_datosfamiliaresotros" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_registro_paciente_9" columns="alimentacion_id" ref-table="registro_alimentacioncostumbres" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <exported-key name="#FAKE_cita_cita_1" table="cita_cita" schema="" catalog="" columns="paciente_id_id"/>
+      <exported-key name="#FAKE_registro_familiar_1" table="registro_familiar" schema="" catalog="" columns="paciente_id"/>
+      <exported-key name="#FAKE_cita_cita_1" table="cita_cita" schema="" catalog="" columns="paciente_id_id"/>
+      <exported-key name="#FAKE_registro_familiar_1" table="registro_familiar" schema="" catalog="" columns="paciente_id"/>
+    </table>
+    <table name="registro_primerosdias" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="clinica_permanencia" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="dias_permanencia" sqlType="INTEGER UNSIGNED" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="icteria" sqlType="BOOL" precision="0" scale="-1" nullable="true" jdbcType="4"/>
+      <column name="tratamiento_icteria" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="examenes" sqlType="VARCHAR(100)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="veces_despertar_noche" sqlType="SMALLINT UNSIGNED" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="lugar_dormir" sqlType="SMALLINT UNSIGNED" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="descripcion_bebe" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="descripcion_madre" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="situaciones_despues_nacimiento" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <exported-key name="#FAKE_registro_paciente_2" table="registro_paciente" schema="" catalog="" columns="primeros_dias_id"/>
+      <exported-key name="#FAKE_registro_paciente_2" table="registro_paciente" schema="" catalog="" columns="primeros_dias_id"/>
+    </table>
+    <table name="registro_reciennacido" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="edad_madre" sqlType="SMALLINT UNSIGNED" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="edad_padre" sqlType="SMALLINT UNSIGNED" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="peso" sqlType="REAL" precision="0" scale="-1" nullable="false" jdbcType="6"/>
+      <column name="tamanio" sqlType="REAL" precision="0" scale="-1" nullable="false" jdbcType="6"/>
+      <column name="diametro_encefalico" sqlType="REAL" precision="0" scale="-1" nullable="false" jdbcType="6"/>
+      <column name="apgar_score" sqlType="SMALLINT UNSIGNED" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="complicaciones_nacimiento" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="tiempo_apego_precoz" sqlType="SMALLINT UNSIGNED" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="tiempo_sostener_bebe" sqlType="SMALLINT UNSIGNED" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="tiempo_internado" sqlType="BIGINT" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="primera_lactancia" sqlType="SMALLINT UNSIGNED" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="tipo_contacto" sqlType="SMALLINT UNSIGNED" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <exported-key name="#FAKE_registro_paciente_1" table="registro_paciente" schema="" catalog="" columns="recien_nacido_id"/>
+      <exported-key name="#FAKE_registro_paciente_1" table="registro_paciente" schema="" catalog="" columns="recien_nacido_id"/>
+    </table>
+    <table name="registro_situacion_gestacion" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="tipo" sqlType="SMALLINT" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="periodo" sqlType="SMALLINT" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="gestacion_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_registro_situacion_gestacion_1" columns="gestacion_id" ref-table="registro_gestacion" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="registro_situacion_gestacion_d4e22335" unique="true" columns="gestacion_id"/>
+    </table>
+    <table name="registro_suplementoalimenticio" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="frecuencia" sqlType="VARCHAR(50)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="tipo" sqlType="VARCHAR(50)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="cantidad" sqlType="SMALLINT UNSIGNED" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="alimentacion_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_registro_suplementoalimenticio_1" columns="alimentacion_id" ref-table="registro_alimentacioncostumbres" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="registro_suplementoalimenticio_f6606555" unique="true" columns="alimentacion_id"/>
+    </table>
+    <table name="registro_terapia" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="tipo" sqlType="SMALLINT" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="tiempo_terapia" sqlType="BIGINT" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="descripcion_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="costo_sesion" sqlType="SMALLINT UNSIGNED" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_registro_terapia_1" columns="descripcion_id" ref-table="registro_descripcion" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <exported-key name="#FAKE_registro_terapista_1" table="registro_terapista" schema="" catalog="" columns="terapia_id"/>
+      <exported-key name="#FAKE_registro_terapista_1" table="registro_terapista" schema="" catalog="" columns="terapia_id"/>
+      <index name="registro_terapia_4104d333" unique="true" columns="descripcion_id"/>
+    </table>
+    <table name="registro_terapista" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="cedula" sqlType="VARCHAR(10)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="nombres" sqlType="VARCHAR(50)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="apellidos" sqlType="VARCHAR(50)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="direccion" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="telefonos" sqlType="VARCHAR(50)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="fecha_nacimiento" sqlType="DATE" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="grupo_sanguineo" sqlType="VARCHAR(4)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="terapia_id" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_registro_terapista_1" columns="terapia_id" ref-table="registro_terapia" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <exported-key name="#FAKE_cita_cita_2" table="cita_cita" schema="" catalog="" columns="terapista_id_id"/>
+      <exported-key name="#FAKE_cita_cita_2" table="cita_cita" schema="" catalog="" columns="terapista_id_id"/>
+      <index name="registro_terapista_3b02ef56" unique="true" columns="terapia_id"/>
+    </table>
+    <table name="sqlite_sequence" schema="" catalog="" type="TABLE">
+      <column name="name" sqlType="" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+      <column name="seq" sqlType="" precision="0" scale="-1" nullable="true" jdbcType="12"/>
+    </table>
+  </data-source>
+</component>

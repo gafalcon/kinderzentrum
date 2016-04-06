@@ -3,7 +3,6 @@
 from django.db import models
 
 class Nacimiento(models.Model):
-
     TIPO_LUGAR_NACIMIENTO_CLINICA = 0
     TIPO_LUGAR_NACIMIENTO_HOSPITAL = 1
     TIPO_LUGAR_NACIMIENTO_MATERNIDAD = 2
