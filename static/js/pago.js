@@ -85,7 +85,7 @@ function getPatientSuggestionsByNameFragment(nameFragment) {
       })
       .then(Configuration.Debug.Delay);
   } else {
-    var URL = API.host = '/patients?limit=' + Configuration.Suggestions.Limit || 5;
+    var URL = API.host = '/pacientes?limit=' + Configuration.Suggestions.Limit || 5;
     if (nameFragment !== '') {
       URL += '/query=' + nameFragment;
     }
@@ -130,7 +130,7 @@ function getPatientPaymentInformation(id, date) {
       })
       .then(Configuration.Debug.Delay);
   } else {
-    var URL = API.host = '/patients/' + id + '/payments?from=' + date.from + '&to=' + date.to;
+    var URL = API.host = '/pagos/payments/' + id + '?from=' + date.from + '&to=' + date.to;
     handlePatientInformationPromise = fetch(URL)
       .then(function (response) {
         if (response.ok) {

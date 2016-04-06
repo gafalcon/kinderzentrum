@@ -11,5 +11,5 @@ urlpatterns = [
     url(r'^', include('home.urls')),
     url(r'^cita/', include('cita.urls')),
     url(r'^asistencia/', include('asistencia.urls')),
-
+    url(r'^pagos/', include('pago.urls')),
 ]
