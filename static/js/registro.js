@@ -127,6 +127,13 @@ $(function() {
 		value_changed($(this).val() == "True", $("#medicamentos-formset"));
 	});
 
+	value_changed($('input:radio[name=gestacion-curso_prenatal]:checked').val() == "True", $("#id_gestacion-lugar_curso_prenatal").parent());
+	value_changed($('input:radio[name=gestacion-curso_prenatal]:checked').val() == "True", $("#id_gestacion-carga_horaria").parent());
+	$('input:radio[name=gestacion-curso_prenatal]').change(function (e) {
+        value_changed(e.target.value == "True", $("#id_gestacion-lugar_curso_prenatal").parent());
+        value_changed(e.target.value == "True", $("#id_gestacion-carga_horaria").parent());
+	});
+
 	value_changed($('input:radio[name=alimentacion-suplementos]:checked').val() == "True", $("#suplementos-formset"));
 	$('input[name=alimentacion-suplementos]').change(function(e){
 		value_changed(e.target.value == "True", $("#suplementos-formset"));

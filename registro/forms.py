@@ -103,7 +103,6 @@ class DescripcionPacienteForm(ModelForm):
         areas_dificultad = cleaned_data.get('areas_dificultad')
         had_convulsion = cleaned_data.get('had_convulsion')
         tomo_medicamentos = cleaned_data.get('tomo_medicamentos')
-        print "tomo medi", tomo_medicamentos, type(tomo_medicamentos)
         if disc_molestias == 'otros':
             if not cleaned_data.get('otro_disc_molestias'):
                 self.add_error('otro_disc_molestias', 'Debe llenar éste campo')
@@ -177,20 +176,38 @@ class Ficha_HistorialMadreForm(forms.Form):
 
 class DesarrolloDeLaGestacionForm(ModelForm):
     curso_prenatal = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="Asistió a algún curso prenatal?")
-    
-
+    vacuna_tetano = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Se vacunó usted contra el tetano durante el embarazo?")
+    sentimientos = forms.MultipleChoiceField(required=False, choices=Gestacion.CHOICES_SENTIMIENTOS,
+                                             widget=forms.CheckboxSelectMultiple,
+                                             label="¿Qué sintió cuando se enteró que estaba embarazada? Marque todas las opciones que desee")
+    comunicacion_bebe = forms.MultipleChoiceField(choices=Gestacion.CHOICES_COMUNICA_BEBE,
+                                                  widget=forms.CheckboxSelectMultiple,
+                                                  label="¿Cómo se comunicaba con el bebe? Marque todas las opciones que dese.")
     class Meta:
         model = Gestacion
         fields = ['sentimientos','momento_desc_embarazo','num_embarazo','curso_prenatal',
                   'lugar_curso_prenatal','carga_horaria','vacuna_tetano','comunicacion_bebe',
                   ]
-        widgets = {'sentimientos': forms.CheckboxSelectMultiple(choices=model.CHOICES_SENTIMIENTOS),
-                   'momento_desc_embarazo': forms.Select(choices=model.CHOICES_MOMENTO,attrs={'class':'form-control'}),
-                   'vacuna_tetano': forms.RadioSelect(choices=CHOICES_SI_NO),
-                   'comunicacion_bebe': forms.CheckboxSelectMultiple(choices=model.CHOICES_COMUNICA_BEBE)
+        widgets = {'momento_desc_embarazo': forms.Select(choices=model.CHOICES_MOMENTO,attrs={'class':'form-control'})}
+    def clean(self):
+        cleaned_data = super(DesarrolloDeLaGestacionForm, self).clean()
+        curso_prenatal = cleaned_data.get('curso_prenatal', '')
+        if curso_prenatal == "True":
+            if not cleaned_data.get('lugar_curso_prenatal'):
+                self.add_error('lugar_curso_prenatal', 'Debe llenar éste campo')
+            if not cleaned_data.get('carga_horaria'):
+                self.add_error('carga_horaria', 'Debe llenar éste campo')
 
-        }
-
+    def save(self):
+        model = super(DesarrolloDeLaGestacionForm, self).save(commit=False)
+        curso_prenatal = self.cleaned_data.get('curso_prenatal')
+        sentimientos = self.cleaned_data.get('sentimientos')
+        if curso_prenatal != "True":
+            model.lugar_curso_prenatal = None
+            model.carga_horaria = None
+        if not sentimientos is None:
+            model.sentimientos = ','.join(sentimientos)
+        model.comunicacion_bebe = ','.join(self.cleaned_data.get('comunicacion_bebe'))
 
 class SituacionGestacionForm(ModelForm):
     class Meta:

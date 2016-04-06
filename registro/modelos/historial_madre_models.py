@@ -25,9 +25,9 @@ class Gestacion(models.Model):
     CHOICES_MOMENTO = [('pocos_dias','A los pocos días'),('primer_mes','El primer mes'),('segundo_mes','El segundo mes'),('tercer_mes','El tercer mes'),('cuarto_mes','El cuarto mes'),('quinto_mes','El quinto mes'),('sexto_mes','El sexto mes'),('septimo_mes','El séptimo mes')]
     CHOICES_COMUNICA_BEBE = [('canto','Canto'),('cuentos','Cuentos'),('musica','Música (audífonos para gestación)'),('caricias','Caricias'),('estimulacion_intrauterina','Estimulación intrauterina (luces en barriga o clash overflow)'),('ninguno','Ninguno')]
     
-    sentimientos = models.CharField("¿Qué sintió cuando se enteró que estaba embarazada? Marque todas las opciones que desee", max_length=200)
+    sentimientos = models.CharField("¿Qué sintió cuando se enteró que estaba embarazada? Marque todas las opciones que desee", max_length=200, blank=True)
     num_embarazo = models.PositiveSmallIntegerField("¿Qué número de embarazo es este?")
-    momento_desc_embarazo = models.PositiveSmallIntegerField("¿En que momento se enteró que estaba embarazada?")
+    momento_desc_embarazo = models.CharField("¿En que momento se enteró que estaba embarazada?", max_length=250)
     lugar_curso_prenatal = models.CharField("¿En que lugar fue el curso prenatal?",max_length=100, blank=True)
     carga_horaria = models.CharField("¿Cuanto fue la carga del curso prenatal?",max_length=100, blank=True)
     #nauseas_trimestre = models.SmallIntegerField()
@@ -37,7 +37,6 @@ class Gestacion(models.Model):
 
 class Actividad_Gestacion(models.Model):
     ACTIVIDADES_CHOICES = ('Fumar','Ingerir Alcohol','Consumir drogas','Realizar radiografías','Trabajar')
-    tipo = models.SmallIntegerField()
     periodo = models.SmallIntegerField(choices=CHOICES_TRIMESTRES)
     nombre_actividad = models.CharField(max_length=100, blank=True)
     gestacion = models.ForeignKey(Gestacion, on_delete=models.CASCADE)
@@ -49,7 +48,6 @@ class Situacion_Gestacion(models.Model):
                            'Depresión (Tristeza, ansiedad, estrés, problemas para dormir)',
                            'Interrupción repentina de los movimientos del niño',
                            'Nauseas','Otras enfermedades')
-    tipo = models.SmallIntegerField()
     periodo = models.SmallIntegerField(choices=CHOICES_TRIMESTRES)
     nombre_situacion = models.CharField(max_length=100, blank=True)
     gestacion = models.ForeignKey(Gestacion, on_delete=models.CASCADE)
