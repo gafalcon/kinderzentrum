@@ -3,6 +3,24 @@
 
 {% load static %}
 
+{% block css %}
+    <link rel="stylesheet" href="/static/css/dataTables.bootstrap.css">
+    <link rel="stylesheet" href="/static/css/buttons.bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/t/bs/jqc-1.12.0,pdfmake-0.1.18,dt-1.10.11,b-1.1.2,b-colvis-1.1.2,b-html5-1.1.2,b-print-1.1.2,r-2.0.2,se-1.1.2/datatables.min.css"/>
+    <link rel="stylesheet" href="/static/css/editor.bootstrap.css">
+    <link rel="stylesheet" href="/static/css/dataTables.editor.css">
+    <link rel="stylesheet" href="/static/css/editor.dataTables.css">
+{% endblock css %}
+
+{% block js %}
+    <script src="/static/js/dataTables.bootstrap.js"></script>
+    <script src="/static/js/jquery.dataTables.js"></script>
+    <script src="/static/js/buttons.bootstrap.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/t/bs/jqc-1.12.0,pdfmake-0.1.18,dt-1.10.11,b-1.1.2,b-colvis-1.1.2,b-html5-1.1.2,b-print-1.1.2,r-2.0.2,se-1.1.2/datatables.min.js"></script>
+    <script src="/static/js/editor.bootstrap.js"></script>
+    <script src="/static/js/dataTables.editor.js"></script>
+{% endblock js %}
+
 {% block content %}
     <div class="panel panel-primary" style="margin-left: 5%; margin-right: 5%">
         <div class="panel-heading">Filtros de búsqueda</div>
