@@ -3,6 +3,6 @@ from pago import views
 
 urlpatterns = [
     # Examples:
-  url(r'^$', views.index_view, name='index_view'),
+  url(r'^$', views.index_view, name='pago'),
   url(r'^pacientes/(?P<patientId>)/$', views.patient_payments)
 ]

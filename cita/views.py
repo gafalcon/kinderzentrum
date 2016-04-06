@@ -14,6 +14,7 @@ class ReservarCitaView(View):
 
     def get(self, request, *args, **kwargs):
         context = {'pagina_actual': 'cita'}
+
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):

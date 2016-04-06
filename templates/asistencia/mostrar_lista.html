@@ -7,7 +7,7 @@
     <div class="panel panel-primary" style="margin-left: 5%; margin-right: 5%">
         <div class="panel-heading">Filtros de búsqueda</div>
         <div class="panel-body">
-            <form class="form-horizontal" action="{% url  question.id %}" method="post">
+            <form class="form-horizontal" >
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="input_nombre" class="col-sm-2 control-label">Nombre del niño</label>
