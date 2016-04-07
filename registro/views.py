@@ -1,4 +1,4 @@
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response, redirect
 from registro.forms import *
 from django.template import RequestContext
 from registro.modelos.paciente_model import Paciente
@@ -8,7 +8,7 @@ from registro.modelos.recien_nacido_model import RecienNacido
 from registro.modelos.medico_model import Medico
 from registro.modelos.historial_madre_models import Actividad_Gestacion, Situacion_Gestacion
 from django.http import HttpResponseRedirect
-from django.views.generic import View
+from django.views.generic import View, ListView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.forms import formset_factory
@@ -151,24 +151,23 @@ class RegistroView(View):
                 medico.paciente = paciente
                 medico.save()
 
-            return HttpResponseRedirect('/')
+            return redirect('pacientes-list')
 
 
-        print "datos is invalid"
-        print("Errors paciente:", datos_paciente.errors)
-        print("Errors familiares:", datos_familia.errors)
-        print("Errors medico:", datos_medico.errors)
-        print ("Errors descripcion", datos_descripcion_paciente.errors)
-        print("Errors historial madre", datos_historial_madre.errors)
-        print("Errors gestacion", datos_gestacion.errors)
-        print("Errors nacimiento:", datos_nacimiento.errors)
-        print("Errors recien_nacido:", datos_recien_nacido.errors)
-        print("Errors primeros_dias:", datos_primeros_dias.errors)
-        print("Errors alimentacion:", datos_alimentacion.errors)
-        print("Errors suplementos", suplementos_formset.errors)
-        print("Errors DatosFamiliares", datos_familiares.errors)
-        print("Errors Hermano", hermanos_formset.errors)
-        print datos_paciente
+        # print "datos is invalid"
+        # print("Errors paciente:", datos_paciente.errors)
+        # print("Errors familiares:", datos_familia.errors)
+        # print("Errors medico:", datos_medico.errors)
+        # print ("Errors descripcion", datos_descripcion_paciente.errors)
+        # print("Errors historial madre", datos_historial_madre.errors)
+        # print("Errors gestacion", datos_gestacion.errors)
+        # print("Errors nacimiento:", datos_nacimiento.errors)
+        # print("Errors recien_nacido:", datos_recien_nacido.errors)
+        # print("Errors primeros_dias:", datos_primeros_dias.errors)
+        # print("Errors alimentacion:", datos_alimentacion.errors)
+        # print("Errors suplementos", suplementos_formset.errors)
+        # print("Errors DatosFamiliares", datos_familiares.errors)
+        # print("Errors Hermano", hermanos_formset.errors)
         return render(request, self.template_name,
                       {'ficha_datos_form': datos_paciente,
                        'datos_familia_formset': datos_familia,
@@ -189,3 +188,11 @@ class RegistroView(View):
                        'pagina_actual': 'registro'
                       })
 
+
+class PacienteListView(ListView):
+    model = Paciente
+
+    def get_context_data(self, **kwargs):
+        context = super(PacienteListView, self).get_context_data(**kwargs)
+        context['pagina_actual'] = 'registro'
+        return context
