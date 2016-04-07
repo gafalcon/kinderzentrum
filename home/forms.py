@@ -2,8 +2,10 @@
 from django import forms
 from django.forms.extras.widgets import SelectDateWidget
 import datetime
+from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group
+from django.forms import formset_factory, modelformset_factory
 #from django.contrib.auth.models import User
 
 class LoginForm(forms.Form):
@@ -14,7 +16,6 @@ class LoginForm(forms.Form):
 class UserCreateForm(UserCreationForm):
 	password1 = forms.CharField(label="Contraseña", widget=forms.PasswordInput(render_value=False, attrs={'placeholder': 'Contraseña','class':'form-control'}))
 	password2 = forms.CharField(label="Repita contraseña", widget=forms.PasswordInput(render_value=False, attrs={'placeholder': 'Contraseña','class':'form-control'}))
-	#grupos = forms.MultipleChoiceField(label='Seleccione permisos', required=True,  queryset=Group.objects.all())
 	grupos = forms.ModelMultipleChoiceField(queryset=None,widget=forms.CheckboxSelectMultiple())
 
 	def __init__(self, *args, **kw):  
@@ -31,7 +32,11 @@ class UserCreateForm(UserCreationForm):
 	def save(self, commit=True):
 		user = super(UserCreateForm, self).save(commit=False)
 		user.mail = self.cleaned_data['email']
+		
+		print self.cleaned_data['grupos']
 		if commit:
+			user.save()
+			user.groups = self.cleaned_data['grupos']
 			user.save()
 		return user
 
@@ -39,9 +44,23 @@ class UserCreateForm(UserCreationForm):
 		return "Usuario " +  self.cleaned_data['first_name'] + " creado con exito, se detallan los permisos concedidos:"
 
 	def get_permisos(self):
-		return ('permiso1', 'permiso2',)
+		return self.cleaned_data['grupos']
 
 
+class UserForm(ModelForm):
+	grupos = forms.ModelMultipleChoiceField(queryset=None, widget=forms.CheckboxSelectMultiple())
+
+	def __init__(self, *args, **kw):  
+	    super(UserForm, self).__init__(*args, **kw)
+	    #self.fields['grupos'].queryset=Group.objects.filter(user=self.instance.id)
+	    self.fields['grupos'].queryset = Group.objects.all()
+	    self.fields['grupos'].initial = Group.objects.filter(user=self.instance.id)
+
+	class Meta:
+		model = User
+		fields = ('username', 'first_name' ,)
+			
+UsuariosFormset = modelformset_factory(User, form=UserForm, extra=0)
 
 '''        
 class RegistroUsuario(forms.Form):

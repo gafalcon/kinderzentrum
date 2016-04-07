@@ -81,8 +81,15 @@
 					
 					
 				{% endif %}
-
-				<li><a href="{% url 'admin_usuarios' %}">Administración de usuarios</a></li>
+				<li class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#"> Manejo de usuarios <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="{% url 'admin_usuarios' %}">Crear nuevos usuarios</a></li>
+							<li><a href="{% url 'usuarios_permisos' %}">Actualizar permisos de usuarios</a></li>	
+							<li><a href="#">Cambiar mi contraseña</a></li>			            
+				        </ul>
+				</li>
+				
 				<li><a href="{% url 'pago' %}">Pagos</a></li>
 				<li><a href="{% url 'lista_asistencia' %}">Asistencia paciente</a></li>
 				<li><a href="#"> Acerca de </a></li>

@@ -69,9 +69,18 @@ class AdminUsuariosView(PermissionRequiredMixin, View):
         if registro_usuario.is_valid():
             user = registro_usuario.save()
             mensaje = registro_usuario.get_mensaje()
-            ctx = {'registro_usuario_correcto':True, 'mensaje':mensaje}
+            grupos = registro_usuario.get_permisos()
+            ctx = {'registro_usuario_correcto':True, 'mensaje':mensaje, 'permisos':grupos}
             return render(request, self.template_name, ctx)
         else:
             return render(request, self.template_name, {'registro_usuario':registro_usuario})
 
 
+class AdminUsuariosPermisosView(PermissionRequiredMixin, View):
+    permission_required = ('auth.add_user')
+    template_name = 'home/admin_usuarios.html'
+
+    def get(self, request, *args, **kwargs):
+        usuarios = UsuariosFormset(queryset=User.objects.all())
+        ctx = {'usuarios':usuarios}
+        return render(request, self.template_name, ctx)

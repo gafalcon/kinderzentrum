@@ -27,9 +27,28 @@
 		{{ mensaje }}
 		<ul id="permisos">
 			{% for per in permisos %}
-			<li>{{ per }}</li>
+			<li>{{ per|title }}</li>
 			{% endfor %}
 		</ul>
+	</div>
+	{% elif usuarios %}
+	<div id="usuarios">
+		{{ usuarios.management_form }}
+		  <table class="table table-bordered table-condensed">
+                    <tr>
+                        <th>Nombre de usuario</th>
+                        <th>Nombre</th>
+                        <th>Permisos</th>
+                    </tr>
+                    {% for form in usuarios %}
+                        {{ form.id }}
+                        <tr class="formset-usuario_set">
+                            <td>{{form.username}}</td>
+                            <td>{{form.first_name}}</td>
+                            <td>{{form.grupos}}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
 	</div>
 	{% endif %}
 
