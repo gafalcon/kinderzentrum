@@ -18,7 +18,7 @@ class Descripcion(models.Model):
     )
     edad_disc_molestia = models.PositiveSmallIntegerField(
         "¿A qué edad notaron estas molestias?",
-        blank=True,
+        blank=True
     )
     tratamiento = models.BooleanField("¿Se encuentra en algún tratamiento?")
     lugar_tratamiento = models.CharField("¿Dónde realiza el tratamiento?",
@@ -34,7 +34,7 @@ class Descripcion(models.Model):
     tipo_crisis = models.CharField("¿Qué tipo de crisis tuvo durante la convulsión?",
                                    max_length=256, blank=True)
 
-    edad_crisis = models.PositiveSmallIntegerField("¿A qué edad fue la primera crisis?", blank=True)
+    edad_crisis = models.PositiveSmallIntegerField("¿A qué edad fue la primera crisis?", blank=True, null=True)
 
     
 
@@ -58,7 +58,7 @@ class Terapia(models.Model):
                        (2, "Estimulación Temprana"),
                        (3, "Ninguna"))
     tipo = models.SmallIntegerField("Tipo de terapia", choices=TERAPIA_CHOICES)   
-    tiempo_terapia = models.DurationField("¿Cuánto tiempo lleva realizando la terapia")
+    tiempo_terapia = models.CharField("¿Cuánto tiempo lleva realizando la terapia", max_length=50)
     descripcion = models.ForeignKey(Descripcion)
 
 

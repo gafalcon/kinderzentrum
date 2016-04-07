@@ -128,12 +128,12 @@ class DescripcionPacienteForm(ModelForm):
         model = super(DescripcionPacienteForm, self).save(commit=False)
         tipo_terapia = self.cleaned_data.get('tipo_terapia')
         areas_dificultad = self.cleaned_data.get('areas_dificultad')
-        if self.cleaned_data.get('disc_molestias') == 'otro':
+        if self.cleaned_data.get('disc_molestias') == 'otros':
             model.disc_molestias = self.cleaned_data.get('otro_disc_molestias')
         if not self.cleaned_data.get('tratamiento'):
-            model.lugar_tratamiento = None
+            model.lugar_tratamiento = ''
         if self.cleaned_data.get('had_convulsion') != 1:
-            model.tipo_crisis = None
+            model.tipo_crisis = ''
             model.edad_crisis = None
         if areas_dificultad and 'otro' in areas_dificultad:
             areas_dificultad.append(self.cleaned_data.get('otro_dificultad'))
@@ -254,11 +254,13 @@ class DesarrolloDeLaGestacionForm(ModelForm):
         curso_prenatal = self.cleaned_data.get('curso_prenatal')
         sentimientos = self.cleaned_data.get('sentimientos')
         if curso_prenatal != "True":
-            model.lugar_curso_prenatal = None
-            model.carga_horaria = None
+            model.lugar_curso_prenatal = ''
+            model.carga_horaria = '' 
         if not sentimientos is None:
             model.sentimientos = ','.join(sentimientos)
         model.comunicacion_bebe = ','.join(self.cleaned_data.get('comunicacion_bebe'))
+        model.save()
+        return model
 
 class SituacionGestacionForm(ModelForm):
     class Meta:
