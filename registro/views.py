@@ -24,7 +24,7 @@ class RegistroView(View):
         datos_familia = DatosFamiliaresFormset(prefix="familiares")
         datos_medico = DatosMedicoFormset(prefix="medico")
 
-        historial_madre = Ficha_HistorialMadreForm(prefix="historial_madre")
+        historial_madre = HistorialMadreForm(prefix="historial_madre")
         descripcion_paciente = DescripcionPacienteForm(prefix="descripcion_paciente")
         medicamento_formset = MedicamentoFormset(instance=Descripcion())
         gestacion = DesarrolloDeLaGestacionForm(prefix="gestacion")
@@ -62,8 +62,7 @@ class RegistroView(View):
         datos_paciente = PacienteForm(request.POST, prefix="paciente")
         datos_familia = DatosFamiliaresFormset(request.POST, prefix="familiares")
         datos_medico = DatosMedicoFormset(request.POST, prefix="medico")
-        historial_madre = Ficha_HistorialMadreForm(request.POST, prefix="historial_madre")
-        #descripcion_paciente = Ficha_DescripcionPacienteForm(request.POST, prefix="descripcion_paciente")
+        datos_historial_madre = HistorialMadreForm(request.POST, prefix="historial_madre")
         descripcion_paciente = DescripcionPacienteForm(request.POST, prefix="descripcion_paciente")
         medicamento_formset = MedicamentoFormset(request.POST, instance=Descripcion())
         datos_gestacion = DesarrolloDeLaGestacionForm(request.POST, prefix="gestacion")
@@ -83,7 +82,7 @@ class RegistroView(View):
         #     datos_medico.is_valid()): #and
 
 
-        if datos_gestacion.is_valid():
+        if datos_historial_madre.is_valid():
             # paciente = datos_paciente.save(commit=False)
             # familiares_instances = datos_familia.save(commit=False)
             # medicos_instances = datos_medico.save(commit = False)
@@ -98,7 +97,10 @@ class RegistroView(View):
             # for medicamento in medicamentos_instances:
             #     medicamento.descripcion = descripcion
             #     medicamento.save()
-            print "Gestacion", datos_gestacion.cleaned_data
+
+
+            # historial_madre = datos_historial_madre.save()
+            # paciente.historial_madre = historial_madre
             # gestacion = datos_gestacion.save()
             # for actividad_form in actividad_gestacion:
             #     if actividad_form.is_valid():
@@ -169,9 +171,10 @@ class RegistroView(View):
         # print("\n\nErrors familiares:", datos_familia.errors)
         # print("\n\nErrors medico:", datos_medico.errors)
         #print ("Errors descripcion", descripcion_paciente.errors)
-        print("Errors gestacion", datos_gestacion.errors)
-        print("Errors actividad gestacion", actividad_gestacion.errors)
-        print("Erros situacion gestacion", situacion_gestacion.errors)
+        print("Errors historial madre", datos_historial_madre.errors)
+        # print("Errors gestacion", datos_gestacion.errors)
+        # print("Errors actividad gestacion", actividad_gestacion.errors)
+        # print("Erros situacion gestacion", situacion_gestacion.errors)
         # print("\n\nErrors nacimiento:", datos_nacimiento.errors)
         #print("\n\nErrors recien_nacido:", datos_recien_nacido.errors)
         #print("\n\nErrors primeros_dias:", datos_primeros_dias.errors)
@@ -183,7 +186,7 @@ class RegistroView(View):
                        'datos_medico_formset': datos_medico,
                        'descripcion_paciente': descripcion_paciente,
                        'medicamento_formset':medicamento_formset,
-                       'historial_madre_form': historial_madre,
+                       'historial_madre_form': datos_historial_madre,
                        'gestacion': datos_gestacion,
                        'actividad_gestacion':actividad_gestacion,
                        'situacion_gestacion':situacion_gestacion,

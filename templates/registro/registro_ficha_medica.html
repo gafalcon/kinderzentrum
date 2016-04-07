@@ -158,7 +158,9 @@
 		<div class="panel-body">			
 			{% for field in historial_madre_form %}	  				  		
 	  			<div class="form-group">
-		    		<label for="code">{{field.label}}</label>			      		
+					{% if forloop.counter != 2 and forloop.counter != 4 %}
+		    			<label for="code">{{field.label}}</label>			      		
+					{% endif %}
 		      		{{ field }}			      		
       			</div>	      		
 	      	{% endfor %}	

@@ -132,6 +132,31 @@ $(function() {
 		value_changed($(this).val() == "True", $("#medicamentos-formset"));
 	});
 
+	value_changed($("#id_historial_madre-enfermedades_previas_3").is(":checked"), $("#id_historial_madre-otra_enf_previa").parent());
+	$('input[name=historial_madre-enfermedades_previas]').on('click', function (e) {
+        value_changed(e.target.value == "otra" && e.target.checked, $("#id_historial_madre-otra_enf_previa").parent());
+	});
+
+	value_changed($("#id_historial_madre-enfermedades_durante_embarazo_4").is(":checked"), $("#id_historial_madre-otra_enf_embarazo").parent());
+	$('input[name=historial_madre-enfermedades_durante_embarazo]').on('click', function (e) {
+        value_changed(e.target.value == "otra" && e.target.checked, $("#id_historial_madre-otra_enf_embarazo").parent());
+	});
+
+	value_changed($("input:radio[name=historial_madre-tuvo_defuncion_fetal]:checked").val() == "True", $("#id_historial_madre-defunciones_fetales").parent());
+	$('input:radio[name=historial_madre-tuvo_defuncion_fetal]').change(function (e) {
+        value_changed(e.target.value == "True", $("#id_historial_madre-defunciones_fetales").parent());
+	});
+
+	value_changed($("input:radio[name=historial_madre-tuvo_hijos_muertos]:checked").val() == "True", $("#id_historial_madre-hijos_nacidos_muertos").parent());
+	$('input:radio[name=historial_madre-tuvo_hijos_muertos]').change(function (e) {
+        value_changed(e.target.value == "True", $("#id_historial_madre-hijos_nacidos_muertos").parent());
+	});
+
+	value_changed($("input:radio[name=historial_madre-uso_anticonceptivo]:checked").val() == "True", $("#id_historial_madre-anticonceptivos").parent());
+	$('input:radio[name=historial_madre-uso_anticonceptivo]').change(function (e) {
+        value_changed(e.target.value == "True", $("#id_historial_madre-anticonceptivos").parent());
+	});
+
 	value_changed($('input:radio[name=gestacion-curso_prenatal]:checked').val() == "True", $("#id_gestacion-lugar_curso_prenatal").parent());
 	value_changed($('input:radio[name=gestacion-curso_prenatal]:checked').val() == "True", $("#id_gestacion-carga_horaria").parent());
 	$('input:radio[name=gestacion-curso_prenatal]').change(function (e) {
