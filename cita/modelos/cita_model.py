@@ -7,7 +7,6 @@ from asistencia.modelos.Tipo_terapia_model import Tipo_terapia
 
 
 class Cita(models.Model):
-
     ESTADO_CHOICES = (
         ("A", "Agendada"),
         ("S", "Asistio"),
