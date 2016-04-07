@@ -60,13 +60,18 @@ class AdminUsuariosView(PermissionRequiredMixin, View):
     template_name = 'home/admin_usuarios.html'
 
     def get(self, request, *args, **kwargs):
-        registro_usuario = RegistroUsuario()
+        registro_usuario = UserCreateForm()
         ctx = {'registro_usuario':registro_usuario}
         return render(request, self.template_name, ctx)
 
     def post(self, request, *args, **kwargs):
-        registro_usuario = RegistroUsuario(request.POST)
-        ctx = {'registro_usuario':registro_usuario}
-        return render(request, self.template_name, ctx)
+        registro_usuario = UserCreateForm(request.POST)
+        if registro_usuario.is_valid():
+            user = registro_usuario.save()
+            mensaje = registro_usuario.get_mensaje()
+            ctx = {'registro_usuario_correcto':True, 'mensaje':mensaje}
+            return render(request, self.template_name, ctx)
+        else:
+            return render(request, self.template_name, {'registro_usuario':registro_usuario})
 
 

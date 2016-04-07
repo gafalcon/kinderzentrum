@@ -13,15 +13,24 @@
 
 {% block content %}
 
-{% if registro_usuario %}
-	<div id="registro_usuario">
-		<form action="." method="POST">
-			{% csrf_token %}	
-			<div id="errorMsg" class="fade-in one">{{ mensaje }}</div>
-			{{ registro_usuario.as_p }}
-			<input id="loginBtn" type="submit" value="Guardar">
-		</form>
+	{% if registro_usuario %}
+		<div id="registro_usuario">
+			<form action="." method="POST">
+				{% csrf_token %}	
+				<div id="errorMsg" class="fade-in one">{{ mensaje }}</div>
+				{{ registro_usuario.as_p }}
+				<input id="loginBtn" type="submit" value="Guardar">
+			</form>
+		</div>
+	{% elif registro_usuario_correcto %}
+	<div id="registro_usuario_correcto">
+		{{ mensaje }}
+		<ul id="permisos">
+			{% for per in permisos %}
+			<li>{{ per }}</li>
+			{% endfor %}
+		</ul>
 	</div>
-{% endif %}
+	{% endif %}
 
 {% endblock %}
