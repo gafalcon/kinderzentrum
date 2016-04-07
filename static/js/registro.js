@@ -66,8 +66,6 @@ function setPanelVisible(id){
 	}
 }
 
-
-
 $(function() {
 
   	/* Creamos un widget de calendario con jquery-ui */
@@ -79,7 +77,7 @@ $(function() {
 		dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
 		monthNamesShort: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
 		'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-		dateFormat: 'dd/mm/yy',
+		dateFormat: 'dd/mm/yy'
 		
     });
 

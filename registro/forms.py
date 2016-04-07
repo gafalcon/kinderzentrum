@@ -20,9 +20,24 @@ CHOICES_SI_NO_DES = [(True, 'Si'), (False, 'No'), (None, 'Desconoce')]
 
 CHOICES_SI_NO = ((True, "Si"), (False, "No"))
 
+# class MyForm(ModelForm):
+#     """
+#     Extend from this form so your widgets have an 'error' class if there's
+#     an error on the field.
+#     """
+#     def __init__(self, *args, **kwargs):
+#         super(MyForm, self).__init__(*args, **kwargs)
+#         if self.errors:
+#             for f_name in self.fields:
+#                 if f_name in self.errors:
+#                     classes = self.fields[f_name].widget.attrs.get('class', '')
+#                     classes += 'has-error'
+#                     self.fields[f_name].widget.attrs['class'] = classes
+
 class PacienteForm(ModelForm):
     # grupo_sanguineo = forms.ChoiceField(choices=Paciente.GRUPO_SANGUINEO_CHOICES,
     #                                     widget=forms.Select(attrs={'class':'form-control', 'required': 'required'}))
+    error_css_class = 'has-error'
     fecha_nacimiento = forms.DateField(input_formats=['%d/%m/%Y'],
                                        label='Fecha de nacimiento',
                                        widget=forms.TextInput(attrs=

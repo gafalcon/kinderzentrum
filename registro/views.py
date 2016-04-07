@@ -168,6 +168,7 @@ class RegistroView(View):
         print("Errors suplementos", suplementos_formset.errors)
         print("Errors DatosFamiliares", datos_familiares.errors)
         print("Errors Hermano", hermanos_formset.errors)
+        print datos_paciente
         return render(request, self.template_name,
                       {'ficha_datos_form': datos_paciente,
                        'datos_familia_formset': datos_familia,
