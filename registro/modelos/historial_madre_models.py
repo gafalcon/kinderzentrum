@@ -4,6 +4,26 @@ from django.db import models
 CHOICES_TRIMESTRES = ((1,'1er Trimestre'),(2,'2do Trimestre'),(3,'3er Trimestre'))
 
 class HistorialMadre(models.Model):
+
+    CHOICES_ENFERMEDADES_PREVIAS = [('diabetes','Diabetes'),
+                                    ('hipertension','Hipertensión'),
+                                    ('infeccion_urinaria','Infecciones en las vías urinarias'),
+                                    ('otra','Otras(Especifique)')]
+
+    CHOICES_ENFERMEDADES_ANTES_EMBARA = [('enfemedad_cardiaca','Enfermedades cardíacas'),
+                                         ('enfermedad_hepatica','Enfermedades hepáticas'),
+                                         ('enfermedad_mental','Enfermedades mentales'),
+                                         ('problema_azucar','Problemas con el azúcar'),
+                                         ('otra','Otras(Especifique)')]
+
+    CHOICES_ANTICONCEPTIVO = [('pildoras','Píldoras'),
+                              ('ritmo','Ritmo'),
+                              ('diu_cobre','Diu de cobre'),
+                              ('preservativos','Preservativos'),
+                              ('parches','Parches'),
+                              ('anillo_vaginal','Anillo vaginal'),
+                              ('implante_sudermico','Implante sudérmico'),
+                              ('inyectables','Inyectables')]
     enfermedades_previas = models.CharField("Indique si antes del embarazo ha sufrido algunas de las siguientes enfermedades",
                                         max_length=200, blank=True)
     enfermedades_durante_embarazo = models.CharField("Indique si durante el embarazo sufrió algunas de las siguientes enfermedades", max_length=256, blank=True)
@@ -17,7 +37,7 @@ class HistorialMadre(models.Model):
     embarazos = models.PositiveSmallIntegerField("número de embarazos", default=1)
     anticonceptivos = models.CharField(max_length=100, blank=True)
 
-    enfermedades_antes_concepcion = models.CharField("¿Tuvo usted alguna enfermedad grave, dolencia, accidente o infección, antes de concebir a éste bebé", max_length=256, blank=True)
+    enfermedades_antes_concepcion = models.CharField("¿Tuvo usted alguna enfermedad grave, dolencia, accidente o infección, antes de concebir a éste bebé?", max_length=256, blank=True)
 
 
 class Gestacion(models.Model):
