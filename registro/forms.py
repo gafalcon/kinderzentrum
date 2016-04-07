@@ -23,7 +23,7 @@ CHOICES_SI_NO = ((True, "Si"), (False, "No"))
 class PacienteForm(ModelForm):
     # grupo_sanguineo = forms.ChoiceField(choices=Paciente.GRUPO_SANGUINEO_CHOICES,
     #                                     widget=forms.Select(attrs={'class':'form-control', 'required': 'required'}))
-    fecha_nacimiento = forms.DateField(input_formats=['%m/%d/%Y'],
+    fecha_nacimiento = forms.DateField(input_formats=['%d/%m/%Y'],
                                        label='Fecha de nacimiento',
                                        widget=forms.TextInput(attrs=
                                                               {
@@ -262,6 +262,7 @@ class DesarrolloDeLaGestacionForm(ModelForm):
         model.save()
         return model
 
+
 class SituacionGestacionForm(ModelForm):
     class Meta:
         model = Situacion_Gestacion
@@ -274,6 +275,7 @@ class ActividadGestacionForm(ModelForm):
         model = Actividad_Gestacion
         fields=['nombre_actividad','periodo']
         widgets={'periodo': forms.Select(choices=CHOICES_TRIMESTRES,attrs={'class':'form-control'})}
+
 
 class NacimientoForm(ModelForm):
     gemelar = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Fue embarazo gemelar?")
@@ -298,12 +300,16 @@ class RecienNacidoForm(ModelForm):
     hubo_apego_precoz = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Hubo apego precoz(le pusieron a su bebé encima del pecho cuando nació)?")
     permanecio_internado = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Tuvo el bebé que permanecer internado cuando nació?")
     otra_complicacion = forms.CharField(required=False)
+
+    complicaciones_nacimiento = forms.MultipleChoiceField(required=False, choices=RecienNacido.COMPLICACIONES_CHOICES,
+                                                          widget=forms.CheckboxSelectMultiple,
+                                                          label="¿El niño(a) tuvo alguna de éstas complicaciones al nacer?")
+ 
     class Meta:
         model = RecienNacido
         fields = ['edad_madre', 'edad_padre', 'peso', 'tamanio', 'diametro_encefalico', 'apgar_score', 'complicaciones_nacimiento', 'otra_complicacion', 'hubo_apego_precoz', 'tiempo_apego_precoz', 'tiempo_sostener_bebe','permanecio_internado', 'tiempo_internado', 'tipo_contacto', 'primera_lactancia'] 
         widgets = {
             'apgar_score': forms.RadioSelect(choices=RecienNacido.APGAR_CHOICES),
-            'complicaciones_nacimiento': forms.CheckboxSelectMultiple(choices=RecienNacido.COMPLICACIONES_CHOICES),
             'tiempo_apego_precoz': forms.RadioSelect(choices=RecienNacido.APEGO_PRECOZ_CHOICES),
             'tiempo_sostener_bebe': forms.RadioSelect(choices=RecienNacido.SOSTENER_BEBE_CHOICES),
             'tipo_contacto': forms.RadioSelect(choices=RecienNacido.CONTACTO_CHOICES),
@@ -315,31 +321,30 @@ class RecienNacidoForm(ModelForm):
         hubo_apego_precoz = cleaned_data.get('hubo_apego_precoz')
         permanecio_internado = cleaned_data.get('permanecio_internado')
         complicaciones = cleaned_data.get("complicaciones_nacimiento")
-        if(hubo_apego_precoz == 'True'):
+        if hubo_apego_precoz == 'True':
             tiempo =  cleaned_data.get('tiempo_apego_precoz')
             if not tiempo or tiempo == RecienNacido.APEGO_PRECOZ_NADA:
                 self.add_error('tiempo_apego_precoz', "Debe llenar éste campo con valor distinto a Nada")
-        if(permanecio_internado == 'True'):
+        if permanecio_internado == 'True':
             if not cleaned_data.get('tiempo_internado'):
                 self.add_error('tiempo_internado', "Debe llenar éste campo")
             if not cleaned_data.get('tipo_contacto'):
                 self.add_error('tipo_contacto', "Debe llenar éste campo")
-        if(complicaciones and complicaciones.find("Otro") != -1):
+        if 'Otro' in complicaciones:
             if not cleaned_data.get('otra_complicacion'):
                 self.add_error('otra_complicacion', "Debe llenar éste campo")
 
-    def save(self, complicaciones_list=None):
+    def save(self):
         model = super(RecienNacidoForm, self).save(commit=False)
         if self.cleaned_data.get('hubo_apego_precoz') == 'False':
             model.tiempo_apego_precoz = RecienNacido.APEGO_PRECOZ_NADA
         if self.cleaned_data.get('permanecio_internado') == 'False':
             model.tiempo_internado = datetime.timedelta()
             model.tipo_contacto = RecienNacido.CONTACTO_NINGUNA
-        complicaciones = self.cleaned_data.get("complicaciones_nacimiento")
-        if complicaciones and  complicaciones.find("Otro") != -1 and complicaciones_list:
-            complicaciones_list.append(self.cleaned_data.get("otra_complicacion"))
-        if complicaciones:
-            model.complicaciones_nacimiento = ','.join(complicaciones_list)
+        complicaciones = self.cleaned_data.get("complicaciones_nacimiento", [])
+        if 'Otro' in complicaciones:
+            complicaciones.append(self.cleaned_data.get("otra_complicacion"))
+        model.complicaciones_nacimiento = ','.join(complicaciones) if complicaciones else ''
         model.save()
         return model
 
@@ -409,8 +414,6 @@ class PrimerosDiasForm(ModelForm):
         icteria = cleaned_data.get('icteria')
         situaciones = cleaned_data.get('situaciones_despues_nacimiento')
         examenes = cleaned_data.get('examenes')
-        print("Examenes", examenes)
-        print("situaciones", situaciones)
         if icteria:
             if not cleaned_data.get('tratamiento_icteria'):
                 self.add_error('tratamiento_icteria', "Debe llenar éste campo")
@@ -571,27 +574,25 @@ class DatosFamiliaresOtrosForm(ModelForm):
         return model
 
        
-class SuplementoFormset(BaseInlineFormSet):
-    def __init__(self, *args, **kwargs):
-        super(SuplementoFormset, self).__init__(*args, **kwargs)
-        for form in self.forms:
-            form.empty_permitted = False
+# class SuplementoFormset(BaseInlineFormSet):
+#     def __init__(self, *args, **kwargs):
+#         super(SuplementoFormset, self).__init__(*args, **kwargs)
+#         for form in self.forms:
+#             form.empty_permitted = False
 
 SuplementosFormset = inlineformset_factory(AlimentacionCostumbres, SuplementoAlimenticio,
-                                           formset=SuplementoFormset,
                                            fields='__all__',
                                            can_delete=False,
-                                           extra=1
-)
+                                           extra=1)
 
-class HermanoFormset(BaseInlineFormSet):
-    def __init__(self, *args, **kwargs):
-        super(HermanoFormset, self).__init__(*args, **kwargs) 
-        for form in self.forms:
-            form.empty_permitted = False
+# class HermanoFormset(BaseInlineFormSet):
+#     def __init__(self, *args, **kwargs):
+#         super(HermanoFormset, self).__init__(*args, **kwargs) 
+#         for form in self.forms:
+#             form.empty_permitted = False
 
 class HermanoForm(ModelForm):
-    fecha_nacimiento = forms.DateField(input_formats=['%m/%d/%Y'],
+    fecha_nacimiento = forms.DateField(input_formats=['%d/%m/%Y'],
                                        label='Fecha de nacimiento',
                                        widget=forms.TextInput(attrs={
                                            'class':'datepicker form-control'}))
@@ -602,7 +603,7 @@ class HermanoForm(ModelForm):
 HermanosFormset = inlineformset_factory(DatosFamiliaresOtros, Hermano,
                                         fields='__all__',
                                         form=HermanoForm,
-                                        formset=HermanoFormset,
+                                        #formset=HermanoFormset,
                                         can_delete=False)
 MedicamentoFormset = inlineformset_factory(Descripcion, Medicamento,
                                            fields='__all__',

@@ -79,122 +79,95 @@ class RegistroView(View):
         datos_familiares = DatosFamiliaresOtrosForm(request.POST, prefix="familiares_otros")
         hermanos_formset = HermanosFormset(request.POST, instance=DatosFamiliaresOtros())
 
-        # if (datos_paciente.is_valid() and
-        #     datos_familia.is_valid() and
-        #     datos_medico.is_valid() and
-        #     datos_descripcion_paciente.is_valid() and
-        #     datos_historial_madre.is_valid() and
-        #     datos_gestacion.is_valid() and
-        #     datos_nacimiento.is_valid() and
-        #     datos_recien_nacido.is_valid() and
-        #     datos_primeros_dias.is_valid() and
-        #     datos_alimentacion.is_valid() and
-        #     datos_familiares.is_valid()):
+        if (datos_paciente.is_valid() and
+            datos_familia.is_valid() and
+            datos_medico.is_valid() and
+            datos_descripcion_paciente.is_valid() and medicamento_formset.is_valid() and
+            datos_historial_madre.is_valid() and
+            datos_gestacion.is_valid() and
+            datos_nacimiento.is_valid() and
+            datos_recien_nacido.is_valid() and
+            datos_primeros_dias.is_valid() and
+            datos_alimentacion.is_valid() and suplementos_formset.is_valid() and
+            datos_familiares.is_valid() and hermanos_formset.is_valid()):
 
 
-        if datos_descripcion_paciente.is_valid():
-            # paciente = datos_paciente.save(commit=False)
-            # familiares_instances = datos_familia.save(commit=False)
-            # medicos_instances = datos_medico.save(commit = False)
-            # for familiar in familiares_instances:
-            #     familiar.paciente = paciente
-            #     familiar.save()
-            # for medico in medico_instances:
-            #     medico.paciente = paciente
-            #     medico.save()
+            paciente = datos_paciente.save(commit=False)
+            familiares_instances = datos_familia.save(commit=False)
+            medicos_instances = datos_medico.save(commit = False)
 
             descripcion = datos_descripcion_paciente.save()
-            print descripcion
-            # medicamentos_instances = medicamento_formset.save(commit=False)
-            # for medicamento in medicamentos_instances:
-            #     medicamento.descripcion = descripcion
-            #     medicamento.save()
+            medicamentos_instances = medicamento_formset.save(commit=False)
+            for medicamento in medicamentos_instances:
+                medicamento.descripcion = descripcion
+                medicamento.save()
+
+            historial_madre = datos_historial_madre.save()
+            gestacion = datos_gestacion.save()
+            for actividad_form in actividad_gestacion:
+                if actividad_form.is_valid():
+                    actividad = actividad_form.save(commit=False)
+                    actividad.gestacion = gestacion
+                    actividad.save()
+            for situacion_form in situacion_gestacion:
+                if situacion_form.is_valid():
+                    situacion = situacion_form.save(commit=False)
+                    situacion.gestacion = gestacion
+                    situacion.save()
+
+            nacimiento = datos_nacimiento.save()
+            recien_nacido = datos_recien_nacido.save()
+            primeros_dias = datos_primeros_dias.save()
+            alimentacion = datos_alimentacion.save()
+            familiares = datos_familiares.save()
 
 
-            # historial_madre = datos_historial_madre.save()
-            # paciente.historial_madre = historial_madre
-            # gestacion = datos_gestacion.save()
-            # paciente.gestacion = gestacion
-            # for actividad_form in actividad_gestacion:
-            #     if actividad_form.is_valid():
-            #         actividad = actividad_form.save(commit=False)
-            #         actividad.gestacion = gestacion
-            #         actividad.save()
-            # for situacion_form in situacion_gestacion:
-            #     if situacion_form.is_valid():
-            #         situacion = situacion_form.save(commit=False)
-            #         situacion.gestacion = gestacion
-            #         situacion.save()
+            suplementos = suplementos_formset.save(commit=False)
+            for suplemento in suplementos:
+                suplemento.alimentacion = alimentacion
+                suplemento.save()
+
+            hermanos = hermanos_formset.save(commit=False)
+            for hermano in hermanos:
+                hermano.datos_familiares = familiares
+                hermano.save()
+
+            paciente.descripcion = descripcion
+            paciente.historial_madre = historial_madre
+            paciente.gestacion = gestacion
+            paciente.nacimiento = nacimiento
+            paciente.recien_nacido = recien_nacido
+            paciente.primeros_dias = primeros_dias
+            paciente.alimentacion = alimentacion
+            paciente.datos_familiares = familiares
+
+            paciente.save()
+
+            for familiar in familiares_instances:
+                familiar.paciente = paciente
+                familiar.save()
+
+            for medico in medicos_instances:
+                medico.paciente = paciente
+                medico.save()
 
             return HttpResponseRedirect('/')
-        
-
-            # num_hermanos = datos_familiares.cleaned_data.get('numero_hermanos', 0)
-            # print("Num hermanos", num_hermanos)
-            # suplementos = datos_alimentacion.cleaned_data.get('suplementos')
-            # print "\n\n\nSuplementos", suplementos
-
-            # if ((num_hermanos <= 0 or (num_hermanos > 0 and hermanos_formset.is_valid())) and
-            #         (not suplementos or (suplementos and suplementos_formset.is_valid()))):
-
-            #     print("Paciente", datos_paciente.cleaned_data)
-            #     paciente = self.create_paciente(datos_paciente.cleaned_data)
-            #     print("num hermanos forms", len(hermanos_formset.forms))
-            #     print("FamiliaresOtros", datos_familiares.cleaned_data)
-            #     familiares = datos_familiares.save()
-            #     paciente.datos_familiares = familiares
 
 
-            #     if num_hermanos > 0:
-            #         for i in range(0, num_hermanos):
-            #             hermano = (hermanos_formset.forms[i]).save(commit=False)
-            #             hermano.datos_familiares = familiares
-            #             hermano.save()
-
-            #     #recorremos cada uno de los forms de cada medico
-            #     for form in datos_medico:
-            #         print "Medico", form.cleaned_data
-
-
-            # print("Familiar", datos_familia.cleaned_data)
-            # familiar = self.create_familiar(datos_familia.cleaned_data)
-
-            # print("Nacimiento", datos_nacimiento.cleaned_data)
-            # nacimiento = datos_nacimiento.save()
-            # paciente.nacimiento = nacimiento
-
-            # print("Recien Nacido", datos_recien_nacido.cleaned_data)
-            # recien_nacido = datos_recien_nacido.save(complicaciones_list=request.POST.getlist("recien_nacido-complicaciones_nacimiento"))
-            # paciente.recien_nacido = recien_nacido
-
-            # print("Primeros dias", datos_primeros_dias.cleaned_data)
-            # primeros_dias = datos_primeros_dias.save()
-            # paciente.primeros_dias = primeros_dias
-
-            # print("Alimentacion", datos_alimentacion.cleaned_data)
-            # alimentacion = datos_alimentacion.save()
-            # paciente.alimentacion = alimentacion
-
-            
-
-            #paciente.save()
-            #familiar.paciente = paciente
-            #familiar.save()
-
-        print("datos is invalid")
-        # print("\n\nErrors paciente:", datos_paciente.errors)
-        # print("\n\nErrors familiares:", datos_familia.errors)
-        # print("\n\nErrors medico:", datos_medico.errors)
+        print "datos is invalid"
+        print("Errors paciente:", datos_paciente.errors)
+        print("Errors familiares:", datos_familia.errors)
+        print("Errors medico:", datos_medico.errors)
         print ("Errors descripcion", datos_descripcion_paciente.errors)
-        # print("Errors historial madre", datos_historial_madre.errors)
-        # print("Errors gestacion", datos_gestacion.errors)
-        # print("Errors actividad gestacion", actividad_gestacion.errors)
-        # print("Erros situacion gestacion", situacion_gestacion.errors)
-        # print("\n\nErrors nacimiento:", datos_nacimiento.errors)
-        #print("\n\nErrors recien_nacido:", datos_recien_nacido.errors)
-        #print("\n\nErrors primeros_dias:", datos_primeros_dias.errors)
-        #print("\n\nErrors alimentacion:", datos_alimentacion.errors)
-        #print("Errors DatosFamiliares", datos_familiares.errors)
+        print("Errors historial madre", datos_historial_madre.errors)
+        print("Errors gestacion", datos_gestacion.errors)
+        print("Errors nacimiento:", datos_nacimiento.errors)
+        print("Errors recien_nacido:", datos_recien_nacido.errors)
+        print("Errors primeros_dias:", datos_primeros_dias.errors)
+        print("Errors alimentacion:", datos_alimentacion.errors)
+        print("Errors suplementos", suplementos_formset.errors)
+        print("Errors DatosFamiliares", datos_familiares.errors)
+        print("Errors Hermano", hermanos_formset.errors)
         return render(request, self.template_name,
                       {'ficha_datos_form': datos_paciente,
                        'datos_familia_formset': datos_familia,
@@ -214,67 +187,4 @@ class RegistroView(View):
                        'primeros_dias': datos_primeros_dias,
                        'pagina_actual': 'registro'
                       })
-
-
-
-
-
-
-
-# def registro_view(request):
-#     if request.method == "POST":
-#         datos = Ficha_PacienteForm(request.POST, prefix="paciente")
-#         datos_medico = Ficha_DatosMedicoForm(request.POST, prefix="medico")
-#         datos_familia = Ficha_DatosFamiliaresForm(request.POST, prefix="familiares")
-#         primeros_dias = PrimerosDiasForm(request.POST, prefix="primeros_dias")
-#         alimentacion = AlimentacionForm(request.POST, prefix="alimentacion")
-#         recien_nacido = RecienNacidoForm(request.POST, prefix="recien_nacido")
-#         if datos.is_valid() and datos_medico.is_valid() and datos_familia.is_valid() and recien_nacido.is_valid():
-#             print("datos is valid")
-#             print("Paciente", datos.cleaned_data)
-#             print("Medico", datos_medico.cleaned_data)
-#             print("Familiares", datos_familia.cleaned_data)
-#             print("Recien_nacido", recien_nacido.cleaned_data)
-#         else:
-#             print("datos is invalid")
-#             print("\n\nErrors paciente:", datos.errors)
-#             print("\n\nErrors medico:", datos_medico.errors)
-#             print("\n\nErrors familiares:", datos_familia.errors)
-#             print(recien_nacido)
-#             print("\n\nErrors recien_nacido:", recien_nacido.errors)
-#             print("\n\nErrors primeros_dias:", primeros_dias.errors)
-#             print("\n\nErrors alimentacion:", alimentacion.errors)
-
-#             return render(request, 'registro/registro_ficha_medica.html',
-#                           {'ficha_datos_form': datos,
-#                            'ficha_datos_familia_form': datos_familia,
-#                            'ficha_datos_medico_form': datos_medico,
-#                            'recien_nacido': recien_nacido
-#                           })
-#         return HttpResponseRedirect('/')
-#     datos = Ficha_PacienteForm(prefix="paciente")
-#     print(datos)
-#     datos_familia = Ficha_DatosFamiliaresForm(prefix="familiares")
-#     datos_medico = Ficha_DatosMedicoForm(prefix="medico")
-#     historial_madre = Ficha_HistorialMadreForm()
-#     descripcion_paciente = Ficha_DescripcionPacienteForm()
-#     recien_nacido = RecienNacidoForm(prefix="recien_nacido")
-#     primeros_dias = PrimerosDiasForm(prefix="primeros_dias")
-#     alimentacion = AlimentacionForm(prefix="alimentacion")
-#     suplementos_formset = SuplementosFormset(instance=AlimentacionCostumbres())
-#     datos_familiares = DatosFamiliaresOtrosForm()
-#     hermanos_formset = HermanosFormset(instance=DatosFamiliaresOtros())
-#     ctx = {'ficha_datos_medico_form':datos_medico,
-#            'ficha_datos_familia_form':datos_familia,
-#            'ficha_datos_form':datos,
-#            'descripcion_paciente':descripcion_paciente,
-#            'historial_madre_form': historial_madre,
-#            'recien_nacido': recien_nacido,
-#            'alimentacion': alimentacion,
-#            'suplementos_formset': suplementos_formset,
-#            'datos_familiares': datos_familiares,
-#            'hermanos_formset': hermanos_formset,
-#            'primeros_dias': primeros_dias,
-#            'pagina_actual':'registro'}
-#     return render(request, 'registro/registro_ficha_medica.html', ctx)
 
