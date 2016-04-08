@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %} Kinderzentrum - Lista de Pacientes {% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/css/bootstrap.css" />
+{% endblock css %}
+
+
+{% block title_name %}: Pacientes{% endblock %}
+
+
+{% block content %}
+
+<table class="table table-bordered table-condensed">
+	<tr>
+		<th>Nombres</th>
+		<th>Apellidos</th>
+		<th>Fecha de Nacimiento</th>
+		<th>Lugar de Nacimiento</th>
+		<th>Nacionalidad</th>
+		<th>Grupo sanguíneo</th>
+		<th>Sexo</th>
+	</tr>
+
+	{% for paciente in object_list %}
+		<tr class="row-hermanos">
+			<td>{{paciente.nombres}}</td>
+			<td>{{paciente.apellidos}}</td>
+			<td>{{paciente.fecha_nacimiento}}</td>
+			<td>{{paciente.lugar_nacimiento}}</td>
+			<td>{{paciente.nacionalidad}}</td>
+			<td>{{paciente.grupo_sanguineo}}</td>
+			<td>{{paciente.sexo}}</td>
+		</tr>
+	{% empty %}
+		<h3>No hay pacientes </h3>
+	{% endfor %}
+</table>
+{% endblock %}

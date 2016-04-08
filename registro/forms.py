@@ -16,57 +16,29 @@ from modelos.paciente_model import Paciente
 from modelos.descripcion_models import Descripcion, Terapia, Medicamento
 
 #from django.contrib.auth.models import User
-'''
-CHOICES_SI_NO_DES = [(2,'Si'),(3,'No'), (1,'Desconoce')]
-
-CHOICES_SI_NO = [('si','Si'),('no','No')]
-
-class Ficha_PacienteForm(forms.Form):
-    SEXO=[('masculino','Masculino'),('femenino','Femenino')]
-    GRUPO_SANGUINEO = [('o+','O+'),('o-','O-'),('a+','A+'),('a-','A-'),('b+','B+'),('b-','B-'),('ab+','AB+'),('ab-','AB-')]
-    apellidos = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required': 'required'}),label="Apellidos")
-    nombres = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required': 'required'}))
-    nacimiento = forms.DateField( input_formats = ['hh mm ss'],
-                                  widget=forms.TextInput(attrs=
-                                                         {
-                                                             'class':'datepicker form-control',
-                                                             'required': 'required'
-                                                         }))
-    sexo = forms.ChoiceField(choices=SEXO, widget=forms.RadioSelect(attrs={'required': 'required'}))    
-    nacionalidad = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required': 'required'}))
-    lugar_nacimiento = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'required': 'required'}))
-    grupo_sanguineo = forms.ChoiceField(choices=GRUPO_SANGUINEO, widget=forms.Select(attrs={'class':'form-control', 'required': 'required'}))
-
-class Ficha_DatosFamiliaresForm(forms.Form):
-    ESTUDIO=[('primaria','Primaria'),('secundaria','Secundaria'),('universitaria','Universitaria'),('superior','Superior')]
-    apellidos = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    nombres = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    parentesco = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    nivel_estudio = forms.ChoiceField(choices=ESTUDIO, widget=forms.Select(attrs={'class':'form-control'}))
-    #trabajo
-    empresa = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    direccion = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    empresa = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    #domicilio
-    direccion_domicilio = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    telefono = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-
-class Ficha_DatosMedicoForm(forms.Form):
-    apellidos = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    nombres = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    area = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    direccion = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-    telefono = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
-   
-'''
 CHOICES_SI_NO_DES = [(True, 'Si'), (False, 'No'), (None, 'Desconoce')]
 
 CHOICES_SI_NO = ((True, "Si"), (False, "No"))
 
+# class MyForm(ModelForm):
+#     """
+#     Extend from this form so your widgets have an 'error' class if there's
+#     an error on the field.
+#     """
+#     def __init__(self, *args, **kwargs):
+#         super(MyForm, self).__init__(*args, **kwargs)
+#         if self.errors:
+#             for f_name in self.fields:
+#                 if f_name in self.errors:
+#                     classes = self.fields[f_name].widget.attrs.get('class', '')
+#                     classes += 'has-error'
+#                     self.fields[f_name].widget.attrs['class'] = classes
+
 class PacienteForm(ModelForm):
     # grupo_sanguineo = forms.ChoiceField(choices=Paciente.GRUPO_SANGUINEO_CHOICES,
     #                                     widget=forms.Select(attrs={'class':'form-control', 'required': 'required'}))
-    fecha_nacimiento = forms.DateField(input_formats=['%m/%d/%Y'],
+    error_css_class = 'has-error'
+    fecha_nacimiento = forms.DateField(input_formats=['%d/%m/%Y'],
                                        label='Fecha de nacimiento',
                                        widget=forms.TextInput(attrs=
                                                               {
@@ -171,12 +143,12 @@ class DescripcionPacienteForm(ModelForm):
         model = super(DescripcionPacienteForm, self).save(commit=False)
         tipo_terapia = self.cleaned_data.get('tipo_terapia')
         areas_dificultad = self.cleaned_data.get('areas_dificultad')
-        if self.cleaned_data.get('disc_molestias') == 'otro':
+        if self.cleaned_data.get('disc_molestias') == 'otros':
             model.disc_molestias = self.cleaned_data.get('otro_disc_molestias')
         if not self.cleaned_data.get('tratamiento'):
-            model.lugar_tratamiento = None
+            model.lugar_tratamiento = ''
         if self.cleaned_data.get('had_convulsion') != 1:
-            model.tipo_crisis = None
+            model.tipo_crisis = ''
             model.edad_crisis = None
         if areas_dificultad and 'otro' in areas_dificultad:
             areas_dificultad.append(self.cleaned_data.get('otro_dificultad'))
@@ -197,28 +169,77 @@ class DescripcionPacienteForm(ModelForm):
         return model
 
 
-class Ficha_HistorialMadreForm(forms.Form):
-    CHOICES_ENFERMEDADES = [('diabetes','Diabetes'),('hipertension','Hipertension'),('infeccion_urinaria','Infecciones en las vias urinarias'),('ninguna_enf','Ninguna')]
-    CHOICES_ENFERMEDADES_ANTES_EMBARA = [('enfer_cardiacas','Enfermedades cardiacas'),('enfer_hepaticas','Enfermedades hepaticas'),('enfer_mentales','Enfermedades mentales'),('proble_azucar','Problemas con el azucar'),('ninguna','Ninguna'),('otro','Otros')]
-    CHOICES_ANTICONCEPTIVO = [('pildoras','Pildoras'),('ritmo','Ritmo'),('diu_cobre','Diu de cobre'),('preservativos','Preservativos'),('parches','Parches'),('anillo_vaginal','Anillo vaginal'),('implante_sudermico','Implante sudermico'),('inyectables','Inyectables')]
-    pregunta_5_1 = forms.MultipleChoiceField(required=True, choices=CHOICES_ENFERMEDADES, widget=forms.CheckboxSelectMultiple, label="Indique si durante el embarazo sufrio algunas de las siguientes enfermedades?")
-    otros_5_1_1 = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','oculto':'oculto'}), initial='Especifique',label="Especifique otros")
+class HistorialMadreForm(ModelForm):
 
-    pregunta_5_2 = forms.MultipleChoiceField(required=True, choices=CHOICES_ENFERMEDADES_ANTES_EMBARA, widget=forms.CheckboxSelectMultiple, label="Indique si durante el embarazo sufrio algunas de las siguientes enfermedades?")
+    enfermedades_previas = forms.MultipleChoiceField(choices=HistorialMadre.CHOICES_ENFERMEDADES_PREVIAS,
+                                                     widget=forms.CheckboxSelectMultiple, required=False,
+                                                     label="Indique si durante el embarazo sufrió algunas de las siguientes enfermedades")
+    otra_enf_previa = forms.CharField(required=False,
+                                      widget=forms.TextInput(attrs={'placeholder':'Especifique otra enfermedad'}))
+    enfermedades_durante_embarazo = forms.MultipleChoiceField(choices=HistorialMadre.CHOICES_ENFERMEDADES_ANTES_EMBARA,
+                                                              widget=forms.CheckboxSelectMultiple, required=False,
+                                                              label="Indique si antes del embarazo sufrió algunas de las siguientes enfermedades")
+    otra_enf_embarazo = forms.CharField(required=False,
+                                        widget=forms.TextInput(attrs={'placeholder':'Especifique otra enfermedad'}))
+    tuvo_defuncion_fetal = forms.ChoiceField(choices=CHOICES_SI_NO,
+                                             widget=forms.RadioSelect,
+                                             label="¿Tuvo usted alguna defunción fetal antes de concebir al bebé/niño(a) que trae a consulta?") 
+    tuvo_hijos_muertos = forms.ChoiceField(choices=CHOICES_SI_NO,
+                                           widget=forms.RadioSelect,
+                                             label="¿Ha tenido hijos muertos?")   
+    uso_anticonceptivo =  forms.ChoiceField(choices=CHOICES_SI_NO,
+                                            widget=forms.RadioSelect,
+                                            label="¿Utilizó algún método anticonceptivo antes de estar embarazada?")   
+    anticonceptivos = forms.MultipleChoiceField(choices=HistorialMadre.CHOICES_ANTICONCEPTIVO,
+                                                widget=forms.CheckboxSelectMultiple, required=False,
+                                                label="¿Cuál método anticonceptivo?")
+    class Meta:
+        model = HistorialMadre
+        fields = ('enfermedades_previas', 'otra_enf_previa',
+                  'enfermedades_durante_embarazo', 'otra_enf_embarazo',
+                  'enfermedad_cronica', 'tuvo_defuncion_fetal',
+                  'defunciones_fetales', 'tuvo_hijos_muertos',
+                  'hijos_nacidos_muertos', 'hijos_nacidos_vivos',
+                  'embarazos', 'uso_anticonceptivo', 'anticonceptivos',
+                  'enfermedades_antes_concepcion')
+
+    def clean(self):
+        cleaned_data = super(HistorialMadreForm, self).clean()
+        if 'otra' in cleaned_data.get('enfermedades_previas') and not cleaned_data.get('otra_enf_previa'):
+            self.add_error('otra_enf_previa', 'Debe llenar éste campo')
+        if 'otra' in cleaned_data.get('enfermedades_durante_embarazo') and not cleaned_data.get('otra_enf_embarazo'):
+            self.add_error('otra_enf_embarazo', 'Debe llenar éste campo')
+        if cleaned_data.get('tuvo_defuncion_fetal', '') == "True" and cleaned_data.get('defunciones_fetales', 0) <= 0:
+            self.add_error('defunciones_fetales', 'Debe llenar éste campo con un valor mayor a 0')
+        if cleaned_data.get('tuvo_hijos_muertos', '') == "True" and cleaned_data.get('hijos_nacidos_muertos', 0) <= 0:
+            self.add_error('hijos_nacidos_muertos', 'Debe llenar éste campo con un valor mayor a 0')
+        if cleaned_data.get('uso_anticonceptivo', '') == "True" and not cleaned_data.get('anticonceptivos'):
+            self.add_error('anticonceptivos', 'Debe seleccionar alguna opción')
+
+
+    def save(self):
+        model = super(HistorialMadreForm, self).save(commit=False)
+        enf_previas = self.cleaned_data.get('enfermedades_previas')
+        enf_emb = self.cleaned_data.get('enfermedades_durante_embarazo')
+        anticonceptivos = self.cleaned_data.get('anticonceptivos')
+        uso_anticonceptivo = self.cleaned_data.get('uso_anticonceptivo', '')
+        if 'otra' in enf_previas:
+            enf_previas.append(self.cleaned_data.get('otra_enf_previa'))
+        if 'otra' in enf_emb:
+            enf_emb.append(self.cleaned_data.get('otra_enf_embarazo'))
+        if self.cleaned_data.get('tuvo_hijos_muertos', 'False') == "False":
+            model.hijos_nacidos_muertos = 0
+        if self.cleaned_data.get('tuvo_defuncion_fetal', 'False') == "False":
+            model.defunciones_fetales = 0
+
+        model.anticonceptivos = ','.join(anticonceptivos) if anticonceptivos and uso_anticonceptivo == "True" else ''
+        model.enfermedades_previas = ','.join(enf_previas) if enf_previas else '' 
+        model.enfermedades_durante_embarazo = ','.join(enf_emb) if enf_emb else ''
+        model.save()
+
+        return model
+
     
-    otros_5_2_1 = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','oculto':'oculto'}), initial='Especifique',label="Especifique otros")
-    pregunta_5_3 = forms.CharField(widget=forms.Textarea(attrs={'class':'form-control','rows':'2'}), label="Indique algun tipo de enfermedad cronica")
-    pregunta_5_4 = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="Tuvo usted alguna defuncion fetal antes de concebir al bebe/ninio(a) que trae a consulta?")
-    otros_5_4_1 = forms.IntegerField(widget=forms.NumberInput(attrs={'class':'form-control','oculto':'oculto'}), initial='Especifique',label="Cuantas defunciones fetales a tenido durante su vida:")
-    pregunta_5_5 = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="Ha tenido hijos muertos?")
-    otros_5_5_1 = forms.IntegerField(widget=forms.NumberInput(attrs={'class':'form-control','oculto':'oculto'}), label="Numero de hijos nacidos muertos:")
-    otros_5_5_2 = forms.IntegerField(widget=forms.NumberInput(attrs={'class':'form-control','oculto':'oculto'}), label="Numero de hijos nacidos vivos:")
-    pregunta_5_6 = forms.IntegerField(widget=forms.NumberInput(attrs={'class':'form-control'}), label="Numero de embarazos:")
-    pregunta_5_7 = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="Utilizo algun metodo anticonceptivo antes de estar embarazada?")
-    otros_5_7_1 = forms.MultipleChoiceField(required=True, choices=CHOICES_ANTICONCEPTIVO, widget=forms.CheckboxSelectMultiple(attrs={'oculto':'oculto'}))
-    pregunta_5_8 = forms.CharField(widget=forms.Textarea(attrs={'class':'form-control','rows':'3'}), label="Tuvo usted alguna enfermedad grave, dolencia, accidente o infeccion, antes de concebir a este bebe? (ejemplo: cistitis, dolor pelvico, menstruaciones dolorosas, migranias, etc.)")
-   
-
 class DesarrolloDeLaGestacionForm(ModelForm):
     curso_prenatal = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="Asistió a algún curso prenatal?")
     vacuna_tetano = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Se vacunó usted contra el tetano durante el embarazo?")
@@ -248,11 +269,14 @@ class DesarrolloDeLaGestacionForm(ModelForm):
         curso_prenatal = self.cleaned_data.get('curso_prenatal')
         sentimientos = self.cleaned_data.get('sentimientos')
         if curso_prenatal != "True":
-            model.lugar_curso_prenatal = None
-            model.carga_horaria = None
+            model.lugar_curso_prenatal = ''
+            model.carga_horaria = '' 
         if not sentimientos is None:
             model.sentimientos = ','.join(sentimientos)
         model.comunicacion_bebe = ','.join(self.cleaned_data.get('comunicacion_bebe'))
+        model.save()
+        return model
+
 
 class SituacionGestacionForm(ModelForm):
     class Meta:
@@ -267,41 +291,6 @@ class ActividadGestacionForm(ModelForm):
         fields=['nombre_actividad','periodo']
         widgets={'periodo': forms.Select(choices=CHOICES_TRIMESTRES,attrs={'class':'form-control'})}
 
-'''  
-class Ficha_DesarrolloDeLaGestacionForm(forms.Form):
-    CHOICES_SENTIMIENTOS = [('felicidad','Felicidad'),('miedo','Miedo'),('júbilo','Júbilo'),('ansiedad','Ansiedad'),('estres','Estres'),('incertidumbre','Incertidumbre')]
-    CHOICES_MOMENTO = [('pocos_dias','A los pocos días'),('primer_mes','El primer mes'),('segundo_mes','El segundo mes'),('tercer_mes','El tercer mes'),('cuarto_mes','El cuarto mes'),('quinto_mes','El quinto mes'),('sexto_mes','El sexto mes'),('septimo_mes','El séptimo mes')]
-    CHOICES_COMUNICA_BEBE = [('canto','Canto'),('cuentos','Cuentos'),('musica','Música (audífonos para gestación)'),('caricias','Caricias'),('estimulacion_intrauterina','Estimulación intrauterina (luces en barriga o clash overflow)'),('ninguno','Ninguno')]
-    CHOICES_SI_NO = [('si','Si'),('no','No')]
-    CHOICES_TRIMESTRES = [('primer_trimestre','1er Trimestre'),('segundo_trimestre','2do Trimestre'),('tercer_trimestre','3er Trimestre')]
-    pregunta_6_1 = forms.MultipleChoiceField(required=True, choices=CHOICES_SENTIMIENTOS, widget=forms.CheckboxSelectMultiple(attrs={'class':'form-control'}), label="Qué sintió cunado se enteró que estaba embarazada? Marque todas las opciones que desee.")
-    pregunta_6_2 = forms.ChoiceField(choices=CHOICES_MOMENTO, widget=forms.Select(attrs={'class':'form-control'}), label="En que momento se enteró que estaba embarazada?")
-    pregunta_6_3 = forms.IntegerField(widget=forms.NumberInput(attrs={'class':'form-control'}), label="Qué número de embarazo es este?")
-    pregunta_6_5 = forms.MultipleChoiceField(required=True, choices=CHOICES_COMUNICA_BEBE, widget=forms.CheckboxSelectMultiple(attrs={'class':'form-control'}), label="Cómo se comunicaba con el bebe? Marque todas las opciones que desee.")
-    pregunta_6_6 = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect(attrs={'class':'form-control'}), label="Asistió a algún curso prenatal?")
-    pregunta_6_6_1 = forms.CharField(widget=forms.Textarea(attrs={'class':'form-control','rows':'2'}), label="En que lugar fue el curso?")
-    pregunta_6_6_2 = forms.CharField(widget=forms.Textarea(attrs={'class':'form-control','rows':'2'}), label="Cuanto fue la carga del curso prenatal?")
-    pregunta_6_7 = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect(attrs={'class':'form-control'}), label="Se vacunó usted contra el tetano durante el embarazo?")
-    pregunta_6_8_a = forms.MultipleChoiceField(choices=CHOICES_TRIMESTRES, widget=forms.CheckboxSelectMultiple(attrs={'class':'form-control'}), label="Sangrados:")
-    pregunta_6_8_b = forms.MultipleChoiceField(choices=CHOICES_TRIMESTRES, widget=forms.CheckboxSelectMultiple(attrs={'class':'form-control'}), label="Presión sanguínea elevada:")
-    pregunta_6_8_c = forms.MultipleChoiceField(choices=CHOICES_TRIMESTRES, widget=forms.CheckboxSelectMultiple(attrs={'class':'form-control'}), label="Enfermedades infecciosas:")
-    pregunta_6_8_d = forms.MultipleChoiceField(choices=CHOICES_TRIMESTRES, widget=forms.CheckboxSelectMultiple(attrs={'class':'form-control'}), label="Accidentes graves:")
-    pregunta_6_8_e = forms.MultipleChoiceField(choices=CHOICES_TRIMESTRES, widget=forms.CheckboxSelectMultiple(attrs={'class':'form-control'}), label="Operaciones:")
-    pregunta_6_8_f = forms.MultipleChoiceField(choices=CHOICES_TRIMESTRES, widget=forms.CheckboxSelectMultiple(attrs={'class':'form-control'}), label="Crisis epilépticas:")
-    pregunta_6_8_g = forms.MultipleChoiceField(choices=CHOICES_TRIMESTRES, widget=forms.CheckboxSelectMultiple(attrs={'class':'form-control'}), label="Fiebre mayor a 38 ⁰C no determinada:")
-    pregunta_6_8_h = forms.MultipleChoiceField(choices=CHOICES_TRIMESTRES, widget=forms.CheckboxSelectMultiple(attrs={'class':'form-control'}), label="Edema:")
-    pregunta_6_8_i = forms.MultipleChoiceField(choices=CHOICES_TRIMESTRES, widget=forms.CheckboxSelectMultiple(attrs={'class':'form-control'}), label="Depresión (Tristeza, ansiedad, estrés, problemas para dormir):")
-    pregunta_6_8_j = forms.MultipleChoiceField(choices=CHOICES_TRIMESTRES, widget=forms.CheckboxSelectMultiple(attrs={'class':'form-control'}), label="Interrupción repentina de los movimientos del niño:")
-    pregunta_6_8_k = forms.MultipleChoiceField(choices=CHOICES_TRIMESTRES, widget=forms.CheckboxSelectMultiple(attrs={'class':'form-control'}), label="Nauseas:")
-    pregunta_6_8_l = forms.MultipleChoiceField(choices=CHOICES_TRIMESTRES, widget=forms.CheckboxSelectMultiple(attrs={'class':'form-control'}), label="Otras enfermedades:")
-    pregunta_6_8_l_otros = forms.CharField(widget=forms.Textarea(attrs={'class':'form-control','rows':'2'}), label="Cuáles?")
-    pregunta_6_9_a = forms.MultipleChoiceField(choices=CHOICES_TRIMESTRES, widget=forms.CheckboxSelectMultiple(attrs={'class':'form-control'}), label="Fumar:")
-    pregunta_6_9_b = forms.MultipleChoiceField(choices=CHOICES_TRIMESTRES, widget=forms.CheckboxSelectMultiple(attrs={'class':'form-control'}), label="Ingerir Alcohol:")
-    pregunta_6_9_c = forms.MultipleChoiceField(choices=CHOICES_TRIMESTRES, widget=forms.CheckboxSelectMultiple(attrs={'class':'form-control'}), label="Consumir drogas:")
-    pregunta_6_9_d = forms.MultipleChoiceField(choices=CHOICES_TRIMESTRES, widget=forms.CheckboxSelectMultiple(attrs={'class':'form-control'}), label="Realizar radiografías:")
-    pregunta_6_9_e = forms.MultipleChoiceField(choices=CHOICES_TRIMESTRES, widget=forms.CheckboxSelectMultiple(attrs={'class':'form-control'}), label="Trabajar:")
-'''   
-    
 
 class NacimientoForm(ModelForm):
     gemelar = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Fue embarazo gemelar?")
@@ -326,12 +315,16 @@ class RecienNacidoForm(ModelForm):
     hubo_apego_precoz = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Hubo apego precoz(le pusieron a su bebé encima del pecho cuando nació)?")
     permanecio_internado = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Tuvo el bebé que permanecer internado cuando nació?")
     otra_complicacion = forms.CharField(required=False)
+
+    complicaciones_nacimiento = forms.MultipleChoiceField(required=False, choices=RecienNacido.COMPLICACIONES_CHOICES,
+                                                          widget=forms.CheckboxSelectMultiple,
+                                                          label="¿El niño(a) tuvo alguna de éstas complicaciones al nacer?")
+ 
     class Meta:
         model = RecienNacido
         fields = ['edad_madre', 'edad_padre', 'peso', 'tamanio', 'diametro_encefalico', 'apgar_score', 'complicaciones_nacimiento', 'otra_complicacion', 'hubo_apego_precoz', 'tiempo_apego_precoz', 'tiempo_sostener_bebe','permanecio_internado', 'tiempo_internado', 'tipo_contacto', 'primera_lactancia'] 
         widgets = {
             'apgar_score': forms.RadioSelect(choices=RecienNacido.APGAR_CHOICES),
-            'complicaciones_nacimiento': forms.CheckboxSelectMultiple(choices=RecienNacido.COMPLICACIONES_CHOICES),
             'tiempo_apego_precoz': forms.RadioSelect(choices=RecienNacido.APEGO_PRECOZ_CHOICES),
             'tiempo_sostener_bebe': forms.RadioSelect(choices=RecienNacido.SOSTENER_BEBE_CHOICES),
             'tipo_contacto': forms.RadioSelect(choices=RecienNacido.CONTACTO_CHOICES),
@@ -343,31 +336,30 @@ class RecienNacidoForm(ModelForm):
         hubo_apego_precoz = cleaned_data.get('hubo_apego_precoz')
         permanecio_internado = cleaned_data.get('permanecio_internado')
         complicaciones = cleaned_data.get("complicaciones_nacimiento")
-        if(hubo_apego_precoz == 'True'):
+        if hubo_apego_precoz == 'True':
             tiempo =  cleaned_data.get('tiempo_apego_precoz')
             if not tiempo or tiempo == RecienNacido.APEGO_PRECOZ_NADA:
                 self.add_error('tiempo_apego_precoz', "Debe llenar éste campo con valor distinto a Nada")
-        if(permanecio_internado == 'True'):
+        if permanecio_internado == 'True':
             if not cleaned_data.get('tiempo_internado'):
                 self.add_error('tiempo_internado', "Debe llenar éste campo")
             if not cleaned_data.get('tipo_contacto'):
                 self.add_error('tipo_contacto', "Debe llenar éste campo")
-        if(complicaciones and complicaciones.find("Otro") != -1):
+        if 'Otro' in complicaciones:
             if not cleaned_data.get('otra_complicacion'):
                 self.add_error('otra_complicacion', "Debe llenar éste campo")
 
-    def save(self, complicaciones_list=None):
+    def save(self):
         model = super(RecienNacidoForm, self).save(commit=False)
         if self.cleaned_data.get('hubo_apego_precoz') == 'False':
             model.tiempo_apego_precoz = RecienNacido.APEGO_PRECOZ_NADA
         if self.cleaned_data.get('permanecio_internado') == 'False':
             model.tiempo_internado = datetime.timedelta()
             model.tipo_contacto = RecienNacido.CONTACTO_NINGUNA
-        complicaciones = self.cleaned_data.get("complicaciones_nacimiento")
-        if complicaciones and  complicaciones.find("Otro") != -1 and complicaciones_list:
-            complicaciones_list.append(self.cleaned_data.get("otra_complicacion"))
-        if complicaciones:
-            model.complicaciones_nacimiento = ','.join(complicaciones_list)
+        complicaciones = self.cleaned_data.get("complicaciones_nacimiento", [])
+        if 'Otro' in complicaciones:
+            complicaciones.append(self.cleaned_data.get("otra_complicacion"))
+        model.complicaciones_nacimiento = ','.join(complicaciones) if complicaciones else ''
         model.save()
         return model
 
@@ -437,8 +429,6 @@ class PrimerosDiasForm(ModelForm):
         icteria = cleaned_data.get('icteria')
         situaciones = cleaned_data.get('situaciones_despues_nacimiento')
         examenes = cleaned_data.get('examenes')
-        print("Examenes", examenes)
-        print("situaciones", situaciones)
         if icteria:
             if not cleaned_data.get('tratamiento_icteria'):
                 self.add_error('tratamiento_icteria', "Debe llenar éste campo")
@@ -599,27 +589,25 @@ class DatosFamiliaresOtrosForm(ModelForm):
         return model
 
        
-class SuplementoFormset(BaseInlineFormSet):
-    def __init__(self, *args, **kwargs):
-        super(SuplementoFormset, self).__init__(*args, **kwargs)
-        for form in self.forms:
-            form.empty_permitted = False
+# class SuplementoFormset(BaseInlineFormSet):
+#     def __init__(self, *args, **kwargs):
+#         super(SuplementoFormset, self).__init__(*args, **kwargs)
+#         for form in self.forms:
+#             form.empty_permitted = False
 
 SuplementosFormset = inlineformset_factory(AlimentacionCostumbres, SuplementoAlimenticio,
-                                           formset=SuplementoFormset,
                                            fields='__all__',
                                            can_delete=False,
-                                           extra=1
-)
+                                           extra=1)
 
-class HermanoFormset(BaseInlineFormSet):
-    def __init__(self, *args, **kwargs):
-        super(HermanoFormset, self).__init__(*args, **kwargs) 
-        for form in self.forms:
-            form.empty_permitted = False
+# class HermanoFormset(BaseInlineFormSet):
+#     def __init__(self, *args, **kwargs):
+#         super(HermanoFormset, self).__init__(*args, **kwargs) 
+#         for form in self.forms:
+#             form.empty_permitted = False
 
 class HermanoForm(ModelForm):
-    fecha_nacimiento = forms.DateField(input_formats=['%m/%d/%Y'],
+    fecha_nacimiento = forms.DateField(input_formats=['%d/%m/%Y'],
                                        label='Fecha de nacimiento',
                                        widget=forms.TextInput(attrs={
                                            'class':'datepicker form-control'}))
@@ -630,7 +618,7 @@ class HermanoForm(ModelForm):
 HermanosFormset = inlineformset_factory(DatosFamiliaresOtros, Hermano,
                                         fields='__all__',
                                         form=HermanoForm,
-                                        formset=HermanoFormset,
+                                        #formset=HermanoFormset,
                                         can_delete=False)
 MedicamentoFormset = inlineformset_factory(Descripcion, Medicamento,
                                            fields='__all__',

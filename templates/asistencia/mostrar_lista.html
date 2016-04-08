@@ -86,9 +86,9 @@
                     <table id="table_id" class="table table-striped">
                         <thead>
                             <th>Id</th>
-                            <th>Bebe</th>
-                            <th>Terapia</th>
-                            <th>Estado</th>
+                            <th>Paciente</th>
+                            <th>Tipo de terapia</th>
+                            <th>Estado de la cita</th>
                         </thead>
                         <tbody>
                         </tbody>
@@ -109,9 +109,9 @@
                 ordering:  true,
                 data: {{paciente|safe}},
                 columns: [
-                    { data: "id" },
-                    { data: "bebe" },
-                    { data: "terapia" },
+                    { data: "idPaciente" },
+                    { data: "paciente" },
+                    { data: "tipoTerapia" },
                     { data: "estado" }
                 ],
                 select: true
@@ -126,17 +126,17 @@
 
             editor = new $.fn.dataTable.Editor( {
                 table: "#table_id",
-                idSrc:  'id',
+                idSrc:  'idPaciente',
                 fields: [
                     {
                         label: "Id:",
-                        name: "id"
+                        name: "idPaciente"
                     }, {
-                        label: "Bebe:",
-                        name: "bebe"
+                        label: "Paciente:",
+                        name: "paciente"
                     }, {
-                        label: "Terapia:",
-                        name: "terapia"
+                        label: "Tipo de terapia:",
+                        name: "tipoTerapia"
                     }, {
                         label: "Estado:",
                         name: "estado",

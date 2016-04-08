@@ -11,6 +11,6 @@ class Terapista(models.Model):
     telefonos = models.CharField(max_length=50)
     fecha_nacimiento = models.DateField()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.apellidos + " " + self.nombres
 
