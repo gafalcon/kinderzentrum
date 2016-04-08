@@ -2,9 +2,6 @@ from django.conf.urls import patterns, url
 from cita import views
 from cita.views import ReservarCitaView
 
-
-
-
 urlpatterns =[ 
     # Examples:
     # url(r'^$', 'proyecto_django.views.home', name='home'),
