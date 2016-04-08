@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 #from __future__ import unicode_literals
 from django.db import models
-
 from registro.modelos.paciente_model import Paciente
 from asistencia.modelos.Tipo_terapia_model import Tipo_terapia
-
 
 class Cita(models.Model):
     ESTADO_CHOICES = (
@@ -23,11 +21,5 @@ class Cita(models.Model):
     tipo_terapia = models.ForeignKey(Tipo_terapia, on_delete=models.CASCADE)
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
 
-
     def __str__(self):
         return str(self.paciente)
-
-
-
-
-

@@ -1,8 +1,6 @@
 import json
-
 from django.db import connection
 from django.shortcuts import render, render_to_response,get_list_or_404
-from cita.forms import Ficha_DatosForm
 from django.http import HttpResponseRedirect
 from django.views.generic import View
 from django.template import RequestContext
@@ -49,8 +47,9 @@ def mostrar_lista_asistencia(request):
     row = json.dumps(ro)
 
     print(row)
+    ctx = {'paciente': row, 'pagina_actual':'asistencia_paciente'}
     #print(dictfetchall(cursor))
-    return render(request, "asistencia/mostrar_lista.html", {'paciente': row})
+    return render(request, "asistencia/mostrar_lista.html", ctx)
     #return render_to_response('asistencia/mostrar_lista.html')
 
 

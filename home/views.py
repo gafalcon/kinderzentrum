@@ -60,13 +60,36 @@ class AdminUsuariosView(PermissionRequiredMixin, View):
     template_name = 'home/admin_usuarios.html'
 
     def get(self, request, *args, **kwargs):
-        registro_usuario = RegistroUsuario()
-        ctx = {'registro_usuario':registro_usuario}
+        registro_usuario = UserCreateForm()
+        ctx = {'registro_usuario':registro_usuario, 'pagina_actual':'manejo_usuarios'}
         return render(request, self.template_name, ctx)
 
     def post(self, request, *args, **kwargs):
-        registro_usuario = RegistroUsuario(request.POST)
-        ctx = {'registro_usuario':registro_usuario}
+        registro_usuario = UserCreateForm(request.POST)
+        if registro_usuario.is_valid():
+            user = registro_usuario.save()
+            mensaje = registro_usuario.get_mensaje()
+            grupos = registro_usuario.get_permisos()
+            ctx = {'registro_usuario_correcto':True, 'mensaje':mensaje, 'permisos':grupos, 'pagina_actual':'manejo_usuarios'}
+            return render(request, self.template_name, ctx)
+        else:
+            return render(request, self.template_name, {'registro_usuario':registro_usuario})
+
+
+class AdminUsuariosPermisosView(PermissionRequiredMixin, View):
+    permission_required = ('auth.add_user')
+    template_name = 'home/admin_usuarios.html'
+
+    def get(self, request, *args, **kwargs):
+        #únicamente se pueden modificar usuarios que no sean superusuarios
+        usuarios = UsuariosFormset(queryset=User.objects.exclude(is_superuser=1))
+        ctx = {'usuarios':usuarios, 'pagina_actual':'manejo_usuarios'}
         return render(request, self.template_name, ctx)
 
-
+    def post(self, request, *args, **kwargs):
+        usuarios_formset = UsuariosFormset(request.POST)
+        if usuarios_formset.is_valid():
+            for user in usuarios_formset:
+                user.save()
+        ctx = {'usuarios':usuarios_formset, 'pagina_actual':'manejo_usuarios'}
+        return render(request, self.template_name, ctx)

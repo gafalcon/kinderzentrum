@@ -1,3 +1,4 @@
+{% load extra_tags %}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html lang="es">
 <head>
@@ -22,7 +23,7 @@
 <body>
 <header>
 
-	<h1> Kinderzentrum </h1>
+	<h1> Kinderzentrum {% block title_name %}	{% endblock %}</h1>
 	
 	<nav class="navbar navbar-default">
 		<div class="container-fluid">
@@ -45,29 +46,42 @@
 
 				{% if user.is_authenticated %}
 					<!--Con la variable perms accedemos a los diferentes permisos que contiene el usuario actual de la sesion-->
-					{% if perms.registro %}
+					{% if user|has_group:"registro" %}
 					{% if pagina_actual == "registro" %}<li class="active dropdown">{% else %}<li class="dropdown">{% endif %}
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#"> Registro <span class="caret"></span></a>
 						<ul class="dropdown-menu">
 							<li><a href="{% url 'registro_view' %}">Registro de ficha medica</a></li>
+							<li><a href="{% url 'pacientes-list' %}">Lista de pacientes</a></li>
 							<li><a href="#">Actualizacion ficha médica</a></li>	
 							<li><a href="#">Consulta ficha médica</a></li>			            
 				        </ul>
 					</li>
 					{% endif %}
 
-					
+					{% if user|has_group:"cita" %}
 					<li  {% if pagina_actual == "cita" %} class="active" {% endif %}><a href="{% url 'reservar_cita_view' %}">Cita</a></li>
 					
-					
+					<li {% if pagina_actual == "asistencia_paciente" %} class="active" {% endif %}><a href="{% url 'lista_asistencia' %}">Asistencia paciente</a></li>
+					{% endif %}
+				
+				
+					{% if user|has_group:"pagos" %}
+					<li><a href="{% url 'pago' %}">Pagos</a></li>
+					{% endif %}
+
+				{% if user.is_superuser %}
+				<li class="dropdown {% if pagina_actual == "manejo_usuarios" %} active {% endif %}">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#"> Manejo de usuarios <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="{% url 'admin_usuarios' %}">Crear nuevos usuarios</a></li>
+							<li><a href="{% url 'usuarios_permisos' %}">Actualizar permisos de usuarios</a></li>	
+							<li><a href="#">Cambiar mi contraseña</a></li>			            
+				        </ul>
+				</li>
+				{% endif %}
 				{% endif %}
 
-				<li><a href="{% url 'admin_usuarios' %}">Administración de usuarios</a></li>
-				<li><a href="{% url 'pago' %}">Pagos</a></li>
-				<li><a href="{% url 'lista_asistencia' %}">Asistencia paciente</a></li>
-				<li><a href="#"> Acerca de </a></li>
-
-				
+				<li><a href="#">Acerca de la fundación</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">		      			      	
 		      	{% if user.is_authenticated %}

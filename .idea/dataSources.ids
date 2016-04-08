@@ -62,11 +62,14 @@
       <primary-key columns="id"/>
       <exported-key name="#FAKE_asistencia_terapia__tipo_terapia_2" table="asistencia_terapia__tipo_terapia" schema="" catalog="" columns="tipo_terapia_id"/>
       <exported-key name="#FAKE_cita_cita_1" table="cita_cita" schema="" catalog="" columns="tipo_terapia_id"/>
+      <exported-key name="#FAKE_cita_cita_1" table="cita_cita" schema="" catalog="" columns="tipo_terapia_id"/>
     </table>
     <table name="auth_group" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <column name="name" sqlType="VARCHAR(80)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
       <primary-key columns="id"/>
+      <exported-key name="#FAKE_auth_group_permissions_2" table="auth_group_permissions" schema="" catalog="" columns="group_id"/>
+      <exported-key name="#FAKE_auth_user_groups_1" table="auth_user_groups" schema="" catalog="" columns="group_id"/>
       <exported-key name="#FAKE_auth_group_permissions_2" table="auth_group_permissions" schema="" catalog="" columns="group_id"/>
       <exported-key name="#FAKE_auth_user_groups_1" table="auth_user_groups" schema="" catalog="" columns="group_id"/>
     </table>
@@ -90,6 +93,8 @@
       <foreign-key name="#FAKE_auth_permission_1" columns="content_type_id" ref-table="django_content_type" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
       <exported-key name="#FAKE_auth_group_permissions_1" table="auth_group_permissions" schema="" catalog="" columns="permission_id"/>
       <exported-key name="#FAKE_auth_user_user_permissions_1" table="auth_user_user_permissions" schema="" catalog="" columns="permission_id"/>
+      <exported-key name="#FAKE_auth_group_permissions_1" table="auth_group_permissions" schema="" catalog="" columns="permission_id"/>
+      <exported-key name="#FAKE_auth_user_user_permissions_1" table="auth_user_user_permissions" schema="" catalog="" columns="permission_id"/>
       <index name="auth_permission_417f1b1c" unique="true" columns="content_type_id"/>
       <index name="auth_permission_content_type_id_01ab375a_uniq" unique="true" columns="content_type_id,codename"/>
     </table>
@@ -109,6 +114,8 @@
       <exported-key name="#FAKE_auth_user_groups_2" table="auth_user_groups" schema="" catalog="" columns="user_id"/>
       <exported-key name="#FAKE_auth_user_user_permissions_2" table="auth_user_user_permissions" schema="" catalog="" columns="user_id"/>
       <exported-key name="#FAKE_django_admin_log_1" table="django_admin_log" schema="" catalog="" columns="user_id"/>
+      <exported-key name="#FAKE_auth_user_groups_2" table="auth_user_groups" schema="" catalog="" columns="user_id"/>
+      <exported-key name="#FAKE_auth_user_user_permissions_2" table="auth_user_user_permissions" schema="" catalog="" columns="user_id"/>
       <exported-key name="#FAKE_django_admin_log_1" table="django_admin_log" schema="" catalog="" columns="user_id"/>
     </table>
     <table name="auth_user_groups" schema="" catalog="" type="TABLE">
@@ -171,6 +178,7 @@
       <primary-key columns="id"/>
       <exported-key name="#FAKE_auth_permission_1" table="auth_permission" schema="" catalog="" columns="content_type_id"/>
       <exported-key name="#FAKE_django_admin_log_2" table="django_admin_log" schema="" catalog="" columns="content_type_id"/>
+      <exported-key name="#FAKE_auth_permission_1" table="auth_permission" schema="" catalog="" columns="content_type_id"/>
       <exported-key name="#FAKE_django_admin_log_2" table="django_admin_log" schema="" catalog="" columns="content_type_id"/>
       <index name="django_content_type_app_label_76bd3d3b_uniq" unique="true" columns="app_label,model"/>
     </table>
@@ -285,6 +293,7 @@
       <exported-key name="#FAKE_registro_actividad_gestacion_1" table="registro_actividad_gestacion" schema="" catalog="" columns="gestacion_id"/>
       <exported-key name="#FAKE_registro_paciente_5" table="registro_paciente" schema="" catalog="" columns="gestacion_id"/>
       <exported-key name="#FAKE_registro_situacion_gestacion_1" table="registro_situacion_gestacion" schema="" catalog="" columns="gestacion_id"/>
+      <exported-key name="#FAKE_registro_actividad_gestacion_1" table="registro_actividad_gestacion" schema="" catalog="" columns="gestacion_id"/>
       <exported-key name="#FAKE_registro_paciente_5" table="registro_paciente" schema="" catalog="" columns="gestacion_id"/>
       <exported-key name="#FAKE_registro_situacion_gestacion_1" table="registro_situacion_gestacion" schema="" catalog="" columns="gestacion_id"/>
     </table>
@@ -384,6 +393,7 @@
       <exported-key name="#FAKE_cita_cita_2" table="cita_cita" schema="" catalog="" columns="paciente_id"/>
       <exported-key name="#FAKE_registro_familiar_1" table="registro_familiar" schema="" catalog="" columns="paciente_id"/>
       <exported-key name="#FAKE_registro_medico_1" table="registro_medico" schema="" catalog="" columns="paciente_id"/>
+      <exported-key name="#FAKE_cita_cita_2" table="cita_cita" schema="" catalog="" columns="paciente_id"/>
       <exported-key name="#FAKE_registro_familiar_1" table="registro_familiar" schema="" catalog="" columns="paciente_id"/>
       <exported-key name="#FAKE_registro_medico_1" table="registro_medico" schema="" catalog="" columns="paciente_id"/>
     </table>
