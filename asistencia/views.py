@@ -4,9 +4,6 @@ from django.shortcuts import render, render_to_response,get_list_or_404
 from django.http import HttpResponseRedirect
 from django.views.generic import View
 from django.template import RequestContext
-from modelos.bebe_model import Bebe
-from modelos.cit_model import Cit
-from modelos.terapia_model import Terapia
 
 
 def mostrar_lista_asistencia(request):
@@ -14,9 +11,6 @@ def mostrar_lista_asistencia(request):
 
     #pacientes = get_list_or_404(Bebe)
     #return render_to_response('asistencia/mostrar_lista.html',{'pacientes':pacientes})
-
-    bebe_terapia = Bebe.objects.select_related()
-    cita = Cit.objects.select_related()
 
     cursor = connection.cursor()
     cursor.execute('SELECT paciente.id as idPaciente, '

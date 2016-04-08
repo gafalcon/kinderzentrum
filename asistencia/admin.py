@@ -1,9 +1,5 @@
 from django.contrib import admin
-from asistencia.models import Bebe,Terapia,Cit,Tipo_terapia,Terapista,Terapia__Tipo_terapia
-
-admin.site.register(Bebe)
-admin.site.register(Terapia)
-admin.site.register(Cit)
+from asistencia.models import Tipo_terapia,Terapista,Terapia__Tipo_terapia
 
 admin.site.register(Tipo_terapia)
 admin.site.register(Terapista)

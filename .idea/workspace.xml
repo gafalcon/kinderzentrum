@@ -2,46 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="56ca3566-7b2e-453b-8598-b15ccd7dfeac" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/home/templatetags/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/home/templatetags/extra_tags.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/registro/migrations/0002_auto_20160406_2201.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/registro/migrations/0003_auto_20160406_2203.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/registro/migrations/0004_auto_20160406_2213.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/static/css/admin_usuarios.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/registro/paciente_list.html" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/.name" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/kinderzentrum.iml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/templates/cita/atender_cita.html" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.ids" afterPath="$PROJECT_DIR$/.idea/dataSources.ids" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/asistencia/modelos/bebe_model.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/asistencia/modelos/cit_model.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/asistencia/modelos/terapia_model.py" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db.sqlite3" afterPath="$PROJECT_DIR$/db.sqlite3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/asistencia/admin.py" afterPath="$PROJECT_DIR$/asistencia/admin.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/asistencia/models.py" afterPath="$PROJECT_DIR$/asistencia/models.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/asistencia/views.py" afterPath="$PROJECT_DIR$/asistencia/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cita/forms.py" afterPath="$PROJECT_DIR$/cita/forms.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cita/modelos/cita_model.py" afterPath="$PROJECT_DIR$/cita/modelos/cita_model.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cita/models.py" afterPath="$PROJECT_DIR$/cita/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cita/urls.py" afterPath="$PROJECT_DIR$/cita/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cita/views.py" afterPath="$PROJECT_DIR$/cita/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/home/forms.py" afterPath="$PROJECT_DIR$/home/forms.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/home/urls.py" afterPath="$PROJECT_DIR$/home/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/home/views.py" afterPath="$PROJECT_DIR$/home/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/kinderzentrum/settings.py" afterPath="$PROJECT_DIR$/kinderzentrum/settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/registro/forms.py" afterPath="$PROJECT_DIR$/registro/forms.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/registro/modelos/descripcion_models.py" afterPath="$PROJECT_DIR$/registro/modelos/descripcion_models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/registro/modelos/historial_madre_models.py" afterPath="$PROJECT_DIR$/registro/modelos/historial_madre_models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/registro/urls.py" afterPath="$PROJECT_DIR$/registro/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/registro/views.py" afterPath="$PROJECT_DIR$/registro/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/js/cita/jquery.weekcalendar.js" afterPath="$PROJECT_DIR$/static/js/cita/jquery.weekcalendar.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/static/js/registro.js" afterPath="$PROJECT_DIR$/static/js/registro.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/base.html" afterPath="$PROJECT_DIR$/templates/base.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/cita/reservar_cita.html" afterPath="$PROJECT_DIR$/templates/cita/reservar_cita.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/home/admin_usuarios.html" afterPath="$PROJECT_DIR$/templates/home/admin_usuarios.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/registro/registro_ficha_medica.html" afterPath="$PROJECT_DIR$/templates/registro/registro_ficha_medica.html" />
     </list>
     <ignored path="kinderzentrum.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -101,10 +68,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="cita_model.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="cita_model.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cita/modelos/cita_model.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6923077">
+            <state vertical-scroll-proportion="0.0">
               <caret line="20" column="43" selection-start-line="20" selection-start-column="43" selection-end-line="20" selection-end-column="43" />
               <folding>
                 <marker date="1460118921830" expanded="true" signature="65:94" placeholder="import ..." />
@@ -113,14 +80,37 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/asistencia/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="23" column="42" selection-start-line="23" selection-start-column="42" selection-end-line="23" selection-end-column="42" />
+            <state vertical-scroll-proportion="0.9230769">
+              <caret line="54" column="0" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
+                <marker date="1460119623976" expanded="true" signature="513:1216" placeholder="SELECT pacie..asistencia_tipo_terapia..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="admin.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/asistencia/admin.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#32#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/asistencia/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="39" selection-start-line="0" selection-start-column="39" selection-end-line="0" selection-end-column="39" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -162,15 +152,15 @@
         <option value="$PROJECT_DIR$/registro/modelos/descripcion_models.py" />
         <option value="$PROJECT_DIR$/asistencia/modelos/Terapista.py" />
         <option value="$PROJECT_DIR$/asistencia/modelos/Terapia__Tipo_terapia.py" />
-        <option value="$PROJECT_DIR$/asistencia/models.py" />
-        <option value="$PROJECT_DIR$/asistencia/admin.py" />
         <option value="$PROJECT_DIR$/registro/admin.py" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/d924eb13-3ceb-4826-9013-d242481a2cbf/console.sql" />
         <option value="$PROJECT_DIR$/asistencia/modelos/Terapia__Tipo_terapia_models.py" />
         <option value="$PROJECT_DIR$/asistencia/modelos/Terapista_model.py" />
-        <option value="$PROJECT_DIR$/asistencia/views.py" />
         <option value="$PROJECT_DIR$/templates/asistencia/mostrar_lista.html" />
         <option value="$PROJECT_DIR$/cita/modelos/cita_model.py" />
+        <option value="$PROJECT_DIR$/asistencia/admin.py" />
+        <option value="$PROJECT_DIR$/asistencia/models.py" />
+        <option value="$PROJECT_DIR$/asistencia/views.py" />
       </list>
     </option>
   </component>
@@ -268,6 +258,38 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="cita" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="modelos" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kinderzentrum" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kinderzentrum" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="asistencia" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kinderzentrum" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kinderzentrum" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="asistencia" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -582,7 +604,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2730711" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -650,14 +672,8 @@
           <caret line="23" column="42" selection-start-line="23" selection-start-column="42" selection-end-line="23" selection-end-column="42" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
+            <marker date="1460119623976" expanded="true" signature="513:1216" placeholder="SELECT pacie..asistencia_tipo_terapia..." />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/asistencia/modelos/bebe_model.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.40572792">
-          <caret line="10" column="26" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="26" />
         </state>
       </provider>
     </entry>
@@ -871,13 +887,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/asistencia/modelos/cit_model.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7368421">
-          <caret line="15" column="79" selection-start-line="15" selection-start-column="3" selection-end-line="15" selection-end-column="79" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/kinderzentrum/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.15497077">
@@ -927,13 +936,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/asistencia/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/asistencia/apps.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -969,30 +971,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/asistencia/modelos/terapia_model.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3122449">
-          <caret line="9" column="26" selection-start-line="9" selection-start-column="26" selection-end-line="9" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/asistencia/admin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.10408163">
-          <caret line="3" column="25" selection-start-line="3" selection-start-column="25" selection-end-line="3" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/asistencia/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="23" column="42" selection-start-line="23" selection-start-column="42" selection-end-line="23" selection-end-column="42" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/asistencia/mostrar_lista.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1008,10 +986,39 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cita/modelos/cita_model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6923077">
+        <state vertical-scroll-proportion="0.0">
           <caret line="20" column="43" selection-start-line="20" selection-start-column="43" selection-end-line="20" selection-end-column="43" />
           <folding>
             <marker date="1460118921830" expanded="true" signature="65:94" placeholder="import ..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/asistencia/admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/asistencia/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="39" selection-start-line="0" selection-start-column="39" selection-end-line="0" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/asistencia/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.9230769">
+          <caret line="54" column="0" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+            <marker date="1460119623976" expanded="true" signature="513:1216" placeholder="SELECT pacie..asistencia_tipo_terapia..." />
           </folding>
         </state>
       </provider>
