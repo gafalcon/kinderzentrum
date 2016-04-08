@@ -17,9 +17,7 @@ admin.site.register(AlimentacionCostumbres)
 
 #descripcion_models
 admin.site.register(Descripcion)
-admin.site.register(Terapia_Paciente)
 admin.site.register(Terapia)
-admin.site.register(Terapista)
 admin.site.register(Medicamento)
 
 #familiars_models
