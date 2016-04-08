@@ -24,8 +24,8 @@ class Cita(models.Model):
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
 
 
-    def __unicode__(self):
-        return self.paciente_id
+    def __str__(self):
+        return str(self.paciente)
 
 
 
