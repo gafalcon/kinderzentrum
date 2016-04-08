@@ -6,6 +6,8 @@ from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group
 from django.forms import formset_factory, modelformset_factory
+from django.views.generic.edit import UpdateView
+from django import template
 #from django.contrib.auth.models import User
 
 class LoginForm(forms.Form):
@@ -48,19 +50,31 @@ class UserCreateForm(UserCreationForm):
 
 
 class UserForm(ModelForm):
-	grupos = forms.ModelMultipleChoiceField(queryset=None, widget=forms.CheckboxSelectMultiple())
+	#required=False para que al evaluar la función clean retorne True así tenga campos vacíos (lo cuál es correcto)
+	grupos = forms.ModelMultipleChoiceField(queryset=None, widget=forms.CheckboxSelectMultiple(), required=False)
 
 	def __init__(self, *args, **kw):  
 	    super(UserForm, self).__init__(*args, **kw)
-	    #self.fields['grupos'].queryset=Group.objects.filter(user=self.instance.id)
 	    self.fields['grupos'].queryset = Group.objects.all()
 	    self.fields['grupos'].initial = Group.objects.filter(user=self.instance.id)
+	    self.fields['username'].widget.attrs['readonly'] = True
 
 	class Meta:
 		model = User
 		fields = ('username', 'first_name' ,)
+
+	def save(self, commit=False):
+		user = self.instance
+		user.groups = self.cleaned_data['grupos']
+		return user
+
+	def clean(self):
+		cleaned_data = super(UserForm, self).clean()
+
+
 			
 UsuariosFormset = modelformset_factory(User, form=UserForm, extra=0)
+
 
 '''        
 class RegistroUsuario(forms.Form):

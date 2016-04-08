@@ -49,8 +49,9 @@ def mostrar_lista_asistencia(request):
     row = json.dumps(ro)
 
     print(row)
+    ctx = {'paciente': row, 'pagina_actual':'asistencia_paciente'}
     #print(dictfetchall(cursor))
-    return render(request, "asistencia/mostrar_lista.html", {'paciente': row})
+    return render(request, "asistencia/mostrar_lista.html", ctx)
     #return render_to_response('asistencia/mostrar_lista.html')
 
 
