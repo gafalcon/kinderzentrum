@@ -42,7 +42,6 @@ INSTALLED_APPS = (
     'asistencia',
     'pago',
     'django_extensions',
-    'debug_toolbar'
 )
 
 MIDDLEWARE_CLASSES = (
