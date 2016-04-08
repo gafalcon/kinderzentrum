@@ -1,8 +1,6 @@
 import json
-
 from django.db import connection
 from django.shortcuts import render, render_to_response,get_list_or_404
-from cita.forms import Ficha_DatosForm
 from django.http import HttpResponseRedirect
 from django.views.generic import View
 from django.template import RequestContext

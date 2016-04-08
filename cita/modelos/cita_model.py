@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 #from __future__ import unicode_literals
 from django.db import models
-
 from registro.modelos.paciente_model import Paciente
 from asistencia.modelos.Tipo_terapia_model import Tipo_terapia
-
 
 class Cita(models.Model):
     ESTADO_CHOICES = (
@@ -26,8 +24,3 @@ class Cita(models.Model):
 
     def __unicode__(self):
         return self.paciente_id
-
-
-
-
-
