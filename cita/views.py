@@ -1,5 +1,4 @@
 from django.shortcuts import render, render_to_response
-from cita.forms import* #Ficha_DatosForm, Ficha_ConsCitaTerapistaForm
 from django.http import HttpResponseRedirect
 from django.views.generic import View
 from django.template import RequestContext
@@ -14,7 +13,6 @@ class ReservarCitaView(View):
 
     def get(self, request, *args, **kwargs):
         context = {'pagina_actual': 'cita'}
-
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
