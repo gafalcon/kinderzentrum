@@ -651,6 +651,13 @@ input[name=paciente-sexo] {
   background-color: #FFFFE0;
 }
 
+
+
+
+
+
+/*
+
 table {
   font: 14px/24px Verdana, Arial, Helvetica, sans-serif;
   border-collapse: collapse;
@@ -686,13 +693,15 @@ td+td {
 
 #table_even tr:nth-child(odd) td {
     background-color: #fbfbfb
-} /*odd*/
-
+}*//*odd*/
+/*
 #table_even tr:nth-child(even) td {
     background-color: #e8ecee
-} /* even*/
-
+} *//* even*/
+/*
 #table_even tr:hover td {
     background-color: #fffbae;
-} /* hovering */
+} *//* hovering */
+
+
 
