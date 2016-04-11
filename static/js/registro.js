@@ -58,10 +58,18 @@ function setPanelVisible(id){
 	for(i=1; i<=total_pages; i++){
 		if(i==id){
 			var nav_i = $("#nav"+i);
-			nav_i.attr("class","current");
+			if($("#panel"+i).attr("data-error") == "0"){
+				nav_i.attr("class","separator current");
+			} else {
+				nav_i.attr("class","separator current error");
+			}			
 		} else {
 			var nav_i = $("#nav"+i);
-			nav_i.attr("class","");
+			if($("#panel"+i).attr("data-error") == "0"){
+				nav_i.attr("class","separator current shown");
+			} else {
+				nav_i.attr("class","separator current shown error");
+			}				
 		}
 	}
 }
