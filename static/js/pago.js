@@ -97,7 +97,7 @@ function findMatches(q, cb) {
 //     cb(matches);
 
   getPatientSuggestionsByNameFragment(q).then(function (suggestions) {
-    var suggestions = [{id: 1, nombres: 'Tim', apellidos: 'Drake'}];
+    var suggestions = [{id: 2, nombres: 'Tim', apellidos: 'Drake'}];
 
     cb(suggestions);
   }).bind(this);
@@ -155,18 +155,19 @@ function generatePayments(event) {
 function getPatientSuggestionsByNameFragment(nameFragment) {
   var URL = API.host + '/pagos/pacientes/sugerencias?limit=' + Configuration.Suggestions.Limit || 5;
   if (nameFragment !== '') {
-    URL += '/query=' + nameFragment;
+    URL += '&query=' + nameFragment;
   }
   return fetch(URL)
     .then(function (response) {
       if (response.ok) {
-        return response;
+        return response.json();
       } else {
         var error = new Error(response.statusText);
         error.response = response;
         throw error;
       }
     }).then(function (json) {
+      console.log(json)
       return json;
     })
 }
@@ -176,13 +177,14 @@ function getPatientPaymentInformation(id, date) {
   return fetch(URL)
     .then(function (response) {
       if (response.ok) {
-        return response;
+        return response.json();
       } else {
         var error = new Error(response.statusText);
         error.response = response;
         throw error;
       }
     }).then(function (json) {
+      console.log(json)
       return json;
     })
     .then(function (payments) {
@@ -199,15 +201,15 @@ function updatePatientPaymentInformationTable(payments) {
   tableNode.innerHTML = payments.map(function (payment) {
     return `<tr>
       <td>${payment.terapia_nombre}</td>
-      <td>${payment.fecha_cita.toDateString()}, ${payment.hora_inicio} - ${payment.hora_fin}</td>
+      <td>${payment.fecha_cita}, ${payment.hora_inicio} - ${payment.hora_fin}</td>
       <td>${payment.costo}</td>
     </tr>`;
-  }) + `<tr class="table-result">
+  }).join('') + `<tr class="table-result">
     <td></td>
     <td>Total</td>
     <td>${payments.reduce(function (sum, payment) {
       return sum + Number(payment.costo);
-    }, 0)}/td>
+    }, 0)}</td>
   </tr>`;
 }
 
