@@ -19,6 +19,7 @@
   <script type="text/javascript" src="/static/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
   <link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css" />
   <link rel="stylesheet" href="/static/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+  <script type="text/javascript" src="/static/bower_components/typeahead.js/dist/typeahead.bundle.js"></script>
 </head>
 
 <body>
@@ -30,7 +31,7 @@
       <div class="col-md-6 col-xs-6">
         <div id="custom-search-input">
           <div class="input-group">
-            <input type="text" class="form-control input-md" placeholder="Buscar" />
+            <input type="text" class="form-control input-md typeahead" placeholder="Buscar" />
             <span class="input-group-btn">
               <button class="btn btn-info" type="button">
                 <i class="glyphicon glyphicon-search"></i>
@@ -68,22 +69,21 @@
         </div>
       </div>
     </div>
-    <button type="button" class="btn btn-info center-block">Generar pago</button>
+    <button id="generate_payments_options" onclick="generatePayments();" type="button" class="btn btn-info center-block">Generar pago</button>
   </div>
   <div class="container-fluid">
-    <p>Nombre: </p>
     <div class="row">
       <div class="col-md-12 col-xs-12">
         <div class="table">
           <table class="table table-striped">
             <thead>
               <tr>
-                <th>Terapias</th>
-                <th>Cantidad</th>
+                <th>Terapia</th>
+                <th>Fecha</th>
                 <th>Costo</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="patient_payment_table">
               <tr>
                 <td>Terapia 1</td>
                 <td>0.00</td>
