@@ -124,7 +124,11 @@ $('#custom-search-input .typeahead').typeahead({
 });
 
 $('.typeahead').bind('typeahead:select', function(ev, suggestion) {
-  State.CurrentPatient = suggestion.id;
+  State.CurrentPatient = {
+    Id: suggestion.id,
+    Name: `${suggestion.nombres} ${suggestion.apellidos}`,
+    Payments: []
+  };
 });
 $("#datetimepicker6").on("dp.change", function (e) {
   State.Date.From = e.date;
@@ -147,7 +151,7 @@ function generatePayments(event) {
     return;
   }
   $('#generate_payments_options').disabled = true;
-  getPatientPaymentInformation(State.CurrentPatient, {from: State.Date.From, to: State.Date.To}).then(function (payments) {
+  getPatientPaymentInformation(State.CurrentPatient.Id, {from: State.Date.From, to: State.Date.To}).then(function (payments) {
     $('#generate_payments_options').disabled = false;
   });
 }
@@ -169,13 +173,14 @@ function getPatientSuggestionsByNameFragment(nameFragment) {
     }).then(function (json) {
       console.log(json)
       return json;
-    })
+    });
 }
 
 function getPatientPaymentInformation(id, date) {
   var URL = API.host + '/pagos/pacientes/' + id + '?from=' + date.from + '&to=' + date.to;
   return fetch(URL)
     .then(function (response) {
+      console.log(response);
       if (response.ok) {
         return response.json();
       } else {
@@ -183,20 +188,20 @@ function getPatientPaymentInformation(id, date) {
         error.response = response;
         throw error;
       }
-    }).then(function (json) {
-      console.log(json)
-      return json;
     })
     .then(function (payments) {
+      State.CurrentPatient.Payments = payments;
       updatePatientPaymentInformationTable(payments);
     })
     .catch(function (error) {
-      console.log('Error: ' + error);
+      console.log('error');
+      State.CurrentPatient.Payments = [];
       updatePatientPaymentInformationTable([]);
     });
 }
 
 function updatePatientPaymentInformationTable(payments) {
+  console.log(payments);
   var tableNode = document.getElementById('patient_payments_table');
   tableNode.innerHTML = payments.map(function (payment) {
     return `<tr>
@@ -211,6 +216,8 @@ function updatePatientPaymentInformationTable(payments) {
       return sum + Number(payment.costo);
     }, 0)}</td>
   </tr>`;
+  var nameNode = document.getElementById('table_header_name');
+  nameNode.innerHTML = State.CurrentPatient.Name;
 }
 
 var API = {

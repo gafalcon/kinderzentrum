@@ -31,7 +31,11 @@
       <div class="col-md-6 col-xs-6">
         <div id="custom-search-input">
           <div class="input-group">
+            {% if context %}
+            <input type="text" class="form-control input-md typeahead" placeholder="Buscar" value="{{ context.patient.nombres }} {{ context.patient.apellidos }}" />
+            {% else %}
             <input type="text" class="form-control input-md typeahead" placeholder="Buscar" />
+            {% endif %}
             <span class="input-group-btn">
               <button class="btn btn-info" type="button">
                 <i class="glyphicon glyphicon-search"></i>
@@ -72,6 +76,13 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12 col-xs-12">
+        <h3>Nombres:
+        {% if context %}
+          <span id="table_header_name">{{ context.patient.nombres }} {{ context.patient.apellidos }}</span>
+        {% else %}
+          <span id="table_header_name"></span>
+        {% endif %}
+        </h3>
         <div class="table">
           <table class="table table-striped">
             <thead>
@@ -82,6 +93,20 @@
               </tr>
             </thead>
             <tbody id="patient_payments_table">
+              {% if context %}
+                {% for payment in context.payments_info.payments %}
+                <tr>
+                  <td>{{ payment.terapia_nombre }}</td>
+                  <td>{{ payment.fecha_cita }}, {{ payment.hora_inicio }} - {{ payment.hora_fin }}</td>
+                  <td>{{ payment.costo }}</td>
+                </tr>
+                {% endfor %}
+                <tr class="table-result">
+                  <td></td>
+                  <td>Total</td>
+                  <td>{{ context.payments_info.total }}</td>
+                </tr>
+              {% endif %}
             </tbody>
           </table>
         </div>
@@ -102,9 +127,9 @@
         format: 'dddd, DD MMMM YYYY'
       });
       $('#datetimepicker7').datetimepicker({
-            useCurrent: false, //Important! See issue #1075,
-            format: 'dddd, DD MMMM YYYY'
-          });
+        useCurrent: false, //Important! See issue #1075,
+        format: 'dddd, DD MMMM YYYY'
+      });
       $("#datetimepicker6").on("dp.change", function (e) {
         $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
       });
