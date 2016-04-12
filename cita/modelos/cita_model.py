@@ -20,5 +20,11 @@ class Cita(models.Model):
     tipo_terapia = models.ForeignKey(Tipo_terapia, on_delete=models.CASCADE)
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return str(self.paciente)
+    #def __str__(self):
+        #return str(self.paciente)
+
+    def __unicode__(self):
+        return self.indicaciones
+
+
+

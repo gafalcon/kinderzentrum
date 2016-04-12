@@ -8,5 +8,5 @@ class Bebe (models.Model):
     nombre = models.CharField(max_length=200)
     terapia = models.ForeignKey(Terapia)
 
-    def __str__(self):
+    def __unicode__(self):
         return self.nombre
