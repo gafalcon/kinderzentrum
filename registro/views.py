@@ -12,8 +12,11 @@ from django.views.generic import View, ListView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.forms import formset_factory
+from django.db.models import Q
+from django.core.serializers.json import json
+from django.core import serializers
+from django.http.response import HttpResponse
 # Create your views here.
-
 
 
 @method_decorator(login_required, name="dispatch")
@@ -195,4 +198,29 @@ class PacienteListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(PacienteListView, self).get_context_data(**kwargs)
         context['pagina_actual'] = 'registro'
+        print "buaaaaaaaaa"
         return context
+
+
+#@method_decorator(login_required, name="dispatch")
+class BusquedaPacientesView(View):
+    template_name = 'registro/busqueda_paciente.html'
+    
+    def get(self, request, *args, **kwargs):
+        ctx = {'pagina_actual':'registro'}
+        print "jajajajjajajajaj"
+        return render(request, self.template_name, ctx)
+
+    def post(self, request, *args, **kwargs):
+      try:
+          busqueda = request.POST['busqueda']
+          print busqueda
+          #busacamos los parecidos
+          respuesta = Paciente.objects.filter(Q(nombres__icontains=busqueda)|Q(apellidos__icontains=busqueda))
+          #data = serializers.serialize("json", pacientes)
+          #return HttpResponse(data, content_type="application/json")
+      except MultiValueDictKeyError:
+          respuesta = {"mensaje":"busqueda_error"}
+          print "error"
+      data = serializers.serialize("json", respuesta)
+      return HttpResponse(data, content_type="application/json")
