@@ -2,7 +2,7 @@
 from django.db import models
 
 class Descripcion(models.Model):
-    """ Descripcion del problema del paciente """
+    """ Descripción del problema del paciente """
     LIMITACIONES_OPTIONS = ((1, "SI"), (2, "NO"), (3, "DESCONOCE"))
     DESCUBRIO_MOLESTIAS_OPTIONS = [('papa','Papa'),('mama','Mama'),('abuelos','Abuelos'),('otros','Otros')]
     DIFICULTADES_OPTIONS = [('audicion','Audición'),('vision','Visión'),('lenguaje','Lenguaje'),('seguridad_si_mismo','Seguridad en sí mismo'),('comportamiento','Comportamiento'),('alimentacion','Alimentación'),('suenio','Sueño'),('interaccion_social','Interacción social'),('otro','Otro')]

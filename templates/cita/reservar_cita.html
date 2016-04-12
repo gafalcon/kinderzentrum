@@ -41,18 +41,33 @@
         <li>
           <span>Date: </span><span class="date_holder"></span>
         </li>
+        
+         
         <li>
-          <label for="start">Start Time: </label><select name="start"><option value="">Select Start Time</option></select>
+          <label for="start">Hora inicio: </label><select name="start"><option value="">Select Start Time</option></select>
         </li>
         <li>
-          <label for="end">End Time: </label><select name="end"><option value="">Select End Time</option></select>
-        </li>
+          <label for="end">Hora fin: </label><select name="end"><option value="">Select End Time</option></select>
+        </li>       
         <li>
-          <label for="title">Title: </label><input type="text" name="title" />
+        {{ cita_form.non_field_errors }}
+        {% for field in cita_form %}
+        {{field.errors}} 
+        <label for="code" style="width: 20%;">{{field.label}}</label>
+        {{ field }}  
+        {% endfor %}
+
+         
+
+
+        
+
+
+
         </li>
-        <li>
-          <label for="body">Body: </label><textarea name="body"></textarea>
-        </li>
+        
+       
+
       </ul>
     </form>
   </div>

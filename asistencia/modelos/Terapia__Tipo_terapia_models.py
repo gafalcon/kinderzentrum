@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from Tipo_terapia_model import Tipo_terapia
 from Terapista_model import Terapista
