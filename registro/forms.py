@@ -296,19 +296,31 @@ class NacimientoForm(ModelForm):
     gemelar = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Fue embarazo gemelar?")
     medicamentos_parto = forms.ChoiceField(choices=CHOICES_SI_NO_DES, widget=forms.RadioSelect, label="¿Se le administró medicamentos o inyección durante el parto?")
     complicaciones_cordon = forms.ChoiceField(choices=CHOICES_SI_NO_DES, widget=forms.RadioSelect, label="¿Hubieron complicaciones en el cordón umbilical?")
+    complicaciones = forms.MultipleChoiceField(choices=Nacimiento.COMPLICACIONES_CHOICES,
+                                               widget=forms.CheckboxSelectMultiple,
+                                               label="¿Tuvo usted complicaciones?")
+    metodo_nacimiento = forms.MultipleChoiceField(choices=Nacimiento.METODO_NACIMIENTO_CHOICES,
+                                                  widget=forms.CheckboxSelectMultiple,
+                                                  label="¿Cómo nación el bebé? Marque todas las opciones que necesite")
+
     class Meta:
         model = Nacimiento
         fields = '__all__'
         widgets = {
             'tipo_lugar_nacimiento': forms.RadioSelect(choices=Nacimiento.TIPO_LUGAR_NACIMIENTO_CHOICES),
-            'metodo_nacimiento': forms.CheckboxSelectMultiple(choices=Nacimiento.METODO_NACIMIENTO_CHOICES),
             'manera_inicio_parto': forms.RadioSelect(choices=Nacimiento.MANERA_INICIO_PARTO_CHOICES),
             'tipo_ruptura_fuente': forms.RadioSelect(choices=Nacimiento.TIPO_RUPTURA_FUENTE_CHOICES),
             'primera_parte_cuerpo': forms.RadioSelect(choices=Nacimiento.PRIMERA_PARTE_CUERPO_CHOICES),
-            'complicaciones': forms.CheckboxSelectMultiple(choices=Nacimiento.COMPLICACIONES_CHOICES),
             'medicamentos_parto': forms.RadioSelect(choices=CHOICES_SI_NO_DES),
             'complicaciones_cordon': forms.RadioSelect(choices=CHOICES_SI_NO_DES),
         } 
+
+    def save(self):
+        model = super(NacimientoForm, self).save(commit=False)
+        model.complicaciones = ','.join(self.cleaned_data.get('complicaciones'))
+        model.metodo_nacimiento = ','.join(self.cleaned_data.get('metodo_nacimiento'))
+        model.save()
+        return model
     
 
 class RecienNacidoForm(ModelForm):

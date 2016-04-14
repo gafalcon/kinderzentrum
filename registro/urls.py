@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 from registro import views
-from registro.views import RegistroView, PacienteListView
+from registro.views import RegistroView, PacienteListView, RegistroEditView
 
 urlpatterns =[ 
     # Examples:
@@ -8,5 +8,6 @@ urlpatterns =[
     # url(r'^blog/', include('blog.urls')),
     #url(r'^$',  views.registro_view, name='registro_view'),
     url(r'^$',  RegistroView.as_view(), name='registro_view'),
+    url(r'pacientes/edit/(?P<id_paciente>[0-9]*)$', RegistroEditView.as_view(), name='registro_edit_view'),
     url(r'pacientes/', PacienteListView.as_view(), name='pacientes-list')
 ]
