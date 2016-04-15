@@ -16,13 +16,15 @@ class CitaForm(ModelForm):
     
     class Meta:
         model = Cita
-        fields =['hora_inicio',
+        fields =['fecha_cita',
+                 'hora_inicio',
                  'hora_fin',
                  'paciente',
                  'tipo_terapia'
                  ]        
        
-        widgets = {'hora_inicio': forms.Select( attrs={'name':'start', 'id':'id_start','class':'form-control', 'required': 'required'}),
+        widgets = {'fecha_cita': forms.TextInput(attrs={'name':'date', 'id':'id_date', 'class':'form-control' }),
+                   'hora_inicio': forms.Select( attrs={'name':'start', 'id':'id_start','class':'form-control', 'required': 'required'}),
                    'hora_fin': forms.Select(attrs={'name':'end', 'id':'id_end','class':'form-control', 'required': 'required'}),
                    'paciente': forms.Select(attrs={'class':'form-control', 'required': 'required'}),
                    'tipo_terapia': forms.Select(attrs={'class':'form-control', 'required': 'required'}),

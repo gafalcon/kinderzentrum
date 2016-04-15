@@ -23,7 +23,7 @@
   <script type='text/javascript' src='/static/js/cita/jquery.weekcalendar.js'></script>
 
     
-  <script type='text/javascript' src='/static/js/cita/demo.js'></script>
+  <script type='text/javascript' src='/static/js/cita/date.js'></script>
     
 
 {% endblock js %}
@@ -38,9 +38,11 @@
     <form>
       <input type="hidden" />
       <ul>
+        <!--
         <li>
-          <span>Date: </span><span class="date_holder"></span>
+          <span>Date: </span><span id="date_holder"></span>
         </li>
+        -->
         <li>
         {{ cita_form.non_field_errors }}
           {% for field in cita_form %}
