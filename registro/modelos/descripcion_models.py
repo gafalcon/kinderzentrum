@@ -59,7 +59,7 @@ class Terapia(models.Model):
                        (3, "Ninguna"))
     tipo = models.SmallIntegerField("Tipo de terapia", choices=TERAPIA_CHOICES)   
     tiempo_terapia = models.CharField("¿Cuánto tiempo lleva realizando la terapia", max_length=50)
-    descripcion = models.ForeignKey(Descripcion)
+    descripcion = models.ForeignKey(Descripcion, related_name="terapias")
 
 
 class Terapista(models.Model):
@@ -97,4 +97,4 @@ class Medicamento(models.Model):
     """ Medicamento recetado para convulsiones """
     nombre = models.CharField("nombre del medicamento", max_length=100)
     dosis_diaria = models.IntegerField()
-    descripcion = models.ForeignKey(Descripcion)
+    descripcion = models.ForeignKey(Descripcion, related_name="medicamentos")

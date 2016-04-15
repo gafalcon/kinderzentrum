@@ -7,6 +7,7 @@ from registro.modelos.alimentacion_models import AlimentacionCostumbres
 from registro.modelos.recien_nacido_model import RecienNacido
 from registro.modelos.medico_model import Medico
 from registro.modelos.historial_madre_models import Actividad_Gestacion, Situacion_Gestacion
+from registro.modelos.descripcion_models import Terapia
 from django.http import HttpResponseRedirect
 from django.views.generic import View, ListView
 from django.contrib.auth.decorators import login_required
@@ -243,10 +244,13 @@ class RegistroEditView(View):
     def init_nacimiento_form(self, nacimiento):
         complicaciones = nacimiento.complicaciones.split(',')
         metodo = nacimiento.metodo_nacimiento.split(',')
-        print 'metodo', metodo
+        medicamento = "None" if nacimiento.medicamentos_parto is None else nacimiento.medicamentos_parto
+        cordon = "None" if nacimiento.complicaciones_cordon is None else nacimiento.complicaciones_cordon
         initial = {
             'complicaciones': complicaciones,
-            'metodo_nacimiento': metodo
+            'metodo_nacimiento': metodo,
+            'medicamentos_parto': medicamento,
+            'complicaciones_cordon': cordon
         }
         return NacimientoForm(prefix="nacimiento",
                               instance=nacimiento,
@@ -258,16 +262,92 @@ class RegistroEditView(View):
         otra_complicacion = comp_nacimiento[-1] if 'Otro' in comp_nacimiento else ''
         tiempo_internado = recien_nacido.tiempo_internado
         hubo_apego_precoz = 'False' if recien_nacido.tiempo_apego_precoz == RecienNacido.APEGO_PRECOZ_NADA else 'True'
-        print "tiempo internado", tiempo_internado, type(tiempo_internado)
+        permanecio_internado = 'False' if tiempo_internado == datetime.timedelta() else 'True'
         initial = {
             'complicaciones_nacimiento': comp_nacimiento,
             'otra_complicacion': otra_complicacion,
-            'hubo_apego_precoz': hubo_apego_precoz
+            'hubo_apego_precoz': hubo_apego_precoz,
+            'permanecio_internado': permanecio_internado
         }
         return RecienNacidoForm(prefix="recien_nacido",
                                 instance=recien_nacido,
                                 initial=initial)
+
+    def init_primeros_dias_form(self, primeros_dias):
+        examenes = primeros_dias.examenes.split(',')
+        situaciones = primeros_dias.situaciones_despues_nacimiento.split(',')
+        initial = {
+            'clinica': 'True' if primeros_dias.clinica_permanencia else 'False',
+            'situaciones_despues_nacimiento': situaciones,
+            'icteria': 'None' if primeros_dias.icteria is None else primeros_dias.icteria,
+            'otro_examen': examenes[-1] if 'Otro' in examenes else '',
+            'examenes': examenes,
+            'otra_situacion': situaciones[-1] if 'Otro' in situaciones else '',
+            'dormia_toda_noche': 'True' if primeros_dias.veces_despertar_noche == 0 else 'False'
+        }
+        return PrimerosDiasForm(prefix="primeros_dias",
+                                initial=initial,
+                                instance=primeros_dias)
+
+    def init_alimentacion_form(self, alimentacion, suplementos):
+
+        motivo_suspencion = [] if alimentacion.motivo_suspencion_lactancia is None else alimentacion.motivo_suspencion_lactancia.split(',')
+        afecciones = alimentacion.afecciones.split(',')
+        enfs = alimentacion.enfermedades.split(',')
+        forma_alim = alimentacion.forma_alimento.split(',')
+        initial = {
+            'lactancia': 'True' if motivo_suspencion else 'False',
+            'motivo_suspencion_lactancia': motivo_suspencion,
+            'otro_motivo_suspencion_lactancia': motivo_suspencion[-1] if 'Otro' in motivo_suspencion else '',
+            'afecciones': afecciones,
+            'otra_afeccion': afecciones[-1] if 'Otros' in afecciones else '',
+            'otra_enfermedad': enfs[-1] if 'Otro' in enfs else '',
+            'enfermedades': enfs,
+            'otra_forma_alimento': forma_alim[-1] if 'Otro' in forma_alim else '',
+            'forma_alimento': forma_alim,
+            'difiere_alimentacion': 'True' if alimentacion.motivo_cambios_alimentacion else 'False',
+            'suplementos': suplementos
+        }
+        return AlimentacionForm(prefix="alimentacion",
+                                initial=initial,
+                                instance=alimentacion)
     
+    def init_historia_familiar_form(self, historia_familiar):
+        orientador = historia_familiar.orientacion_a_institucion.split(',')
+        initial = {
+            'transtorno_hermanos': 'None' if historia_familiar.transtorno_hermanos is None else historia_familiar.transtorno_hermanos,
+            'alteracion_desarrollo':'None' if historia_familiar.alteracion_desarrollo is None else historia_familiar.alteracion_desarrollo,
+            'otro_orientador': orientador[-1] if 'Otro' in orientador else '',
+            'orientacion_a_institucion': orientador[0]
+        }
+        return  DatosFamiliaresOtrosForm(prefix="familiares_otros",
+                                         initial=initial,
+                                         instance=historia_familiar)
+    def init_descripcion_form(self, descripcion):
+        areas_dificultad = descripcion.areas_dificultad.split(',')
+        otra_area = areas_dificultad[-1] if 'otro' in areas_dificultad else ''
+        terapias = descripcion.terapias
+        terapias_reh_fisica = terapias.filter(tipo=1)
+        terapias_est_temprana = terapias.filter(tipo=2)
+        tipo_terapia = []
+        if len(terapias_reh_fisica):
+            tipo_terapia.append("1")
+        if len(terapias_est_temprana):
+            tipo_terapia.append("2")
+        if not tipo_terapia:
+            tipo_terapia.append("3")
+        initial={
+            'areas_dificultad': areas_dificultad,
+            'otro_dificultad': otra_area,
+            'tipo_terapia': tipo_terapia,
+            'tiempo_rehab_fisica': terapias_reh_fisica[0].tiempo_terapia if len(terapias_reh_fisica) else '',
+            'tiempo_estimu_temprana': terapias_est_temprana[0].tiempo_terapia if len(terapias_est_temprana) else '',
+        }
+        return DescripcionPacienteForm(prefix="descripcion_paciente",
+                                       initial=initial,
+                                       instance=descripcion,
+        )
+
     def get(self, request, *args, **kwargs):
         id_paciente = kwargs.get('id_paciente')
 
@@ -280,20 +360,8 @@ class RegistroEditView(View):
 
         historial_madre = self.init_historial_madre_form(paciente.historial_madre)
 
-        descripcion = paciente.descripcion
-        areas_dificultad = descripcion.areas_dificultad.split(',')
-        otra_area = areas_dificultad[-1] if 'otro' in areas_dificultad else ''
-        print 'otra area', otra_area
-            
-        descripcion_paciente = DescripcionPacienteForm(prefix="descripcion_paciente",
-                                                       instance=descripcion,
-                                                       initial={
-                                                           'areas_dificultad': areas_dificultad,
-                                                           'otro_dificultad': otra_area
-                                                       }
-        )
-        #assert False
-        medicamento_formset = MedicamentoFormset(instance=Descripcion())
+        descripcion_paciente = self.init_descripcion_form(paciente.descripcion)
+        medicamento_formset = MedicamentoFormset(instance=paciente.descripcion)
         gestacion = self.init_gestacion_form(paciente.gestacion)
         actividad_gestacion = ActividadGestacionFormset(prefix="actividad",
                                                         initial=[{'nombre_actividad':x} for x in Actividad_Gestacion.ACTIVIDADES_CHOICES])
@@ -301,11 +369,12 @@ class RegistroEditView(View):
                                                         initial=[{'nombre_situacion':x} for x in Situacion_Gestacion.SITUACIONES_CHOICES])
         nacimiento = self.init_nacimiento_form(paciente.nacimiento)
         datos_recien_nacido = self.init_recien_nacido_form(paciente.recien_nacido)
-        primeros_dias = PrimerosDiasForm(prefix="primeros_dias", initial={'icteria': False}, instance=paciente.primeros_dias)
-        alimentacion = AlimentacionForm(prefix="alimentacion", instance=paciente.alimentacion)
-        suplementos_formset = SuplementosFormset(instance=AlimentacionCostumbres())
-        datos_familiares = DatosFamiliaresOtrosForm(prefix="familiares_otros")
-        hermanos_formset = HermanosFormset(instance=DatosFamiliaresOtros())
+        primeros_dias = self.init_primeros_dias_form(paciente.primeros_dias)
+        suplementos = paciente.alimentacion.suplementos
+        alimentacion = self.init_alimentacion_form(paciente.alimentacion, 'True' if suplementos.count() else 'False')
+        suplementos_formset = SuplementosFormset(instance=paciente.alimentacion)
+        datos_familiares = self.init_historia_familiar_form(paciente.datos_familiares)
+        hermanos_formset = HermanosFormset(instance=paciente.datos_familiares)
         return render(request, self.template_name,
                       {'datos_medico_formset':datos_medico,
                        'datos_familia_formset':datos_familia,

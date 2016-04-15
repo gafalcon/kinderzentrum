@@ -79,4 +79,4 @@ class Hermano(models.Model):
     nombres = models.CharField(max_length=100)
     apellidos = models.CharField(max_length=100)
     fecha_nacimiento = models.DateField("Fecha de nacimiento")
-    datos_familiares = models.ForeignKey(DatosFamiliaresOtros, on_delete=models.CASCADE)
+    datos_familiares = models.ForeignKey(DatosFamiliaresOtros, on_delete=models.CASCADE, related_name='hermanos_set')
