@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from registro.modelos.paciente_model import Paciente
 from asistencia.modelos.Tipo_terapia_model import Tipo_terapia
+from registro.modelos.paciente_model import Paciente
+
 
 class Cita(models.Model):
     ESTADO_CHOICES = (
@@ -22,10 +23,8 @@ class Cita(models.Model):
 
     def __unicode__(self):
         return self.indicaciones
-
     #def __unicode__(self):
         #return str(self.paciente)
-
     #python 3.3 is def __str__(self):
 
     
