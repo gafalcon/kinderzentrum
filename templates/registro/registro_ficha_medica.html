@@ -31,7 +31,7 @@
 	</ul>
 </div>
 
-<form action="." method="POST">
+<form method="POST">
 	{% csrf_token %}		
 
 	<!-- Paciente -->
@@ -81,6 +81,8 @@
 			      			{{ field }}			      		
 	      				</div>
 	      			</div>
+				{% else %}
+					{{ field }}
 	      		{% endif %}
                 <!-- Colocar etiqueta de Domicilio luego del campo nivel de estudio -->
 				{% if field.name == "nivel_estudio" %}
@@ -105,15 +107,17 @@
 		<div class="panel-body formset-medico">			
 			<h3>Médico</h3>
 			{% for field in form %}
-			{% if field.name != "id" %}
-				{{ field.errors }}
-	  			<div class="row">		  			
-		  			<div class="form-group {% if field.errors %} has-error{% endif %} span6">
-			    		<label for="code" style="width: 20%;">{{field.label}}</label>
-			      		{{ field }}			      		
+				{% if field.name != "id" %}
+					{{ field.errors }}
+	  				<div class="row">		  			
+		  				<div class="form-group {% if field.errors %} has-error{% endif %} span6">
+			    			<label for="code" style="width: 20%;">{{field.label}}</label>
+			      			{{ field }}			      		
+	      				</div>
 	      			</div>
-	      		</div>
-	      	{% endif %}
+				{% else %}
+					{{ field }}
+	      		{% endif %}
 	      	{% endfor %}
 		</div>
         <hr>

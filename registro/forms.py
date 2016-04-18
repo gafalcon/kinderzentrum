@@ -147,7 +147,7 @@ class DescripcionPacienteForm(ModelForm):
         tipo_terapia = self.cleaned_data.get('tipo_terapia')
         areas_dificultad = self.cleaned_data.get('areas_dificultad')
         if self.cleaned_data.get('disc_molestias') == 'otros':
-            model.disc_molestias = self.cleaned_data.get('otro_disc_molestias')
+            model.disc_molestias = 'otros,'+self.cleaned_data.get('otro_disc_molestias')
         if not self.cleaned_data.get('tratamiento'):
             model.lugar_tratamiento = ''
         if self.cleaned_data.get('had_convulsion') != 1:

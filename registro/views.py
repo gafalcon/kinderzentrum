@@ -211,7 +211,7 @@ class RegistroEditView(View):
         tuvo_defuncion_fetal = "True" if historial_madre.defunciones_fetales > 0 else "False"
         tuvo_hijos_muertos = "True" if historial_madre.hijos_nacidos_muertos > 0 else "False"
         anticonceptivos = historial_madre.anticonceptivos.split(',')
-        uso_anticonceptivo = "True" if anticonceptivos else "False"
+        uso_anticonceptivo = "True" if anticonceptivos[0] != '' else "False"
         initial = {
             'enfermedades_previas': enf_previas,
             'otra_enf_previa': otra_enf_previa,
@@ -323,12 +323,15 @@ class RegistroEditView(View):
         return  DatosFamiliaresOtrosForm(prefix="familiares_otros",
                                          initial=initial,
                                          instance=historia_familiar)
+
+    
     def init_descripcion_form(self, descripcion):
         areas_dificultad = descripcion.areas_dificultad.split(',')
         otra_area = areas_dificultad[-1] if 'otro' in areas_dificultad else ''
         terapias = descripcion.terapias
         terapias_reh_fisica = terapias.filter(tipo=1)
         terapias_est_temprana = terapias.filter(tipo=2)
+        disc_molestias = descripcion.disc_molestias.split(',')
         tipo_terapia = []
         if len(terapias_reh_fisica):
             tipo_terapia.append("1")
@@ -342,6 +345,8 @@ class RegistroEditView(View):
             'tipo_terapia': tipo_terapia,
             'tiempo_rehab_fisica': terapias_reh_fisica[0].tiempo_terapia if len(terapias_reh_fisica) else '',
             'tiempo_estimu_temprana': terapias_est_temprana[0].tiempo_terapia if len(terapias_est_temprana) else '',
+            'disc_molestias': disc_molestias[0],
+            'otro_disc_molestias': disc_molestias[-1] if len(disc_molestias) > 1 else ''
         }
         return DescripcionPacienteForm(prefix="descripcion_paciente",
                                        initial=initial,
@@ -421,22 +426,22 @@ class RegistroEditView(View):
         print "POST edit paciente"
         id_paciente = kwargs.get('id_paciente')
         paciente = get_object_or_404(Paciente, pk=id_paciente)
-        datos_paciente = PacienteForm(request.POST, prefix="paciente")
+        datos_paciente = PacienteForm(request.POST, prefix="paciente", instance=paciente)
         datos_familia = DatosFamiliaresFormset(request.POST, prefix="familiares")
         datos_medico = DatosMedicoFormset(request.POST, prefix="medico")
-        datos_historial_madre = HistorialMadreForm(request.POST, prefix="historial_madre")
-        datos_descripcion_paciente = DescripcionPacienteForm(request.POST, prefix="descripcion_paciente")
+        datos_historial_madre = HistorialMadreForm(request.POST, prefix="historial_madre", instance=paciente.historial_madre)
+        datos_descripcion_paciente = DescripcionPacienteForm(request.POST, prefix="descripcion_paciente", instance=paciente.descripcion)
         medicamento_formset = MedicamentoFormset(request.POST, instance=Descripcion())
-        datos_gestacion = DesarrolloDeLaGestacionForm(request.POST, prefix="gestacion")
+        datos_gestacion = DesarrolloDeLaGestacionForm(request.POST, prefix="gestacion", instance=paciente.gestacion)
         actividad_gestacion = ActividadGestacionFormset(request.POST, prefix="actividad")
         situacion_gestacion = SituacionGestacionFormset(request.POST, prefix="situacion")
 
-        datos_nacimiento = NacimientoForm(request.POST, prefix="nacimiento")
-        datos_recien_nacido = RecienNacidoForm(request.POST, prefix="recien_nacido")
-        datos_primeros_dias = PrimerosDiasForm(request.POST, prefix="primeros_dias")
-        datos_alimentacion = AlimentacionForm(request.POST, prefix="alimentacion")
+        datos_nacimiento = NacimientoForm(request.POST, prefix="nacimiento", instance=paciente.nacimiento)
+        datos_recien_nacido = RecienNacidoForm(request.POST, prefix="recien_nacido", instance=paciente.recien_nacido)
+        datos_primeros_dias = PrimerosDiasForm(request.POST, prefix="primeros_dias", instance=paciente.primeros_dias)
+        datos_alimentacion = AlimentacionForm(request.POST, prefix="alimentacion", instance=paciente.alimentacion)
         suplementos_formset = SuplementosFormset(request.POST, instance=AlimentacionCostumbres())
-        datos_familiares = DatosFamiliaresOtrosForm(request.POST, prefix="familiares_otros")
+        datos_familiares = DatosFamiliaresOtrosForm(request.POST, prefix="familiares_otros", instance=paciente.datos_familiares)
         hermanos_formset = HermanosFormset(request.POST, instance=DatosFamiliaresOtros())
 
         if (datos_paciente.is_valid() and
@@ -452,28 +457,28 @@ class RegistroEditView(View):
             datos_familiares.is_valid() and hermanos_formset.is_valid()):
 
 
-            paciente = datos_paciente.save(commit=False)
-            familiares_instances = datos_familia.save(commit=False)
-            medicos_instances = datos_medico.save(commit = False)
+            paciente = datos_paciente.save()
+            # familiares_instances = datos_familia.save(commit=False)
+            # medicos_instances = datos_medico.save(commit = False)
 
             descripcion = datos_descripcion_paciente.save()
-            medicamentos_instances = medicamento_formset.save(commit=False)
-            for medicamento in medicamentos_instances:
-                medicamento.descripcion = descripcion
-                medicamento.save()
+            # medicamentos_instances = medicamento_formset.save(commit=False)
+            # for medicamento in medicamentos_instances:
+            #     medicamento.descripcion = descripcion
+            #     medicamento.save()
 
             historial_madre = datos_historial_madre.save()
-            gestacion = datos_gestacion.save()
-            for actividad_form in actividad_gestacion:
-                if actividad_form.is_valid():
-                    actividad = actividad_form.save(commit=False)
-                    actividad.gestacion = gestacion
-                    actividad.save()
-            for situacion_form in situacion_gestacion:
-                if situacion_form.is_valid():
-                    situacion = situacion_form.save(commit=False)
-                    situacion.gestacion = gestacion
-                    situacion.save()
+            # gestacion = datos_gestacion.save()
+            # for actividad_form in actividad_gestacion:
+            #     if actividad_form.is_valid():
+            #         actividad = actividad_form.save(commit=False)
+            #         actividad.gestacion = gestacion
+            #         actividad.save()
+            # for situacion_form in situacion_gestacion:
+            #     if situacion_form.is_valid():
+            #         situacion = situacion_form.save(commit=False)
+            #         situacion.gestacion = gestacion
+            #         situacion.save()
 
             nacimiento = datos_nacimiento.save()
             recien_nacido = datos_recien_nacido.save()
@@ -482,36 +487,38 @@ class RegistroEditView(View):
             familiares = datos_familiares.save()
 
 
-            suplementos = suplementos_formset.save(commit=False)
-            for suplemento in suplementos:
-                suplemento.alimentacion = alimentacion
-                suplemento.save()
+            # suplementos = suplementos_formset.save(commit=False)
+            # for suplemento in suplementos:
+            #     suplemento.alimentacion = alimentacion
+            #     suplemento.save()
 
-            hermanos = hermanos_formset.save(commit=False)
-            for hermano in hermanos:
-                hermano.datos_familiares = familiares
-                hermano.save()
+            # hermanos = hermanos_formset.save(commit=False)
+            # for hermano in hermanos:
+            #     hermano.datos_familiares = familiares
+            #     hermano.save()
 
-            paciente.descripcion = descripcion
-            paciente.historial_madre = historial_madre
-            paciente.gestacion = gestacion
-            paciente.nacimiento = nacimiento
-            paciente.recien_nacido = recien_nacido
-            paciente.primeros_dias = primeros_dias
-            paciente.alimentacion = alimentacion
-            paciente.datos_familiares = familiares
+            # for familiar in familiares_instances:
+            #     familiar.paciente = paciente
+            #     familiar.save()
 
-            paciente.save()
-
-            for familiar in familiares_instances:
-                familiar.paciente = paciente
-                familiar.save()
-
-            for medico in medicos_instances:
-                medico.paciente = paciente
-                medico.save()
+            # for medico in medicos_instances:
+            #     medico.paciente = paciente
+            #     medico.save()
 
             return redirect('pacientes-list')
+        print("Errors paciente:", datos_paciente.errors)
+        print("Errors familiares:", datos_familia.errors)
+        print("Errors medico:", datos_medico.errors)
+        print ("Errors descripcion", datos_descripcion_paciente.errors)
+        print("Errors historial madre", datos_historial_madre.errors)
+        print("Errors gestacion", datos_gestacion.errors)
+        print("Errors nacimiento:", datos_nacimiento.errors)
+        print("Errors recien_nacido:", datos_recien_nacido.errors)
+        print("Errors primeros_dias:", datos_primeros_dias.errors)
+        print("Errors alimentacion:", datos_alimentacion.errors)
+        print("Errors suplementos", suplementos_formset.errors)
+        print("Errors DatosFamiliares", datos_familiares.errors)
+        print("Errors Hermano", hermanos_formset.errors)
 
         return render(request, self.template_name,
                       {'ficha_datos_form': datos_paciente,
