@@ -20,6 +20,8 @@ CHOICES_SI_NO_DES = [(True, 'Si'), (False, 'No'), (None, 'Desconoce')]
 
 CHOICES_SI_NO = ((True, "Si"), (False, "No"))
 
+DATEFORMAT = '%d/%m/%Y'
+
 # class MyForm(ModelForm):
 #     """
 #     Extend from this form so your widgets have an 'error' class if there's
@@ -38,13 +40,14 @@ class PacienteForm(ModelForm):
     # grupo_sanguineo = forms.ChoiceField(choices=Paciente.GRUPO_SANGUINEO_CHOICES,
     #                                     widget=forms.Select(attrs={'class':'form-control', 'required': 'required'}))
     error_css_class = 'has-error'
-    fecha_nacimiento = forms.DateField(input_formats=['%d/%m/%Y'],
+    fecha_nacimiento = forms.DateField(input_formats=[DATEFORMAT],
                                        label='Fecha de nacimiento',
-                                       widget=forms.TextInput(attrs=
+                                       widget=forms.DateInput(attrs=
                                                               {
                                                                   'class':'datepicker form-control',
                                                                   'required': 'required'
-                                                              }))
+                                                              },
+                                                              format=DATEFORMAT))
     class Meta:
         model = Paciente
         fields = ['nombres',
@@ -619,10 +622,11 @@ SuplementosFormset = inlineformset_factory(AlimentacionCostumbres, SuplementoAli
 #             form.empty_permitted = False
 
 class HermanoForm(ModelForm):
-    fecha_nacimiento = forms.DateField(input_formats=['%d/%m/%Y'],
+    fecha_nacimiento = forms.DateField(input_formats=[DATEFORMAT],
                                        label='Fecha de nacimiento',
-                                       widget=forms.TextInput(attrs={
-                                           'class':'datepicker form-control'}))
+                                       widget=forms.DateInput(attrs={
+                                           'class':'datepicker form-control'},
+                                                              format=DATEFORMAT))
     class Meta:
         model = Hermano
         fields = '__all__'

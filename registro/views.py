@@ -348,6 +348,29 @@ class RegistroEditView(View):
                                        instance=descripcion,
         )
 
+    def init_actividades(self, actividades):
+        def find_periodo_a(name):
+            for entry in actividades:
+                if entry.nombre_actividad == name:
+                    return entry.periodo 
+            return ''       
+        initial=[
+            {'nombre_actividad':x,
+             'periodo': find_periodo_a(x)} for x in Actividad_Gestacion.ACTIVIDADES_CHOICES]
+        return ActividadGestacionFormset(prefix="actividad", initial=initial)
+
+    def init_situaciones(self, situaciones ):
+        def find_periodo_s(name):
+            for entry in situaciones:
+                if entry.nombre_situacion== name:
+                    return entry.periodo 
+            return ''
+        initial=[
+            {'nombre_situacion':x,
+             'periodo': find_periodo_s(x)} for x in Situacion_Gestacion.SITUACIONES_CHOICES]
+        return SituacionGestacionFormset(prefix="situacion", initial=initial)
+
+
     def get(self, request, *args, **kwargs):
         id_paciente = kwargs.get('id_paciente')
 
@@ -363,10 +386,10 @@ class RegistroEditView(View):
         descripcion_paciente = self.init_descripcion_form(paciente.descripcion)
         medicamento_formset = MedicamentoFormset(instance=paciente.descripcion)
         gestacion = self.init_gestacion_form(paciente.gestacion)
-        actividad_gestacion = ActividadGestacionFormset(prefix="actividad",
-                                                        initial=[{'nombre_actividad':x} for x in Actividad_Gestacion.ACTIVIDADES_CHOICES])
-        situacion_gestacion = SituacionGestacionFormset(prefix="situacion",
-                                                        initial=[{'nombre_situacion':x} for x in Situacion_Gestacion.SITUACIONES_CHOICES])
+
+        actividad_gestacion = self.init_actividades(paciente.gestacion.actividad_gestacion_set.all())
+        situacion_gestacion = self.init_situaciones(paciente.gestacion.situacion_gestacion_set.all())
+
         nacimiento = self.init_nacimiento_form(paciente.nacimiento)
         datos_recien_nacido = self.init_recien_nacido_form(paciente.recien_nacido)
         primeros_dias = self.init_primeros_dias_form(paciente.primeros_dias)
