@@ -85,12 +85,6 @@ class DescripcionPacienteForm(ModelForm):
                                           required=False
     )
     tipo_terapia = forms.MultipleChoiceField(required=True, choices=Terapia.TERAPIA_CHOICES, widget=forms.CheckboxSelectMultiple, label="Que tipo de terapia realiza?")
-    tiempo_rehab_fisica = forms.CharField(label="Tiempo en terapia de rehabilitacion fisica",
-                                          widget=forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Especifique el tiempo'}),
-                                          required=False)
-    tiempo_estimu_temprana = forms.CharField(label="Tiempo en terapia de estimulacion temprana",
-                                             widget=forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Especifique el tiempo'}),
-                                             required=False)
     areas_dificultad = forms.MultipleChoiceField(required=False, choices=Descripcion.DIFICULTADES_OPTIONS,
                                                  widget=forms.CheckboxSelectMultiple,
                                                  label="Ha presentado su hijo(a) algun tipo de dificultades en estas áreas? marque todas las opciones que desee.")
@@ -104,8 +98,8 @@ class DescripcionPacienteForm(ModelForm):
         model = Descripcion
         fields = ['preocupacion','disc_molestias','otro_disc_molestias',
                   'edad_disc_molestia','tratamiento',
-                  'lugar_tratamiento','tipo_terapia','tiempo_rehab_fisica',
-                  'tiempo_estimu_temprana','areas_dificultad','otro_dificultad',
+                  'lugar_tratamiento','tipo_terapia',
+                  'areas_dificultad','otro_dificultad',
                   'limitaciones_movimiento','had_convulsion',
                   'tipo_crisis','edad_crisis','tomo_medicamentos']
         widgets = {'disc_molestias': forms.Select(choices=model.DESCUBRIO_MOLESTIAS_OPTIONS, attrs={'class':'form-control'}),
@@ -117,7 +111,6 @@ class DescripcionPacienteForm(ModelForm):
         cleaned_data = super(DescripcionPacienteForm, self).clean()
         disc_molestias = cleaned_data.get('disc_molestias')
         tratamiento = cleaned_data.get('tratamiento')
-        tipo_terapia = cleaned_data.get('tipo_terapia')
         areas_dificultad = cleaned_data.get('areas_dificultad')
         had_convulsion = cleaned_data.get('had_convulsion')
         tomo_medicamentos = cleaned_data.get('tomo_medicamentos')
@@ -127,11 +120,6 @@ class DescripcionPacienteForm(ModelForm):
         if tratamiento:
             if not cleaned_data.get('lugar_tratamiento'):
                 self.add_error('lugar_tratamiento', 'Debe llenar éste campo')
-        if tipo_terapia:
-            if '1' in tipo_terapia and not cleaned_data.get('tiempo_rehab_fisica'):
-                self.add_error('tiempo_rehab_fisica', 'Debe llenar éste campo')
-            if '2' in tipo_terapia and not cleaned_data.get('tiempo_estimu_temprana'):
-                self.add_error('tiempo_estimu_temprana', 'Debe llenar éste campo')
 
         if areas_dificultad and 'otro' in areas_dificultad:
             if not cleaned_data.get('otro_dificultad'):
@@ -144,7 +132,6 @@ class DescripcionPacienteForm(ModelForm):
 
     def save(self):
         model = super(DescripcionPacienteForm, self).save(commit=False)
-        tipo_terapia = self.cleaned_data.get('tipo_terapia')
         areas_dificultad = self.cleaned_data.get('areas_dificultad')
         if self.cleaned_data.get('disc_molestias') == 'otros':
             model.disc_molestias = 'otros,'+self.cleaned_data.get('otro_disc_molestias')
@@ -159,16 +146,6 @@ class DescripcionPacienteForm(ModelForm):
             model.areas_dificultad = ','.join(areas_dificultad)
 
         model.save()
-        if '1' in tipo_terapia:
-            terapia = Terapia(tipo=1,
-                              tiempo_terapia=self.cleaned_data.get('tiempo_rehab_fisica'),
-                              descripcion=model)
-            terapia.save()
-        if '2' in tipo_terapia:
-            terapia = Terapia(tipo=2,
-                              tiempo_terapia=self.cleaned_data.get('tiempo_estimu_temprana'),
-                              descripcion=model)
-            terapia.save()
         return model
 
 
@@ -284,14 +261,14 @@ class DesarrolloDeLaGestacionForm(ModelForm):
 class SituacionGestacionForm(ModelForm):
     class Meta:
         model = Situacion_Gestacion
-        fields=['nombre_situacion','periodo']
+        fields=['id', 'nombre_situacion','periodo']
         widgets={'periodo': forms.Select(choices=CHOICES_TRIMESTRES,attrs={'class':'form-control'})}
 
 
 class ActividadGestacionForm(ModelForm):
     class Meta:
         model = Actividad_Gestacion
-        fields=['nombre_actividad','periodo']
+        fields=['id', 'nombre_actividad','periodo']
         widgets={'periodo': forms.Select(choices=CHOICES_TRIMESTRES,attrs={'class':'form-control'})}
 
 
@@ -640,12 +617,44 @@ MedicamentoFormset = inlineformset_factory(Descripcion, Medicamento,
                                            fields='__all__',
                                            can_delete=False,
                                            extra=1)
-ActividadGestacionFormset = formset_factory(ActividadGestacionForm, max_num=5)
+ActividadGestacionFormset = inlineformset_factory(Gestacion, Actividad_Gestacion, form=ActividadGestacionForm, max_num=5, extra=5)
 
-SituacionGestacionFormset = formset_factory(SituacionGestacionForm, max_num=11)
+SituacionGestacionFormset = inlineformset_factory(Gestacion, Situacion_Gestacion, form=SituacionGestacionForm, max_num=12, extra=12)
 
-DatosMedicoFormset = modelformset_factory(Medico, form=DatosMedicoForm, extra=1)
-DatosFamiliaresFormset = modelformset_factory(Familiar, form=DatosFamiliaresForm, extra=2)
+DatosMedicoFormset = inlineformset_factory(Paciente, Medico, form=DatosMedicoForm, extra=1, can_delete=False, exclude=('paciente',))
+DatosFamiliaresFormset = inlineformset_factory(Paciente, Familiar, form=DatosFamiliaresForm, extra=2, can_delete=False, exclude=('paciente',))
+
+
+class TerapiasForm(BaseInlineFormSet):
+    def __init__(self, *args, **kwargs):
+        super(TerapiasForm, self).__init__(*args, **kwargs)
+        self.tipos = []
+
+    def is_valid(self, descripcion=None):
+        if descripcion:
+            self.tipos = descripcion.cleaned_data.get('tipo_terapia')
+        valid = True
+        if '1' in self.tipos:
+            valid = valid and self.forms[0].is_valid()
+        if '2' in self.tipos:
+            valid = valid and self.forms[1].is_valid()
+        return valid
+
+    def clean(self):
+        super(TerapiasForm, self).clean()
+
+    def save(self, commit=True):
+        models = []
+        if '1' in self.tipos:
+            models.append(self.forms[0].save(commit=commit))
+        if '2' in self.tipos:
+            self.forms[1].save()
+            models.append(self.forms[1].save(commit=commit))
+        return models
+
+
+TerapiaFormset = inlineformset_factory(Descripcion, Terapia, fields='__all__', can_delete=False, max_num=2, extra=2,
+                                       widgets={'tipo': forms.TextInput}, formset=TerapiasForm)
 
 data_formsets = {'form-TOTAL_FORMS': '2',
                  'form-INITIAL_FORMS': '0',

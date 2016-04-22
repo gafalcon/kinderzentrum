@@ -56,18 +56,18 @@ class Gestacion(models.Model):
     
 
 class Actividad_Gestacion(models.Model):
-    ACTIVIDADES_CHOICES = ('Fumar','Ingerir Alcohol','Consumir drogas','Realizar radiografías','Trabajar')
+    ACTIVIDADES_CHOICES = (u'Fumar',u'Ingerir Alcohol',u'Consumir drogas',u'Realizar radiografías',u'Trabajar')
     periodo = models.SmallIntegerField(choices=CHOICES_TRIMESTRES)
     nombre_actividad = models.CharField(max_length=100, blank=True)
     gestacion = models.ForeignKey(Gestacion, on_delete=models.CASCADE)
 
 class Situacion_Gestacion(models.Model):
-    SITUACIONES_CHOICES = ('Sangrados','Presión sanguínea elevada','Enfermedades infecciosas',
-                           'Accidentes graves','Operaciones','Crisis epilépticas',
-                           'Fiebre mayor a 38 ⁰C no determinada','Edema',
-                           'Depresión (Tristeza, ansiedad, estrés, problemas para dormir)',
-                           'Interrupción repentina de los movimientos del niño',
-                           'Nauseas','Otras enfermedades')
+    SITUACIONES_CHOICES = (u'Sangrados',u'Presión sanguínea elevada',u'Enfermedades infecciosas',
+                           u'Accidentes graves',u'Operaciones',u'Crisis epilépticas',
+                           u'Fiebre mayor a 38 ⁰C no determinada',u'Edema',
+                           u'Depresión (Tristeza, ansiedad, estrés, problemas para dormir)',
+                           u'Interrupción repentina de los movimientos del niño',
+                           u'Nauseas',u'Otras enfermedades')
     periodo = models.SmallIntegerField(choices=CHOICES_TRIMESTRES)
     nombre_situacion = models.CharField(max_length=100, blank=True)
     gestacion = models.ForeignKey(Gestacion, on_delete=models.CASCADE)

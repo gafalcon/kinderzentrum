@@ -73,7 +73,7 @@
 		<div  class="panel-body formset-familiares">			
 			<h3>Familiar</h3>
 			{% for field in form %}
-				{% if field.name != "id" %}
+				{% if field.name != "id" and field.name != "paciente" %}
 					{{ field.errors }}
 	  				<div class="row">		  			
 		  				<div class="form-group {% if field.errors %} has-error{% endif %} span6">
@@ -107,7 +107,7 @@
 		<div class="panel-body formset-medico">			
 			<h3>Médico</h3>
 			{% for field in form %}
-				{% if field.name != "id" %}
+				{% if field.name != "id" and field.name != "paciente" %}
 					{{ field.errors }}
 	  				<div class="row">		  			
 		  				<div class="form-group {% if field.errors %} has-error{% endif %} span6">
@@ -142,6 +142,25 @@
 		      			{{ field }}	
 					{% endif %}
       			</div>
+				{% if forloop.counter == 7 %}
+					<div id="terapia_formset">
+						{{ terapia_formset.management_form }}
+						{% for form in terapia_formset.forms %}
+							<div class="form-group {% if form.tiempo_terapia.errors %} has-error{% endif %}">
+									<div id="terapia_hidden_fields" style="display:none;">
+										{{ form.tipo }}
+										{{ form.id }}
+									</div>
+		    						<label for="code">
+										{{form.tiempo_terapia.label}}{% if forloop.counter == 1 %} rehabilitación física{% else %} estimulación temprana{% endif %}?
+									</label>			      		
+									{{form.tiempo_terapia.errors}}
+		      						{{ form.tiempo_terapia }}	
+      						</div>		
+						{% endfor %}
+					</div>
+				{% endif %}
+
 	      	{% endfor %}
             <div id="medicamentos-formset">
                 <h4>Medicamentos</h4>
@@ -156,7 +175,7 @@
                     </tr>
                     {% for form in medicamento_formset %}
                         {{ form.id }}
-                        <tr class="formset-medicamento_set">
+                        <tr class="formset-medicamentos">
                             <td>{{form.nombre}}</td>
                             <td>{{form.dosis_diaria}}</td>
                         </tr>
@@ -327,7 +346,7 @@
 								<th>Cantidad</th>
 							</tr>
 							{% for form in suplementos_formset %}
-								<tr class="formset-suplementoalimenticio_set">
+								<tr class="formset-suplementos">
 									{{ form.id }}
 									<td>{{form.frecuencia}}</td>
 									<td>{{form.tipo}}</td>
