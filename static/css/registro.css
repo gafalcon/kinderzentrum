@@ -26,6 +26,10 @@ ul{
 	list-style-type: none;
 }
 
+.separator{
+  margin: 0px 50px 0px 50px !important;
+}
+
 /* Bootstrap form span6 */
 
 .span6{
@@ -412,7 +416,8 @@ ul{
   visibility: hidden;
   padding: 0 10px;
   width: initial;
-  width: -moz-max-content;
+  width: 111px;
+  text-align: center;
   height: auto;
   border-radius: 0;
   background-color: #378ff3; /*#c44d48*/
@@ -458,8 +463,44 @@ ul{
   min-width: -moz-max-content;  
 }
 
+/*Current es el dot seleccionado esté seleccionado*/
 .dotstyle-tooltip li.current {
   border-color: #378ff3;
+  background-color: #378ff3;
+}
+
+.dotstyle-tooltip li.current:hover a{
+  opacity: 1 !important;  
+}
+
+/*Shown son todos los otros dots*/
+.dotstyle-tooltip li.shown{
+  border-color: #a5a3a3 !important;    
+  background-color: white !important;
+}
+
+.dotstyle-tooltip li.shown a{  
+  opacity: 0.2 !important;
+}
+
+/*Error es el dot que tenga un error en el formulario*/
+.dotstyle-tooltip li.current.error {
+  border-color: red !important; 
+  background-color: red !important;
+}
+
+.dotstyle-tooltip li.shown.error {
+  border-color: rgba(255, 0, 0, 0.2) !important; 
+  background-color: rgba(255, 0, 0, 0.2) !important;  
+}
+.dotstyle-tooltip li.error a{
+  border-color: red !important; 
+  background-color: red !important;
+  border-top-color: red !important;
+}
+
+.dotstyle-tooltip li.error a::after{
+  border-top-color: red !important;
 }
 
 .dotstyle-tooltip li:hover {
@@ -471,7 +512,7 @@ ul{
 }
 
 .dotstyle-tooltip ul li.current:hover a {
-  opacity: 1;
+  opacity: 1;  
 }
 
 /* Dot move */

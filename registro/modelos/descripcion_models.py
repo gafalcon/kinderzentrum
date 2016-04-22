@@ -25,7 +25,7 @@ class Descripcion(models.Model):
                                          max_length=256, blank=True)
     limitaciones_movimiento = models.IntegerField(
         "¿Existe alguna limitación con sus movimientos?",
-        choices=LIMITACIONES_OPTIONS)
+        choices=LIMITACIONES_OPTIONS,blank=True)
 
     areas_dificultad = models.CharField("¿Ha presentado su hijo(a) algún tipo de dificultad en éstas áreas?",
                                         max_length=256, blank=True)
@@ -36,21 +36,6 @@ class Descripcion(models.Model):
 
     edad_crisis = models.PositiveSmallIntegerField("¿A qué edad fue la primera crisis?", blank=True, null=True)
 
-    
-
-class Terapia_Paciente(models.Model):
-    """ terapias recibidas por el paciente en kz"""
-    TERAPIA_CHOICES = ((1, "REHABILITACIÓN FÍSICA"),
-                       (2, "ESTIMULACIÓN TEMPRANA"),
-                       (3, "INTEGRACIÓN SENSORIAL"),
-                       (4, "HIPOTERAPIA"),
-                       (5, "LENGUAJE"),
-                       (6, "PSICOPEDAGÓGICA"),
-                       (7, "TERAPIA FAMILIAR"),
-                       (8, "NINGUNA"))
-    tipo = models.SmallIntegerField("Tipo de terapia", choices=TERAPIA_CHOICES)
-    costo_sesion = models.PositiveSmallIntegerField(default=1, blank=False, null=False)    
-    tiempo_terapia = models.DurationField("¿Cuánto tiempo lleva realizando la terapia")
 
 class Terapia(models.Model):
     """ terapias recibidas por el paciente """
@@ -60,37 +45,6 @@ class Terapia(models.Model):
     tipo = models.SmallIntegerField("Tipo de terapia", choices=TERAPIA_CHOICES)   
     tiempo_terapia = models.CharField("¿Cuánto tiempo lleva realizando la terapia", max_length=50)
     descripcion = models.ForeignKey(Descripcion, related_name="terapias")
-
-
-class Terapista(models.Model):
-    """ Representa el terapista del paciente """
-    GRUPO_SANGUINEO_CHOICES = (
-        ("A+", "A+"),
-        ("A-", "A-"),
-        ("O+", "O+"),
-        ("O-", "O-"),
-        ("B+", "B+"),
-        ("B-", "B-"),
-        ("AB+", "AB+"), 
-        ("AB-", "AB-")        
-    )
-    cedula = models.CharField(max_length=10)
-    nombres = models.CharField(max_length=50)
-    apellidos = models.CharField(max_length=50)
-    direccion = models.CharField(max_length=256)
-    telefonos = models.CharField(max_length=50)
-    fecha_nacimiento = models.DateField("fecha de nacimiento")
-    grupo_sanguineo = models.CharField("grupo sanguineo",
-                                        choices=GRUPO_SANGUINEO_CHOICES,
-                                        max_length=4)
-    terapia = models.ForeignKey(Terapia_Paciente, null=True, on_delete=models.CASCADE)
-
-    def __unicode__(self):
-        return self.apellidos + " " + self.nombres
-
-
-
-
 
 
 class Medicamento(models.Model):
