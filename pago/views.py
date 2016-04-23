@@ -7,23 +7,18 @@ from django.http import HttpResponse
 
 from django.core.serializers.json import DjangoJSONEncoder
 
-import logging
-
-logger = logging.getLogger(__name__)
-
 # Create your views here.
 def index_view(request):
   return render(request, 'pago/index.html')
 
 def patient_payments(request, patientId):
     cursor = connection.cursor()
-    cursor.execute("select p.nombres, p.apellidos, t.nombre as terapia_nombre, t.tiempo, c.hora_inicio, c.hora_fin, c.fecha_cita, t.costo from registro_paciente p left join cita_cita c on p.id = c.paciente_id left join asistencia_tipo_terapia t on c.tipo_terapia_id = t.id where p.id = \'%s\'", [patientId])
+    cursor.execute("select p.id, p.nombres, p.apellidos, t.nombre as terapia_nombre, t.tiempo, c.hora_inicio, c.hora_fin, c.fecha_cita, t.costo from registro_paciente p left join cita_cita c on p.id = c.paciente_id left join asistencia_tipo_terapia t on c.tipo_terapia_id = t.id where p.id = \'{0}\'".format(patientId))
     row = dictfetchall(cursor)
     return HttpResponse(json.dumps(row, cls=DjangoJSONEncoder), content_type='application/json')
 
 def patient_suggestions(request):
     query = request.GET.get('query', '').strip()
-    logger.debug(query)
     limit = request.GET.get('limit', '5')
     if (query == ''):
         return HttpResponse(json.dumps([]), content_type='application/json')

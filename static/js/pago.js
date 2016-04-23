@@ -97,8 +97,6 @@ function findMatches(q, cb) {
 //     cb(matches);
 
   getPatientSuggestionsByNameFragment(q).then(function (suggestions) {
-    var suggestions = [{id: 2, nombres: 'Tim', apellidos: 'Drake'}];
-
     cb(suggestions);
   }).bind(this);
 }
