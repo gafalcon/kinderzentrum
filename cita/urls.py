@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
-from cita import views
-from cita.views import ReservarCitaView
+from cita             import views
+from cita.views       import ReservarCitaView
 
 
 urlpatterns =[     

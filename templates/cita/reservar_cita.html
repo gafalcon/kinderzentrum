@@ -25,14 +25,9 @@
 
   <div id='calendar'></div>
   <div id="event_edit_container">
-    <form>
-      <input type="hidden" />
+    <form id = "formcita" action="" method="POST">
+      {% csrf_token %}
       <ul>
-        <!--
-        <li>
-          <span>Date: </span><span id="date_holder"></span>
-        </li>
-        -->
         <li>
         {{ cita_form.non_field_errors }}
           {% for field in cita_form %}
@@ -42,6 +37,7 @@
           {% endfor %}
         </li>
       </ul>
+      <input id="enviar" class="btn btn-default" type="submit" value="Save"/>
     </form>
   </div>
   <div id="about">

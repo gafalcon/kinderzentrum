@@ -34,8 +34,8 @@ $(document).ready(function() {
          resetForm($dialogContent);
          var startField = $dialogContent.find("select[name='start']").val(calEvent.start);
          var endField = $dialogContent.find("select[name='end']").val(calEvent.end);
-         var titleField = $dialogContent.find("input[name='title']");
-         var bodyField = $dialogContent.find("textarea[name='body']");
+         /*var titleField = $dialogContent.find("input[name='title']");*/
+         /*var bodyField = $dialogContent.find("textarea[name='body']");*/
 
 
          $dialogContent.dialog({
@@ -48,20 +48,14 @@ $(document).ready(function() {
             },
             buttons: {
                save : function() {
-                  calEvent.id = id;
-                  id++;
-                  calEvent.start = new Date(startField.val());
-                  calEvent.end = new Date(endField.val());
-                  calEvent.title = titleField.val();
-                  calEvent.body = bodyField.val();
-
-                  $calendar.weekCalendar("removeUnsavedEvents");
-                  $calendar.weekCalendar("updateEvent", calEvent);
+                 
+                  submit();
                   $dialogContent.dialog("close");
+                  
                },
                cancel : function() {
                   $dialogContent.dialog("close");
-               }
+               }        
             }
          }).show();
 

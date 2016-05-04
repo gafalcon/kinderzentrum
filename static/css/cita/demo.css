@@ -16,6 +16,17 @@ p {
   padding: 5px 0px 5px 0px;
 }
 
+#id_date{
+  font-size: 18px;
+  text-align: center;
+  /*font-family: "Century Gothic",arial;*/
+  color: #555;
+  margin: 0px 0px 0px 0px;
+  padding: 5px 0px 5px 0px;
+  width: 260px;
+}
+
+
 .ui-widget {
   font-size: 1em; 
 }
