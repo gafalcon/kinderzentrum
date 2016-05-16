@@ -25,20 +25,97 @@
 
   <div id='calendar'></div>
   <div id="event_edit_container">
-    <form id = "formcita" action="" method="POST">
+
+
+    <form method="POST">
       {% csrf_token %}
       <ul>
-        <li>
-        {{ cita_form.non_field_errors }}
-          {% for field in cita_form %}
-                {{field.errors}}
-                <label for="code" style="width: 35%;">  {{field.label}}</label>
-                  {{ field }} 
-          {% endfor %}
+    
+      <li>
+       <label for = "paciente">Fecha de la cita</label>
+       <!--
+           <input type = "text" id = "date" name = "date_holder" readonly = "readonly" placeholder = "Fecha cita" />
+       -->
+       <input type = "text" id = "date" name = "date_holder" placeholder = "Fecha cita" />
+       
         </li>
+    <br/>
+    
+    
+    <li>
+       <label for = "horainicio">Hora inicio</label>
+           <select name = "horainicio">       
+          <option value = "00:00">Seleccione una opcion</option>
+              <option value="08:00 am">08:00 am</option>
+              <option value="08:15 am">08:15 am</option>
+              <option value="08:30 am">08:30 am</option>
+              <option value="08:45 am">08:45 am</option>
+              <option value="09:00 am">09:00 am</option>           
+       </select>
+        </li>
+    
+    <br/>
+    
+    <li>
+       <label for = "horafin">Hora fin</label>
+           <select name = "horafin">        
+          <option value = "00:00">Seleccione una opcion</option> 
+              <option value="08:00 am">08:00 am</option>
+              <option value="08:15 am">08:15 am</option>
+              <option value="08:30 am">08:30 am</option>
+              <option value="08:45 am">08:45 am</option>
+              <option value="09:00 am">09:00 am</option>           
+       </select>
+        </li>
+    
+    <br/>
+    
+    
+        <li>
+       <label for = "paciente">Seleccione un paciente</label>
+           <select name = "paciente">
+        {{ pacientes }}
+          <option value = "0">Seleccione una opcion</option> 
+      {% for paciente in pacientes %}
+              <option value="{{ paciente.id}}">{{ paciente.nombres  }} {{ paciente.apellidos  }}</option>
+            {% endfor %}
+       </select>
+        </li>
+    
+    <br/>
+    
+    
+     <li>
+     <label for = "tipoterapia">Seleccione un tipo de terapia</label>
+           <select name = "tipoterapia">
+        {{ tipo_terapia_list }}
+          <option value = "0">Seleccione una opcion</option> 
+      {% for tipo_terapia in tipo_terapia_list %}
+              <option value="{{ tipo_terapia.id}}">{{ tipo_terapia.nombre  }}</option>
+            {% endfor %}
+      </select>
+        </li>
+    
+    <br/>
+    
+    <li>
+     <label for = "terapista">Seleccione un terapista</label>
+           <select name = "terapista">
+        {{ terapista_list }}
+          <option value = "0">Seleccione una opcion</option> 
+      {% for terapista in terapista_list %}
+              <option value="{{ terapista.id}}">{{ terapista.nombres  }} {{ terapista.apellidos  }}</option>
+            {% endfor %}
+      </select>
+        </li>
+    
+    <br/>
+    
+    
       </ul>
-      <input id="enviar" class="btn btn-default" type="submit" value="Save"/>
+      <input id="enviar" class="btn btn-default" type="submit" value="Guardar"/>
     </form>
+    
   </div>
   <div id="about">
 

@@ -795,7 +795,7 @@
 
          if (options.allowCalEventOverlap) {
             return;
-         }
+    a     }
          var adjustedStart, adjustedEnd;
          var self = this;
 

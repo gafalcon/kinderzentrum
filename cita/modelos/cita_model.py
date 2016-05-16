@@ -15,11 +15,9 @@ class Cita(models.Model):
         ("C", "Cancelada")
     )    
     fecha_registro = models.DateField(auto_now_add = True)
-    #fecha_registro= models.DateField(default=datetime.date.today)
-    fecha_cita     = models.DateField(auto_now_add = False)    
+    fecha_cita     = models.DateField(auto_now_add = True)#cambiar a False    
     hora_inicio    = models.TimeField(auto_now = False)
     hora_fin       = models.TimeField(auto_now = False)
-    #hora_inicio   = models.TimeField(default = datetime.datetime.now().time() )
     estado         = models.CharField(choices=ESTADO_CHOICES, max_length=2, default='A')
     indicaciones   = models.CharField(max_length=256)  
     tipo_terapia   = models.ForeignKey(Tipo_terapia, on_delete=models.CASCADE)
@@ -28,6 +26,3 @@ class Cita(models.Model):
 
     def __unicode__(self):
         return self.indicaciones
-    #def __unicode__(self):
-        #return str(self.paciente)
-    #python 3.3 is def __str__(self):

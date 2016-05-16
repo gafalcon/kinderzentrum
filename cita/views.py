@@ -5,37 +5,77 @@ from django.shortcuts               import render, render_to_response
 from django.template                import RequestContext
 from django.utils.decorators        import method_decorator
 from django.views.generic           import View
-from .forms                         import *
-from .modelos.cita_model            import Cita
+#from .forms                         import *
+#from forms                      import CitaForm
+from asistencia.modelos.Terapista_model                 import Terapista
+from asistencia.modelos.Tipo_terapia_model              import Tipo_terapia
+from asistencia.modelos.Terapia__Tipo_terapia_models    import Terapia__Tipo_terapia
+from registro.modelos.paciente_model                    import Paciente
 
 
 @method_decorator(login_required, name="dispatch")
 class ReservarCitaView(View):
     template_name = 'cita/reservar_cita.html'
 
+    template_name = 'cita/reservar_cita.html'
     def get(self, request, *args, **kwargs):
-        cita = CitaForm(prefix="cita")
-        context = {'cita_form': cita,
-        		   'pagina_actual': 'cita'}
-        return render(request, self.template_name, context)
+        pacientes = Paciente.objects.order_by('fecha_registro')
+        tipo_terapia_list = Tipo_terapia.objects.order_by('costo')
+        terapista_list = Terapista.objects.order_by('fecha_nacimiento')
+        return render(request,self.template_name,{'pacientes':pacientes, 'tipo_terapia_list':tipo_terapia_list, 'terapista_list':terapista_list, 'pagina_actual': 'cita'})
 
     def post(self, request, *args, **kwargs):
+        #fechacita = request.POST.get('date_holder', default = "")
 
-        c = {}
-        c.update(csrf(request))
+        horaini = request.POST.get('horainicio', default = "")
 
-        if (not request.user.is_authenticated()) or (request.user == None):
-            return HttpResponseRedirect("/admin/")
-        
-        form = c['CitaForm'] = CitaForm(request.POST, c, context_instance=RequestContext(request))
+        if horaini == "08:00 am":
+            horaini = "08:00"
+        elif horaini == "08:15 am":
+            horaini = "08:15"
+        elif horaini == "08:30 am":
+            horaini = "08:30"
+        elif horafin == "08:45 am":
+            horafin = "08:45"
+        elif  horaini == "09:00 am":
+            horaini = "09:00"
 
-        if c['CitaForm'].is_valid():
-            return HttpResponseRedirect("/cita")
+        horafin = request.POST.get('horafin', default = "")
 
-        else:
-            form = c['CitaForm'] = CitaForm()
-        return render_to_response(self.template_name, {'form': c['CitaForm']})
+        if horafin == "08:00 am":
+            horafin = "08:00"
+        elif horafin == "08:15 am":
+            horafin = "08:15"
+        elif horafin == "08:30 am":
+            horafin = "08:30"
+        elif horafin == "08:45 am":
+            horafin = "08:45"
+        elif  horafin == "09:00 am":
+            horafin = "09:00"
 
+        paciente_id = request.POST.get('paciente', default = "")
+        tipoterapia_id = request.POST.get('tipoterapia', default = "")
+        terapista_id = request.POST.get('terapista', default = "")
+        cita = Cita()
+        try:
+            cita.tipo_terapia = Tipo_terapia.objects.get(id=tipoterapia_id)
+        except Tipo_terapia.DoesNotExist:
+            print "error"
+        try:
+            cita.paciente = Paciente.objects.get(id=paciente_id)
+        except Paciente.DoesNotExist:
+            print "error"
+        try:
+            cita.terapista = Terapista.objects.get(id=terapista_id)
+        except Terapista.DoesNotExist:
+            print "error"
+        #cita.fecha_cita=fechacita
+        cita.hora_inicio=horaini
+        cita.hora_fin=horafin
+        #cita = Cita(fecha_cita=fechacita,  hora_inicio=horaini, hora_fin=horafin, tipo_terapia=tipoterapia, paciente=paciente, terapista=terapista)
+        cita.save()
+        return render(request, self.template_name, {'pagina_actual': 'cita'})
+        return HttpResponseRedirect('/cita')
 
 
 
