@@ -25,8 +25,35 @@ class ReservarCitaView(View):
         return render(request,self.template_name,{'pacientes':pacientes, 'tipo_terapia_list':tipo_terapia_list, 'terapista_list':terapista_list, 'pagina_actual': 'cita'})
 
     def post(self, request, *args, **kwargs):
-        #fechacita = request.POST.get('date_holder', default = "")
-
+        fechacita = request.POST.get('date_holder', default = "")
+        annio = fechacita[8:]
+        mes   = fechacita[0:3]
+        dia   = fechacita[4:6]
+        if   mes == "Jan":
+            mes = "01"
+        elif mes == "Feb":
+            mes = "02"
+        elif mes == "Mar":
+            mes = "03"
+        elif mes == "Apr":
+            mes = "04"
+        elif mes == "May":
+            mes = "05"
+        elif mes == "Jun":
+            mes = "06"
+        elif mes == "Jul":
+            mes = "07"
+        elif mes == "Aug":
+            mes = "08"
+        elif mes == "Sep":
+            mes = "09"
+        elif mes == "Oct":
+            mes = "10"
+        elif mes == "Nov":
+            mes = "11"
+        elif mes == "Dec":
+            mes = "12"
+        fechacita = annio + '-' + mes + '-' + dia
         horaini = request.POST.get('horainicio', default = "")
 
         if horaini == "08:00 am":
