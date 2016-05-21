@@ -15,7 +15,7 @@ class Cita(models.Model):
         ("C", "Cancelada")
     )    
     fecha_registro = models.DateField(auto_now_add = True)
-    fecha_cita     = models.DateField(auto_now_add = True)#cambiar a False    
+    fecha_cita     = models.DateField(auto_now_add = False)    
     hora_inicio    = models.TimeField(auto_now = False)
     hora_fin       = models.TimeField(auto_now = False)
     estado         = models.CharField(choices=ESTADO_CHOICES, max_length=2, default='A')
