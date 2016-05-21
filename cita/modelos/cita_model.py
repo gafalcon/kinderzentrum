@@ -19,7 +19,7 @@ class Cita(models.Model):
     hora_inicio    = models.TimeField(auto_now = False)
     hora_fin       = models.TimeField(auto_now = False)
     estado         = models.CharField(choices=ESTADO_CHOICES, max_length=2, default='A')
-    indicaciones   = models.CharField(max_length=256)  
+    indicaciones   = models.CharField(max_length=256, default="ninguna")  
     tipo_terapia   = models.ForeignKey(Tipo_terapia, on_delete=models.CASCADE)
     paciente       = models.ForeignKey(Paciente, on_delete=models.CASCADE)
     terapista      = models.ForeignKey(Terapista, on_delete=models.CASCADE)
