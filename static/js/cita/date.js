@@ -47,12 +47,13 @@ $(document).ready(function() {
                $('#calendar').weekCalendar("removeUnsavedEvents");
             },
             buttons: {
-               save : function() {
+               /*save : function() {
                  
                   submit();
                   $dialogContent.dialog("close");
                   
                },
+               */
                cancel : function() {
                   $dialogContent.dialog("close");
                }        
