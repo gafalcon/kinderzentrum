@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Test</title>
+  <title>Pagos</title>
 
   <!-- Custom styles for this template -->
   <link href="/static/css/dashboard.css" rel="stylesheet">
@@ -20,10 +20,14 @@
   <link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css" />
   <link rel="stylesheet" href="/static/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
   <script type="text/javascript" src="/static/bower_components/typeahead.js/dist/typeahead.bundle.js"></script>
+
+  <script type="text/javascript" src="/static/js/to-pdf.js"></script>
+  <script src="/static/bower_components/jspdf/dist/jspdf.min.js"></script>
+        <script src="/static/bower_components/html2canvas/build/html2canvas.min.js"></script>
 </head>
 
 <body>
-  <div class="container-fluid">
+  <div id="content" class="container-fluid">
     <div class="row">
       <div class="col-md-12 col-xs-12">
         <p>Seleccione el niño</p>
@@ -115,10 +119,14 @@
     <div>
       <div>
         <p>Comment:</p>
-        <textarea class="form-control" rows="3" id="comment"></textarea>
+        {% if context %}
+          <textarea class="form-control" rows="3" id="comment">{{ context.comment }}</textarea>
+        {% else %}
+          <textarea class="form-control" rows="3" id="comment"></textarea>
+        {% endif %}
       </div>
       <br/>
-      <button type="button" class="btn btn-info pull-right">Generar pdf</button>
+      <button type="button" class="btn btn-info pull-right" onclick="toPDF();">Generar pdf</button>
     </div>
   </div>
   <script type="text/javascript">
@@ -137,6 +145,16 @@
         $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
       });
     });
+  </script>
+  <script>
+    function toPDF() {
+      var format = 'a4';
+      var pdfExport = new PDFExport(format);
+      var domNode = document.getElementsByTagName('body')[0];
+      pdfExport.createPageScreenshot(domNode).then(function () {
+        pdfExport.downloadDocument();
+      });
+    }
   </script>
   <script src="/static/js/fetch.js" type="text/javascript"></script>
   <script src="/static/js/pago.js" type="text/javascript"></script>

@@ -175,7 +175,7 @@ function getPatientSuggestionsByNameFragment(nameFragment) {
 }
 
 function getPatientPaymentInformation(id, date) {
-  var URL = API.host + '/pagos/pacientes/' + id + '?from=' + date.from + '&to=' + date.to;
+  var URL = API.host + '/pagos/pacientes/' + id + '?from=' + (date.from / 1000) + '&to=' + (date.to / 1000);
   return fetch(URL)
     .then(function (response) {
       console.log(response);
