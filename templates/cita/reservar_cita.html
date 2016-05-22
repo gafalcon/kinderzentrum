@@ -36,7 +36,7 @@
        <!--
            <input type = "text" id = "date" name = "date_holder" readonly = "readonly" placeholder = "Fecha cita" />
        -->
-       <input type = "text" id = "date" name = "date_holder" placeholder = "Fecha cita" />
+       <input type = "text" id = "date" name = "date_holder" readonly placeholder = "Fecha cita" />
        
         </li>
     <br/>
@@ -44,7 +44,8 @@
     
     <li>
        <label for = "horainicio">Hora inicio</label>
-           <select name = "horainicio">       
+       <!--
+        <select name = "horainicio">       
           <option value = "00:00">Seleccione una opcion</option>
               <option value="08:00 am">08:00 am</option>
               <option value="08:15 am">08:15 am</option>
@@ -52,12 +53,17 @@
               <option value="08:45 am">08:45 am</option>
               <option value="09:00 am">09:00 am</option>           
        </select>
+       -->
+
+       <select name = "start" disabled> 
+       </select>
         </li>
     
     <br/>
     
     <li>
        <label for = "horafin">Hora fin</label>
+         <!--
            <select name = "horafin">        
           <option value = "00:00">Seleccione una opcion</option> 
               <option value="08:00 am">08:00 am</option>
@@ -66,6 +72,10 @@
               <option value="08:45 am">08:45 am</option>
               <option value="09:00 am">09:00 am</option>           
        </select>
+        -->
+       <select name = "end"> 
+       </select>
+
         </li>
     
     <br/>

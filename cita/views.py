@@ -29,13 +29,13 @@ class ReservarCitaView(View):
         annio = fechacita[8:]
         mes   = fechacita[0:3]
         dia   = fechacita[4:6]
-        if   mes == "Jan":
+        if   mes == "Ene":
             mes = "01"
         elif mes == "Feb":
             mes = "02"
         elif mes == "Mar":
             mes = "03"
-        elif mes == "Apr":
+        elif mes == "Abr":
             mes = "04"
         elif mes == "May":
             mes = "05"
@@ -43,7 +43,7 @@ class ReservarCitaView(View):
             mes = "06"
         elif mes == "Jul":
             mes = "07"
-        elif mes == "Aug":
+        elif mes == "Ago":
             mes = "08"
         elif mes == "Sep":
             mes = "09"
@@ -51,10 +51,10 @@ class ReservarCitaView(View):
             mes = "10"
         elif mes == "Nov":
             mes = "11"
-        elif mes == "Dec":
+        elif mes == "Dic":
             mes = "12"
         fechacita = annio + '-' + mes + '-' + dia
-        horaini = request.POST.get('horainicio', default = "")
+        horaini = request.POST.get('start', default = "")
 
         if horaini == "08:00 am":
             horaini = "08:00"
@@ -67,7 +67,7 @@ class ReservarCitaView(View):
         elif  horaini == "09:00 am":
             horaini = "09:00"
 
-        horafin = request.POST.get('horafin', default = "")
+        horafin = request.POST.get('end', default = "")
 
         if horafin == "08:00 am":
             horafin = "08:00"
