@@ -40,7 +40,7 @@ $(document).ready(function() {
 
          $dialogContent.dialog({
             modal: true,
-            title: "New Calendar Event",
+            title: "Nueva cita",
             close: function() {
                $dialogContent.dialog("destroy");
                $dialogContent.hide();
@@ -54,7 +54,7 @@ $(document).ready(function() {
                   
                },
                */
-               cancel : function() {
+               cancelar : function() {
                   $dialogContent.dialog("close");
                }        
             }

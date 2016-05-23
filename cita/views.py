@@ -1,12 +1,11 @@
-from django.contrib.auth.decorators import login_required
-from django.forms                   import formset_factory
-from django.http                    import HttpResponseRedirect
-from django.shortcuts               import render, render_to_response
-from django.template                import RequestContext
-from django.utils.decorators        import method_decorator
-from django.views.generic           import View
-#from .forms                         import *
-#from forms                      import CitaForm
+from django.contrib.auth.decorators                     import login_required
+from django.forms                                       import formset_factory
+from django.http                                        import HttpResponseRedirect
+from django.shortcuts                                   import render, render_to_response
+from django.template                                    import RequestContext
+from django.utils.decorators                            import method_decorator
+from django.views.generic                               import View
+from modelos.cita_model                                 import Cita
 from asistencia.modelos.Terapista_model                 import Terapista
 from asistencia.modelos.Tipo_terapia_model              import Tipo_terapia
 from asistencia.modelos.Terapia__Tipo_terapia_models    import Terapia__Tipo_terapia
@@ -26,60 +25,100 @@ class ReservarCitaView(View):
 
     def post(self, request, *args, **kwargs):
         fechacita = request.POST.get('date_holder', default = "")
-        annio = fechacita[8:]
-        mes   = fechacita[0:3]
-        dia   = fechacita[4:6]
-        if   mes == "Ene":
-            mes = "01"
-        elif mes == "Feb":
-            mes = "02"
-        elif mes == "Mar":
-            mes = "03"
-        elif mes == "Abr":
-            mes = "04"
-        elif mes == "May":
-            mes = "05"
-        elif mes == "Jun":
-            mes = "06"
-        elif mes == "Jul":
-            mes = "07"
-        elif mes == "Ago":
-            mes = "08"
-        elif mes == "Sep":
-            mes = "09"
-        elif mes == "Oct":
-            mes = "10"
-        elif mes == "Nov":
-            mes = "11"
-        elif mes == "Dic":
-            mes = "12"
-        fechacita = annio + '-' + mes + '-' + dia
-        horaini = request.POST.get('start', default = "")
+        horaini = request.POST.get('horainicio', default = "")
 
         if horaini == "08:00 am":
-            horaini = "08:00"
-        elif horaini == "08:15 am":
-            horaini = "08:15"
+            horaini = "08:00"        
         elif horaini == "08:30 am":
-            horaini = "08:30"
-        elif horafin == "08:45 am":
-            horafin = "08:45"
+            horaini = "08:30"        
         elif  horaini == "09:00 am":
             horaini = "09:00"
+        if horaini == "09:30 am":
+            horaini = "09:30"        
+        elif horaini == "10:00 am":
+            horaini = "10:00"        
+        elif  horaini == "10:30 am":
+            horaini = "10:30"
+        if horaini == "11:00 am":
+            horaini = "11:00"        
+        elif horaini == "11:30 am":
+            horaini = "11:30"        
+        elif  horaini == "12:00 pm":
+            horaini = "12:00"
+        elif  horaini == "12:30 pm":
+            horaini = "12:30"
+        if horaini == "01:00 pm":
+            horaini = "13:00"        
+        elif horaini == "01:30 pm":
+            horaini = "13:30"        
+        elif  horaini == "02:00 pm":
+            horaini = "14:00"
+        if horaini == "02:30 pm":
+            horaini = "14:30"        
+        elif horaini == "03:00 pm":
+            horaini = "15:00"
+        elif horaini == "03:30 pm":
+            horaini = "15:30"        
+        elif  horaini == "04:00 pm":
+            horaini = "16:00"
+        if horaini == "04:30 pm":
+            horaini = "16:30"        
+        elif horaini == "05:00 pm":
+            horaini = "17:00"        
+        elif  horaini == "05:30 pm":
+            horaini = "17:30"
+        elif horaini == "06:00 pm":
+            horaini = "18:00"        
+        elif  horaini == "06:30 pm":
+            horaini = "18:30"
 
-        horafin = request.POST.get('end', default = "")
+
+        horafin = request.POST.get('horafin', default = "")
 
         if horafin == "08:00 am":
-            horafin = "08:00"
-        elif horafin == "08:15 am":
-            horafin = "08:15"
+            horafin = "08:00"       
         elif horafin == "08:30 am":
-            horafin = "08:30"
-        elif horafin == "08:45 am":
-            horafin = "08:45"
+            horafin = "08:30"        
         elif  horafin == "09:00 am":
             horafin = "09:00"
-
+        if horafin == "09:30 am":
+            horafin = "09:30"        
+        elif horafin == "10:00 am":
+            horafin = "10:00"        
+        elif  horafin == "10:30 am":
+            horafin = "10:30"
+        if horafin == "11:00 am":
+            horafin = "11:00"        
+        elif horafin == "11:30 am":
+            horafin = "11:30"        
+        elif  horafin == "12:00 pm":
+            horafin = "12:00"
+        elif  horafin == "12:30 pm":
+            horafin = "12:30"
+        if horafin == "01:00 pm":
+            horafin = "13:00"        
+        elif horafin == "01:30 pm":
+            horafin = "13:30"        
+        elif  horafin == "02:00 pm":
+            horafin = "14:00"
+        if horafin == "02:30 pm":
+            horafin = "14:30" 
+        elif horafin == "03:00 pm":
+            horafin = "15:00"       
+        elif horafin == "03:30 pm":
+            horafin = "15:30"        
+        elif  horafin == "04:00 pm":
+            horafin = "16:00"
+        if horafin == "04:30 pm":
+            horafin = "16:30"        
+        elif horafin == "05:00 pm":
+            horafin = "17:00"        
+        elif  horafin == "05:30 pm":
+            horafin = "17:30"
+        elif horafin == "06:00 pm":
+            horafin = "18:00"        
+        elif  horafin == "06:30 pm":
+            horafin = "18:30"
         paciente_id = request.POST.get('paciente', default = "")
         tipoterapia_id = request.POST.get('tipoterapia', default = "")
         terapista_id = request.POST.get('terapista', default = "")
@@ -96,7 +135,7 @@ class ReservarCitaView(View):
             cita.terapista = Terapista.objects.get(id=terapista_id)
         except Terapista.DoesNotExist:
             print "error"
-        #cita.fecha_cita=fechacita
+        cita.fecha_cita=fechacita
         cita.hora_inicio=horaini
         cita.hora_fin=horafin
         #cita = Cita(fecha_cita=fechacita,  hora_inicio=horaini, hora_fin=horafin, tipo_terapia=tipoterapia, paciente=paciente, terapista=terapista)

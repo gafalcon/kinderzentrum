@@ -72,10 +72,20 @@ function setPanelVisible(id){
 		}
 	}
 }
+/*
+$(document).ready(function(){
+   $(".datepicker2").datepicker({
+    showAnim: 'highlight'
+    });
+});
+*/
+
+
 
 $(function() {
 
   	/* Creamos un widget de calendario con jquery-ui */
+
     $( ".datepicker2" ).datepicker({
 		changeMonth: true,
 		changeYear: true,
@@ -83,9 +93,18 @@ $(function() {
 		dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
 		monthNamesShort: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
 		'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-		dateFormat: 'dd/mm/yy',
+		dateFormat: 'yy-mm-dd',
+		showButtonPanel: true,  
+		closeText: 'Cerrar', 
+		currentText: 'Hoy',
+
+		beforeShow: function(){    
+           $(".ui-datepicker").css('font-size', 16) 
+        }
+                
+
 		//mas opciones
     });
 
-    });
+});
 
