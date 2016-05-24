@@ -87,6 +87,7 @@ class RegistroView(View):
         suplementos_formset = SuplementosFormset(request.POST, instance=AlimentacionCostumbres())
         datos_familiares = DatosFamiliaresOtrosForm(request.POST, prefix="familiares_otros")
         hermanos_formset = HermanosFormset(request.POST, instance=DatosFamiliaresOtros())
+        print "post"
 
         if (datos_paciente.is_valid() and
             datos_familia.is_valid() and
@@ -107,7 +108,7 @@ class RegistroView(View):
             medicos_instances = datos_medico.save(commit = False)
 
             descripcion = datos_descripcion_paciente.save()
-            datos_descripcion_paciente.cleaned_data
+            #datos_descripcion_paciente.cleaned_data
             medicamentos_instances = medicamento_formset.save(commit=False)
             terapias_instances = terapia_formset.save(commit=False)
             for medicamento in medicamentos_instances:
@@ -157,6 +158,7 @@ class RegistroView(View):
             paciente.datos_familiares = familiares
 
             paciente.save()
+            print("Paciente saved")
 
             for familiar in familiares_instances:
                 familiar.paciente = paciente
@@ -166,6 +168,7 @@ class RegistroView(View):
                 medico.paciente = paciente
                 medico.save()
 
+            print("Paciente saved")
             return redirect('pacientes-list')
 
 

@@ -1,6 +1,5 @@
-from django.conf.urls import patterns, url
-from registro import views
-from registro.views import *
+from django.conf.urls import url
+from registro.views import RegistroView, RegistroEditView, BusquedaPacientesView, PacienteListView
 
 urlpatterns =[ 
     # Examples:
