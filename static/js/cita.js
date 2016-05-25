@@ -91,7 +91,7 @@ $(function() {
 		closeText: 'Cerrar', 
 		currentText: 'Hoy',
 		beforeShow: function(){    
-           $(".ui-datepicker").css('font-size', 16) 
+           $(".ui-datepicker").css('font-size', 15) 
         }   
 		//mas opciones
     });
