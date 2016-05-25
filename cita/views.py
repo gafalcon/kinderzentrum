@@ -28,97 +28,97 @@ class ReservarCitaView(View):
         horaini = request.POST.get('horainicio', default = "")
 
         if horaini == "08:00 am":
-            horaini = "08:00"        
+            horaini = "08:00:00"        
         elif horaini == "08:30 am":
-            horaini = "08:30"        
+            horaini = "08:30:00"        
         elif  horaini == "09:00 am":
-            horaini = "09:00"
+            horaini = "09:00:00"
         if horaini == "09:30 am":
-            horaini = "09:30"        
+            horaini = "09:30:00"        
         elif horaini == "10:00 am":
-            horaini = "10:00"        
+            horaini = "10:00:00"        
         elif  horaini == "10:30 am":
-            horaini = "10:30"
+            horaini = "10:30:00"
         if horaini == "11:00 am":
-            horaini = "11:00"        
+            horaini = "11:00:00"        
         elif horaini == "11:30 am":
-            horaini = "11:30"        
+            horaini = "11:30:00"        
         elif  horaini == "12:00 pm":
-            horaini = "12:00"
+            horaini = "12:00:00"
         elif  horaini == "12:30 pm":
-            horaini = "12:30"
+            horaini = "12:30:00"
         if horaini == "01:00 pm":
-            horaini = "13:00"        
+            horaini = "13:00:00"        
         elif horaini == "01:30 pm":
-            horaini = "13:30"        
+            horaini = "13:30:00"        
         elif  horaini == "02:00 pm":
-            horaini = "14:00"
+            horaini = "14:00:00"
         if horaini == "02:30 pm":
-            horaini = "14:30"        
+            horaini = "14:30:00"        
         elif horaini == "03:00 pm":
-            horaini = "15:00"
+            horaini = "15:00:00"
         elif horaini == "03:30 pm":
-            horaini = "15:30"        
+            horaini = "15:30:00"        
         elif  horaini == "04:00 pm":
-            horaini = "16:00"
+            horaini = "16:00:00"
         if horaini == "04:30 pm":
-            horaini = "16:30"        
+            horaini = "16:30:00"        
         elif horaini == "05:00 pm":
-            horaini = "17:00"        
+            horaini = "17:00:00"        
         elif  horaini == "05:30 pm":
-            horaini = "17:30"
+            horaini = "17:30:00"
         elif horaini == "06:00 pm":
-            horaini = "18:00"        
+            horaini = "18:00:00"        
         elif  horaini == "06:30 pm":
-            horaini = "18:30"
+            horaini = "18:30:00"
 
 
         horafin = request.POST.get('horafin', default = "")
 
         if horafin == "08:00 am":
-            horafin = "08:00"       
+            horafin = "08:00:00"       
         elif horafin == "08:30 am":
-            horafin = "08:30"        
+            horafin = "08:30:00"        
         elif  horafin == "09:00 am":
-            horafin = "09:00"
+            horafin = "09:00:00"
         if horafin == "09:30 am":
-            horafin = "09:30"        
+            horafin = "09:30:00"        
         elif horafin == "10:00 am":
-            horafin = "10:00"        
+            horafin = "10:00:00"        
         elif  horafin == "10:30 am":
-            horafin = "10:30"
+            horafin = "10:30:00"
         if horafin == "11:00 am":
-            horafin = "11:00"        
+            horafin = "11:00:00"        
         elif horafin == "11:30 am":
-            horafin = "11:30"        
+            horafin = "11:30:00"        
         elif  horafin == "12:00 pm":
-            horafin = "12:00"
+            horafin = "12:00:00"
         elif  horafin == "12:30 pm":
-            horafin = "12:30"
+            horafin = "12:30:00"
         if horafin == "01:00 pm":
-            horafin = "13:00"        
+            horafin = "13:00:00"        
         elif horafin == "01:30 pm":
-            horafin = "13:30"        
+            horafin = "13:30:00"        
         elif  horafin == "02:00 pm":
-            horafin = "14:00"
+            horafin = "14:00:00"
         if horafin == "02:30 pm":
-            horafin = "14:30" 
+            horafin = "14:30:00" 
         elif horafin == "03:00 pm":
-            horafin = "15:00"       
+            horafin = "15:00:00"       
         elif horafin == "03:30 pm":
-            horafin = "15:30"        
+            horafin = "15:30:00"        
         elif  horafin == "04:00 pm":
-            horafin = "16:00"
+            horafin = "16:00:00"
         if horafin == "04:30 pm":
-            horafin = "16:30"        
+            horafin = "16:30:00"        
         elif horafin == "05:00 pm":
-            horafin = "17:00"        
+            horafin = "17:00:00"        
         elif  horafin == "05:30 pm":
-            horafin = "17:30"
+            horafin = "17:30:00"
         elif horafin == "06:00 pm":
-            horafin = "18:00"        
+            horafin = "18:00:00"        
         elif  horafin == "06:30 pm":
-            horafin = "18:30"
+            horafin = "18:30:00"
         paciente_id = request.POST.get('paciente', default = "")
         tipoterapia_id = request.POST.get('tipoterapia', default = "")
         terapista_id = request.POST.get('terapista', default = "")
@@ -142,19 +142,3 @@ class ReservarCitaView(View):
         cita.save()
         return render(request, self.template_name, {'pagina_actual': 'cita'})
         return HttpResponseRedirect('/cita')
-
-
-
-
-
-        # datos_cita = CitaForm(request.POST, prefix="cita")
-        # if datos_cita.is_valid():
-        #     #cita = datos_cita.save(commit=False) 
-        #     cita.save() 
-        #     print "datos de la cita grabados exitosamente"          
-        #     context = {'cita_form': datos_cita,
-        # 		       'pagina_actual': 'cita'}
-        # #return render(request, self.template_name, context)
-        # return render_to_response(self.template_name, context, context_instance=RequestContext(request))
-        # #return render_to_response(self.template_name, context, RequestContext(request))
-        # return HttpResponseRedirect('/cita')

@@ -72,21 +72,14 @@ function setPanelVisible(id){
 		}
 	}
 }
-/*
-$(document).ready(function(){
-   $(".datepicker2").datepicker({
-    showAnim: 'highlight'
-    });
-});
-*/
-
-
 
 $(function() {
 
   	/* Creamos un widget de calendario con jquery-ui */
 
-    $( ".datepicker2" ).datepicker({
+    $( "#datepicker2" ).datepicker({
+    	/*showOn: 'button',
+    	autoOpen: true,*/
 		changeMonth: true,
 		changeYear: true,
 		yearRange: "2000:2030",
@@ -97,12 +90,9 @@ $(function() {
 		showButtonPanel: true,  
 		closeText: 'Cerrar', 
 		currentText: 'Hoy',
-
 		beforeShow: function(){    
            $(".ui-datepicker").css('font-size', 16) 
-        }
-                
-
+        }   
 		//mas opciones
     });
 

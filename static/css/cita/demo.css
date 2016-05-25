@@ -1,11 +1,20 @@
+#panel1{ 
+margin-top: 3px;
+margin-bottom: 3px;
+margin-left: 200px;
+margin-right: 200px;
+}
+
+#panel-body{ 
+width: 100%;
+}
 
 #datepicker2{ 
 background-color: #337AB7;
 color: white;
 font-weight: bold;
-
+width: 98.5%;
 }
-
 
 #savediv{  
   text-align: center;
