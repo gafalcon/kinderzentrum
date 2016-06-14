@@ -9,7 +9,7 @@ class Terapista(models.Model):
     apellidos = models.CharField(max_length=50)
     direccion = models.CharField(max_length=256)
     telefonos = models.CharField(max_length=50)
-    fecha_nacimiento = models.DateField()
+    fecha_nacimiento = models.DateField(auto_now=True)
 
     def __str__(self):
         return self.apellidos + " " + self.nombres

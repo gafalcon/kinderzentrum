@@ -12,5 +12,6 @@ urlpatterns =[
     # url(r'^blog/', include('blog.urls')),
     #url(r'^$',  views.registro_view, name='registro_view'),
     url(r'^$',  views.mostrar_lista_asistencia, name='lista_asistencia'),
+    url(r'^consulta/$', views.consulta_asistencia, name='consulta_asistencia')
 ]
 

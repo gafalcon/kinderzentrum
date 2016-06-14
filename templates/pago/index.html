@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Test</title>
+  <title>Pagos</title>
 
   <!-- Custom styles for this template -->
   <link href="/static/css/dashboard.css" rel="stylesheet">
@@ -19,10 +19,15 @@
   <script type="text/javascript" src="/static/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
   <link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css" />
   <link rel="stylesheet" href="/static/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+  <script type="text/javascript" src="/static/bower_components/typeahead.js/dist/typeahead.bundle.js"></script>
+
+  <script type="text/javascript" src="/static/js/to-pdf.js"></script>
+  <script src="/static/bower_components/jspdf/dist/jspdf.min.js"></script>
+        <script src="/static/bower_components/html2canvas/build/html2canvas.min.js"></script>
 </head>
 
 <body>
-  <div class="container-fluid">
+  <div id="content" class="container-fluid">
     <div class="row">
       <div class="col-md-12 col-xs-12">
         <p>Seleccione el niño</p>
@@ -30,7 +35,11 @@
       <div class="col-md-6 col-xs-6">
         <div id="custom-search-input">
           <div class="input-group">
-            <input type="text" class="form-control input-md" placeholder="Buscar" />
+            {% if context %}
+            <input type="text" class="form-control input-md typeahead" placeholder="Buscar" value="{{ context.patient.nombres }} {{ context.patient.apellidos }}" />
+            {% else %}
+            <input type="text" class="form-control input-md typeahead" placeholder="Buscar" />
+            {% endif %}
             <span class="input-group-btn">
               <button class="btn btn-info" type="button">
                 <i class="glyphicon glyphicon-search"></i>
@@ -40,9 +49,6 @@
           <div class="input-group col-md-6">
           </div>
         </div>
-      </div>
-      <div class="col-md-6 col-xs-6">
-        <label class="checkbox-inline"><input type="checkbox" value="">Mostrar todos</label>
       </div>
       <div class="col-md-12 col-xs-12">
         <p>Fecha</p>
@@ -68,52 +74,70 @@
         </div>
       </div>
     </div>
-    <button type="button" class="btn btn-info center-block">Generar pago</button>
+    <button id="generate_payments_options" onclick="generatePayments();" type="button" class="btn btn-info pull-right">Generar pago</button>
   </div>
+  <br/>
   <div class="container-fluid">
-    <p>Nombre: </p>
     <div class="row">
       <div class="col-md-12 col-xs-12">
+        <h3>Nombres:
+        {% if context %}
+          <span id="table_header_name">{{ context.patient.nombres }} {{ context.patient.apellidos }}</span>
+        {% else %}
+          <span id="table_header_name"></span>
+        {% endif %}
+        </h3>
         <div class="table">
           <table class="table table-striped">
             <thead>
               <tr>
-                <th>Terapias</th>
-                <th>Cantidad</th>
+                <th>Terapia</th>
+                <th>Fecha</th>
                 <th>Costo</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>Terapia 1</td>
-                <td>0.00</td>
-                <td>0.00</td>
-              </tr>
-              <tr>
-                <td>Terapia 2</td>
-                <td>0.00</td>
-                <td>0.00</td>
-              </tr>
-              <tr class="table-result">
-                <td></td>
-                <td>Total</td>
-                <td>0.00</td>
-              </tr>
+            <tbody id="patient_payments_table">
+              {% if context %}
+                {% for payment in context.payments_info.payments %}
+                <tr>
+                  <td>{{ payment.terapia_nombre }}</td>
+                  <td>{{ payment.fecha_cita }}, {{ payment.hora_inicio }} - {{ payment.hora_fin }}</td>
+                  <td>{{ payment.costo }}</td>
+                </tr>
+                {% endfor %}
+                <tr class="table-result">
+                  <td></td>
+                  <td>Total</td>
+                  <td>{{ context.payments_info.total }}</td>
+                </tr>
+              {% endif %}
             </tbody>
           </table>
         </div>
       </div>
     </div>
-    <p>Comment:</p>
-    <textarea class="form-control" rows="3" id="comment"></textarea>
-    <button type="button" class="btn btn-info pull-right">Generar pdf</button>
+    <div>
+      <div>
+        <p>Comment:</p>
+        {% if context %}
+          <textarea class="form-control" rows="3" id="comment">{{ context.comment }}</textarea>
+        {% else %}
+          <textarea class="form-control" rows="3" id="comment"></textarea>
+        {% endif %}
+      </div>
+      <br/>
+      <button type="button" class="btn btn-info pull-right" onclick="toPDF();">Generar pdf</button>
+    </div>
   </div>
   <script type="text/javascript">
     $(function () {
-      $('#datetimepicker6').datetimepicker();
+      $('#datetimepicker6').datetimepicker({
+        format: 'dddd, DD MMMM YYYY'
+      });
       $('#datetimepicker7').datetimepicker({
-            useCurrent: false //Important! See issue #1075
-          });
+        useCurrent: false, //Important! See issue #1075,
+        format: 'dddd, DD MMMM YYYY'
+      });
       $("#datetimepicker6").on("dp.change", function (e) {
         $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
       });
@@ -122,9 +146,17 @@
       });
     });
   </script>
+  <script>
+    function toPDF() {
+      var format = 'a4';
+      var pdfExport = new PDFExport(format);
+      var domNode = document.getElementsByTagName('body')[0];
+      pdfExport.createPageScreenshot(domNode).then(function () {
+        pdfExport.downloadDocument();
+      });
+    }
+  </script>
   <script src="/static/js/fetch.js" type="text/javascript"></script>
   <script src="/static/js/pago.js" type="text/javascript"></script>
 </body>
-<a href="/">Regresar</a>
-<footer>By Alvaro Ortiz</footer>
 </html>
