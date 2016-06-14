@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="/static/css/buttons.bootstrap.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/t/bs/jqc-1.12.0,pdfmake-0.1.18,dt-1.10.11,b-1.1.2,b-colvis-1.1.2,b-html5-1.1.2,b-print-1.1.2,r-2.0.2,se-1.1.2/datatables.min.css"/>
     <link rel="stylesheet" href="/static/css/editor.bootstrap.css">
-    <link rel="stylesheet" href="/static/css/dataTables.editor.css">
-    <link rel="stylesheet" href="/static/css/editor.dataTables.css">
+    <!--<link rel="stylesheet" href="/static/css/dataTables.editor.css">
+    <link rel="stylesheet" href="/static/css/editor.dataTables.css">-->
 {% endblock css %}
 
 {% block js %}
@@ -18,52 +18,49 @@
     <script src="/static/js/buttons.bootstrap.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/t/bs/jqc-1.12.0,pdfmake-0.1.18,dt-1.10.11,b-1.1.2,b-colvis-1.1.2,b-html5-1.1.2,b-print-1.1.2,r-2.0.2,se-1.1.2/datatables.min.js"></script>
     <script src="/static/js/editor.bootstrap.js"></script>
-    <script src="/static/js/dataTables.editor.js"></script>
+    <!--<script src="/static/js/dataTables.editor.js"></script>-->
 {% endblock js %}
 
 {% block content %}
     <div class="panel panel-primary" style="margin-left: 5%; margin-right: 5%">
         <div class="panel-heading">Filtros de búsqueda</div>
         <div class="panel-body">
-            <form class="form-horizontal" >
+            <form id="form_consulta" name='consulta_asistencia' method="post" action="{% url 'consulta_asistencia' %}" class="form-horizontal">
                 {% csrf_token %}
-                <div class="form-group">
-                    <label for="input_nombre" class="col-sm-2 control-label">Nombre del niño</label>
+                <div class="form-group" >
+                    <label for="input_nombre" class="col-sm-1 control-label">Paciente</label>
                     <div class="col-sm-10">
-                       <input type="text" class="form-control" id="input_nombre" placeholder="nombre">
+                       <input type="text" style="height: 25px" class="form-control" id="input_nombre" name="input_nombre" placeholder="Nombre">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputPassword3" class="col-sm-2 control-label">Terapia</label>
+                    <label for="inputPassword3" class="col-sm-1 control-label">Terapia</label>
                     <div class="col-sm-4">
-                       <select class="form-control">
-                              <option>1</option>
-                              <option>2</option>
-                              <option>3</option>
-                              <option>4</option>
-                              <option>5</option>
+                       <select class="form-control"  name="tipo_terapia">
+                            <option value="0">Todas</option>
+                            {% for tterapia in tipo_terapia %}
+                                    <option value={{ tterapia.id }}>{{ tterapia.nombre }}</option>
+                            {% endfor %}
                         </select>
                     </div>
-
-                    <label for="inputPassword3" class="col-sm-2 control-label">Terapista</label>
+                    <label for="inputPassword3" class="col-sm-1 control-label">Terapista</label>
                     <div class="col-sm-4">
-                       <select class="form-control">
-                              <option>1</option>
-                              <option>2</option>
-                              <option>3</option>
-                              <option>4</option>
-                              <option>5</option>
+                       <select class="form-control" name="terapista">
+                              <option value="0">Todos</option>
+                              {% for terapista in terapistas %}
+                                    <option value={{ terapista.id }}>{{ terapista.nombres }} {{ terapista.apellidos }}</option>
+                            {% endfor %}
                         </select>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">Fecha desde:</label>
-                    <div class="col-sm-4">
-                       <input type="date" class="form-control" id="inputEmail3">
+                    <label for="inputEmail3" class="col-sm-1 control-label">Fecha desde:</label>
+                    <div class="col-sm-4" >
+                       <input type="date" name="fdesde" style="height: 25px" class="form-control" value={{ fdesde }}>
                     </div>
-                    <label for="inputEmail3" class="col-sm-2 control-label">Fecha hasta:</label>
-                    <div class="col-sm-4">
-                       <input type="date" class="form-control" id="inputEmail3">
+                    <label for="inputEmail3" class="col-sm-1 control-label">Fecha hasta:</label>
+                    <div class="col-sm-4" >
+                       <input type="date" name="fhasta" style="height: 25px" class="form-control" value={{ fhasta }}>
                     </div>
                 </div>
                 <div class="form-group">
@@ -83,10 +80,13 @@
         <div class="panel-body">
             <div class="table-responsive">
                 <div class="container" style="margin-top: 10px">
-                    <table id="table_id" class="table table-striped">
+                    <table id="tabla_pacientes" class="table table-striped">
                         <thead>
                             <th>Id</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
                             <th>Paciente</th>
+                            <th>Terapia</th>
                             <th>Tipo de terapia</th>
                             <th>Estado de la cita</th>
                         </thead>
@@ -103,20 +103,47 @@
     <script>
         var editor; // use a global for the submit and return data rendering in the examples
         $(document).ready( function () {
-            $('#table_id').DataTable({
+            $('#tabla_pacientes').DataTable();
+            $('#bt_buscar').on('click',function () {
+                event.preventDefault();
+                $.ajax({
+                    type: $('#form_consulta').attr('method'),
+                    url: $('#form_consulta').attr('action'),
+                    data: $('#form_consulta').serialize(),
+                    success: function (response) {
+                        var table = $('#tabla_pacientes').DataTable().destroy();
+                        inicializarTabla(response);
+                        //response_form_submitButon("posi")
+                    },
+                    error: function(response) {
+                        response_form_submitButon("Error al consultar a la base de datos")
+                    }
+                });
+                return false;
+            });
+
+            $('#bt_buscar').click();
+        } );
+
+        function inicializarTabla(response)
+        {
+            $('#tabla_pacientes').DataTable({
                 bPaginate: true,
                 searching: true,
                 ordering:  true,
-                data: {{paciente|safe}},
+                data: response,
                 columns: [
                     { data: "idPaciente" },
+                    { data: "Fecha" },
+                    { data: "Hora" },
                     { data: "paciente" },
+                    { data: "Terapista" },
                     { data: "tipoTerapia" },
                     { data: "estado" }
                 ],
                 select: true
             });
-            var table = $('#table_id').DataTable();
+            var table = $('#tabla_pacientes').DataTable();
             new $.fn.dataTable.Buttons( table, {
                 buttons: [
                     'copy', 'excel', 'pdf'
@@ -124,16 +151,25 @@
             } );
             table.buttons().container().appendTo( $('.col-sm-6:eq(0)', table.table().container() ) );
 
-            editor = new $.fn.dataTable.Editor( {
-                table: "#table_id",
+            /*editor = new $.fn.dataTable.Editor( {
+                table: "#tabla_pacientes",
                 idSrc:  'idPaciente',
                 fields: [
                     {
                         label: "Id:",
                         name: "idPaciente"
                     }, {
+                        label: "Fecha:",
+                        name: "Fecha"
+                    }, {
+                        label: "Hora:",
+                        name: "Hora"
+                    }, {
                         label: "Paciente:",
                         name: "paciente"
+                    }, {
+                        label: "Terapista:",
+                        name: "Terapista"
                     }, {
                         label: "Tipo de terapia:",
                         name: "tipoTerapia"
@@ -150,16 +186,20 @@
                     }]
              });
             // Activate the bubble editor on click of a table cell
-            $('#table_id').on( 'click', 'tbody td:nth-child(4)', function (e) {
+            $('#tabla_pacientes').on( 'click', 'tbody td:nth-child(7)', function (e) {
                 editor.buttons('Actualizar').bubble( this, {buttons: true} );
-            } );
-        } );
+            } );*/
+        }
 
-        $('#bt_buscar').on('click', function () {
-            var $btn = $(this).button('loading')
-            // business logic...
-            $btn.button('reset')
-        })
+        function response_form_submitButon(mensaje)
+        {
+            var message = $('<div class="alert alert-success error-message" style="display: none;">');
+            var close = $('<a href="#" class="close" data-dismiss="alert">&times;</a>');
+            message.append(close);
+            message.append(mensaje); // adding the close button to the message
+            // add the message element to the body, fadein, wait 3secs, fadeout
+            message.appendTo($('body')).fadeIn(300).delay(2000).fadeOut(500);
+        }
     </script>
 
 

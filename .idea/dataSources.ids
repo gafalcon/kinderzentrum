@@ -4,44 +4,15 @@
     <database-info product="SQLite" version="3.8.9" jdbc-version="2.1" driver-name="SQLiteJDBC" driver-version="native"/>
     <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed"/>
     <schema name="" catalog=""/>
-    <table name="asistencia_bebe" schema="" catalog="" type="TABLE">
-      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
-      <column name="nombre" sqlType="VARCHAR(200)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
-      <column name="terapia_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
-      <primary-key columns="id"/>
-      <foreign-key name="#FAKE_asistencia_bebe_1" columns="terapia_id" ref-table="asistencia_terapia" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
-      <exported-key name="#FAKE_asistencia_cit_1" table="asistencia_cit" schema="" catalog="" columns="bebe_id"/>
-      <index name="asistencia_bebe_3b02ef56" unique="true" columns="terapia_id"/>
-    </table>
-    <table name="asistencia_cit" schema="" catalog="" type="TABLE">
-      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
-      <column name="fecha_registro" sqlType="DATETIME" precision="0" scale="-1" nullable="false" jdbcType="12"/>
-      <column name="fecha_cita" sqlType="DATE" precision="0" scale="-1" nullable="false" jdbcType="12"/>
-      <column name="hora_inicio" sqlType="TIME" precision="0" scale="-1" nullable="false" jdbcType="12"/>
-      <column name="hora_fin" sqlType="TIME" precision="0" scale="-1" nullable="false" jdbcType="12"/>
-      <column name="estado" sqlType="VARCHAR(2)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
-      <column name="indicaciones" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
-      <column name="bebe_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
-      <primary-key columns="id"/>
-      <foreign-key name="#FAKE_asistencia_cit_1" columns="bebe_id" ref-table="asistencia_bebe" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
-      <index name="asistencia_cit_8f4ae4ef" unique="true" columns="bebe_id"/>
-    </table>
-    <table name="asistencia_terapia" schema="" catalog="" type="TABLE">
-      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
-      <column name="costo" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
-      <column name="nombre" sqlType="VARCHAR(200)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
-      <primary-key columns="id"/>
-      <exported-key name="#FAKE_asistencia_bebe_1" table="asistencia_bebe" schema="" catalog="" columns="terapia_id"/>
-    </table>
     <table name="asistencia_terapia__tipo_terapia" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
-      <column name="tipo_terapia_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <column name="terapista_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="tipo_terapia_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <primary-key columns="id"/>
-      <foreign-key name="#FAKE_asistencia_terapia__tipo_terapia_1" columns="terapista_id" ref-table="asistencia_terapista" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
-      <foreign-key name="#FAKE_asistencia_terapia__tipo_terapia_2" columns="tipo_terapia_id" ref-table="asistencia_tipo_terapia" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
-      <index name="asistencia_terapia__tipo_terapia_8c02ce3c" unique="true" columns="terapista_id"/>
+      <foreign-key name="#FAKE_asistencia_terapia__tipo_terapia_1" columns="tipo_terapia_id" ref-table="asistencia_tipo_terapia" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_asistencia_terapia__tipo_terapia_2" columns="terapista_id" ref-table="asistencia_terapista" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
       <index name="asistencia_terapia__tipo_terapia_0b0c9518" unique="true" columns="tipo_terapia_id"/>
+      <index name="asistencia_terapia__tipo_terapia_8c02ce3c" unique="true" columns="terapista_id"/>
     </table>
     <table name="asistencia_terapista" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
@@ -53,6 +24,7 @@
       <column name="fecha_nacimiento" sqlType="DATE" precision="0" scale="-1" nullable="false" jdbcType="12"/>
       <primary-key columns="id"/>
       <exported-key name="#FAKE_asistencia_terapia__tipo_terapia_1" table="asistencia_terapia__tipo_terapia" schema="" catalog="" columns="terapista_id"/>
+      <exported-key name="#FAKE_asistencia_terapia__tipo_terapia_2" table="asistencia_terapia__tipo_terapia" schema="" catalog="" columns="terapista_id"/>
     </table>
     <table name="asistencia_tipo_terapia" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
@@ -62,6 +34,7 @@
       <primary-key columns="id"/>
       <exported-key name="#FAKE_asistencia_terapia__tipo_terapia_2" table="asistencia_terapia__tipo_terapia" schema="" catalog="" columns="tipo_terapia_id"/>
       <exported-key name="#FAKE_cita_cita_1" table="cita_cita" schema="" catalog="" columns="tipo_terapia_id"/>
+      <exported-key name="#FAKE_asistencia_terapia__tipo_terapia_1" table="asistencia_terapia__tipo_terapia" schema="" catalog="" columns="tipo_terapia_id"/>
       <exported-key name="#FAKE_cita_cita_1" table="cita_cita" schema="" catalog="" columns="tipo_terapia_id"/>
     </table>
     <table name="auth_group" schema="" catalog="" type="TABLE">
@@ -255,7 +228,7 @@
       <column name="areas_dificultad" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
       <column name="had_convulsion" sqlType="SMALLINT" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <column name="tipo_crisis" sqlType="VARCHAR(256)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
-      <column name="edad_crisis" sqlType="SMALLINT UNSIGNED" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="edad_crisis" sqlType="SMALLINT UNSIGNED" precision="0" scale="-1" nullable="true" jdbcType="4"/>
       <primary-key columns="id"/>
       <exported-key name="#FAKE_registro_medicamento_1" table="registro_medicamento" schema="" catalog="" columns="descripcion_id"/>
       <exported-key name="#FAKE_registro_paciente_6" table="registro_paciente" schema="" catalog="" columns="descripcion_id"/>
@@ -453,7 +426,7 @@
     <table name="registro_terapia" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <column name="tipo" sqlType="SMALLINT" precision="0" scale="-1" nullable="false" jdbcType="4"/>
-      <column name="tiempo_terapia" sqlType="BIGINT" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="tiempo_terapia" sqlType="VARCHAR(50)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
       <column name="descripcion_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <primary-key columns="id"/>
       <foreign-key name="#FAKE_registro_terapia_1" columns="descripcion_id" ref-table="registro_descripcion" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
