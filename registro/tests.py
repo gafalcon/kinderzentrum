@@ -3,6 +3,14 @@ from django.test import TestCase
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import Client
 from django.contrib.auth.models import User
+
+from selenium import webdriver
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+
+firefox_capabilities = DesiredCapabilities.FIREFOX
+firefox_capabilities['marionette'] = True
+firefox_capabilities['binary'] = '/usr/bin/firefox'
+
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.ui import Select
@@ -15,7 +23,8 @@ class MySeleniumTests(StaticLiveServerTestCase):
         super(MySeleniumTests, cls).setUpClass()
         user = User.objects.create_user("gabriel", password="gabriel")
         user.groups.add(1)
-        cls.selenium = WebDriver()
+        cls.selenium = webdriver.Firefox(capabilities=firefox_capabilities)
+        #cls.selenium = WebDriver()
         cls.client = Client()
         cls.client.login(username="gabriel", password='gabriel') #Native django test client
         cookie = cls.client.cookies['sessionid']
@@ -58,12 +67,12 @@ class MySeleniumTests(StaticLiveServerTestCase):
         self.fill_paciente_form()
         self.selenium.find_element_by_css_selector("#nav2 > a").click()
         self.fill_familiar_form()
-        self.selenium.find_element_by_css_selector("#nav3 > a").click()
+        #self.selenium.find_element_by_css_selector("#nav3 > a").click()
         self.fill_medico_form()
         #self.selenium.find_element_by_id("nav4").click()
         self.selenium.find_element_by_css_selector("#nav4 > a").click()
         self.fillDescripcion()
-        self.selenium.find_element_by_css_selector("#nav5 > a").click()
+        #self.selenium.find_element_by_css_selector("#nav5 > a").click()
         self.fill_historial_madre_form()
         self.selenium.find_element_by_css_selector("#nav6 > a").click()
         self.fill_gestacion_form()

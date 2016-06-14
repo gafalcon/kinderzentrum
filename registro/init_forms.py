@@ -22,7 +22,7 @@ def init_historial_madre_form(historial_madre):
     return HistorialMadreForm(prefix="historial_madre",
                               instance=historial_madre,
                               initial=initial)
-    
+
 
 def init_gestacion_form(gestacion):
     sentimientos = gestacion.sentimientos.split(',')

@@ -334,7 +334,7 @@ class RegistroEditView(View):
             #     medico.save()
 
             return redirect('pacientes-list')
-        assert False
+        #assert False
         print("Errors paciente:", datos_paciente.errors)
         print("Errors familiares:", datos_familia.errors)
         print("Errors medico:", datos_medico.errors)

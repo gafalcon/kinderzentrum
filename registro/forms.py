@@ -598,7 +598,7 @@ class DatosFamiliaresOtrosForm(ModelForm):
         orientador = self.cleaned_data.get('orientacion_a_institucion')
         numero_hermanos = self.cleaned_data.get('numero_hermanos')
         if orientador == DatosFamiliaresOtros.ORIENTACION_OTRO:
-            model.orientacion_a_institucion = self.cleaned_data.get('otro_orientador')
+            model.orientacion_a_institucion = "Otro,"+self.cleaned_data.get('otro_orientador')
         if numero_hermanos <= 0:
             model.transtorno_hermanos = None
             model.hermano_transtorno = 0
