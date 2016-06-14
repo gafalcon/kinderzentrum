@@ -1,56 +1,147 @@
 {% extends 'base.html' %}
-{% block title %} Kinderzentrum - Atender cita {% endblock %}
-
+{% block title %} Kinderzentrum - Reservar cita {% endblock %}
 {% block css %}
-  <link rel="stylesheet" href="/static/css/bootstrap.css" />
-  <link rel="stylesheet" href="/static/css/cita/cita.css" />
-  <!--
-  <link rel='stylesheet' type='text/css' href='/static/css/cita/reset.css' />
-  -->
-  <link rel='stylesheet' type='text/css' href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/start/jquery-ui.css' />
-  <link rel='stylesheet' type='text/css' href='/static/css/cita/jquery.weekcalendar.css' />
-  <!--
-  <link rel='stylesheet' type='text/css' href='/static/css/cita/demo.css' />
-   -->
+  
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+  <link rel='stylesheet' href='/static/css/cita/demo.css' />  
+   
 {% endblock css %}
 
 {% block js %}
-    <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js'></script>
-    <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js'></script>
-    <script type='text/javascript' src='/static/js/cita/jquery.weekcalendar.js'></script>
-    <script type='text/javascript' src='/static/js/cita/demo.js'></script>
-    <script src="/static/js/cita.js"></script>
+
+    <script  src='/static/js/cita.js'></script>
+
 {% endblock js %}
 
-{% block content %}
-<div id = "titulo">Calendario para agendar citas</div>
+{% block title_name %}: Reservar cita {% endblock %}
 
-  <div id='calendar'></div>
-  <div id="event_edit_container">
-    <form>
-      <input type="hidden" />
+{% block content %}
+ 
+    <form method="POST" onsubmit="return validate()">
+      {% csrf_token %}
+      <div id="panel1" class="show panel panel-default">
+      <div id="panel-body"> 
       <ul>
         <li>
-          <span>Date: </span><span class="date_holder"></span>
+          <label for = "paciente">Fecha de la cita</label>       
+          <input  type= "text" id = "datepicker2" class = "datepicker2 form-control" name="date_holder" pattern="\d{1,2}/\d{1,2}/\d{4}" value = "Por favor hacer click aqui para mostrar el calendario y escoger una fecha" readonly />
         </li>
+        <br/>    
+    
         <li>
-          <label for="start">Start Time: </label><select name="start"><option value="">Select Start Time</option></select>
-        </li>
+          <label for = "horainicio">Hora inicio</label>       
+          <select name = "horainicio" class = "form-control" required>       
+              <option value = "">Seleccione una opci&oacute;n</option>
+              <option value="08:00 am">08:00 am</option>
+              <option value="08:30 am">08:30 am</option>
+              <option value="09:00 am">09:00 am</option> 
+              <option value="09:30 am">09:30 am</option>
+              <option value="10:00 am">10:00 am</option>
+              <option value="10:30 am">10:30 am</option>
+              <option value="11:00 am">11:00 am</option>
+              <option value="11:30 am">11:30 am</option> 
+              <option value="12:00 pm">12:00 pm</option>
+              <option value="12:30 pm">12:30 pm</option>
+              <option value="01:00 pm">01:00 pm</option>
+              <option value="01:30 pm">01:30 pm</option>
+              <option value="02:00 pm">02:00 pm</option> 
+              <option value="02:30 pm">02:30 pm</option>
+              <option value="03:00 pm">03:00 pm</option>
+              <option value="03:30 pm">03:30 pm</option>
+              <option value="04:00 pm">04:00 pm</option>
+              <option value="04:30 pm">04:30 pm</option> 
+              <option value="05:00 pm">05:00 pm</option>
+              <option value="05:30 pm">05:30 pm</option>
+              <option value="06:00 pm">06:00 pm</option>
+              <option value="06:30 pm">06:30 pm</option>
+          </select>
+        </li>    
+        <br/>
+    
         <li>
-          <label for="end">End Time: </label><select name="end"><option value="">Select End Time</option></select>
-        </li>
+          <label for = "horafin">Hora fin</label>        
+          <select name = "horafin" class = "form-control" required>        
+              <option value = "">Seleccione una opci&oacute;n</option>
+              <option value="08:00 am">08:00 am</option>
+              <option value="08:30 am">08:30 am</option>
+              <option value="09:00 am">09:00 am</option> 
+              <option value="09:30 am">09:30 am</option>
+              <option value="10:00 am">10:00 am</option>
+              <option value="10:30 am">10:30 am</option>
+              <option value="11:00 am">11:00 am</option>
+              <option value="11:30 am">11:30 am</option> 
+              <option value="12:00 pm">12:00 pm</option>
+              <option value="12:30 pm">12:30 pm</option>
+              <option value="01:00 pm">01:00 pm</option>
+              <option value="01:30 pm">01:30 pm</option>
+              <option value="02:00 pm">02:00 pm</option> 
+              <option value="02:30 pm">02:30 pm</option>
+              <option value="03:00 pm">03:00 pm</option>
+              <option value="03:30 pm">03:30 pm</option>
+              <option value="04:00 pm">04:00 pm</option>
+              <option value="04:30 pm">04:30 pm</option> 
+              <option value="05:00 pm">05:00 pm</option>
+              <option value="05:30 pm">05:30 pm</option>
+              <option value="06:00 pm">06:00 pm</option>
+              <option value="06:30 pm">06:30 pm</option>  
+          </select>
+        </li>    
+        <br/>
+    
         <li>
-          <label for="title">Title: </label><input type="text" name="title" />
+          <label for = "paciente">Seleccione un paciente</label>
+          <select  name = "paciente" class = "form-control" required>
+              {{ pacientes }}
+              <option value = "">Seleccione una opci&oacute;n</option> 
+              {% for paciente in pacientes %}
+              <option value="{{ paciente.id}}">{{ paciente.nombres  }} {{ paciente.apellidos  }}</option>
+              {% endfor %}
+          </select>
         </li>
+        <br/>    
+    
         <li>
-          <label for="body">Body: </label><textarea name="body"></textarea>
+          <label for = "tipoterapia">Seleccione un tipo de terapia</label>
+          <select name = "tipoterapia" class = "form-control" required>
+          {{ tipo_terapia_list }}
+              <option value = "">Seleccione una opci&oacute;n</option> 
+              {% for tipo_terapia in tipo_terapia_list %}
+              <option value="{{ tipo_terapia.id}}">{{ tipo_terapia.nombre  }}</option>
+            {% endfor %}
+          </select>
         </li>
-      </ul>
+        <br/>
+    
+        <li>
+          <label for = "terapista">Seleccione un(a) terapista</label>
+          <select name = "terapista" class = "form-control" required>
+              {{ terapista_list }}
+              <option value = "">Seleccione una opci&oacute;n</option> 
+              {% for terapista in terapista_list %}
+              <option value="{{ terapista.id}}">{{ terapista.nombres  }} {{ terapista.apellidos  }}</option>
+              {% endfor %}
+          </select>
+        </li>
+        <br/>
+    
+       </ul>
+      </div>      
+
+      <div id = "savediv">
+         <button id="enviar" type="submit" class="btn btn-primary">
+           <i class="icon-user icon-white"></i> Guardar
+         </button>
+      </div>
+
+     </div>
+
     </form>
-  </div>
-  <div id="about">
-
-  </div>
-
-
+   
 {% endblock %}
+
+{% block script %}
+  
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+  <script  src='/static/js/cita/validate.js'></script> 
+  
+{% endblock script %}

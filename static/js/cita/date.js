@@ -34,38 +34,34 @@ $(document).ready(function() {
          resetForm($dialogContent);
          var startField = $dialogContent.find("select[name='start']").val(calEvent.start);
          var endField = $dialogContent.find("select[name='end']").val(calEvent.end);
-         var titleField = $dialogContent.find("input[name='title']");
-         var bodyField = $dialogContent.find("textarea[name='body']");
+         /*var titleField = $dialogContent.find("input[name='title']");*/
+         /*var bodyField = $dialogContent.find("textarea[name='body']");*/
 
 
          $dialogContent.dialog({
             modal: true,
-            title: "New Calendar Event",
+            title: "Nueva cita",
             close: function() {
                $dialogContent.dialog("destroy");
                $dialogContent.hide();
                $('#calendar').weekCalendar("removeUnsavedEvents");
             },
             buttons: {
-               save : function() {
-                  calEvent.id = id;
-                  id++;
-                  calEvent.start = new Date(startField.val());
-                  calEvent.end = new Date(endField.val());
-                  calEvent.title = titleField.val();
-                  calEvent.body = bodyField.val();
-
-                  $calendar.weekCalendar("removeUnsavedEvents");
-                  $calendar.weekCalendar("updateEvent", calEvent);
+               /*save : function() {
+                 
+                  submit();
                   $dialogContent.dialog("close");
+                  
                },
-               cancel : function() {
+               */
+               cancelar : function() {
                   $dialogContent.dialog("close");
-               }
+               }        
             }
          }).show();
 
-         $dialogContent.find(".date_holder").text($calendar.weekCalendar("formatDate", calEvent.start));
+         /*$dialogContent.find(".date_holder").text($calendar.weekCalendar("formatDate", calEvent.start));*/
+         $dialogContent.find("input[name='date_holder']").val($calendar.weekCalendar("formatDate", calEvent.start));
          setupStartAndEndTimeFields(startField, endField, calEvent, $calendar.weekCalendar("getTimeslotTimes", calEvent.start));
 
       },
@@ -118,7 +114,8 @@ $(document).ready(function() {
 
          var startField = $dialogContent.find("select[name='start']").val(calEvent.start);
          var endField = $dialogContent.find("select[name='end']").val(calEvent.end);
-         $dialogContent.find(".date_holder").text($calendar.weekCalendar("formatDate", calEvent.start));
+         /*$dialogContent.find(".date_holder").text($calendar.weekCalendar("formatDate", calEvent.start));*/
+         $dialogContent.find("input[name='date_holder']").val($calendar.weekCalendar("formatDate", calEvent.start));
          setupStartAndEndTimeFields(startField, endField, calEvent, $calendar.weekCalendar("getTimeslotTimes", calEvent.start));
          $(window).resize().resize(); //fixes a bug in modal overlay size ??
 

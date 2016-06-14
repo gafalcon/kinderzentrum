@@ -70,96 +70,156 @@ var Configuration = {
 };
 
 var State = {
-  CurrentPacient: null
+  CurrentPatient: null,
+  Date: {
+    From: null,
+    To: null
+  }
+}
+
+function findMatches(q, cb) {
+//     var matches, substringRegex;
+//
+//     // an array that will be populated with substring matches
+//     matches = [];
+//
+//     // regex used to determine if a string contains the substring `q`
+//     substrRegex = new RegExp(q, 'i');
+//
+//     // iterate through the pool of strings and for any string that
+//     // contains the substring `q`, add it to the `matches` array
+//     $.each(strs, function(i, str) {
+//       if (substrRegex.test(str)) {
+//         matches.push(str);
+//       }
+//     });
+//
+//     cb(matches);
+
+  getPatientSuggestionsByNameFragment(q).then(function (suggestions) {
+    cb(suggestions);
+  }).bind(this);
+}
+
+$('#custom-search-input .typeahead').typeahead({
+  hint: true,
+  highlight: true,
+  minLength: 1
+},
+{
+  name: 'pacientes',
+  display: function (data) {
+    return `${data.nombres} ${data.apellidos}`
+  },
+  source: findMatches,
+  templates: {
+    empty: '<span>No existen pacientes registrados con esos nombres</span>',
+    suggestion: function (data) {
+      console.log(data);
+      return `<div>${data.nombres} ${data.apellidos}</div>`;
+    }
+  }
+});
+
+$('.typeahead').bind('typeahead:select', function(ev, suggestion) {
+  State.CurrentPatient = {
+    Id: suggestion.id,
+    Name: `${suggestion.nombres} ${suggestion.apellidos}`,
+    Payments: []
+  };
+});
+$("#datetimepicker6").on("dp.change", function (e) {
+  State.Date.From = e.date;
+});
+$("#datetimepicker7").on("dp.change", function (e) {
+  State.Date.To = e.date;
+});
+
+function generatePayments(event) {
+  if (State.CurrentPatient == null) {
+    alert('No hay paciente seleccionado.');
+    return;
+  }
+  if (State.Date.From == null || State.Date.To == null) {
+    alert('Los campos de fechas deben ser proveidos.');
+    return;
+  }
+  if (State.Date.From > State.Date.To) {
+    alert('La fecha de inicio debe ser previa a la de final');
+    return;
+  }
+  $('#generate_payments_options').disabled = true;
+  getPatientPaymentInformation(State.CurrentPatient.Id, {from: State.Date.From, to: State.Date.To}).then(function (payments) {
+    $('#generate_payments_options').disabled = false;
+  });
 }
 
 function getPatientSuggestionsByNameFragment(nameFragment) {
-  var handlePatientSuggestionsPromise;
-  if (Configuration.Debug.Enabled) {
-    handlePatientSuggestionsPromise = Promise.resolve(Configuration.Debug.Suggestions)
-      .then(function (unfilteredSuggestions) {
-        return unfilteredSuggestions
-          .filter(function (suggestion) {
-            return suggestion.name.indexOf(nameFragment) !== -1;
-          });
-      })
-      .then(Configuration.Debug.Delay);
-  } else {
-    var URL = API.host = '/pacientes?limit=' + Configuration.Suggestions.Limit || 5;
-    if (nameFragment !== '') {
-      URL += '/query=' + nameFragment;
-    }
-    handlePatientSuggestionsPromise = fetch(URL)
-      .then(function (response) {
-        if (response.ok) {
-          return response;
-        } else {
-          var error = new Error(response.statusText);
-          error.response = response;
-          throw error;
-        }
-      }).then(function (json) {
-        return json.suggestions;
-      })
+  var URL = API.host + '/pagos/pacientes/sugerencias?limit=' + Configuration.Suggestions.Limit || 5;
+  if (nameFragment !== '') {
+    URL += '&query=' + nameFragment;
   }
-  handlePatientSuggestionsPromise
-    .then(function (suggestions) {
-      updatePatientSuggestionsDropdown(suggestions);
-    })
-    .catch(function (error) {
-      console.log('Error: ' + error);
-      updatePatientSuggestionsDropdown([]);
+  return fetch(URL)
+    .then(function (response) {
+      if (response.ok) {
+        return response.json();
+      } else {
+        var error = new Error(response.statusText);
+        error.response = response;
+        throw error;
+      }
+    }).then(function (json) {
+      console.log(json)
+      return json;
     });
-}
-
-function updatePatientSuggestionsDropdown(suggestions) {
-  console.log(suggestions);
 }
 
 function getPatientPaymentInformation(id, date) {
-  var handlePatientInformationPromise;
-  if (Configuration.Debug.Enabled) {
-    handlePatientInformationPromise = Promise.resolve({id: id, information: Configuration.Debug.PaymentInformation})
-      .then(function (data) {
-        return {
-          id: data.information.id,
-          payments: data.information.payments.filter(function (payment) {
-            return payment.patient === data.id && payment.date >= date.from && payment.date <= date.to;
-          })
-        };
-      })
-      .then(Configuration.Debug.Delay);
-  } else {
-    var URL = API.host = '/pagos/payments/' + id + '?from=' + date.from + '&to=' + date.to;
-    handlePatientInformationPromise = fetch(URL)
-      .then(function (response) {
-        if (response.ok) {
-          return response;
-        } else {
-          var error = new Error(response.statusText);
-          error.response = response;
-          throw error;
-        }
-      }).then(function (json) {
-        return json.information;
-      });
-  }
-  handlePatientInformationPromise
-    .then(function (paymentInformation) {
-      updatePatientPaymentInformationTable(paymentInformation);
+  var URL = API.host + '/pagos/pacientes/' + id + '?from=' + (date.from / 1000) + '&to=' + (date.to / 1000);
+  return fetch(URL)
+    .then(function (response) {
+      console.log(response);
+      if (response.ok) {
+        return response.json();
+      } else {
+        var error = new Error(response.statusText);
+        error.response = response;
+        throw error;
+      }
+    })
+    .then(function (payments) {
+      State.CurrentPatient.Payments = payments;
+      updatePatientPaymentInformationTable(payments);
     })
     .catch(function (error) {
-      console.log('Error: ' + error);
-      updatePatientPaymentInformationTable({});
+      console.log('error');
+      State.CurrentPatient.Payments = [];
+      updatePatientPaymentInformationTable([]);
     });
 }
 
-function updatePatientPaymentInformationTable(paymentInformation) {
-  console.log(paymentInformation);
+function updatePatientPaymentInformationTable(payments) {
+  console.log(payments);
+  var tableNode = document.getElementById('patient_payments_table');
+  tableNode.innerHTML = payments.map(function (payment) {
+    return `<tr>
+      <td>${payment.terapia_nombre}</td>
+      <td>${payment.fecha_cita}, ${payment.hora_inicio} - ${payment.hora_fin}</td>
+      <td>${payment.costo}</td>
+    </tr>`;
+  }).join('') + `<tr class="table-result">
+    <td></td>
+    <td>Total</td>
+    <td>${payments.reduce(function (sum, payment) {
+      return sum + Number(payment.costo);
+    }, 0)}</td>
+  </tr>`;
+  var nameNode = document.getElementById('table_header_name');
+  nameNode.innerHTML = State.CurrentPatient.Name;
 }
 
 var API = {
-  host: 'http://localhost',
+  host: 'http://localhost:8000',
   getPatientSuggestionsByNameFragment: getPatientSuggestionsByNameFragment,
   getPatientPaymentInformation: getPatientPaymentInformation
 };

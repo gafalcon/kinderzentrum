@@ -795,7 +795,7 @@
 
          if (options.allowCalEventOverlap) {
             return;
-         }
+    a     }
          var adjustedStart, adjustedEnd;
          var self = this;
 
@@ -1311,7 +1311,7 @@
          timeslotsPerHour : 4,
          buttons : true,
          buttonText : {
-            today : "today",
+            today : "Hoy",
             lastWeek : "&nbsp;&lt;&nbsp;",
             nextWeek : "&nbsp;&gt;&nbsp;"
          },
@@ -1352,8 +1352,8 @@
          noEvents : function() {
          },
          shortMonths : ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-         longMonths : ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-         shortDays : ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+         longMonths : ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembrer', 'Octubre', 'Noviembre', 'Diciembre'],
+         shortDays : ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
          longDays : ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
       }
    });

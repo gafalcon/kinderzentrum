@@ -65,8 +65,10 @@
 					{% endif %}
 				
 				
-					{% if user|has_group:"pagos" %}
-					<li><a href="{% url 'pago' %}">Pagos</a></li>
+					{% if user|has_group:"pagos" %}	
+					
+					<li><a href="#">Pagos</a></li>
+					
 					{% endif %}
 
 				{% if user.is_superuser %}

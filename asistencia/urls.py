@@ -2,10 +2,6 @@ from django.conf.urls import patterns, url
 from asistencia import views
 from asistencia.views import mostrar_lista_asistencia
 
-
-
-
-
 urlpatterns =[
     # Examples:
     # url(r'^$', 'proyecto_django.views.home', name='home'),
