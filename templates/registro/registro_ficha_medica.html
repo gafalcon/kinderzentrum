@@ -15,7 +15,7 @@
 
 
 {% block content %}
-<div class="dotstyle dotstyle-tooltip" style="margin: 4% 0px 1% 4%; font-size:12px;">			
+<div class="dotstyle dotstyle-tooltip" style="margin: 4% 0px 1% 6%; font-size:12px;">			
 	<ul id="dots_nav">
 		<li id="nav1" onclick="setPanelVisible(1)" class="separator current"><a href="#">Paciente</a></li>
 		<li id="nav2" onclick="setPanelVisible(2)" class="separator current shown"><a href="#" >Familiares</a></li>
@@ -66,7 +66,7 @@
 	</div>
 
     <!-- Familiares -->
-	<div id="panel2" class="hide panel panel-default" data-error="1">
+	<div id="panel2" class="hide panel panel-default" data-error="0">
 		<div class="panel-heading">Datos Familiares</div>
         {{ datos_familia_formset.management_form }}
         {% for form in datos_familia_formset %}
@@ -122,7 +122,7 @@
 	</div>
 
 	<!-- Descripcion del niño -->
-	<div id="panel4" class="hide panel panel-default" data-error="1">
+	<div id="panel4" class="hide panel panel-default" data-error="0">
 		<div class="panel-heading">Descripcion del niño</div>
         <div class="panel-body">			
 			{% for field in descripcion_paciente %}			

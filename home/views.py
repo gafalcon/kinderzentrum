@@ -29,15 +29,19 @@ def index_view(request):
 
 def login_view(request):
     mensaje = ""
+    print "hghjgfhjgj"
     if request.user.is_authenticated():
     	#si esta autenticado redirecciona al formulario
+        print "redirect"
         return HttpResponseRedirect('/')
     else:
         if request.method == "POST":
+            print "post"
             form = LoginForm(request.POST)
             if form.is_valid():
                 username = form.cleaned_data['username']
                 password = form.cleaned_data['password']
+                #print "hghjgfhjgj"
                 usuario = authenticate(username=username,password=password)
                 if usuario is not None and usuario.is_active:
                     login(request,usuario)

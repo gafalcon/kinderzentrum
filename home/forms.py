@@ -43,7 +43,7 @@ class UserCreateForm(UserCreationForm):
 		return user
 
 	def get_mensaje(self):
-		return "Usuario " +  self.cleaned_data['first_name'] + " creado con exito, se detallan los permisos concedidos:"
+		return self.cleaned_data['first_name'] + ' ' + self.cleaned_data['last_name']
 
 	def get_permisos(self):
 		return self.cleaned_data['grupos']

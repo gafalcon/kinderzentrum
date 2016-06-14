@@ -22,7 +22,7 @@
 	<h1>Kinderzentrum</h1>
 	<h2>Ingrese al sistema</h2>
 	
-	<div id="singin">
+	<!--<div id="singin">
 		<img id="avatar" src="../static/images/avatar.png">
 		<form action="." method="POST">
 			{% csrf_token %}	
@@ -32,7 +32,23 @@
 			<div id="olvidoCont">¿Olvid&oacute; su contraseña?</div>
 		</form>
 	</div>
-	<div id="nuevaCuenta">Crear nueva cuenta</div>
+	<div id="nuevaCuenta">Crear nueva cuenta</div>-->	
+	<div class="container">
+        <div class="card card-container">            
+            <form action="." method="POST" class="form-signin">
+            	{% csrf_token %}	
+                <span id="reauth-email" class="reauth-email"></span>
+                <div id="errorMsg" class="fade-in one">{{ mensaje }}</div>
+                <input type="text" id="username" name="username" class="form-control" placeholder="Usuario" required autofocus>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Contraseña" required>
+                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Ingresar</button>
+            </form><!-- /form -->
+            <a href="#" class="forgot-password">
+                ¿Olvidó su contraseña?
+            </a>
+        </div><!-- /card-container -->
+    </div><!-- /container -->
+    <div id="nuevaCuenta"><a href="/"><--Regresar a menú principal</a></div>	
 	{% endblock %}
 </body>
 </html>

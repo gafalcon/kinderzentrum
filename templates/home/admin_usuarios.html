@@ -29,12 +29,17 @@
 		</div>
 
 	{% elif registro_usuario_correcto %}
-	<div id="registro_usuario_correcto">
-		{{ mensaje }}
+	<div id="registro_usuario_correcto">		
 		<ul id="permisos">
-			{% for per in permisos %}
-			<li>{{ per|title }}</li>
-			{% endfor %}
+			<div id="panel_registro_usuario_correcto" class="show panel panel-default" style="margin: 0px 5%;">
+				<div class="panel-heading">Usuario Creado</div>		
+				<div class="panel-body">
+					Usuario <b>{{ mensaje }}</b> agregado exitosamente!
+					{% for per in permisos %}
+					<li>{{ per|title }}</li>
+					{% endfor %}
+				</div>
+			</div>		
 		</ul>
 	</div>
 
