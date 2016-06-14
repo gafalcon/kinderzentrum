@@ -1,5 +1,5 @@
 var page=1, total_pages=11;
-
+var test;
 function showButton(id,btnClass){
 	var obj = $("#"+id);
 	obj.attr("class","show "+btnClass);
@@ -74,10 +74,7 @@ function setPanelVisible(id){
 	}
 }
 
-$(function() {
-
-  	/* Creamos un widget de calendario con jquery-ui */
-    $( ".datepicker" ).datepicker({
+var datepickerValues = {
 		changeMonth: true,
 		changeYear: true,
 		yearRange: "1995:2030",
@@ -87,8 +84,16 @@ $(function() {
 		'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
 		dateFormat: 'dd/mm/yy'
 		
-    });
+};
+$(function() {
 
+  	/* Creamos un widget de calendario con jquery-ui */
+	
+    // $( ".datepicker" ).datepicker(datepickerValues);
+
+	$('body').on('focus',".datepicker", function(){
+		$(this).datepicker(datepickerValues);
+	});
     //ocultamos los campos que no son necesarios a menos que se realice una eleccion 
     $('[oculto=oculto]').parent().hide();
     //$('#id_descripcion_otros').parent().hide();
@@ -112,14 +117,13 @@ $(function() {
 	$('input:radio[name=descripcion_paciente-tratamiento]').on('change', function(e) {
 		value_changed(e.target.value == "True", $("#id_descripcion_paciente-lugar_tratamiento").parent());
 	});
-
-	value_changed($("#id_descripcion_paciente-tipo_terapia_0").is(":checked"), $("#id_descripcion_paciente-tiempo_rehab_fisica").parent());
-	value_changed($("#id_descripcion_paciente-tipo_terapia_1").is(":checked"), $("#id_descripcion_paciente-tiempo_estimu_temprana").parent());
+	value_changed($("#id_descripcion_paciente-tipo_terapia_0").is(":checked"), $("#id_terapia-0-tiempo_terapia").parent());
+	value_changed($("#id_descripcion_paciente-tipo_terapia_1").is(":checked"), $("#id_terapia-1-tiempo_terapia").parent());
     $('input[name=descripcion_paciente-tipo_terapia').on('click', function(e){
     	if(e.target.value == 1)
-			value_changed(e.target.checked, $("#id_descripcion_paciente-tiempo_rehab_fisica").parent());
+			value_changed(e.target.checked, $("#id_terapia-0-tiempo_terapia").parent());
     	else if(e.target.value == 2)
-			value_changed(e.target.checked, $("#id_descripcion_paciente-tiempo_estimu_temprana").parent());
+			value_changed(e.target.checked, $("#id_terapia-1-tiempo_terapia").parent());
     });
 
 	value_changed($("#id_descripcion_paciente-areas_dificultad_8").is(":checked"), $("#id_descripcion_paciente-otro_dificultad").parent());
@@ -256,6 +260,13 @@ $(function() {
 	});
 
 	var num_hermanos = $('input[name=familiares_otros-numero_hermanos]').val();
+	var formCount = $("#id_hermanos_set-TOTAL_FORMS").val();
+	if(num_hermanos > 0 && formCount > num_hermanos){
+		for( var i=num_hermanos; i < formCount; i++){
+			$(".row-hermanos:last").remove();
+		}
+		$("#id_hermanos_set-TOTAL_FORMS").val(num_hermanos);
+	}
 	value_changed(num_hermanos != "0" && num_hermanos != '',
 				  $("#hermanos-formset"));
 	value_changed(num_hermanos != "0" && num_hermanos != '',
@@ -272,32 +283,33 @@ $(function() {
 				  $("#id_familiares_otros-alteracion_desarrollo").parent());
 	$('input[name=familiares_otros-numero_hermanos]').change(function(e){
 		var num_hermanos = parseInt(e.target.value);
-		var formCount = $("#id_hermano_set-TOTAL_FORMS").val();
-
+		var formCount = $("#id_hermanos_set-TOTAL_FORMS").val();
+		console.log(num_hermanos);
+		console.log(formCount);
 		if(num_hermanos != formCount && num_hermanos != 0){
 			if(num_hermanos > formCount){
 				for(var i = formCount; i < num_hermanos; i++){
 					var row = $(".row-hermanos:first").clone(false);
 					row.insertAfter(".row-hermanos:last").slideDown(300);
-					$(row).find("#id_hermano_set-0-id").
-						attr("name", "hermano_set-"+i+"-id").
-						attr("id", "id_hermano_set-"+i+"-id").val('');
-					$(row).find("#id_hermano_set-0-nombres").
-						attr("name", "hermano_set-"+i+"-nombres").
-						attr("id", "id_hermano_set-"+i+"-nombres").val('');
-					$(row).find("#id_hermano_set-0-apellidos").
-						attr("name", "hermano_set-"+i+"-apellidos").
-						attr("id", "id_hermano_set-"+i+"-apellidos").val('');
-					$(row).find("#id_hermano_set-0-fecha_nacimiento").
-						attr("name", "hermano_set-"+i+"-fecha_nacimiento").
-						attr("id", "id_hermano_set-"+i+"-fecha_nacimiento").val('');
+					$(row).find("#id_hermanos_set-0-id").
+						attr("name", "hermanos_set-"+i+"-id").
+						attr("id", "id_hermanos_set-"+i+"-id").val('');
+					$(row).find("#id_hermanos_set-0-nombres").
+						attr("name", "hermanos_set-"+i+"-nombres").
+						attr("id", "id_hermanos_set-"+i+"-nombres").val('');
+					$(row).find("#id_hermanos_set-0-apellidos").
+						attr("name", "hermanos_set-"+i+"-apellidos").
+						attr("id", "id_hermanos_set-"+i+"-apellidos").val('');
+					$(row).find("#id_hermanos_set-0-fecha_nacimiento").
+						attr("name", "hermanos_set-"+i+"-fecha_nacimiento").
+						attr("id", "id_hermanos_set-"+i+"-fecha_nacimiento").val('').removeClass("hasDatepicker");
 				}
 			}else if(formCount > num_hermanos){
 				for( var i=num_hermanos; i < formCount; i++){
 					$(".row-hermanos:last").remove();
 				}
 			}
-			$("#id_hermano_set-TOTAL_FORMS").val(num_hermanos);
+			$("#id_hermanos_set-TOTAL_FORMS").val(num_hermanos);
 		}
 		
 		value_changed(e.target.value != "0" && e.target.value != '', $("#hermanos-formset"));
@@ -314,11 +326,37 @@ $(function() {
 
 	});
 
+	function clearForm(form) {
+		// iterate over all of the inputs for the form
+		// element that was passed in
+		$(':input', form).each(function() {
+			console.log(this.type);
+			var type = this.type;
+			var tag = this.tagName.toLowerCase(); // normalize case
+			// it's ok to reset the value attr of text inputs,
+			// password inputs, and textareas
+			if (type == 'text' || type== 'hidden' || type=='numbre' || type == 'password' || tag == 'textarea'){
+				this.value = "";
+				$(this).attr('value', '');
+			}
+			// checkboxes and radios need to have their checked state cleared
+			// but should *not* have their 'value' changed
+			else if (type == 'checkbox' || type == 'radio')
+				this.checked = false;
+			// select elements need to have their 'selectedIndex' property set to -1
+			// (this works for both single and multiple select elements)
+			else if (tag == 'select'){
+				this.selectedIndex = -1;
+				test = $(this);
+				$(this).find('option[selected]').removeAttr('selected');
+			}
+		});
+	};
 	function addFormset(prefix, regex){
         var formCount = parseInt($("#id_"+prefix+"-TOTAL_FORMS").val());
 		var row = $(".formset-"+prefix+":first").clone(false);
 		$(row).insertAfter(".formset-"+prefix+":last").slideDown();
-		$(row).find("input[type=text]").attr('value', '').val('');
+		clearForm($(row));
 		var row_html = $(row).html();
 		$(row).html(row_html.replace(regex, prefix+"-"+formCount));
         $("#id_"+prefix+"-TOTAL_FORMS").val(formCount + 1);
@@ -331,7 +369,7 @@ $(function() {
 		}    
 	}
 	$("#btn-add-suplemento").click(function (e) {
-        addFormset("suplementoalimenticio_set", /suplementoalimenticio_set-0/g);
+        addFormset("suplementos", /suplementos-0/g);
 	});
 
 	$("#btn-add-familiar").click(function (e) {
@@ -343,15 +381,15 @@ $(function() {
 	});
 
 	$("#btn-add-medicamento").click(function(e){
-		addFormset("medicamento_set", /medicamento_set-0/g);
+		addFormset("medicamentos", /medicamentos-0/g);
 	});
 
 	$("#btn-delete-suplemento").click(function() {
-		deleteFormset("suplementoalimenticio_set");
+		deleteFormset("suplementos");
 	});
 
 	$("#btn-delete-medicamento").click(function (arg) {
-        deleteFormset("medicamento_set");
+        deleteFormset("medicamentos");
 	});
 
 	

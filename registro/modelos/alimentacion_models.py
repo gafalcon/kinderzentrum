@@ -110,5 +110,5 @@ class SuplementoAlimenticio(models.Model):
     frecuencia = models.CharField(max_length=50)
     tipo = models.CharField(max_length=50)
     cantidad = models.PositiveSmallIntegerField()
-    alimentacion = models.ForeignKey(AlimentacionCostumbres, on_delete=models.CASCADE)
+    alimentacion = models.ForeignKey(AlimentacionCostumbres, on_delete=models.CASCADE, related_name='suplementos')
  

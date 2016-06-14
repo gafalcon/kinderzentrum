@@ -17,15 +17,15 @@ class Descripcion(models.Model):
         max_length=256
     )
     edad_disc_molestia = models.PositiveSmallIntegerField(
-        "¿A qué edad notaron estas molestias?",
-        blank=True
+        "¿A qué edad notaron estas molestias?"#,
+        #blank=True
     )
     tratamiento = models.BooleanField("¿Se encuentra en algún tratamiento?")
     lugar_tratamiento = models.CharField("¿Dónde realiza el tratamiento?",
                                          max_length=256, blank=True)
     limitaciones_movimiento = models.IntegerField(
         "¿Existe alguna limitación con sus movimientos?",
-        choices=LIMITACIONES_OPTIONS,blank=True)
+        choices=LIMITACIONES_OPTIONS)
 
     areas_dificultad = models.CharField("¿Ha presentado su hijo(a) algún tipo de dificultad en éstas áreas?",
                                         max_length=256, blank=True)
@@ -44,11 +44,11 @@ class Terapia(models.Model):
                        (3, "Ninguna"))
     tipo = models.SmallIntegerField("Tipo de terapia", choices=TERAPIA_CHOICES)   
     tiempo_terapia = models.CharField("¿Cuánto tiempo lleva realizando la terapia", max_length=50)
-    descripcion = models.ForeignKey(Descripcion)
+    descripcion = models.ForeignKey(Descripcion, related_name="terapias")
 
 
 class Medicamento(models.Model):
     """ Medicamento recetado para convulsiones """
     nombre = models.CharField("nombre del medicamento", max_length=100)
     dosis_diaria = models.IntegerField()
-    descripcion = models.ForeignKey(Descripcion)
+    descripcion = models.ForeignKey(Descripcion, related_name="medicamentos")

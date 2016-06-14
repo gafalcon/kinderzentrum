@@ -20,10 +20,12 @@
 		<th>Nacionalidad</th>
 		<th>Grupo sanguíneo</th>
 		<th>Sexo</th>
+		<th>Editar</th>
 	</tr>
 
 	{% for paciente in object_list %}
 		<tr class="row-hermanos">
+			<!-- <td><a href="{#% url 'paciente_view' paciente.id %#}">paciente.nombres</a></td> -->
 			<td>{{paciente.nombres}}</td>
 			<td>{{paciente.apellidos}}</td>
 			<td>{{paciente.fecha_nacimiento}}</td>
@@ -31,6 +33,7 @@
 			<td>{{paciente.nacionalidad}}</td>
 			<td>{{paciente.grupo_sanguineo}}</td>
 			<td>{{paciente.sexo}}</td>
+			<td><a href="{% url 'paciente_edit' paciente.id %}">Editar</a></td>
 		</tr>
 	{% empty %}
 		<h3>No hay pacientes </h3>

@@ -20,6 +20,8 @@ CHOICES_SI_NO_DES = [(True, 'Si'), (False, 'No'), (None, 'Desconoce')]
 
 CHOICES_SI_NO = ((True, "Si"), (False, "No"))
 
+DATEFORMAT = '%d/%m/%Y'
+
 # class MyForm(ModelForm):
 #     """
 #     Extend from this form so your widgets have an 'error' class if there's
@@ -38,13 +40,14 @@ class PacienteForm(ModelForm):
     # grupo_sanguineo = forms.ChoiceField(choices=Paciente.GRUPO_SANGUINEO_CHOICES,
     #                                     widget=forms.Select(attrs={'class':'form-control', 'required': 'required'}))
     error_css_class = 'has-error'
-    fecha_nacimiento = forms.DateField(input_formats=['%d/%m/%Y'],
+    fecha_nacimiento = forms.DateField(input_formats=[DATEFORMAT],
                                        label='Fecha de nacimiento',
-                                       widget=forms.TextInput(attrs=
+                                       widget=forms.DateInput(attrs=
                                                               {
                                                                   'class':'datepicker form-control',
                                                                   'required': 'required'
-                                                              }))
+                                                              },
+                                                              format=DATEFORMAT))
     class Meta:
         model = Paciente
         fields = ['nombres',
@@ -82,12 +85,6 @@ class DescripcionPacienteForm(ModelForm):
                                           required=False
     )
     tipo_terapia = forms.MultipleChoiceField(required=True, choices=Terapia.TERAPIA_CHOICES, widget=forms.CheckboxSelectMultiple, label="Que tipo de terapia realiza?")
-    tiempo_rehab_fisica = forms.CharField(label="Tiempo en terapia de rehabilitacion fisica",
-                                          widget=forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Especifique el tiempo'}),
-                                          required=False)
-    tiempo_estimu_temprana = forms.CharField(label="Tiempo en terapia de estimulacion temprana",
-                                             widget=forms.TextInput(attrs={'class':'form-control', 'placeholder': 'Especifique el tiempo'}),
-                                             required=False)
     areas_dificultad = forms.MultipleChoiceField(required=False, choices=Descripcion.DIFICULTADES_OPTIONS,
                                                  widget=forms.CheckboxSelectMultiple,
                                                  label="Ha presentado su hijo(a) algun tipo de dificultades en estas áreas? marque todas las opciones que desee.")
@@ -101,8 +98,8 @@ class DescripcionPacienteForm(ModelForm):
         model = Descripcion
         fields = ['preocupacion','disc_molestias','otro_disc_molestias',
                   'edad_disc_molestia','tratamiento',
-                  'lugar_tratamiento','tipo_terapia','tiempo_rehab_fisica',
-                  'tiempo_estimu_temprana','areas_dificultad','otro_dificultad',
+                  'lugar_tratamiento','tipo_terapia',
+                  'areas_dificultad','otro_dificultad',
                   'limitaciones_movimiento','had_convulsion',
                   'tipo_crisis','edad_crisis','tomo_medicamentos']
         widgets = {'disc_molestias': forms.Select(choices=model.DESCUBRIO_MOLESTIAS_OPTIONS, attrs={'class':'form-control'}),
@@ -114,37 +111,30 @@ class DescripcionPacienteForm(ModelForm):
         cleaned_data = super(DescripcionPacienteForm, self).clean()
         disc_molestias = cleaned_data.get('disc_molestias')
         tratamiento = cleaned_data.get('tratamiento')
-        tipo_terapia = cleaned_data.get('tipo_terapia')
         areas_dificultad = cleaned_data.get('areas_dificultad')
         had_convulsion = cleaned_data.get('had_convulsion')
         tomo_medicamentos = cleaned_data.get('tomo_medicamentos')
         if disc_molestias == 'otros':
             if not cleaned_data.get('otro_disc_molestias'):
-                self.add_error('otro_disc_molestias', 'Debe llenar éste campo')
+                self.add_error('otro_disc_molestias', 'Debe llenar este campo')
         if tratamiento:
             if not cleaned_data.get('lugar_tratamiento'):
-                self.add_error('lugar_tratamiento', 'Debe llenar éste campo')
-        if tipo_terapia:
-            if '1' in tipo_terapia and not cleaned_data.get('tiempo_rehab_fisica'):
-                self.add_error('tiempo_rehab_fisica', 'Debe llenar éste campo')
-            if '2' in tipo_terapia and not cleaned_data.get('tiempo_estimu_temprana'):
-                self.add_error('tiempo_estimu_temprana', 'Debe llenar éste campo')
+                self.add_error('lugar_tratamiento', 'Debe llenar este campo')
 
         if areas_dificultad and 'otro' in areas_dificultad:
             if not cleaned_data.get('otro_dificultad'):
-                self.add_error('otro_dificultad', 'Debe llenar éste campo')
+                self.add_error('otro_dificultad', 'Debe llenar este campo')
         if had_convulsion == 1:
             if not cleaned_data.get('tipo_crisis'):
-                self.add_error('tipo_crisis', 'Debe llenar éste campo')
+                self.add_error('tipo_crisis', 'Debe llenar este campo')
             if not cleaned_data.get('edad_crisis'):
-                self.add_error('edad_crisis', 'Debe llenar éste campo')
+                self.add_error('edad_crisis', 'Debe llenar este campo')
 
     def save(self):
         model = super(DescripcionPacienteForm, self).save(commit=False)
-        tipo_terapia = self.cleaned_data.get('tipo_terapia')
         areas_dificultad = self.cleaned_data.get('areas_dificultad')
         if self.cleaned_data.get('disc_molestias') == 'otros':
-            model.disc_molestias = self.cleaned_data.get('otro_disc_molestias')
+            model.disc_molestias = 'otros,'+self.cleaned_data.get('otro_disc_molestias')
         if not self.cleaned_data.get('tratamiento'):
             model.lugar_tratamiento = ''
         if self.cleaned_data.get('had_convulsion') != 1:
@@ -156,16 +146,6 @@ class DescripcionPacienteForm(ModelForm):
             model.areas_dificultad = ','.join(areas_dificultad)
 
         model.save()
-        if '1' in tipo_terapia:
-            terapia = Terapia(tipo=1,
-                              tiempo_terapia=self.cleaned_data.get('tiempo_rehab_fisica'),
-                              descripcion=model)
-            terapia.save()
-        if '2' in tipo_terapia:
-            terapia = Terapia(tipo=2,
-                              tiempo_terapia=self.cleaned_data.get('tiempo_estimu_temprana'),
-                              descripcion=model)
-            terapia.save()
         return model
 
 
@@ -206,13 +186,17 @@ class HistorialMadreForm(ModelForm):
     def clean(self):
         cleaned_data = super(HistorialMadreForm, self).clean()
         if 'otra' in cleaned_data.get('enfermedades_previas') and not cleaned_data.get('otra_enf_previa'):
-            self.add_error('otra_enf_previa', 'Debe llenar éste campo')
+            self.add_error('otra_enf_previa', 'Debe llenar este campo')
         if 'otra' in cleaned_data.get('enfermedades_durante_embarazo') and not cleaned_data.get('otra_enf_embarazo'):
-            self.add_error('otra_enf_embarazo', 'Debe llenar éste campo')
+            self.add_error('otra_enf_embarazo', 'Debe llenar este campo')
         if cleaned_data.get('tuvo_defuncion_fetal', '') == "True" and cleaned_data.get('defunciones_fetales', 0) <= 0:
-            self.add_error('defunciones_fetales', 'Debe llenar éste campo con un valor mayor a 0')
+            self.add_error('defunciones_fetales', 'Debe llenar este campo con un valor mayor a 0')
         if cleaned_data.get('tuvo_hijos_muertos', '') == "True" and cleaned_data.get('hijos_nacidos_muertos', 0) <= 0:
-            self.add_error('hijos_nacidos_muertos', 'Debe llenar éste campo con un valor mayor a 0')
+            self.add_error('hijos_nacidos_muertos', 'Debe llenar este campo con un valor mayor a 0')
+        if cleaned_data.get('hijos_nacidos_vivos', 0) < 1:
+            self.add_error('hijos_nacidos_vivos', 'Debe llenar este campo con un valor mayor a 0')
+        if cleaned_data.get('embarazos', 0) < 1:
+            self.add_error('embarazos', 'Debe llenar este campo con un valor mayor a 0')
         if cleaned_data.get('uso_anticonceptivo', '') == "True" and not cleaned_data.get('anticonceptivos'):
             self.add_error('anticonceptivos', 'Debe seleccionar alguna opción')
 
@@ -241,7 +225,7 @@ class HistorialMadreForm(ModelForm):
 
     
 class DesarrolloDeLaGestacionForm(ModelForm):
-    curso_prenatal = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="Asistió a algún curso prenatal?")
+    curso_prenatal = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Asistió a algún curso prenatal?")
     vacuna_tetano = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Se vacunó usted contra el tetano durante el embarazo?")
     sentimientos = forms.MultipleChoiceField(required=False, choices=Gestacion.CHOICES_SENTIMIENTOS,
                                              widget=forms.CheckboxSelectMultiple,
@@ -260,9 +244,11 @@ class DesarrolloDeLaGestacionForm(ModelForm):
         curso_prenatal = cleaned_data.get('curso_prenatal', '')
         if curso_prenatal == "True":
             if not cleaned_data.get('lugar_curso_prenatal'):
-                self.add_error('lugar_curso_prenatal', 'Debe llenar éste campo')
+                self.add_error('lugar_curso_prenatal', 'Debe llenar este campo')
             if not cleaned_data.get('carga_horaria'):
-                self.add_error('carga_horaria', 'Debe llenar éste campo')
+                self.add_error('carga_horaria', 'Debe llenar este campo')
+        if self.cleaned_data.get('num_embarazo', 0) < 1:
+            self.add_error('num_embarazo', 'Debe ingresar un valor mayor a 0')
 
     def save(self):
         model = super(DesarrolloDeLaGestacionForm, self).save(commit=False)
@@ -281,14 +267,14 @@ class DesarrolloDeLaGestacionForm(ModelForm):
 class SituacionGestacionForm(ModelForm):
     class Meta:
         model = Situacion_Gestacion
-        fields=['nombre_situacion','periodo']
+        fields=['id', 'nombre_situacion','periodo']
         widgets={'periodo': forms.Select(choices=CHOICES_TRIMESTRES,attrs={'class':'form-control'})}
 
 
 class ActividadGestacionForm(ModelForm):
     class Meta:
         model = Actividad_Gestacion
-        fields=['nombre_actividad','periodo']
+        fields=['id', 'nombre_actividad','periodo']
         widgets={'periodo': forms.Select(choices=CHOICES_TRIMESTRES,attrs={'class':'form-control'})}
 
 
@@ -296,19 +282,39 @@ class NacimientoForm(ModelForm):
     gemelar = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Fue embarazo gemelar?")
     medicamentos_parto = forms.ChoiceField(choices=CHOICES_SI_NO_DES, widget=forms.RadioSelect, label="¿Se le administró medicamentos o inyección durante el parto?")
     complicaciones_cordon = forms.ChoiceField(choices=CHOICES_SI_NO_DES, widget=forms.RadioSelect, label="¿Hubieron complicaciones en el cordón umbilical?")
+    complicaciones = forms.MultipleChoiceField(choices=Nacimiento.COMPLICACIONES_CHOICES,
+                                               widget=forms.CheckboxSelectMultiple,
+                                               label="¿Tuvo usted complicaciones?")
+    metodo_nacimiento = forms.MultipleChoiceField(choices=Nacimiento.METODO_NACIMIENTO_CHOICES,
+                                                  widget=forms.CheckboxSelectMultiple,
+                                                  label="¿Cómo nación el bebé? Marque todas las opciones que necesite")
+
     class Meta:
         model = Nacimiento
         fields = '__all__'
         widgets = {
             'tipo_lugar_nacimiento': forms.RadioSelect(choices=Nacimiento.TIPO_LUGAR_NACIMIENTO_CHOICES),
-            'metodo_nacimiento': forms.CheckboxSelectMultiple(choices=Nacimiento.METODO_NACIMIENTO_CHOICES),
             'manera_inicio_parto': forms.RadioSelect(choices=Nacimiento.MANERA_INICIO_PARTO_CHOICES),
             'tipo_ruptura_fuente': forms.RadioSelect(choices=Nacimiento.TIPO_RUPTURA_FUENTE_CHOICES),
             'primera_parte_cuerpo': forms.RadioSelect(choices=Nacimiento.PRIMERA_PARTE_CUERPO_CHOICES),
-            'complicaciones': forms.CheckboxSelectMultiple(choices=Nacimiento.COMPLICACIONES_CHOICES),
             'medicamentos_parto': forms.RadioSelect(choices=CHOICES_SI_NO_DES),
             'complicaciones_cordon': forms.RadioSelect(choices=CHOICES_SI_NO_DES),
         } 
+
+    def clean(self):
+        cleaned_data = super(NacimientoForm, self).clean()
+        lugar = cleaned_data.get('tipo_lugar_nacimiento', -1)
+        if lugar != 3 and not cleaned_data.get('nombre_lugar_nacimiento', ''):
+            self.add_error('nombre_lugar_nacimiento', 'Debe llenar este campo')
+        if cleaned_data.get('semana_gestacion', 0) < 25:
+            self.add_error('semana_gestacion', 'Ingrese una semana válida')
+
+    def save(self):
+        model = super(NacimientoForm, self).save(commit=False)
+        model.complicaciones = ','.join(self.cleaned_data.get('complicaciones'))
+        model.metodo_nacimiento = ','.join(self.cleaned_data.get('metodo_nacimiento'))
+        model.save()
+        return model
     
 
 class RecienNacidoForm(ModelForm):
@@ -336,18 +342,30 @@ class RecienNacidoForm(ModelForm):
         hubo_apego_precoz = cleaned_data.get('hubo_apego_precoz')
         permanecio_internado = cleaned_data.get('permanecio_internado')
         complicaciones = cleaned_data.get("complicaciones_nacimiento")
+        edad_madre = cleaned_data.get('edad_madre')
+        edad_padre = cleaned_data.get('edad_padre')
+        if  edad_madre and (edad_madre <= 12 or edad_madre > 50):
+            self.add_error('edad_madre', 'Ingrese una edad válida')
+        if  edad_padre and (edad_padre <= 12 or edad_padre > 80):
+            self.add_error('edad_padre', 'Ingrese una edad válida')
+        if cleaned_data.get('diametro_encefalico', 0) <= 0:
+            self.add_error('diametro_encefalico', 'Ingrese un valor válido')
+        if cleaned_data.get('peso', 0) <= 0:
+            self.add_error('peso', 'Ingrese un valor válido')
+        if cleaned_data.get('tamanio', 0) <= 0:
+            self.add_error('tamanio', 'Ingrese un valor válido')
         if hubo_apego_precoz == 'True':
             tiempo =  cleaned_data.get('tiempo_apego_precoz')
             if not tiempo or tiempo == RecienNacido.APEGO_PRECOZ_NADA:
-                self.add_error('tiempo_apego_precoz', "Debe llenar éste campo con valor distinto a Nada")
+                self.add_error('tiempo_apego_precoz', "Debe llenar este campo con valor distinto a Nada")
         if permanecio_internado == 'True':
             if not cleaned_data.get('tiempo_internado'):
-                self.add_error('tiempo_internado', "Debe llenar éste campo")
+                self.add_error('tiempo_internado', "Debe llenar este campo")
             if not cleaned_data.get('tipo_contacto'):
-                self.add_error('tipo_contacto', "Debe llenar éste campo")
+                self.add_error('tipo_contacto', "Debe llenar este campo")
         if 'Otro' in complicaciones:
             if not cleaned_data.get('otra_complicacion'):
-                self.add_error('otra_complicacion', "Debe llenar éste campo")
+                self.add_error('otra_complicacion', "Debe llenar este campo")
 
     def save(self):
         model = super(RecienNacidoForm, self).save(commit=False)
@@ -431,22 +449,22 @@ class PrimerosDiasForm(ModelForm):
         examenes = cleaned_data.get('examenes')
         if icteria:
             if not cleaned_data.get('tratamiento_icteria'):
-                self.add_error('tratamiento_icteria', "Debe llenar éste campo")
+                self.add_error('tratamiento_icteria', "Debe llenar este campo")
         if clinica == 'True':
             if not cleaned_data.get('clinica_permanencia'):
-                self.add_error('clinica_permanencia', "Debe llenar éste campo")
+                self.add_error('clinica_permanencia', "Debe llenar este campo")
             if not cleaned_data.get('dias_permanencia'):
-                self.add_error('dias_permanencia', "Debe llenar éste campo")
+                self.add_error('dias_permanencia', "Debe llenar este campo con valor mayor a 0")
         if dormia_toda_noche == 'False':
             veces = cleaned_data.get('veces_despertar_noche')
             if not veces or veces <= 0:
-                self.add_error('veces_despertar_noche', "Debe llenar éste campo")
+                self.add_error('veces_despertar_noche', "Debe llenar este campo con valor mayor a 0")
         if situaciones and "Otro" in situaciones:
             if not cleaned_data.get('otra_situacion'):
-                self.add_error('otra_situacion', "Debe llenar éste campo")
+                self.add_error('otra_situacion', "Debe llenar este campo")
         if examenes and "Otro" in examenes:
             if not cleaned_data.get('otro_examen'):
-                self.add_error('otro_examen', "Debe llenar éste campo")
+                self.add_error('otro_examen', "Debe llenar este campo")
 
 
 class AlimentacionForm(ModelForm):
@@ -494,24 +512,24 @@ class AlimentacionForm(ModelForm):
         forma_alimento = cleaned_data.get('forma_alimento')
         if lactancia == 'True':
             if not cleaned_data.get('tiempo_leche_materna'):
-                self.add_error('tiempo_leche_materna', "Debe llenar éste campo")
+                self.add_error('tiempo_leche_materna', "Debe llenar este campo")
             if not cleaned_data.get('motivo_suspencion_lactancia'):
-                self.add_error('motivo_suspencion_lactancia', "Debe llenar éste campo")
+                self.add_error('motivo_suspencion_lactancia', "Debe llenar este campo")
         if difiere_alimentacion == 'True':
             if not cleaned_data.get('motivo_cambios_alimentacion'):
-                self.add_error('motivo_cambios_alimentacion', "Debe llenar éste campo")
+                self.add_error('motivo_cambios_alimentacion', "Debe llenar este campo")
         if motivo_suspencion_lactancia and "Otro" in motivo_suspencion_lactancia:
             if not cleaned_data.get('otro_motivo_suspencion_lactancia'):
-                self.add_error('otro_motivo_suspencion_lactancia', "Debe llenar éste campo")
+                self.add_error('otro_motivo_suspencion_lactancia', "Debe llenar este campo")
         if afecciones and "Otros" in afecciones:
             if not cleaned_data.get('otra_afeccion'):
-                self.add_error('otra_afeccion', "Debe llenar éste campo")
+                self.add_error('otra_afeccion', "Debe llenar este campo")
         if enfermedades and "Otro" in enfermedades:
             if not cleaned_data.get('otra_enfermedad'):
-                self.add_error('otra_enfermedad', "Debe llenar éste campo")
+                self.add_error('otra_enfermedad', "Debe llenar este campo")
         if forma_alimento and "Otro" in forma_alimento:
             if not cleaned_data.get('otra_forma_alimento'):
-                self.add_error("otra_forma_alimento", "Debe llenar éste campo")
+                self.add_error("otra_forma_alimento", "Debe llenar este campo")
 
     def save(self):
         model = super(AlimentacionForm, self).save(commit=False)
@@ -563,17 +581,17 @@ class DatosFamiliaresOtrosForm(ModelForm):
         orientador = cleaned_data.get('orientacion_a_institucion')
         if orientador and orientador == DatosFamiliaresOtros.ORIENTACION_OTRO:
             if not cleaned_data.get('otro_orientador'):
-                self.add_error('otro_orientador', "Debe llenar éste campo")
+                self.add_error('otro_orientador', "Debe llenar este campo")
         if numero_hermanos > 0:
             trans_hermanos = cleaned_data.get('transtorno_hermanos')
             if trans_hermanos:
                 hermano_transtorno = cleaned_data.get("hermano_transtorno")
                 if not hermano_transtorno:
-                    self.add_error('hermano_transtorno', "Debe llenar éste campo")
+                    self.add_error('hermano_transtorno', "Debe llenar este campo")
                 elif hermano_transtorno > numero_hermanos or hermano_transtorno <= 0:
                     self.add_error('hermano_transtorno', "No tiene tantos hermanos")
                 if not cleaned_data.get('transtorno'):
-                    self.add_error('transtorno', "Debe llenar éste campo")
+                    self.add_error('transtorno', "Debe llenar este campo")
 
     def save(self):
         model = super(DatosFamiliaresOtrosForm, self).save(commit=False)
@@ -607,10 +625,11 @@ SuplementosFormset = inlineformset_factory(AlimentacionCostumbres, SuplementoAli
 #             form.empty_permitted = False
 
 class HermanoForm(ModelForm):
-    fecha_nacimiento = forms.DateField(input_formats=['%d/%m/%Y'],
+    fecha_nacimiento = forms.DateField(input_formats=[DATEFORMAT],
                                        label='Fecha de nacimiento',
-                                       widget=forms.TextInput(attrs={
-                                           'class':'datepicker form-control'}))
+                                       widget=forms.DateInput(attrs={
+                                           'class':'datepicker form-control'},
+                                                              format=DATEFORMAT))
     class Meta:
         model = Hermano
         fields = '__all__'
@@ -624,12 +643,44 @@ MedicamentoFormset = inlineformset_factory(Descripcion, Medicamento,
                                            fields='__all__',
                                            can_delete=False,
                                            extra=1)
-ActividadGestacionFormset = formset_factory(ActividadGestacionForm, max_num=5)
+ActividadGestacionFormset = inlineformset_factory(Gestacion, Actividad_Gestacion, form=ActividadGestacionForm, max_num=5, extra=5)
 
-SituacionGestacionFormset = formset_factory(SituacionGestacionForm, max_num=11)
+SituacionGestacionFormset = inlineformset_factory(Gestacion, Situacion_Gestacion, form=SituacionGestacionForm, max_num=12, extra=12)
 
-DatosMedicoFormset = modelformset_factory(Medico, form=DatosMedicoForm, extra=1)
-DatosFamiliaresFormset = modelformset_factory(Familiar, form=DatosFamiliaresForm, extra=2)
+DatosMedicoFormset = inlineformset_factory(Paciente, Medico, form=DatosMedicoForm, extra=1, can_delete=False, exclude=('paciente',))
+DatosFamiliaresFormset = inlineformset_factory(Paciente, Familiar, form=DatosFamiliaresForm, extra=2, can_delete=False, exclude=('paciente',))
+
+
+class TerapiasForm(BaseInlineFormSet):
+    def __init__(self, *args, **kwargs):
+        super(TerapiasForm, self).__init__(*args, **kwargs)
+        self.tipos = []
+
+    def is_valid(self, descripcion=None):
+        if descripcion:
+            self.tipos = descripcion.cleaned_data.get('tipo_terapia')
+        valid = True
+        if '1' in self.tipos:
+            valid = valid and self.forms[0].is_valid()
+        if '2' in self.tipos:
+            valid = valid and self.forms[1].is_valid()
+        return valid
+
+    def clean(self):
+        super(TerapiasForm, self).clean()
+
+    def save(self, commit=True):
+        models = []
+        if '1' in self.tipos:
+            models.append(self.forms[0].save(commit=commit))
+        if '2' in self.tipos:
+            self.forms[1].save()
+            models.append(self.forms[1].save(commit=commit))
+        return models
+
+
+TerapiaFormset = inlineformset_factory(Descripcion, Terapia, fields='__all__', can_delete=False, max_num=2, extra=2,
+                                       widgets={'tipo': forms.TextInput}, formset=TerapiasForm)
 
 data_formsets = {'form-TOTAL_FORMS': '2',
                  'form-INITIAL_FORMS': '0',
