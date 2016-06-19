@@ -211,6 +211,7 @@ class RegistroView(View):
 @method_decorator(login_required, name="dispatch")
 class PacienteListView(ListView):
     model = Paciente
+    #paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super(PacienteListView, self).get_context_data(**kwargs)
@@ -372,12 +373,6 @@ class RegistroEditView(View):
 
 #@method_decorator(login_required, name="dispatch")
 class BusquedaPacientesView(View):
-    template_name = 'registro/busqueda_paciente.html'
-    
-    def get(self, request, *args, **kwargs):
-        ctx = {'pagina_actual':'registro'}
-        print "jajajajjajajajaj"
-        return render(request, self.template_name, ctx)
 
     def post(self, request, *args, **kwargs):
       try:

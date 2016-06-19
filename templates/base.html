@@ -15,7 +15,7 @@
         <script src="/static/js/registro.js"></script>
         <script src="/static/js/modernizr.min.js"></script>
     {% block js %}
-       
+
 
     {% endblock js %}
 </head>
@@ -24,13 +24,13 @@
 <header>
 
 	<h1> Kinderzentrum {% block title_name %}	{% endblock %}</h1>
-	
+  {% load staticfiles %}
 	<nav class="navbar navbar-default">
 		<div class="container-fluid">
 
 			<div class="navbar-header">
 		      <a class="navbar-brand" href="{% url 'index_view' %}">
-		      	<img src="../static/images/home.png" width=30 height=30 style="margin-top:-5px;">
+		      	<img src="{% static "images/home.png" %}" width=30 height=30 style="margin-top:-5px;">
 		      </a>
 		    </div>
 
@@ -40,7 +40,7 @@
 				<li class="active">{% else %}<li>{% endif %}
 					<a href="{% url 'index_view' %}"> Inicio </a>
 				</li>
-				{% else %}				
+				{% else %}
 				<li class="active"><a href="{% url 'index_view' %}"> Inicio </a></li>
 				{% endif %}
 
@@ -52,23 +52,22 @@
 						<ul class="dropdown-menu">
 							<li><a href="{% url 'registro_view' %}">Registro de ficha medica</a></li>
 							<li><a href="{% url 'pacientes-list' %}">Lista de pacientes</a></li>
-							<li><a href="#">Actualizacion ficha médica</a></li>	
-							<li><a href="{% url 'busqueda_pacientes' %}">Consulta ficha médica</a></li>			            
+							
 				        </ul>
 					</li>
 					{% endif %}
 
 					{% if user|has_group:"cita" %}
 					<li  {% if pagina_actual == "cita" %} class="active" {% endif %}><a href="{% url 'reservar_cita_view' %}">Cita</a></li>
-					
+
 					<li {% if pagina_actual == "asistencia_paciente" %} class="active" {% endif %}><a href="{% url 'lista_asistencia' %}">Asistencia paciente</a></li>
 					{% endif %}
-				
-				
-					{% if user|has_group:"pagos" %}	
-					
+
+
+					{% if user|has_group:"pagos" %}
+
 					<li><a href="#">Pagos</a></li>
-					
+
 					{% endif %}
 
 				{% if user.is_superuser %}
@@ -76,8 +75,8 @@
 					<a class="dropdown-toggle" data-toggle="dropdown" href="#"> Manejo de usuarios <span class="caret"></span></a>
 						<ul class="dropdown-menu">
 							<li><a href="{% url 'admin_usuarios' %}">Crear nuevos usuarios</a></li>
-							<li><a href="{% url 'usuarios_permisos' %}">Actualizar permisos de usuarios</a></li>	
-							<li><a href="#">Cambiar mi contraseña</a></li>			            
+							<li><a href="{% url 'usuarios_permisos' %}">Actualizar permisos de usuarios</a></li>
+							<li><a href="#">Cambiar mi contraseña</a></li>
 				        </ul>
 				</li>
 				{% endif %}
@@ -85,12 +84,12 @@
 
 				<li><a href="#">Acerca de la fundación</a></li>
 			</ul>
-			<ul class="nav navbar-nav navbar-right">		      			      	
+			<ul class="nav navbar-nav navbar-right">
 		      	{% if user.is_authenticated %}
 				<li><a href="{% url 'logout_view' %}"><span class="glyphicon glyphicon-log-out"></span> Logout - {{user.first_name}}</a></li>
 				{% else %}
 				<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-				<li><a href="{% url 'login_view' %}"><span class="glyphicon glyphicon-log-in"></span> Login </a></li> 
+				<li><a href="{% url 'login_view' %}"><span class="glyphicon glyphicon-log-in"></span> Login </a></li>
 				{% endif %}
 		    </ul>
 		</div>
@@ -107,7 +106,3 @@
 
 </body>
 </html>
-
-
-
-

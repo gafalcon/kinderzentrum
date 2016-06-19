@@ -1,15 +1,56 @@
 {% extends 'base.html' %}
 {% block title %} Kinderzentrum - Lista de Pacientes {% endblock %}
 
-{% block css %}
-    <link rel="stylesheet" href="/static/css/bootstrap.css" />
-{% endblock css %}
+{% block js %}
+<script type="text/javascript" >
+$(document).ready(function(){
+	$("#busqueda").keyup(function () {
+			  var busqueda = $(this).val();
+			  $.ajax({
+					  method: "POST",
+					  url: "{% url 'busqueda_pacientes' %}",
+					  data: {busqueda: busqueda, csrfmiddlewaretoken: "{{ csrf_token }}"},
+					  dataType: "json"
+					})
+					  .done(function( data ) {
+					  	var filas = $(".row-hermanos");
+					  	filas.remove();
+					    console.log( data );
+
+                $.each(data, function(i, paciente){
+								var tr = $("<tr></tr>");
+								tr.attr("class","row-hermanos");
+								//tr.attr("pk",paciente.pk);
+
+                var nombres = $("<td></td>").text(paciente.fields.nombres);
+                var apellidos = $("<td></td>").text(paciente.fields.apellidos);
+                var fecha_nacimiento = $("<td></td>").text(paciente.fields.fecha_nacimiento);
+                var lugar_nacimiento = $("<td></td>").text(paciente.fields.lugar_nacimiento);
+          			var nacionalidad = $("<td></td>").text(paciente.fields.nacionalidad);
+          			var grupo_sanguineo = $("<td></td>").text(paciente.fields.grupo_sanguineo);
+          			var sexo = $("<td></td>").text(paciente.fields.sexo);
+          			var link_paciente = $("<a></a>").text("Editar");
+                link_paciente.attr('href','registro/pacientes/edit/'+paciente.pk);
+                var editar = $("<td></td>").append(link_paciente);
+								tr.append(nombres); tr.append(apellidos); tr.append(fecha_nacimiento);
+                tr.append(lugar_nacimiento); tr.append(nacionalidad); tr.append(grupo_sanguineo);
+                tr.append(sexo); tr.append(editar);
+								$("table").append(tr);
+							});
+					  });
+
+			});
+});
+</script>
+{% endblock js %}
 
 
 {% block title_name %}: Pacientes{% endblock %}
 
 
 {% block content %}
+
+<input type="text" id="busqueda" class="form-control" placeholder="Busqueda por nombre o apellido">
 
 <table class="table table-bordered table-condensed">
 	<tr>
