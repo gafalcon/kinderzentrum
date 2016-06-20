@@ -27,6 +27,16 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+#send email for forgot password
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_PASSWORD = 'kinderzentrum'
+EMAIL_HOST_USER = 'kinderzentrum.web@gmail.com'
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = 'kinderzentrum.web@gmail.com'
+SERVER_EMAIL = 'kinderzentrum.web@gmail.com'
+
 
 # Application definition
 
@@ -47,8 +57,8 @@ INSTALLED_APPS = (
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware', 
-    'django.middleware.csrf.CsrfViewMiddleware',   
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',

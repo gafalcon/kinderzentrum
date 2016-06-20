@@ -28,7 +28,7 @@ function nextPanel(){
 	setProgressBar(Math.round((page-1)*100/total_pages));
 	if(page==total_pages){
 		hideButton("btn_next","next");
-	}	
+	}
 }
 
 function previousPanel(){
@@ -45,7 +45,7 @@ function previousPanel(){
 }
 
 function setPanelVisible(id){
-	var i;	
+	var i;
 	for(i=1; i<=total_pages; i++){
 		if(i==id){
 			var panel = $("#panel"+i);
@@ -62,14 +62,14 @@ function setPanelVisible(id){
 				nav_i.attr("class","separator current");
 			} else {
 				nav_i.attr("class","separator current error");
-			}			
+			}
 		} else {
 			var nav_i = $("#nav"+i);
 			if($("#panel"+i).attr("data-error") == "0"){
-				nav_i.attr("class","separator shown");
+				nav_i.attr("class","separator current shown");
 			} else {
-				nav_i.attr("class","separator shown error");
-			}				
+				nav_i.attr("class","separator current shown error");
+			}
 		}
 	}
 }
@@ -83,18 +83,18 @@ var datepickerValues = {
 		monthNamesShort: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
 		'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
 		dateFormat: 'dd/mm/yy'
-		
+
 };
 $(function() {
 
   	/* Creamos un widget de calendario con jquery-ui */
-	
+
     // $( ".datepicker" ).datepicker(datepickerValues);
 
 	$('body').on('focus',".datepicker", function(){
 		$(this).datepicker(datepickerValues);
 	});
-    //ocultamos los campos que no son necesarios a menos que se realice una eleccion 
+    //ocultamos los campos que no son necesarios a menos que se realice una eleccion
     $('[oculto=oculto]').parent().hide();
     //$('#id_descripcion_otros').parent().hide();
     //$('#id_descripcion_pregunta_4').parent().hide();
@@ -110,7 +110,7 @@ $(function() {
     /*	Si ha seleccionado la opcion de otros, entonces mostramos un casillero adicional
      que permite describir de forma especifica la opcion "otros" */
 	value_changed($('select[name=descripcion_paciente-disc_molestias]').val() == 'otros', $('#id_descripcion_paciente-otro_disc_molestias').parent());
-    $('select[name=descripcion_paciente-disc_molestias]').change(function() { 
+    $('select[name=descripcion_paciente-disc_molestias]').change(function() {
 		value_changed($(this).val() == 'otros', $('#id_descripcion_paciente-otro_disc_molestias').parent());
     });
 	value_changed($('input:radio[name=descripcion_paciente-tratamiento]:checked').val() == "True", $("#id_descripcion_paciente-lugar_tratamiento").parent());
@@ -127,12 +127,12 @@ $(function() {
     });
 
 	value_changed($("#id_descripcion_paciente-areas_dificultad_8").is(":checked"), $("#id_descripcion_paciente-otro_dificultad").parent());
-    $('input[name=descripcion_paciente-areas_dificultad]').on('click',function(e) { 
+    $('input[name=descripcion_paciente-areas_dificultad]').on('click',function(e) {
 		value_changed($("#id_descripcion_paciente-areas_dificultad_8").is(":checked"), $("#id_descripcion_paciente-otro_dificultad").parent());
     });
 	value_changed($('select[name=descripcion_paciente-had_convulsion]').val() == 1, $("#id_descripcion_paciente-tipo_crisis").parent());
 	value_changed($('select[name=descripcion_paciente-had_convulsion]').val() == 1, $("#id_descripcion_paciente-edad_crisis").parent());
-    $('select[name=descripcion_paciente-had_convulsion]').change(function() { 
+    $('select[name=descripcion_paciente-had_convulsion]').change(function() {
 		value_changed($(this).val() == 1, $("#id_descripcion_paciente-tipo_crisis").parent());
 		value_changed($(this).val() == 1, $("#id_descripcion_paciente-edad_crisis").parent());
     });
@@ -274,7 +274,7 @@ $(function() {
 
 	value_changed(num_hermanos != "0" && num_hermanos != '' &&
 				  $('input:radio[name=familiares_otros-transtorno_hermanos]:checked').val() == "True",
-				  $("#id_familiares_otros-hermano_transtorno").parent()); 
+				  $("#id_familiares_otros-hermano_transtorno").parent());
 	value_changed(num_hermanos != "0" && num_hermanos != '' &&
 				  $('input:radio[name=familiares_otros-transtorno_hermanos]:checked').val() == "True",
 				  $("#id_familiares_otros-transtorno").parent());
@@ -311,7 +311,7 @@ $(function() {
 			}
 			$("#id_hermanos_set-TOTAL_FORMS").val(num_hermanos);
 		}
-		
+
 		value_changed(e.target.value != "0" && e.target.value != '', $("#hermanos-formset"));
 		value_changed(e.target.value != "0" && e.target.value != '', $("#id_familiares_otros-transtorno_hermanos").parent());
 		value_changed(e.target.value != "0" && e.target.value != '' &&
@@ -366,7 +366,7 @@ $(function() {
 		if(formCount > 1){
 			$(".formset-"+prefix+":last").remove();
 			$("#id_" + prefix + "-TOTAL_FORMS").val(formCount - 1);
-		}    
+		}
 	}
 	$("#btn-add-suplemento").click(function (e) {
         addFormset("suplementos", /suplementos-0/g);
@@ -392,6 +392,6 @@ $(function() {
         deleteFormset("medicamentos");
 	});
 
-	
+
 
 });
