@@ -15,19 +15,19 @@
 
 
 {% block content %}
-<div class="dotstyle dotstyle-tooltip" style="margin: 4% 0px 1% 6%; font-size:12px;">			
+<div class="dotstyle dotstyle-tooltip" style="margin: 4% 0px 1% 10%; font-size:12px;">			
 	<ul id="dots_nav">
 		<li id="nav1" onclick="setPanelVisible(1)" class="separator current"><a href="#">Paciente</a></li>
-		<li id="nav2" onclick="setPanelVisible(2)" class="separator current shown"><a href="#" >Familiares</a></li>
-		<li id="nav3" onclick="setPanelVisible(3)" class="separator current shown"><a href="#">Médico</a></li>
-		<li id="nav4" onclick="setPanelVisible(4)" class="separator current shown"><a href="#">Niño(a)</a></li>		
-		<li id="nav5" onclick="setPanelVisible(5)" class="separator current shown"><a href="#">Madre</a></li>
-		<li id="nav6" onclick="setPanelVisible(6)" class="separator current shown"><a href="#">Gestación</a></li>		
-		<li id="nav7" onclick="setPanelVisible(7)" class="separator current shown"><a href="#">Nacimiento</a></li>		
-		<li id="nav8" onclick="setPanelVisible(8)" class="separator current shown"><a href="#">Recién Nacido</a></li>		
-		<li id="nav9" onclick="setPanelVisible(9)" class="separator current shown"><a href="#">Primeros Días</a></li>		
-		<li id="nav10" onclick="setPanelVisible(10)" class="separator current shown"><a href="#">Alimentación</a></li>		
-		<li id="nav11" onclick="setPanelVisible(11)" class="separator current shown"><a href="#">Historia Familiar</a></li>
+		<li id="nav2" onclick="setPanelVisible(2)" class="separator shown"><a href="#" >Familiares</a></li>
+		<li id="nav3" onclick="setPanelVisible(3)" class="separator shown"><a href="#">Médico</a></li>
+		<li id="nav4" onclick="setPanelVisible(4)" class="separator shown"><a href="#">Niño(a)</a></li>		
+		<li id="nav5" onclick="setPanelVisible(5)" class="separator shown"><a href="#">Madre</a></li>
+		<li id="nav6" onclick="setPanelVisible(6)" class="separator shown"><a href="#">Gestación</a></li>		
+		<li id="nav7" onclick="setPanelVisible(7)" class="separator shown"><a href="#">Nacimiento</a></li>		
+		<li id="nav8" onclick="setPanelVisible(8)" class="separator shown"><a href="#">Recién Nacido</a></li>		
+		<li id="nav9" onclick="setPanelVisible(9)" class="separator shown"><a href="#">Primeros Días</a></li>		
+		<li id="nav10" onclick="setPanelVisible(10)" class="separator shown"><a href="#">Alimentación</a></li>		
+		<li id="nav11" onclick="setPanelVisible(11)" class="separator shown"><a href="#">Historia Familiar</a></li>
 	</ul>
 </div>
 
@@ -130,7 +130,7 @@
 		<div class="panel-heading">Descripcion del niño</div>
         <div class="panel-body">			
 			{% for field in descripcion_paciente %}			
-	  			<div class="form-group {% if field.errors %} has-error{% endif %}">
+	  			<div class="form-group {% if field.errors %} has-error{% endif %} {% if forloop.counter == 1 or forloop.counter == 3 or forloop.counter == 4 %} adjust {% endif %}">
 					{% if forloop.counter == 3 %}
 						<div id="otro-descubridor" style="display:none;">
 							{{ field.errors }}
@@ -143,7 +143,7 @@
 					{% endif %}
       			</div>
 				{% if forloop.counter == 7 %}
-					<div id="terapia_formset">
+					<div id="terapia_formset" class="adjust">
 						{{ terapia_formset.management_form }}
 						{% for form in terapia_formset.forms %}
 							<div class="form-group {% if form.tiempo_terapia.errors %} has-error{% endif %}">
@@ -168,7 +168,7 @@
 				{% for error in medicamento_formset.errors %}
 					{{error}}
 				{% endfor %}
-                <table class="table table-bordered table-condensed">
+                <table class="table table-bordered table-condensed adjust2">
                     <tr>
                         <th>Nombre</th>
                         <th>Dosis diaria</th>
@@ -192,7 +192,7 @@
 		<div class="panel-heading">Historial de la Madre</div>
 		<div class="panel-body">			
 			{% for field in historial_madre_form %}	  				  		
-	  			<div class="form-group {% if field.errors %} has-error{% endif %}">
+	  			<div class="form-group {% if field.errors %} has-error{% endif %} {% if forloop.counter == 2 or forloop.counter == 4 or forloop.counter == 5 or forloop.counter == 7 or forloop.counter == 9 or forloop.counter == 10 or forloop.counter == 11 or forloop.counter == 14 %} adjust {% endif %}">
 					{% if forloop.counter != 2 and forloop.counter != 4 %}
 		    			<label for="code">{{field.label}}</label>			      		
 					{% endif %}
@@ -207,7 +207,7 @@
  		<div class="panel-heading">Desarrollo de la Gestación</div>
 		<div class="panel-body">			
 			{% for field in gestacion %}	  			
-	  			<div class="form-group {% if field.errors %} has-error{% endif %}">
+	  			<div class="form-group {% if field.errors %} has-error{% endif %} {% if forloop.counter == 3 or forloop.counter == 5 or forloop.counter == 6 %} adjust {% endif %}">
 		    		<label for="code">{{field.label}}</label>
 					{{ field.errors }}
 		      		{{ field }}			      		
@@ -218,7 +218,7 @@
                     <label for="code">Presentó algunas de las situaciones durante la gestación? Marque el trimestre cuando sucedió</label>
                     
                     {{ situacion_gestacion.management_form }}
-                    <table class="table table-bordered table-condensed">
+                    <table class="table table-bordered table-condensed adjust2">
                         <tr>
                             <th>Situación presentada</th>
                             <th>Periodo</th>
@@ -238,7 +238,7 @@
                     <label for="code">Seleccione si ha realizado las siguientes actividades durante el embarazo</label>
                     
                     {{ actividad_gestacion.management_form }}
-                    <table class="table table-bordered table-condensed">
+                    <table class="table table-bordered table-condensed adjust2">
                         <tr>
                             <th>Situación presentada</th>
                             <th>Periodo</th>
@@ -260,7 +260,7 @@
         <div class="panel-heading">Nacimiento del niño(a)</div>
         <div class="panel-body">            
             {% for field in nacimiento %}
-                <div class="form-group {% if field.errors %} has-error{% endif %}">
+                <div class="form-group {% if field.errors %} has-error{% endif %} {% if forloop.counter == 2 or forloop.counter == 3 or forloop.counter == 7 or forloop.counter == 8 or forloop.counter == 9 %} adjust {% endif %}">
                     <label for="code">{{field.label}}</label>
 					{{ field.errors }}
                     {{ field }}          
@@ -274,7 +274,7 @@
 		<div class="panel-body">			
 			{% for field in recien_nacido %}
 			
-		  	<div class="form-group {% if field.errors %} has-error{% endif %}">
+		  	<div class="form-group {% if field.errors %} has-error{% endif %} {% if forloop.counter == 1 or forloop.counter == 2 or forloop.counter == 3 or forloop.counter == 4 or forloop.counter == 5  or forloop.counter == 13 %} adjust {% endif %}">
 				{% if forloop.counter == 8 %}
 					<div id="otra-complicacion" style="display: none;">
 						{{ field.errors }}
@@ -297,7 +297,7 @@
 		<div class="panel-body">			
 			{% for field in primeros_dias %}
 			
-		  	<div class="form-group {% if field.errors %} has-error{% endif %}">
+		  	<div class="form-group {% if field.errors %} has-error{% endif %} {% if forloop.counter == 2 or forloop.counter == 3 or forloop.counter == 7 or forloop.counter == 11 or forloop.counter == 13  or forloop.counter == 14 %} adjust {% endif %}">
 				{% if forloop.counter == 5 or forloop.counter == 9 %}
 					<div style="display:none;">
 						{{ field.errors }}
@@ -319,7 +319,7 @@
 		<div class="panel-body">			
 			{% for field in alimentacion %}
 				
-		  		<div class="form-group {% if field.errors %} has-error{% endif %}">
+		  		<div class="form-group {% if field.errors %} has-error{% endif %} {% if forloop.counter == 4 or forloop.counter == 6 or forloop.counter == 8 or forloop.counter == 9 or forloop.counter == 11  or forloop.counter == 12  or forloop.counter == 13  or forloop.counter == 14  or forloop.counter == 15  or forloop.counter == 16  or forloop.counter == 17  or forloop.counter == 18 or forloop.counter == 19 or forloop.counter == 23 %} adjust {% endif %}">
 					{% if forloop.counter == 4 or forloop.counter == 6 or forloop.counter == 8 or forloop.counter == 11 %}
 						<div style="display:none;">
 							{{ field.errors }}
@@ -339,7 +339,7 @@
 						{% for error  in suplementos_formset.errors %}
 							{{ error }}
 						{% endfor %}
-						<table class="table table-bordered table-condensed">
+						<table class="table table-bordered table-condensed adjust3">
 							<tr>
 								<th>Frecuencia</th>
 								<th>Tipo</th>
@@ -368,7 +368,7 @@
 		<div class="panel-heading">Datos de Historia Clínica Familiar y Otra Información</div>
 		<div class="panel-body">			
 			{% for field in datos_familiares %}
-		  		<div class="form-group {% if field.errors %} has-error{% endif %}">
+		  		<div class="form-group {% if field.errors %} has-error{% endif %} {% if forloop.counter == 1 or forloop.counter == 3 or forloop.counter == 4 or forloop.counter == 6 or forloop.counter == 8 %} adjust {% endif %}">
 					{% if forloop.counter == 8 %}
 						<div style="display:none;">
 							{{ field.errors }}
@@ -388,7 +388,7 @@
 						{% for error in hermanos_formset.errors %}
 							{{ error }}
 						{% endfor %}
-						<table class="table table-bordered table-condensed">
+						<table class="table table-bordered table-condensed adjust3">
 							<tr>
 								<th>Nombres</th>
 								<th>Apellidos</th>

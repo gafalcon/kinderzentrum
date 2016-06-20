@@ -81,7 +81,7 @@ class DatosMedicoForm(ModelForm):
 
 class DescripcionPacienteForm(ModelForm):
     otro_disc_molestias = forms.CharField(widget=forms.TextInput(
-        attrs={'class':'form-control', 'placeholder': 'Especifique quién descubrió las molestias'}),
+        attrs={'class':'form-control adjust', 'placeholder': 'Especifique quién descubrió las molestias'}),
                                           required=False
     )
     tipo_terapia = forms.MultipleChoiceField(required=True, choices=Terapia.TERAPIA_CHOICES, widget=forms.CheckboxSelectMultiple, label="Que tipo de terapia realiza?")

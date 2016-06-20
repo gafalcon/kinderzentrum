@@ -10,3 +10,8 @@ ul{
 .errorlist{
 	color: red;
 }
+
+.adjust3 input{
+  width: 90% !important;
+  height: 40% !important;
+}

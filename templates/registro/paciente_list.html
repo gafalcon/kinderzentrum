@@ -2,6 +2,7 @@
 {% block title %} Kinderzentrum - Lista de Pacientes {% endblock %}
 
 {% block css %}
+    <link rel="stylesheet" href="/static/css/jquery-ui.css" />
     <link rel="stylesheet" href="/static/css/bootstrap.css" />
 {% endblock css %}
 
@@ -11,6 +12,7 @@
 
 {% block content %}
 
+<div class="container">
 <table class="table table-bordered table-condensed">
 	<tr>
 		<th>Nombres</th>
@@ -39,4 +41,5 @@
 		<h3>No hay pacientes </h3>
 	{% endfor %}
 </table>
+</div>
 {% endblock %}

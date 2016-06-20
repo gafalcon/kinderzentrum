@@ -27,7 +27,22 @@ ul{
 }
 
 .separator{
-  margin: 0px 50px 0px 50px !important;
+  margin: 0px 30px 0px 40px !important;
+}
+
+.adjust input{
+  width: 97% !important;
+  height: 40% !important;
+}
+
+.adjust2 input{
+  width: 93% !important;
+  height: 40% !important;
+}
+
+.adjust3 input{
+  width: 90% !important;
+  height: 40% !important;
 }
 
 /* Bootstrap form span6 */
@@ -45,6 +60,7 @@ ul{
 }
 .span6 input, .span6 select, .span6 ul, .span6 textarea {
   width:70%;  
+  height: 40%;
   margin-bottom: 10px;
 }
 
@@ -479,9 +495,6 @@ ul{
   background-color: white !important;
 }
 
-.dotstyle-tooltip li.shown a{  
-  opacity: 0.2 !important;
-}
 
 /*Error es el dot que tenga un error en el formulario*/
 .dotstyle-tooltip li.current.error {

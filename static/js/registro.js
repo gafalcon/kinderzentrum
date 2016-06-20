@@ -66,9 +66,9 @@ function setPanelVisible(id){
 		} else {
 			var nav_i = $("#nav"+i);
 			if($("#panel"+i).attr("data-error") == "0"){
-				nav_i.attr("class","separator current shown");
+				nav_i.attr("class","separator shown");
 			} else {
-				nav_i.attr("class","separator current shown error");
+				nav_i.attr("class","separator shown error");
 			}				
 		}
 	}
