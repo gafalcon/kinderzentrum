@@ -20,7 +20,7 @@ class UserCreateForm(UserCreationForm):
 	password2 = forms.CharField(label="Repita contraseña", widget=forms.PasswordInput(render_value=False, attrs={'placeholder': 'Contraseña','class':'form-control'}))
 	grupos = forms.ModelMultipleChoiceField(queryset=None,widget=forms.CheckboxSelectMultiple())
 
-	def __init__(self, *args, **kw):  
+	def __init__(self, *args, **kw):
 	    super(UserCreateForm, self).__init__(*args, **kw)
 	    self.fields['grupos'].queryset=Group.objects.all()
 
@@ -34,7 +34,7 @@ class UserCreateForm(UserCreationForm):
 	def save(self, commit=True):
 		user = super(UserCreateForm, self).save(commit=False)
 		user.mail = self.cleaned_data['email']
-		
+
 		print self.cleaned_data['grupos']
 		if commit:
 			user.save()
@@ -53,7 +53,7 @@ class UserForm(ModelForm):
 	#required=False para que al evaluar la función clean retorne True así tenga campos vacíos (lo cuál es correcto)
 	grupos = forms.ModelMultipleChoiceField(queryset=None, widget=forms.CheckboxSelectMultiple(), required=False)
 
-	def __init__(self, *args, **kw):  
+	def __init__(self, *args, **kw):
 	    super(UserForm, self).__init__(*args, **kw)
 	    self.fields['grupos'].queryset = Group.objects.all()
 	    self.fields['grupos'].initial = Group.objects.filter(user=self.instance.id)
@@ -72,11 +72,23 @@ class UserForm(ModelForm):
 		cleaned_data = super(UserForm, self).clean()
 
 
-			
 UsuariosFormset = modelformset_factory(User, form=UserForm, extra=0)
 
+class ChangePasswordForm(forms.Form):
+    newpassword = forms.CharField(label="Nueva Contraseña", widget=forms.PasswordInput(attrs={'placeholder': 'Contrasenia'}))
+    renewpasssword = forms.CharField(label="Repita nueva contraseña", widget=forms.PasswordInput(attrs={'placeholder': 'Repita nueva contrasenia'}))
 
-'''        
+    def clean(self):
+        cleaned_data = super(ChangePasswordForm, self).clean()
+        newpassword = cleaned_data.get('newpassword')
+        renewpasssword = cleaned_data.get('renewpasssword')
+        if newpassword != renewpasssword:
+            raise forms.ValidationError("Las contraseñas deben ser iguales")
+            #self.add_error('renewpasssword', 'Las contraseñas deben ser iguales')
+
+
+
+'''
 class RegistroUsuario(forms.Form):
     nombre = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Nombres','autofocus':'autofocus'}))
     apellido = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Apellidos'}))
@@ -84,4 +96,4 @@ class RegistroUsuario(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput(render_value=False, attrs={'placeholder': 'Contraseña','class':'form-control'}))
     repeat_password = forms.CharField(widget=forms.PasswordInput(render_value=False, attrs={'placeholder': 'Contraseña','class':'form-control'}))
     email = forms.CharField(widget=forms.EmailInput(attrs={'placeholder': 'email@email.com','class':'form-control'}))
-'''      
+'''

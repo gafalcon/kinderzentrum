@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
@@ -7,6 +7,7 @@ from home.forms import *
 from django.views.generic import View
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.models import User, Group, Permission
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -52,12 +53,28 @@ def login_view(request):
         ctx = {'form':form,'mensaje':mensaje}
         return render_to_response('home/login.html',ctx,context_instance=RequestContext(request))
 
-    
+
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect('/')
 
-
+@login_required
+def change_password(request):
+    #newpassword = request.POST.get("newpassword")
+    #renewpasssword = request.POST.get("renewpasssword")
+    #
+    if request.method == 'GET':
+        form = ChangePasswordForm()
+    else:
+        username = request.user.username
+        form = ChangePasswordForm(request.POST)
+        if form.is_valid():
+            newpassword = request.POST.get("newpassword")
+            u = User.objects.get(username__exact=username)
+            u.set_password(newpassword)
+            u.save()
+            return redirect('/')
+    return render(request,'home/cambio_contrasenia.html', {'form': form})
 
 class AdminUsuariosView(PermissionRequiredMixin, View):
     permission_required = ('auth.add_user')

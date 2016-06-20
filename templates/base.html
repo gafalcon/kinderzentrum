@@ -52,7 +52,7 @@
 						<ul class="dropdown-menu">
 							<li><a href="{% url 'registro_view' %}">Registro de ficha medica</a></li>
 							<li><a href="{% url 'pacientes-list' %}">Lista de pacientes</a></li>
-							
+
 				        </ul>
 					</li>
 					{% endif %}
@@ -76,9 +76,11 @@
 						<ul class="dropdown-menu">
 							<li><a href="{% url 'admin_usuarios' %}">Crear nuevos usuarios</a></li>
 							<li><a href="{% url 'usuarios_permisos' %}">Actualizar permisos de usuarios</a></li>
-							<li><a href="#">Cambiar mi contraseña</a></li>
+							<li><a href="{% url 'changepassword' %}">Cambiar mi contraseña</a></li>
 				        </ul>
 				</li>
+        {% else %}
+          <li><a href="{% url 'changepassword' %}">Cambiar contraseña</a></li>
 				{% endif %}
 				{% endif %}
 
