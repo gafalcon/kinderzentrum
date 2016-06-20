@@ -102,7 +102,8 @@ class DescripcionPacienteForm(ModelForm):
                   'areas_dificultad','otro_dificultad',
                   'limitaciones_movimiento','had_convulsion',
                   'tipo_crisis','edad_crisis','tomo_medicamentos']
-        widgets = {'disc_molestias': forms.Select(choices=model.DESCUBRIO_MOLESTIAS_OPTIONS, attrs={'class':'form-control'}),
+        widgets = {'preocupacion':forms.TextInput(attrs={'class':'adjust', 'placeholder': 'Especifique'}),
+                    'disc_molestias': forms.Select(choices=model.DESCUBRIO_MOLESTIAS_OPTIONS, attrs={'class':'form-control'}),
                    'tratamiento': forms.RadioSelect(choices=CHOICES_SI_NO),
                    'limitaciones_movimiento': forms.Select(choices=model.LIMITACIONES_OPTIONS, attrs={'class':'form-control'}),
                    'had_convulsion': forms.Select(choices=model.LIMITACIONES_OPTIONS, attrs={'class':'form-control'})
@@ -163,13 +164,13 @@ class HistorialMadreForm(ModelForm):
                                         widget=forms.TextInput(attrs={'placeholder':'Especifique otra enfermedad'}))
     tuvo_defuncion_fetal = forms.ChoiceField(choices=CHOICES_SI_NO,
                                              widget=forms.RadioSelect,
-                                             label="¿Tuvo usted alguna defunción fetal antes de concebir al bebé/niño(a) que trae a consulta?") 
+                                             label="¿Tuvo usted alguna defunción fetal antes de concebir al bebé/niño(a) que trae a consulta?")
     tuvo_hijos_muertos = forms.ChoiceField(choices=CHOICES_SI_NO,
                                            widget=forms.RadioSelect,
-                                             label="¿Ha tenido hijos muertos?")   
+                                             label="¿Ha tenido hijos muertos?")
     uso_anticonceptivo =  forms.ChoiceField(choices=CHOICES_SI_NO,
                                             widget=forms.RadioSelect,
-                                            label="¿Utilizó algún método anticonceptivo antes de estar embarazada?")   
+                                            label="¿Utilizó algún método anticonceptivo antes de estar embarazada?")
     anticonceptivos = forms.MultipleChoiceField(choices=HistorialMadre.CHOICES_ANTICONCEPTIVO,
                                                 widget=forms.CheckboxSelectMultiple, required=False,
                                                 label="¿Cuál método anticonceptivo?")
@@ -217,13 +218,13 @@ class HistorialMadreForm(ModelForm):
             model.defunciones_fetales = 0
 
         model.anticonceptivos = ','.join(anticonceptivos) if anticonceptivos and uso_anticonceptivo == "True" else ''
-        model.enfermedades_previas = ','.join(enf_previas) if enf_previas else '' 
+        model.enfermedades_previas = ','.join(enf_previas) if enf_previas else ''
         model.enfermedades_durante_embarazo = ','.join(enf_emb) if enf_emb else ''
         model.save()
 
         return model
 
-    
+
 class DesarrolloDeLaGestacionForm(ModelForm):
     curso_prenatal = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Asistió a algún curso prenatal?")
     vacuna_tetano = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Se vacunó usted contra el tetano durante el embarazo?")
@@ -256,7 +257,7 @@ class DesarrolloDeLaGestacionForm(ModelForm):
         sentimientos = self.cleaned_data.get('sentimientos')
         if curso_prenatal != "True":
             model.lugar_curso_prenatal = ''
-            model.carga_horaria = '' 
+            model.carga_horaria = ''
         if not sentimientos is None:
             model.sentimientos = ','.join(sentimientos)
         model.comunicacion_bebe = ','.join(self.cleaned_data.get('comunicacion_bebe'))
@@ -299,7 +300,7 @@ class NacimientoForm(ModelForm):
             'primera_parte_cuerpo': forms.RadioSelect(choices=Nacimiento.PRIMERA_PARTE_CUERPO_CHOICES),
             'medicamentos_parto': forms.RadioSelect(choices=CHOICES_SI_NO_DES),
             'complicaciones_cordon': forms.RadioSelect(choices=CHOICES_SI_NO_DES),
-        } 
+        }
 
     def clean(self):
         cleaned_data = super(NacimientoForm, self).clean()
@@ -315,7 +316,7 @@ class NacimientoForm(ModelForm):
         model.metodo_nacimiento = ','.join(self.cleaned_data.get('metodo_nacimiento'))
         model.save()
         return model
-    
+
 
 class RecienNacidoForm(ModelForm):
     hubo_apego_precoz = forms.ChoiceField(choices=CHOICES_SI_NO, widget=forms.RadioSelect, label="¿Hubo apego precoz(le pusieron a su bebé encima del pecho cuando nació)?")
@@ -325,10 +326,10 @@ class RecienNacidoForm(ModelForm):
     complicaciones_nacimiento = forms.MultipleChoiceField(required=False, choices=RecienNacido.COMPLICACIONES_CHOICES,
                                                           widget=forms.CheckboxSelectMultiple,
                                                           label="¿El niño(a) tuvo alguna de éstas complicaciones al nacer?")
- 
+
     class Meta:
         model = RecienNacido
-        fields = ['edad_madre', 'edad_padre', 'peso', 'tamanio', 'diametro_encefalico', 'apgar_score', 'complicaciones_nacimiento', 'otra_complicacion', 'hubo_apego_precoz', 'tiempo_apego_precoz', 'tiempo_sostener_bebe','permanecio_internado', 'tiempo_internado', 'tipo_contacto', 'primera_lactancia'] 
+        fields = ['edad_madre', 'edad_padre', 'peso', 'tamanio', 'diametro_encefalico', 'apgar_score', 'complicaciones_nacimiento', 'otra_complicacion', 'hubo_apego_precoz', 'tiempo_apego_precoz', 'tiempo_sostener_bebe','permanecio_internado', 'tiempo_internado', 'tipo_contacto', 'primera_lactancia']
         widgets = {
             'apgar_score': forms.RadioSelect(choices=RecienNacido.APGAR_CHOICES),
             'tiempo_apego_precoz': forms.RadioSelect(choices=RecienNacido.APEGO_PRECOZ_CHOICES),
@@ -606,7 +607,7 @@ class DatosFamiliaresOtrosForm(ModelForm):
         model.save()
         return model
 
-       
+
 # class SuplementoFormset(BaseInlineFormSet):
 #     def __init__(self, *args, **kwargs):
 #         super(SuplementoFormset, self).__init__(*args, **kwargs)
@@ -620,7 +621,7 @@ SuplementosFormset = inlineformset_factory(AlimentacionCostumbres, SuplementoAli
 
 # class HermanoFormset(BaseInlineFormSet):
 #     def __init__(self, *args, **kwargs):
-#         super(HermanoFormset, self).__init__(*args, **kwargs) 
+#         super(HermanoFormset, self).__init__(*args, **kwargs)
 #         for form in self.forms:
 #             form.empty_permitted = False
 
@@ -685,5 +686,3 @@ TerapiaFormset = inlineformset_factory(Descripcion, Terapia, fields='__all__', c
 data_formsets = {'form-TOTAL_FORMS': '2',
                  'form-INITIAL_FORMS': '0',
                  'form-MAX_NUM_FORMS': ''}
-
-
