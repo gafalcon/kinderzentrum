@@ -11,5 +11,5 @@ urlpatterns =[
     url(r'pacientes/edit/(?P<id_paciente>[0-9]*)$', RegistroEditView.as_view(), name='paciente_edit'),
     url(r'busqueda_pacientes/', BusquedaPacientesView.as_view(), name='busqueda_pacientes'),
     url(r'pacientes/', PacienteListView.as_view(), name='pacientes-list'),
-    url(r'pacientes/(?P<id_paciente>[0-9]*)$', paciente_view, name='paciente_view')
+    url(r'paciente/(?P<id_paciente>[0-9]*)$', paciente_view, name='paciente_view')
 ]

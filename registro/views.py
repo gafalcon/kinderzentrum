@@ -400,9 +400,14 @@ def eliminar_paciente_view(request):
     return HttpResponse(data, content_type="application/json")
 
 @login_required
-def paciente_view(request):
-    print request.GET
+def paciente_view(request, id_paciente=""):
+    """Vista para mostrar detalles de un paciente"""
+    paciente = get_object_or_404(Paciente, pk=id_paciente)
     assert False
+    return render(request, "registro/paciente_view.html",
+                  {'pagina_actual': 'paciente_view',
+                   'paciente': paciente})
+
 
 #@method_decorator(login_required, name="dispatch")
 class BusquedaPacientesView(View):
