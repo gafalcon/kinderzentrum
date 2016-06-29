@@ -44,7 +44,7 @@ class Paciente(models.Model):
     sexo = models.CharField(choices=SEXO_CHOICES, max_length=1, blank=False, default="--")
 
     #medico = models.OneToOneField(Medico)
-    descripcion = models.OneToOneField(Descripcion)
+    descripcion = models.OneToOneField(Descripcion, on_delete=models.CASCADE)
     historial_madre = models.OneToOneField(HistorialMadre)
     gestacion = models.OneToOneField(Gestacion)
     nacimiento = models.OneToOneField(Nacimiento)
