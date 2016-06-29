@@ -44,7 +44,7 @@ class Paciente(models.Model):
     sexo = models.CharField(choices=SEXO_CHOICES, max_length=1, blank=False, default="--")
 
     #medico = models.OneToOneField(Medico)
-    descripcion = models.OneToOneField(Descripcion, on_delete=models.CASCADE)
+    descripcion = models.OneToOneField(Descripcion)
     historial_madre = models.OneToOneField(HistorialMadre)
     gestacion = models.OneToOneField(Gestacion)
     nacimiento = models.OneToOneField(Nacimiento)
@@ -55,5 +55,24 @@ class Paciente(models.Model):
 
     def __unicode__(self):
         return self.apellidos + " " + self.nombres
+
+    def delete(self, *args, **kwargs):
+        if self.descripcion:
+            self.descripcion.delete()
+        if self.historial_madre:
+            self.historial_madre.delete()
+        if self.gestacion:
+            self.gestacion.delete()
+        if self.nacimiento:
+            self.nacimiento.delete()
+        if self.recien_nacido:
+            self.recien_nacido.delete()
+        if self.primeros_dias:
+            self.primeros_dias.delete()
+        if self.alimentacion:
+            self.alimentacion.delete()
+        if self.datos_familiares:
+            self.datos_familiares.delete()
+        return super(self.__class__, self).delete(*args, **kwargs)
 
 
