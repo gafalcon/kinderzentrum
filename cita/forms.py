@@ -8,6 +8,7 @@ from django.utils.safestring        import mark_safe
 import re
 from modelos.cita_model             import Cita
 
+
 time_pattern = r'(\d\d?):(\d\d)(:(\d\d))? *([aApP]\.?[mM]\.?)?$'
 RE_TIME = re.compile(time_pattern)
 # The following are just more readable ways to access re.matched groups:
@@ -99,14 +100,10 @@ class SelectTimeWidget(Widget):
 
         return data.get(name, None)
 
-
-CHOICES = (("pendientes", "pendientes"))
-my_default_errors = {
-    'required': 'This field is required',
-    'invalid': 'Enter a valid value'
-}
+        
 class CitaForm(ModelForm):
-    error_css_class = 'has-error'
+    required_css_class = 'required'
+    #error_css_class = 'has-error'
     class Meta:
         model = Cita
         fields = ['fecha_cita',
@@ -117,12 +114,12 @@ class CitaForm(ModelForm):
                   'terapista',
                   'estado',
                   'indicaciones']
-        widgets = {'fecha_cita': forms.DateInput(attrs= {'class':'datepicker form-control', 'placeholder': 'Hacer click aquí para desplegar el calendario', 'required': 'required'}, format=DATEFORMAT),
+        widgets = {'fecha_cita': forms.DateInput(attrs= {'class':'datepicker form-control', 'placeholder': 'Hacer click aquí para desplegar el calendario'}, format=DATEFORMAT),
                    'hora_inicio': SelectTimeWidget(),
                    'hora_fin': SelectTimeWidget(),                   
-                   'tipo_terapia': forms.Select(attrs={'class':'form-control', 'required': 'required'}),
-                   'paciente': forms.Select(attrs={'class':'form-control', 'required': 'required'}),
-                   'terapista': forms.Select(attrs={'class':'form-control', 'required': 'required'}),
-                   'estado': forms.Select(attrs={'class':'form-control', 'required': 'required'} ),                    
-                   'indicaciones':forms.TextInput(attrs={'rows':2, 'required': 'required', 'value':'pendientes'})
-                   }          
+                   'tipo_terapia': forms.Select(attrs={'class':'form-control'}),
+                   'paciente': forms.Select(attrs={'class':'form-control'}),
+                   'terapista': forms.Select(attrs={'class':'form-control'}),
+                   'estado': forms.Select(attrs={'class':'form-control'} ),                    
+                   'indicaciones':forms.TextInput(attrs={'value':'pendientes'})
+                   }   

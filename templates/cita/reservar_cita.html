@@ -14,17 +14,19 @@
     <form method="POST">
       {% csrf_token %}
       <div id="panel1" class="show panel panel-default">
-          <div id="panel-body">      
+          <div id="panel-body">  
               {{ datosCitaForm.non_field_errors }}
               {% for field in datosCitaForm %}
-              {{field.errors}}
+              <div id = "errors">
+              {{field.errors}}  
+              </div>
               <div class="row">
                   <div class="form-group span6 {% if field.errors %} has-error{% endif %}">
                       <label for="code" style="width: 20%;">{{field.label}}</label>
                           {{ field }}
                   </div>
               </div>
-              {% endfor %}
+              {% endfor %} 
           </div>      
           <div id = "savediv">
               <button id="enviar" type="submit" class="btn btn-primary">
