@@ -104,6 +104,7 @@ class SelectTimeWidget(Widget):
 class CitaForm(ModelForm):
     required_css_class = 'required'
     #error_css_class = 'has-error'
+    
     class Meta:
         model = Cita
         fields = ['fecha_cita',
@@ -114,12 +115,12 @@ class CitaForm(ModelForm):
                   'terapista',
                   'estado',
                   'indicaciones']
-        widgets = {'fecha_cita': forms.DateInput(attrs= {'class':'datepicker form-control', 'placeholder': 'Hacer click aquí para desplegar el calendario'}, format=DATEFORMAT),
+        widgets = {'fecha_cita': forms.DateInput(attrs= {'required':'required', 'id':'datepicker2', 'readonly':'readonly', 'placeholder': 'Hacer click aquí para mostrar el calendario'}, format=DATEFORMAT),
                    'hora_inicio': SelectTimeWidget(),
                    'hora_fin': SelectTimeWidget(),                   
-                   'tipo_terapia': forms.Select(attrs={'class':'form-control'}),
-                   'paciente': forms.Select(attrs={'class':'form-control'}),
-                   'terapista': forms.Select(attrs={'class':'form-control'}),
-                   'estado': forms.Select(attrs={'class':'form-control'} ),                    
-                   'indicaciones':forms.TextInput(attrs={'value':'pendientes'})
+                   'tipo_terapia': forms.Select(attrs={'required':'required','class':'form-control'}),
+                   'paciente': forms.Select(attrs={'required':'required','class':'form-control'}),
+                   'terapista': forms.Select(attrs={'required':'required','class':'form-control'}),
+                   'estado': forms.Select(attrs={'required':'required','class':'form-control'} ),                    
+                   'indicaciones':forms.TextInput(attrs={'required':'required','value':'pendientes'})
                    }   
