@@ -56,7 +56,15 @@
 
 				        </ul>
 					</li>
-          <li  {% if pagina_actual == "cita" %} class="active" {% endif %}><a href="{% url 'reservar_cita_view' %}">Cita</a></li>
+
+          {% if pagina_actual == "cita" %}<li class="active dropdown">{% else %}<li class="dropdown">{% endif %}
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Citas <span class="caret"></span></a>
+            
+            <ul class="dropdown-menu">        
+              <li><a href="{% url 'reservar_cita_view' %}">Reservar cita</a></li>
+              <li><a href="{% url 'citas_list' %}">Lista de citas</a></li>
+                </ul>
+          </li>
 
 					<li {% if pagina_actual == "asistencia_paciente" %} class="active" {% endif %}><a href="{% url 'lista_asistencia' %}">Asistencia paciente</a></li>
           <li><a href="/pagos">Pagos</a></li>

@@ -108,13 +108,62 @@ def cita_view(request, id_cita=""):
 
 #@method_decorator(login_required, name="dispatch")
 class BusquedaCitasView(View):
-
     def post(self, request, *args, **kwargs):
       try:
           busqueda = request.POST['busqueda']
           print busqueda
           #busacamos los parecidos
-          respuesta = Cita.objects.filter(Q(paciente__icontains=busqueda))
+          respuesta = Cita.objects.filter(Q(fecha_cita__icontains=busqueda))
+          #data = serializers.serialize("json", pacientes)
+          #return HttpResponse(data, content_type="application/json")
+      except MultiValueDictKeyError:
+          respuesta = {"mensaje":"busqueda_error"}
+          print "error"
+      data = serializers.serialize("json", respuesta)
+      return HttpResponse(data, content_type="application/json")
+
+#@method_decorator(login_required, name="dispatch")
+class BusquedaTerapistaView(View):
+    def post(self, request, *args, **kwargs):
+      try:
+          terapista_id = request.POST['terapista_id']
+          #id_terapista = kwargs.get('terapista_id')
+          print terapista_id
+          #buscamos los parecidos           
+          respuesta = Terapista.objects.filter(Q(id__icontains=terapista_id))          
+          #data = serializers.serialize("json", pacientes)
+          #return HttpResponse(data, content_type="application/json")
+      except MultiValueDictKeyError:
+          respuesta = {"mensaje":"busqueda_error"}
+          print "error"
+      data = serializers.serialize("json", respuesta)
+      return HttpResponse(data, content_type="application/json")
+
+#@method_decorator(login_required, name="dispatch")
+class BusquedaTipoTerapiaView(View):
+    def post(self, request, *args, **kwargs):
+      try:
+          tipo_terapia_id = request.POST['tipo_terapia_id']
+          #id_tipoterapia = kwargs.get('tipo_terapia_id')
+          print tipo_terapia_id
+          #buscamos los parecidos           
+          respuesta = Tipo_terapia.objects.filter(Q(id__icontains=tipo_terapia_id))          
+          #data = serializers.serialize("json", pacientes)
+          #return HttpResponse(data, content_type="application/json")
+      except MultiValueDictKeyError:
+          respuesta = {"mensaje":"busqueda_error"}
+          print "error"
+      data = serializers.serialize("json", respuesta)
+      return HttpResponse(data, content_type="application/json")
+
+#@method_decorator(login_required, name="dispatch")
+class BusquedaPacienteView(View):
+    def post(self, request, *args, **kwargs):
+      try:
+          paciente_id = request.POST['paciente_id']
+          print paciente_id
+          #buscamos los parecidos           
+          respuesta = Paciente.objects.filter(Q(id__icontains=paciente_id))          
           #data = serializers.serialize("json", pacientes)
           #return HttpResponse(data, content_type="application/json")
       except MultiValueDictKeyError:

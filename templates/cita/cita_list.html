@@ -1,18 +1,31 @@
 {% extends 'base.html' %}
 {% block title %} Kinderzentrum - Lista de Citas {% endblock %}
 
-
 {% block css %}
-    <link rel="stylesheet" href="/static/css/jquery-ui.css" />
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="/static/css/bootstrap.css" />
 {% endblock css %}
 
 {% block js %}
-<script type="text/javascript" >
- var cita_id;
- $(document).ready(function(){
-	 $("#busqueda").keyup(function () {
-		 var busqueda = $(this).val();
+<script type = "text/javascript">
+	$(document).ready(function(){ 	
+    	var cita_id;
+        var terapista;
+        var tipo_terapia;
+    	var paciente;
+    	var fecha_cita;
+    	var hora_inicio;
+    	var hora_fin;
+    	var indicaciones;
+    	var estado;
+    	var terapista_id;
+    	var tipo_terapia_id;
+		var paciente_id;
+	    /*$("#busqueda").keyup(function () {
+		 var busqueda = $(this).val();*/
+	    //*$("#buscarfecha").click(function () {*/
+	   	$("#busqueda").change(function () {
+		 var busqueda = $("#busqueda").val();
 		 $.ajax({
 			 method: "POST",
 			 url: "{% url 'busqueda_citas' %}",
@@ -24,38 +37,83 @@
 			  filas.remove();
 			  console.log( data );
 
-              $.each(data, function(i, cita){
+              $.each(data, function(i, Cita){
 				  var tr = $("<tr></tr>");
 				  tr.attr("class","row-hermanos");
 				  //tr.attr("pk",cita.pk);
+                  fecha_cita = $("<td></td>").text(Cita.fields.fecha_cita);
+                  hora_inicio = $("<td></td>").text(Cita.fields.hora_inicio);
+                  hora_fin = $("<td></td>").text(Cita.fields.hora_fin);
+                  indicaciones = $("<td></td>").text(Cita.fields.indicaciones);
+                  estado = $("<td></td>").text(Cita.fields.estado);
+                  var link_cita = $("<a></a>").text("Editar");
+                  link_cita.attr('href','cita/citas/edit/'+Cita.pk);
+                  var editar = $("<td></td>").append(link_cita); 
+                  terapista_id = Cita.fields.terapista;
+                  tipo_terapia_id = Cita.fields.tipo_terapia;
+                  paciente_id = Cita.fields.paciente; 
 
-                  var fecha_cita = $("<td></td>").text(cita.fields.fecha_cita);
-                  var hora_inicio = $("<td></td>").text(cita.fields.hora_inicio);
-                  var hora_fin = $("<td></td>").text(cita.fields.hora_fin);
+                  $.ajax({
+			        method: "POST",
+			        url: "{% url 'busqueda_terapista' %}",
+			        data: {terapista_id: terapista_id, csrfmiddlewaretoken: "{{ csrf_token }}"},
+			        dataType: "json"
+		           })
+                  .done(function( data ) {
+                  	 
+                     $.each(data, function(i, Terapista){
+                      terapista = $("<td></td>").text(Terapista.fields.nombres + " " + Terapista.fields.apellidos);
+                   });
+                   });
+                  
+                  $.ajax({
+			        method: "POST",
+			        url: "{% url 'busqueda_tipoterapia' %}",
+			        data: {tipo_terapia_id: tipo_terapia_id, csrfmiddlewaretoken: "{{ csrf_token }}"},
+			        dataType: "json"
+		           })
+                  .done(function( data ) {
+                  	 
+                     $.each(data, function(i, Tipo_terapia){
+                     tipo_terapia = $("<td></td>").text(Tipo_terapia.fields.nombre);
+                   });
+                   });
 
-                  var estado = $("<td></td>").text(cita.fields.estado);
-          		  var indicaciones = $("<td></td>").text(cita.fields.indicaciones);
-          		  var tipo_terapia = $("<td></td>").text(cita.fields.tipo_terapia);
-          		  var paciente = $("<td></td>").text(cita.fields.paciente);
+                  $.ajax({
+			        method: "POST",
+			        url: "{% url 'busqueda_paciente' %}",
+			        data: {paciente_id: paciente_id, csrfmiddlewaretoken: "{{ csrf_token }}"},
+			        dataType: "json"
+		           })
+                  .done(function( data ) {
+                                       	 
+                     $.each(data, function(i, Paciente){
+                     paciente = $("<td></td>").text(Paciente.fields.nombres + " " +Paciente.fields.apellidos);
+                   });
+                   });
 
-          		  var terapista = $("<td></td>").text(cita.fields.terapista);
+				  tr.append(fecha_cita); 
+				  tr.append(hora_inicio); 
+				  tr.append(hora_fin);
+                  tr.append(terapista);
+				  tr.append(tipo_terapia);
+				  tr.append(paciente); 
+				  tr.append(indicaciones); 
+                  tr.append(estado);   
+                  tr.append(editar);
 
-          		  var link_cita = $("<a></a>").text("Editar");
-                  link_cita.attr('href','cita/citas/edit/'+cita.pk);
-                  var editar = $("<td></td>").append(link_cita);
-				  tr.append(fecha_cita); tr.append(hora_inicio); tr.append(hora_fin);
-                  tr.append(estado); tr.append(indicaciones); tr.append(tipo_terapia);
-                  tr.append(paciente); tr.append(terapista); tr.append(editar);
-				  $("table").append(tr);
+				  /*$("table").append(tr);*/
+				  $("#citatable").append(tr);
 			  });
 		  });
-
 	 });
+
 	 $(".btn-delete").on("click", function(arg) {
          cita_id = $(this).data("citaId");
 		 $("#cita_name").html($(this).data("citaNombre"));
 		 $('#delete-modal').modal();
 	 });
+
 	 $("#btn-modal-accept").on("click", function(arg){
 		 console.log(cita_id);
 		 $("#cita_"+cita_id).remove();
@@ -70,23 +128,21 @@
 	 });
  });
 </script>
+
+
+
 {% endblock js %}
-
-
 
 {% block title_name %}: Citas{% endblock %}
 
 
 {% block content %}
 
-
 <div class="container">
-
-<input type="text" id="busqueda" class="form-control" style="height:40%;width:98%;" placeholder="Busqueda por nombre o apellido">
-<br>
-
-
-<table class="table table-bordered table-condensed">
+<input type="text" id="busqueda" class="datepicker3 form-control" style="height:40%;width:98%;" placeholder="Por favor hacer click aqu&iacute; para buscar una cita por fecha" readonly />
+<br />
+<br />
+<table id = "citatable" class="table table-bordered table-condensed">
 	<tr>
 		<th>Fecha cita</th>
 		<th>Hora inicio</th>
@@ -105,16 +161,14 @@
 			<!-- <td><a href="{#% url 'cita_view' cita.id %#}">paciente.nombres</a></td> -->
 			<td>{{cita.fecha_cita}}</td>
 			<td>{{cita.hora_inicio}}</td>
-			<td>{{cita.hora_fin}}</td>
+			<td>{{cita.hora_fin}}</td>	
 			<td>{{cita.terapista}}</td>	
 			<td>{{cita.tipo_terapia}}</td>
-			<td>{{cita.paciente}}</td>
+			<td>{{cita.paciente}}</td>	
 			<td>{{cita.indicaciones}}</td>
-			<td>{{cita.estado}}</td>
-			
+			<td>{{cita.estado}}</td>	
 
 			<td><a href="{% url 'cita_edit' cita.id %}" class="btn btn-primary btn-sm">Editar</a></td>
-
 			<td><button class="btn btn-danger btn-sm btn-delete" data-cita-id="{{cita.id}}" data-cita-nombre="{{cita.paciente}}">Eliminar</button></td>
 		</tr>
 	{% empty %}
@@ -140,4 +194,9 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
 {% endblock %}
+
+{% block script %}
+ <script src='/static/js/cita.js'></script> 
+{% endblock script %}
