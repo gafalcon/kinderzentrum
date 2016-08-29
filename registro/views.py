@@ -235,7 +235,7 @@ class RegistroEditView(View):
         historial_madre = init_historial_madre_form(paciente.historial_madre)
         descripcion_paciente = init_descripcion_form(paciente.descripcion)
         terapia_formset = TerapiaFormset(instance=paciente.descripcion, prefix="terapia")
-        medicamento_formset = MedicamentoFormset(instance=paciente.descripcion)
+        medicamento_formset = UpdateMedicamentoFormset(instance=paciente.descripcion)
         gestacion = init_gestacion_form(paciente.gestacion)
 
         actividad_gestacion = init_actividades(paciente.gestacion.actividad_gestacion_set.all(), paciente.gestacion)
@@ -246,7 +246,7 @@ class RegistroEditView(View):
         primeros_dias = init_primeros_dias_form(paciente.primeros_dias)
         suplementos = paciente.alimentacion.suplementos
         alimentacion = init_alimentacion_form(paciente.alimentacion, 'True' if suplementos.count() else 'False')
-        suplementos_formset = SuplementosFormset(instance=paciente.alimentacion)
+        suplementos_formset = UpdateSuplementosFormset(instance=paciente.alimentacion)
         datos_familiares = init_historia_familiar_form(paciente.datos_familiares)
         hermanos_formset = HermanosFormset(instance=paciente.datos_familiares)
         return render(request, self.template_name,
@@ -267,7 +267,8 @@ class RegistroEditView(View):
                        'datos_familiares': datos_familiares,
                        'hermanos_formset': hermanos_formset,
                        'primeros_dias': primeros_dias,
-                       'pagina_actual':'registro'})
+                       'pagina_actual':'registro',
+                       'accion': 'ed'})
 
 
     def post(self, request, *args, **kwargs):
@@ -279,7 +280,7 @@ class RegistroEditView(View):
         datos_historial_madre = HistorialMadreForm(request.POST, prefix="historial_madre", instance=paciente.historial_madre)
         datos_descripcion_paciente = DescripcionPacienteForm(request.POST, prefix="descripcion_paciente", instance=paciente.descripcion)
         terapia_formset = TerapiaFormset(request.POST, instance=paciente.descripcion, prefix="terapia")
-        medicamento_formset = MedicamentoFormset(request.POST, instance=paciente.descripcion)
+        medicamento_formset = UpdateMedicamentoFormset(request.POST, instance=paciente.descripcion)
         datos_gestacion = DesarrolloDeLaGestacionForm(request.POST, prefix="gestacion", instance=paciente.gestacion)
         actividad_gestacion = ActividadGestacionFormset(request.POST, prefix="actividad", instance=paciente.gestacion)
         situacion_gestacion = SituacionGestacionFormset(request.POST, prefix="situacion", instance=paciente.gestacion)
@@ -287,7 +288,7 @@ class RegistroEditView(View):
         datos_recien_nacido = RecienNacidoForm(request.POST, prefix="recien_nacido", instance=paciente.recien_nacido)
         datos_primeros_dias = PrimerosDiasForm(request.POST, prefix="primeros_dias", instance=paciente.primeros_dias)
         datos_alimentacion = AlimentacionForm(request.POST, prefix="alimentacion", instance=paciente.alimentacion)
-        suplementos_formset = SuplementosFormset(request.POST, instance=paciente.alimentacion)
+        suplementos_formset = UpdateSuplementosFormset(request.POST, instance=paciente.alimentacion)
         datos_familiares = DatosFamiliaresOtrosForm(request.POST, prefix="familiares_otros", instance=paciente.datos_familiares)
         hermanos_formset = HermanosFormset(request.POST, instance=paciente.datos_familiares)
 
@@ -310,8 +311,13 @@ class RegistroEditView(View):
             medicos_instances = datos_medico.save()
 
             descripcion = datos_descripcion_paciente.save()
-            medicamentos_instances = medicamento_formset.save()
-            terapias = terapia_formset.save()
+            if datos_descripcion_paciente.cleaned_data.get("tomo_medicamentos") == "False":
+                descripcion.medicamentos.all().delete()
+            else:
+                #medicamentos_instances = medicamento_formset.save()
+                medicamento_formset.save()
+            terapias = terapia_formset.save(descripcion=descripcion)
+
             historial_madre = datos_historial_madre.save()
             gestacion = datos_gestacion.save()
             for actividad_form in actividad_gestacion:

@@ -92,6 +92,7 @@ class DescripcionPacienteForm(ModelForm):
                                       label="Otras dififultades",
                                       required=False)
     tomo_medicamentos = forms.ChoiceField(choices=CHOICES_SI_NO,
+                                          initial=False,
                                           widget=forms.Select(attrs={'class':'form-control'}),
                                           label="¿Tomó medicamentos?")
     class Meta:
@@ -619,6 +620,10 @@ SuplementosFormset = inlineformset_factory(AlimentacionCostumbres, SuplementoAli
                                            can_delete=False,
                                            extra=1)
 
+UpdateSuplementosFormset = inlineformset_factory(AlimentacionCostumbres, SuplementoAlimenticio,
+                                                 fields='__all__',
+                                                 can_delete=True,
+                                                 extra=1)
 # class HermanoFormset(BaseInlineFormSet):
 #     def __init__(self, *args, **kwargs):
 #         super(HermanoFormset, self).__init__(*args, **kwargs)
@@ -644,6 +649,10 @@ MedicamentoFormset = inlineformset_factory(Descripcion, Medicamento,
                                            fields='__all__',
                                            can_delete=False,
                                            extra=1)
+UpdateMedicamentoFormset = inlineformset_factory(Descripcion, Medicamento,
+                                                 fields='__all__',
+                                                 can_delete=True,
+                                                 extra=1)
 ActividadGestacionFormset = inlineformset_factory(Gestacion, Actividad_Gestacion, form=ActividadGestacionForm, max_num=5, extra=5)
 
 SituacionGestacionFormset = inlineformset_factory(Gestacion, Situacion_Gestacion, form=SituacionGestacionForm, max_num=12, extra=12)
@@ -670,14 +679,24 @@ class TerapiasForm(BaseInlineFormSet):
     def clean(self):
         super(TerapiasForm, self).clean()
 
-    def save(self, commit=True):
+    def save(self, commit=True, descripcion=None):
         models = []
         if '1' in self.tipos:
             models.append(self.forms[0].save(commit=commit))
+        elif descripcion:
+            try:
+                descripcion.terapias.get(tipo=1).delete()
+            except Terapia.DoesNotExist:
+                pass
         if '2' in self.tipos:
-            #self.forms[1].save()
             models.append(self.forms[1].save(commit=commit))
+        elif descripcion:
+            try:
+                descripcion.terapias.get(tipo=2).delete()
+            except Terapia.DoesNotExist:
+                pass
         return models
+
 
 
 TerapiaFormset = inlineformset_factory(Descripcion, Terapia, fields='__all__', can_delete=False, max_num=2, extra=2,
