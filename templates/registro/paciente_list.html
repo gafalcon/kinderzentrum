@@ -36,22 +36,33 @@
           		  var nacionalidad = $("<td></td>").text(paciente.fields.nacionalidad);
           		  var grupo_sanguineo = $("<td></td>").text(paciente.fields.grupo_sanguineo);
           		  var sexo = $("<td></td>").text(paciente.fields.sexo);
-          		  var link_paciente = $("<a></a>").text("Editar");
+          		  var link_paciente = $('<a class="btn btn-primary btn-sm"></a>').text("Editar");
                   link_paciente.attr('href','registro/pacientes/edit/'+paciente.pk);
                   var editar = $("<td></td>").append(link_paciente);
-				  tr.append(nombres); tr.append(apellidos); tr.append(fecha_nacimiento);
+                  //
+                var link_paciente_eliminar = $('<button class="btn btn-danger btn-sm btn-delete"></button>').text("Eliminar");
+                link_paciente_eliminar.on("click", deleteUser);
+                link_paciente_eliminar.attr('data-paciente-nombre',paciente.nombres+" "+paciente.apellidos);
+                link_paciente_eliminar.attr('data-paciente-id',paciente.pk);
+                var eliminar = $("<td></td>").append(link_paciente_eliminar);
+                  tr.append(nombres); tr.append(apellidos); tr.append(fecha_nacimiento);
                   tr.append(lugar_nacimiento); tr.append(nacionalidad); tr.append(grupo_sanguineo);
-                  tr.append(sexo); tr.append(editar);
+                  tr.append(sexo); tr.append(editar); tr.append(eliminar);
 				  $("table").append(tr);
 			  });
 		  });
 
 	 });
-	 $(".btn-delete").on("click", function(arg) {
-         paciente_id = $(this).data("pacienteId");
-		 $("#paciente_name").html($(this).data("pacienteNombre"));
-		 $('#delete-modal').modal();
-	 });
+
+  function deleteUser(arg) {
+     paciente_id = $(this).data("pacienteId");
+     $("#paciente_name").html($(this).data("pacienteNombre"));
+     $('#delete-modal').modal();
+   }
+
+	 $(".btn-delete").on("click", deleteUser);
+
+
 	 $("#btn-modal-accept").on("click", function(arg){
 		 console.log(paciente_id);
 		 $("#paciente_"+paciente_id).remove();
@@ -64,6 +75,8 @@
 			 console.log(data);
 		 });
 	 });
+
+
  });
 </script>
 {% endblock js %}

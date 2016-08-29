@@ -8,7 +8,7 @@
 {% block js %}
 <script type="text/javascript" >
 $(document).ready(function(){
-	$("#busqueda").keyup(function () { 
+	$("#busqueda").keyup(function () {
 			  var busqueda = $(this).val();
 			  $.ajax({
 					  method: "POST",
@@ -22,8 +22,8 @@ $(document).ready(function(){
 					    console.log( msg );
 						    $.each(msg, function(i, paciente){
 								var tr = $("<tr></tr>");
-								tr.attr("class","form-control"); 
-								tr.attr("pk",paciente.pk); 
+								tr.attr("class","form-control");
+								tr.attr("pk",paciente.pk);
 								tr.html(paciente.fields.nombres + " " + paciente.fields.apellidos);
 								tabla.append(tr);
 							});

@@ -4,9 +4,9 @@
 {% block css %}
     <link rel="stylesheet" href="/static/css/jquery-ui.css" />
     <link rel="stylesheet" href="/static/css/bootstrap.css" />
-    <link rel="stylesheet" href="/static/css/admin_usuarios.css" />   
+    <link rel="stylesheet" href="/static/css/admin_usuarios.css" />
 {% endblock css %}
-	
+
 {% block js %}
 
 {% endblock js %}
@@ -16,40 +16,49 @@
 	{% if registro_usuario %}
 		<div id="registro_usuario">
 			<form action="." method="POST">
-				{% csrf_token %}	
+				{% csrf_token %}
 				<div id="panel_registro_usuario" class="show panel panel-default">
-					<div class="panel-heading">Nuevo Usuario</div>		
+					<div class="panel-heading">Nuevo Usuario</div>
 					<div class="panel-body">
 						<div id="errorMsg" class="fade-in one">{{ mensaje }}</div>
-						{{ registro_usuario.as_p }}
+            {% for field in registro_usuario %}
+            <div class="row">
+              <div class="form-group span5" style="width: 95%; margin-left:15px">
+              <label style="width: 20%;">{{ field.label }}</label>
+    					{{ field }}
+              {{ field.errors }}
+              </div>
+            </div>
+  					{% endfor %}
+
 						<input id="loginBtn" class="btn btn-default" type="submit" value="Guardar">
 					</div>
-				</div>							
+				</div>
 			</form>
 		</div>
 
 	{% elif registro_usuario_correcto %}
-	<div id="registro_usuario_correcto">		
+	<div id="registro_usuario_correcto">
 		<ul id="permisos">
 			<div id="panel_registro_usuario_correcto" class="show panel panel-default" style="margin: 0px 5%;">
-				<div class="panel-heading">Usuario Creado</div>		
+				<div class="panel-heading">Usuario Creado</div>
 				<div class="panel-body">
 					Usuario <b>{{ mensaje }}</b> agregado exitosamente!
 					{% for per in permisos %}
 					<li>{{ per|title }}</li>
 					{% endfor %}
 				</div>
-			</div>		
+			</div>
 		</ul>
 	</div>
 
 	{% elif usuarios %}
 	<div id="usuarios">
 		<div id="panel_permisos_usuario" class="show panel panel-default">
-			<div class="panel-heading">Permisos de Usuarios</div>		
+			<div class="panel-heading">Permisos de Usuarios</div>
 			<div class="panel-body">
 				<form action="." method="POST">
-				{% csrf_token %}	
+				{% csrf_token %}
 				{{ usuarios.management_form }}
 			  	<table class="table table-bordered table-condensed">
 	                <tr>
@@ -60,15 +69,15 @@
 	                {% for form in usuarios %}
 	                    {{ form.id }}
 	                    <tr class="formset-usuario_set">
-	                        <td class="adjust3">{{form.username}}</td>
-	                        <td class="adjust3">{{form.first_name}}</td>
+	                        <td class="adjust3" style="vertical-align: middle;">{{form.username}}</td>
+	                        <td class="adjust3" style="vertical-align: middle;">{{form.first_name}}</td>
 	                        <td>{{form.grupos}}</td>
 	                    </tr>
 	                {% endfor %}
 	            </table>
 	            <input id="loginBtn" class="btn btn-default" type="submit" value="Guardar">
 	            </form>
-	        </div>	
+	        </div>
         </div>
 	</div>
 	{% endif %}
