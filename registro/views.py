@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render, render_to_response, redirect, get_object_or_404
 from registro.forms import *
 from django.template import RequestContext
@@ -16,9 +17,9 @@ from django.forms import formset_factory
 from init_forms import *
 
 from django.db.models import Q
-from django.core.serializers.json import json
 from django.core import serializers
 from django.http.response import HttpResponse
+import json
 # Create your views here.
 
 
@@ -68,6 +69,7 @@ class RegistroView(View):
                        'hermanos_formset': hermanos_formset,
                        'primeros_dias': primeros_dias,
                        'pagina_actual':'registro'})
+
 
     def post(self, request, *args, **kwargs):
         datos_paciente = PacienteForm(request.POST, prefix="paciente")
@@ -219,6 +221,7 @@ class PacienteListView(ListView):
         return context
 
 
+@method_decorator(login_required, name="dispatch")
 class RegistroEditView(View):
     template_name = 'registro/registro_ficha_medica.html'
 
@@ -370,6 +373,41 @@ class RegistroEditView(View):
                        'primeros_dias': datos_primeros_dias,
                        'pagina_actual': 'registro'
                       })
+
+
+
+@login_required
+def eliminar_paciente_view(request):
+    respuesta = {}
+    if request.user.is_authenticated() and request.POST:
+        #grupos = request.user.groups.all()
+        user = request.user
+        registro = user.has_module_perms('registro')
+        print "\n\nregistro: ", registro
+        if registro:
+            paciente_id = request.POST.get("paciente_id")
+            print paciente_id, type(paciente_id)
+            paciente = Paciente.objects.get(pk=paciente_id)
+            deletion = paciente.delete()
+            respuesta = {"mensaje": "paciente eliminado", "result": deletion}
+
+        else:
+            respuesta = {"error": "No tiene permisos para eliminar éste usuario"}
+        #registro = grupos.filter(name='registro').count() == 1
+    else:
+        respuesta = {"error": "no es posible eliminar usuario"}
+    data = json.dumps(respuesta)
+    return HttpResponse(data, content_type="application/json")
+
+@login_required
+def paciente_view(request, id_paciente=""):
+    """Vista para mostrar detalles de un paciente"""
+    paciente = get_object_or_404(Paciente, pk=id_paciente)
+    assert False
+    return render(request, "registro/paciente_view.html",
+                  {'pagina_actual': 'paciente_view',
+                   'paciente': paciente})
+
 
 #@method_decorator(login_required, name="dispatch")
 class BusquedaPacientesView(View):

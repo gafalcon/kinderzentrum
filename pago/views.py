@@ -26,20 +26,19 @@ def render_to_pdf(template_src, context_dict):
 
 # Create your views here.
 def index_view(request):
-    # if request.user.is_authenticated():
-    #     #grupos = request.user.groups.all()
-    #     user = request.user
-    #     '''
-    #     Aqui vamos a colocar las condiciones para que se habiliten las condiciones que el usuario
-    #     va a usar
-    #     '''
-    #     registro = user.has_module_perms('registro')
-    #     #registro = grupos.filter(name='registro').count() == 1
-    #     ctx = {'registro':registro}
-    #     return render(request, 'pago/index.html', ctx)
-    # else:
-    #     return redirect('/')
-    return render(request, 'pago/index.html')
+    if request.user.is_authenticated():
+        #grupos = request.user.groups.all()
+        user = request.user
+        '''
+        Aqui vamos a colocar las condiciones para que se habiliten las condiciones que el usuario
+        va a usar
+        '''
+        registro = user.has_module_perms('registro')
+        #registro = grupos.filter(name='registro').count() == 1
+        ctx = {'registro':registro}
+        return render(request, 'pago/index.html', ctx)
+    else:
+        return redirect('/')
 
 def patient_payments(request, patientId):
     fromDate = request.GET.get('from', '0')

@@ -74,12 +74,36 @@ function setPanelVisible(id){
 }
 
 $(function() {
-
   	/* Creamos un widget de calendario con jquery-ui */
-
     $( "#datepicker2" ).datepicker({
     	/*showOn: 'button',
-    	autoOpen: true,*/
+    	autoOpen: true,
+    	closeText: 'Cerrar',
+    	showButtonPanel: true,
+    	currentText: 'Hoy',*/  
+		changeMonth: true,
+		changeYear: true,
+		yearRange: "2000:2030",
+		dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+		monthNamesShort: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+		'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+		dateFormat: 'dd/mm/yy',
+		beforeShow: function(){    
+           $(".ui-datepicker").css('font-size', 15) 
+        }   
+		//mas opciones
+    });
+});
+
+
+$(function() {
+  	/* Creamos un widget de calendario con jquery-ui */
+    $( ".datepicker3" ).datepicker({
+    	/*showOn: 'button',
+    	autoOpen: true,
+    	closeText: 'Cerrar',
+    	showButtonPanel: true,
+    	currentText: 'Hoy',*/  
 		changeMonth: true,
 		changeYear: true,
 		yearRange: "2000:2030",
@@ -87,14 +111,9 @@ $(function() {
 		monthNamesShort: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
 		'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
 		dateFormat: 'yy-mm-dd',
-		showButtonPanel: true,  
-		closeText: 'Cerrar', 
-		currentText: 'Hoy',
 		beforeShow: function(){    
            $(".ui-datepicker").css('font-size', 15) 
         }   
 		//mas opciones
     });
-
 });
-

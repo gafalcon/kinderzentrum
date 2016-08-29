@@ -1,3 +1,8 @@
+#errors{ 
+/*margin-top: 3px;'*/
+font-weight: bold;
+color: red;
+}
 #panel1{ 
 margin-top: 3px;
 margin-bottom: 3px;
@@ -13,7 +18,7 @@ width: 100%;
 background-color: #337AB7;
 color: white;
 font-weight: bold;
-width: 98.5%;
+width: 68%;
 }
 
 #savediv{  

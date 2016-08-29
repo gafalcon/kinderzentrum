@@ -675,7 +675,7 @@ class TerapiasForm(BaseInlineFormSet):
         if '1' in self.tipos:
             models.append(self.forms[0].save(commit=commit))
         if '2' in self.tipos:
-            self.forms[1].save()
+            #self.forms[1].save()
             models.append(self.forms[1].save(commit=commit))
         return models
 
