@@ -8,3 +8,9 @@ h1{
 	margin: 0px 0px 0px 0px;
 	padding: 5px 0px 5px 0px;
 }
+
+.carousel-inner > .item > img,
+.carousel-inner > .item > a > img {
+  width: 70%;
+  margin: auto;
+}
