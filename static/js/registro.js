@@ -137,18 +137,21 @@ $(function() {
 		value_changed($(this).val() == 1, $("#id_descripcion_paciente-edad_crisis").parent());
     });
 
+	if ($("#id_medicamentos-0-nombre").val() != ""){
+		$("select[name=descripcion_paciente-tomo_medicamentos]").val("True");
+	}
 	value_changed($("select[name=descripcion_paciente-tomo_medicamentos]").val() == "True", $("#medicamentos-formset"));
 	$("select[name=descripcion_paciente-tomo_medicamentos]").change(function (e) {
 		value_changed($(this).val() == "True", $("#medicamentos-formset"));
 	});
 
 	value_changed($("#id_historial_madre-enfermedades_previas_3").is(":checked"), $("#id_historial_madre-otra_enf_previa").parent());
-	$('input[name=historial_madre-enfermedades_previas]').on('click', function (e) {
+	$('#id_historial_madre-enfermedades_previas_3').on('click', function (e) {
         value_changed(e.target.value == "otra" && e.target.checked, $("#id_historial_madre-otra_enf_previa").parent());
 	});
 
 	value_changed($("#id_historial_madre-enfermedades_durante_embarazo_4").is(":checked"), $("#id_historial_madre-otra_enf_embarazo").parent());
-	$('input[name=historial_madre-enfermedades_durante_embarazo]').on('click', function (e) {
+	$('#id_historial_madre-enfermedades_durante_embarazo_4').on('click', function (e) {
         value_changed(e.target.value == "otra" && e.target.checked, $("#id_historial_madre-otra_enf_embarazo").parent());
 	});
 

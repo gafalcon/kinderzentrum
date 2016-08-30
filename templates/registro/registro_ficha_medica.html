@@ -134,7 +134,7 @@
 		<div class="panel-heading">Descripcion del niño</div>
         <div class="panel-body">
 			{% for field in descripcion_paciente %}
-	  			<div class="form-group {% if field.errors %} has-error{% endif %} {% if forloop.counter == 1 or forloop.counter == 3 or forloop.counter == 4 %} adjust {% endif %}">
+	  			<div class="form-group {% if field.errors %} has-error{% endif %} {% if forloop.counter == 1 or forloop.counter == 3 or forloop.counter == 4 or forloop.counter == 6 or forloop.counter == 13 or forloop.counter == 12 %} adjust {% endif %}">
 					{% if forloop.counter == 3 %}
 						<div id="otro-descubridor" style="display:none;">
 							{{ field.errors }}
@@ -176,12 +176,18 @@
                     <tr>
                         <th>Nombre</th>
                         <th>Dosis diaria</th>
+						{% if accion == "ed" %}
+							<th>¿Eliminar?</th>
+						{% endif %}
                     </tr>
                     {% for form in medicamento_formset %}
                         {{ form.id }}
                         <tr class="formset-medicamentos">
                             <td>{{form.nombre}}</td>
                             <td>{{form.dosis_diaria}}</td>
+							{% if accion == "ed" %}
+								<td>{{ form.DELETE }}</td>
+							{% endif %}
                         </tr>
                     {% endfor %}
                 </table>
@@ -358,6 +364,9 @@
 								<th>Frecuencia</th>
 								<th>Tipo</th>
 								<th>Cantidad</th>
+								{% if accion == "ed" %}
+									<th>¿Eliminar?</th>
+								{% endif %}
 							</tr>
 							{% for form in suplementos_formset %}
 								<tr class="formset-suplementos">
@@ -365,6 +374,9 @@
 									<td>{{form.frecuencia}}</td>
 									<td>{{form.tipo}}</td>
 									<td>{{form.cantidad}}</td>
+									{% if accion == "ed" %}
+										<td>{{ form.DELETE }}</td>
+									{% endif %}
 								</tr>
 							{% endfor %}
 						</table>
