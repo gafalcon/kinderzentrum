@@ -16,19 +16,33 @@
 
 
 {% block content %}
-<div class="container">
-      <div class="card card-container">
+<div id="cambio_contrasenia">
+<div class="show panel panel-default">
+  <div class="panel-heading">Cambiar contraseña</div>
+  <div class="panel-body">
+
         <form action="{% url 'changepassword' %}" method="POST" class="form-signin" >{% csrf_token %}
-
-
               <div id="errorMsg" class="fade-in one">{{ form.non_field_errors}}</div>
-              <input type="password" id="id_newpassword" name="newpassword" class="form-control" placeholder="Contraseña" required>
-              <input type="password" id="id_renewpasssword" name="renewpasssword" class="form-control" placeholder="Repita contraseña" required>
-
-              <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Cambiar contraseña</button>
+                <div class="row">
+                  <div class="form-group" style="width: 95%; margin-left:15px">
+                    <input type="password" id="id_newpassword" name="newpassword" class="form-control" placeholder="Contraseña" required>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group" style="width: 95%; margin-left:15px">
+                    <input type="password" id="id_renewpasssword" name="renewpasssword" class="form-control" placeholder="Repita contraseña" required>
+                  </div>
+                </div>
+              <div class="row">
+                  <div class="form-group" style="width: 97%; margin-left:15px">
+                    <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Cambiar contraseña</button>
+                  </div>
+                </div>
           </form><!-- /form -->
 
-      </div><!-- /card-container -->
+
+    </div>
   </div><!-- /container -->
+</div>
 
 {% endblock %}
