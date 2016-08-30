@@ -653,9 +653,9 @@ UpdateMedicamentoFormset = inlineformset_factory(Descripcion, Medicamento,
                                                  fields='__all__',
                                                  can_delete=True,
                                                  extra=1)
-ActividadGestacionFormset = inlineformset_factory(Gestacion, Actividad_Gestacion, form=ActividadGestacionForm, max_num=5, extra=5)
+ActividadGestacionFormset = inlineformset_factory(Gestacion, Actividad_Gestacion, form=ActividadGestacionForm, max_num=5, extra=5, can_delete=True)
 
-SituacionGestacionFormset = inlineformset_factory(Gestacion, Situacion_Gestacion, form=SituacionGestacionForm, max_num=12, extra=12)
+SituacionGestacionFormset = inlineformset_factory(Gestacion, Situacion_Gestacion, form=SituacionGestacionForm, max_num=12, extra=12, can_delete=True)
 
 DatosMedicoFormset = inlineformset_factory(Paciente, Medico, form=DatosMedicoForm, extra=1, can_delete=False, exclude=('paciente',))
 DatosFamiliaresFormset = inlineformset_factory(Paciente, Familiar, form=DatosFamiliaresForm, extra=2, can_delete=False, exclude=('paciente',))

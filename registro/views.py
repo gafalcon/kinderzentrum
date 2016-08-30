@@ -238,8 +238,8 @@ class RegistroEditView(View):
         medicamento_formset = UpdateMedicamentoFormset(instance=paciente.descripcion)
         gestacion = init_gestacion_form(paciente.gestacion)
 
-        actividad_gestacion = init_actividades(paciente.gestacion.actividad_gestacion_set.all(), paciente.gestacion)
-        situacion_gestacion = init_situaciones(paciente.gestacion.situacion_gestacion_set.all(), paciente.gestacion)
+        actividad_gestacion = init_actividades(paciente.gestacion.actividades.all(), paciente.gestacion)
+        situacion_gestacion = init_situaciones(paciente.gestacion.situaciones.all(), paciente.gestacion)
 
         nacimiento = init_nacimiento_form(paciente.nacimiento)
         datos_recien_nacido = init_recien_nacido_form(paciente.recien_nacido)
@@ -322,9 +322,13 @@ class RegistroEditView(View):
             for actividad_form in actividad_gestacion:
                 if actividad_form.is_valid():
                     actividad = actividad_form.save()
+                    if actividad_form.cleaned_data.get('DELETE'):
+                        actividad.delete()
             for situacion_form in situacion_gestacion:
                 if situacion_form.is_valid():
                     situacion = situacion_form.save()
+                    if situacion_form.cleaned_data.get('DELETE'):
+                        situacion.delete()
 
             nacimiento = datos_nacimiento.save()
             recien_nacido = datos_recien_nacido.save()
@@ -332,7 +336,6 @@ class RegistroEditView(View):
             alimentacion = datos_alimentacion.save()
             if datos_alimentacion.cleaned_data.get("suplementos") == "False":
                 alimentacion.suplementos.all().delete()
-            assert False
             familiares = datos_familiares.save()
             suplementos = suplementos_formset.save()
             hermanos = hermanos_formset.save()

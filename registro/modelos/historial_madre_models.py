@@ -59,7 +59,7 @@ class Actividad_Gestacion(models.Model):
     ACTIVIDADES_CHOICES = (u'Fumar',u'Ingerir Alcohol',u'Consumir drogas',u'Realizar radiografías',u'Trabajar')
     periodo = models.SmallIntegerField(choices=CHOICES_TRIMESTRES)
     nombre_actividad = models.CharField(max_length=100, blank=True)
-    gestacion = models.ForeignKey(Gestacion, on_delete=models.CASCADE)
+    gestacion = models.ForeignKey(Gestacion, on_delete=models.CASCADE, related_name='actividades')
 
 class Situacion_Gestacion(models.Model):
     SITUACIONES_CHOICES = (u'Sangrados',u'Presión sanguínea elevada',u'Enfermedades infecciosas',
@@ -70,5 +70,5 @@ class Situacion_Gestacion(models.Model):
                            u'Nauseas',u'Otras enfermedades')
     periodo = models.SmallIntegerField(choices=CHOICES_TRIMESTRES)
     nombre_situacion = models.CharField(max_length=100, blank=True)
-    gestacion = models.ForeignKey(Gestacion, on_delete=models.CASCADE)
+    gestacion = models.ForeignKey(Gestacion, on_delete=models.CASCADE, related_name='situaciones')
 
