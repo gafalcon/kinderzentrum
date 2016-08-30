@@ -61,5 +61,3 @@ target/
 env
 
 .idea
-
-db.sqlite3

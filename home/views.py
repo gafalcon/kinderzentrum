@@ -25,7 +25,8 @@ def index_view(request):
         ctx = {'registro':registro,'pagina_actual':'inicio'}
         return render(request, 'base.html', ctx)
     else:
-        return render(request, 'base.html')
+        ctx = {'pagina_actual':'inicio'}
+        return render(request, 'base.html', ctx)
 
 
 def login_view(request):
