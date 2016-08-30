@@ -429,6 +429,9 @@
 								<th>Nombres</th>
 								<th>Apellidos</th>
 								<th>Fecha de Nacimiento</th>
+								{% if accion == "ed" %}
+									<th>¿Eliminar?</th>
+								{% endif %}
 							</tr>
 							{% for form in hermanos_formset %}
 								<tr class="row-hermanos">
@@ -436,6 +439,9 @@
 									<td>{{form.nombres}}</td>
 									<td>{{form.apellidos}}</td>
 									<td>{{form.fecha_nacimiento}}</td>
+									{% if accion == "ed" %}
+										<td>{{form.DELETE}}</td>
+									{% endif %}
 								</tr>
 							{% endfor %}
 						</table>

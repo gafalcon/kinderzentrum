@@ -248,7 +248,7 @@ class RegistroEditView(View):
         alimentacion = init_alimentacion_form(paciente.alimentacion, 'True' if suplementos.count() else 'False')
         suplementos_formset = UpdateSuplementosFormset(instance=paciente.alimentacion)
         datos_familiares = init_historia_familiar_form(paciente.datos_familiares)
-        hermanos_formset = HermanosFormset(instance=paciente.datos_familiares)
+        hermanos_formset = UpdateHermanosFormset(instance=paciente.datos_familiares)
         return render(request, self.template_name,
                       {'datos_medico_formset':datos_medico,
                        'datos_familia_formset':datos_familia,
@@ -290,7 +290,7 @@ class RegistroEditView(View):
         datos_alimentacion = AlimentacionForm(request.POST, prefix="alimentacion", instance=paciente.alimentacion)
         suplementos_formset = UpdateSuplementosFormset(request.POST, instance=paciente.alimentacion)
         datos_familiares = DatosFamiliaresOtrosForm(request.POST, prefix="familiares_otros", instance=paciente.datos_familiares)
-        hermanos_formset = HermanosFormset(request.POST, instance=paciente.datos_familiares)
+        hermanos_formset = UpdateHermanosFormset(request.POST, instance=paciente.datos_familiares)
 
         if (datos_paciente.is_valid() and
             datos_familia.is_valid() and
@@ -340,16 +340,7 @@ class RegistroEditView(View):
             suplementos = suplementos_formset.save()
             hermanos = hermanos_formset.save()
 
-            # for familiar in familiares_instances:
-            #     familiar.paciente = paciente
-            #     familiar.save()
-
-            # for medico in medicos_instances:
-            #     medico.paciente = paciente
-            #     medico.save()
-
             return redirect('pacientes-list')
-        #assert False
         print("Errors paciente:", datos_paciente.errors)
         print("Errors familiares:", datos_familia.errors)
         print("Errors medico:", datos_medico.errors)
