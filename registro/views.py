@@ -314,7 +314,6 @@ class RegistroEditView(View):
             if datos_descripcion_paciente.cleaned_data.get("tomo_medicamentos") == "False":
                 descripcion.medicamentos.all().delete()
             else:
-                #medicamentos_instances = medicamento_formset.save()
                 medicamento_formset.save()
             terapias = terapia_formset.save(descripcion=descripcion)
 
@@ -331,6 +330,9 @@ class RegistroEditView(View):
             recien_nacido = datos_recien_nacido.save()
             primeros_dias = datos_primeros_dias.save()
             alimentacion = datos_alimentacion.save()
+            if datos_alimentacion.cleaned_data.get("suplementos") == "False":
+                alimentacion.suplementos.all().delete()
+            assert False
             familiares = datos_familiares.save()
             suplementos = suplementos_formset.save()
             hermanos = hermanos_formset.save()
