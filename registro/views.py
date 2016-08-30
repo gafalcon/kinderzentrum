@@ -238,8 +238,8 @@ class RegistroEditView(View):
         medicamento_formset = UpdateMedicamentoFormset(instance=paciente.descripcion)
         gestacion = init_gestacion_form(paciente.gestacion)
 
-        actividad_gestacion = init_actividades(paciente.gestacion.actividad_gestacion_set.all(), paciente.gestacion)
-        situacion_gestacion = init_situaciones(paciente.gestacion.situacion_gestacion_set.all(), paciente.gestacion)
+        actividad_gestacion = init_actividades(paciente.gestacion.actividades.all(), paciente.gestacion)
+        situacion_gestacion = init_situaciones(paciente.gestacion.situaciones.all(), paciente.gestacion)
 
         nacimiento = init_nacimiento_form(paciente.nacimiento)
         datos_recien_nacido = init_recien_nacido_form(paciente.recien_nacido)
@@ -248,7 +248,7 @@ class RegistroEditView(View):
         alimentacion = init_alimentacion_form(paciente.alimentacion, 'True' if suplementos.count() else 'False')
         suplementos_formset = UpdateSuplementosFormset(instance=paciente.alimentacion)
         datos_familiares = init_historia_familiar_form(paciente.datos_familiares)
-        hermanos_formset = HermanosFormset(instance=paciente.datos_familiares)
+        hermanos_formset = UpdateHermanosFormset(instance=paciente.datos_familiares)
         return render(request, self.template_name,
                       {'datos_medico_formset':datos_medico,
                        'datos_familia_formset':datos_familia,
@@ -290,7 +290,7 @@ class RegistroEditView(View):
         datos_alimentacion = AlimentacionForm(request.POST, prefix="alimentacion", instance=paciente.alimentacion)
         suplementos_formset = UpdateSuplementosFormset(request.POST, instance=paciente.alimentacion)
         datos_familiares = DatosFamiliaresOtrosForm(request.POST, prefix="familiares_otros", instance=paciente.datos_familiares)
-        hermanos_formset = HermanosFormset(request.POST, instance=paciente.datos_familiares)
+        hermanos_formset = UpdateHermanosFormset(request.POST, instance=paciente.datos_familiares)
 
         if (datos_paciente.is_valid() and
             datos_familia.is_valid() and
@@ -314,7 +314,6 @@ class RegistroEditView(View):
             if datos_descripcion_paciente.cleaned_data.get("tomo_medicamentos") == "False":
                 descripcion.medicamentos.all().delete()
             else:
-                #medicamentos_instances = medicamento_formset.save()
                 medicamento_formset.save()
             terapias = terapia_formset.save(descripcion=descripcion)
 
@@ -323,28 +322,25 @@ class RegistroEditView(View):
             for actividad_form in actividad_gestacion:
                 if actividad_form.is_valid():
                     actividad = actividad_form.save()
+                    if actividad_form.cleaned_data.get('DELETE'):
+                        actividad.delete()
             for situacion_form in situacion_gestacion:
                 if situacion_form.is_valid():
                     situacion = situacion_form.save()
+                    if situacion_form.cleaned_data.get('DELETE'):
+                        situacion.delete()
 
             nacimiento = datos_nacimiento.save()
             recien_nacido = datos_recien_nacido.save()
             primeros_dias = datos_primeros_dias.save()
             alimentacion = datos_alimentacion.save()
+            if datos_alimentacion.cleaned_data.get("suplementos") == "False":
+                alimentacion.suplementos.all().delete()
             familiares = datos_familiares.save()
             suplementos = suplementos_formset.save()
             hermanos = hermanos_formset.save()
 
-            # for familiar in familiares_instances:
-            #     familiar.paciente = paciente
-            #     familiar.save()
-
-            # for medico in medicos_instances:
-            #     medico.paciente = paciente
-            #     medico.save()
-
             return redirect('pacientes-list')
-        #assert False
         print("Errors paciente:", datos_paciente.errors)
         print("Errors familiares:", datos_familia.errors)
         print("Errors medico:", datos_medico.errors)

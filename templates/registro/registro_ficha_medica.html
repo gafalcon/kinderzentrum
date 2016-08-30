@@ -236,13 +236,18 @@
                         <tr>
                             <th>Situación presentada</th>
                             <th>Periodo</th>
-
+							{% if accion == 'ed' %}
+								<th>¿Eliminar?</th>
+							{% endif %}
                         </tr>
                         {% for form in situacion_gestacion %}
                             {{ form.id }}
                             <tr>
                                 <td>{{form.nombre_situacion}}</td>
                                 <td>{{form.periodo}}</td>
+								{% if accion == 'ed' %}
+									<td>{{form.DELETE}}</td>
+								{% endif %}
                             </tr>
                         {% endfor %}
                         </table>
@@ -256,13 +261,18 @@
                         <tr>
                             <th>Situación presentada</th>
                             <th>Periodo</th>
-
+							{% if accion == 'ed' %}
+								<th>¿Eliminar?</th>
+							{% endif %}
                         </tr>
                         {% for form in actividad_gestacion %}
                             {{ form.id }}
                             <tr>
                                 <td>{{form.nombre_actividad}}</td>
                                 <td>{{form.periodo}}</td>
+								{% if accion == 'ed' %}
+									<td>{{form.DELETE}}</td>
+								{% endif %}
                             </tr>
                         {% endfor %}
                         </table>
@@ -419,6 +429,9 @@
 								<th>Nombres</th>
 								<th>Apellidos</th>
 								<th>Fecha de Nacimiento</th>
+								{% if accion == "ed" %}
+									<th>¿Eliminar?</th>
+								{% endif %}
 							</tr>
 							{% for form in hermanos_formset %}
 								<tr class="row-hermanos">
@@ -426,6 +439,9 @@
 									<td>{{form.nombres}}</td>
 									<td>{{form.apellidos}}</td>
 									<td>{{form.fecha_nacimiento}}</td>
+									{% if accion == "ed" %}
+										<td>{{form.DELETE}}</td>
+									{% endif %}
 								</tr>
 							{% endfor %}
 						</table>

@@ -111,4 +111,4 @@ class SuplementoAlimenticio(models.Model):
     tipo = models.CharField(max_length=50)
     cantidad = models.PositiveSmallIntegerField()
     alimentacion = models.ForeignKey(AlimentacionCostumbres, on_delete=models.CASCADE, related_name='suplementos')
- 
+
