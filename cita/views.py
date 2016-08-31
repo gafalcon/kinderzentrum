@@ -1,9 +1,13 @@
+import datetime
+
+from cita.modelos.cita_model       import Cita
 from django.contrib.auth.decorators import login_required
 from django.forms                   import formset_factory
 from django.http                    import HttpResponseRedirect
 from django.shortcuts               import render, render_to_response
 from django.template                import RequestContext
 from django.utils.decorators        import method_decorator
+from django.views.decorators.csrf   import csrf_exempt
 from django.views.generic           import View
 #from .forms                         import *
 #from forms                      import CitaForm
@@ -16,6 +20,9 @@ from registro.modelos.paciente_model                    import Paciente
 @method_decorator(login_required, name="dispatch")
 class ReservarCitaView(View):
     template_name = 'cita/reservar_cita.html'
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ReservarCitaView, self).dispatch(request,*args,**kwargs)
 
     template_name = 'cita/reservar_cita.html'
     def get(self, request, *args, **kwargs):
@@ -62,8 +69,8 @@ class ReservarCitaView(View):
             horaini = "08:15"
         elif horaini == "08:30 am":
             horaini = "08:30"
-        elif horafin == "08:45 am":
-            horafin = "08:45"
+        elif horaini == "08:45 am":
+            horaini = "08:45"
         elif  horaini == "09:00 am":
             horaini = "09:00"
 
@@ -96,10 +103,11 @@ class ReservarCitaView(View):
             cita.terapista = Terapista.objects.get(id=terapista_id)
         except Terapista.DoesNotExist:
             print "error"
-        #cita.fecha_cita=fechacita
-        cita.hora_inicio=horaini
-        cita.hora_fin=horafin
-        #cita = Cita(fecha_cita=fechacita,  hora_inicio=horaini, hora_fin=horafin, tipo_terapia=tipoterapia, paciente=paciente, terapista=terapista)
+        
+        cita.fecha_cita=fechacita
+        cita.hora_inicio=datetime.datetime.strptime(horaini[:-15],'%a %b %d %Y %H:%M:%S')
+        cita.hora_fin=datetime.datetime.strptime(horafin[:-15],'%a %b %d %Y %H:%M:%S')        
+        
         cita.save()
         return render(request, self.template_name, {'pagina_actual': 'cita'})
         return HttpResponseRedirect('/cita')
