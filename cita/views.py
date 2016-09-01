@@ -107,8 +107,8 @@ class ReservarCitaView(View):
         except Terapista.DoesNotExist:
             print "error"
         cita.fecha_cita=fechacita
-        cita.hora_inicio=datetime.datetime.strptime(horaini[:-15],'%a %b %d %Y %H:%M:%S')
-        cita.hora_fin=datetime.datetime.strptime(horafin[:-15],'%a %b %d %Y %H:%M:%S')
+        cita.hora_inicio=datetime.datetime.strptime(horaini[:24],'%a %b %d %Y %H:%M:%S')
+        cita.hora_fin=datetime.datetime.strptime(horafin[:24],'%a %b %d %Y %H:%M:%S')
         #cita = Cita(fecha_cita=fechacita,  hora_inicio=horaini, hora_fin=horafin, tipo_terapia=tipoterapia, paciente=paciente, terapista=terapista)
         cita.save()
         return render(request, self.template_name, {'pagina_actual': 'cita'})
