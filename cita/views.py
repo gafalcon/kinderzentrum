@@ -105,9 +105,9 @@ class ReservarCitaView(View):
             print "error"
         
         cita.fecha_cita=fechacita
-        cita.hora_inicio=datetime.datetime.strptime(horaini[:-15],'%a %b %d %Y %H:%M:%S')
-        cita.hora_fin=datetime.datetime.strptime(horafin[:-15],'%a %b %d %Y %H:%M:%S')        
-        
+        cita.hora_inicio=datetime.datetime.strptime(horaini[:24],'%a %b %d %Y %H:%M:%S')
+        cita.hora_fin=datetime.datetime.strptime(horafin[:24],'%a %b %d %Y %H:%M:%S')
+                
         cita.save()
         return render(request, self.template_name, {'pagina_actual': 'cita'})
         return HttpResponseRedirect('/cita')
