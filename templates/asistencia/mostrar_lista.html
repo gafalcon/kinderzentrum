@@ -13,6 +13,7 @@
 {% endblock css %}
 
 {% block js %}
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
     <script src="/static/js/dataTables.bootstrap.js"></script>
     <script src="/static/js/jquery.dataTables.js"></script>
     <script src="/static/js/buttons.bootstrap.js"></script>
@@ -104,7 +105,7 @@
         var editor; // use a global for the submit and return data rendering in the examples
         $(document).ready( function () {
             $('#tabla_pacientes').DataTable();
-            $('#bt_buscar').on('click',function () {
+            $('#bt_buscar').on('click',function (event) {
                 event.preventDefault();
                 $.ajax({
                     type: $('#form_consulta').attr('method'),
@@ -121,8 +122,7 @@
                 });
                 return false;
             });
-
-            $('#bt_buscar').click();
+            //$('#bt_buscar').click();
         } );
 
         function inicializarTabla(response)

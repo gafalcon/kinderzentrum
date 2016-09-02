@@ -1,6 +1,7 @@
 
 import datetime
 import json
+import simplejson
 
 from django.db import connection
 from django.shortcuts import render, render_to_response, get_list_or_404
@@ -9,6 +10,8 @@ from django.views.generic import View
 from django.template import RequestContext
 from django.http import HttpResponse, Http404
 from django.core.serializers.json import DjangoJSONEncoder
+from bson import json_util
+
 
 from models import Terapista, Tipo_terapia
 
@@ -38,7 +41,9 @@ def consulta_asistencia(request):
                                   int(request.POST['terapista']), request.POST['fdesde'],
                                   request.POST['fhasta'])
 
-        json_resultados = json.dumps(diccionario,cls=DjangoJSONEncoder)
+
+        json_resultados = json.dumps(diccionario, default=json_util.default)
+        #json_resultados = json.dumps(diccionario,cls=DjangoJSONEncoder).encode('utf8')
     else:
         raise Http404
     return HttpResponse(json_resultados, content_type='application/json')
@@ -55,7 +60,7 @@ def generaQuery(nombre, terapia, terapista, fdesde, fhasta):
     if (terapia == 0 and terapista == 0):
         cursor.execute('SELECT DISTINCT paciente.id as idPaciente, '
                        'strftime(\'%%d/%%m/%%Y\', cita.fecha_cita) as Fecha, '
-                       'cita.hora_inicio as Hora, '
+                       'strftime(\'%%H:%%M:%%S\',cita.hora_inicio) as Hora, '
                        '(paciente.nombres || \' \' || paciente.apellidos) as paciente, '
                        '(terapista.nombres || \' \' || terapista.apellidos) as Terapista, '
                        'tipoT.nombre as tipoTerapia, '
@@ -77,7 +82,7 @@ def generaQuery(nombre, terapia, terapista, fdesde, fhasta):
         if(terapia != 0 and terapista != 0):
             cursor.execute('SELECT paciente.id as idPaciente, '
                            'strftime(\'%%d/%%m/%%Y\', cita.fecha_cita) as Fecha, '
-                           'cita.hora_inicio as Hora, '
+                           'strftime(\'%%H:%%M:%%S\',cita.hora_inicio) as Hora, '
                            '(paciente.nombres || \' \' || paciente.apellidos) as paciente, '
                            '(terapista.nombres || \' \' || terapista.apellidos) as Terapista, '
                            'tipoT.nombre as tipoTerapia, '
@@ -101,7 +106,7 @@ def generaQuery(nombre, terapia, terapista, fdesde, fhasta):
             if (terapia == 0 and terapista != 0):
                 cursor.execute('SELECT paciente.id as idPaciente, '
                                'strftime(\'%%d/%%m/%%Y\', cita.fecha_cita) as Fecha, '
-                               'cita.hora_inicio as Hora, '
+                               'strftime(\'%%H:%%M:%%S\',cita.hora_inicio) as Hora, '
                                '(paciente.nombres || \' \' || paciente.apellidos) as paciente, '
                                '(terapista.nombres || \' \' || terapista.apellidos) as Terapista, '
                                'tipoT.nombre as tipoTerapia, '
@@ -123,7 +128,7 @@ def generaQuery(nombre, terapia, terapista, fdesde, fhasta):
             else:
                 cursor.execute('SELECT paciente.id as idPaciente, '
                                'strftime(\'%%d/%%m/%%Y\', cita.fecha_cita) as Fecha, '
-                               'cita.hora_inicio as Hora, '
+                               'strftime(\'%%H:%%M:%%S\',cita.hora_inicio) as Hora, '
                                '(paciente.nombres || \' \' || paciente.apellidos) as paciente, '
                                '(terapista.nombres || \' \' || terapista.apellidos) as Terapista, '
                                'tipoT.nombre as tipoTerapia, '
