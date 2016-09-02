@@ -29,13 +29,15 @@ ALLOWED_HOSTS = []
 
 #send email for forgot password
 
-EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_PASSWORD = 'kinderzentrum'
 EMAIL_HOST_USER = 'kinderzentrum.web@gmail.com'
-EMAIL_PORT = 587
-DEFAULT_FROM_EMAIL = 'kinderzentrum.web@gmail.com'
-SERVER_EMAIL = 'kinderzentrum.web@gmail.com'
+EMAIL_HOST_PASSWORD = 'kind3rzentrum2016'
+#EMAIL_PORT = 587
+EMAIL_PORT = 465
+#EMAIL_USE_TLS = True
+EMAIL_USE_SSL = True
+#DEFAULT_FROM_EMAIL = 'kinderzentrum.web@gmail.com'
+#SERVER_EMAIL = 'kinderzentrum.web@gmail.com'
 
 
 # Application definition
