@@ -1,13 +1,13 @@
 import datetime
 
-from cita.modelos.cita_model       import Cita
+from cita.modelos.cita_model import Cita
 from django.contrib.auth.decorators import login_required
 from django.forms                   import formset_factory
 from django.http                    import HttpResponseRedirect
 from django.shortcuts               import render, render_to_response
 from django.template                import RequestContext
 from django.utils.decorators        import method_decorator
-from django.views.decorators.csrf   import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic           import View
 #from .forms                         import *
 #from forms                      import CitaForm
@@ -20,16 +20,19 @@ from registro.modelos.paciente_model                    import Paciente
 @method_decorator(login_required, name="dispatch")
 class ReservarCitaView(View):
     template_name = 'cita/reservar_cita.html'
+
+    template_name = 'cita/reservar_cita.html'
+
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super(ReservarCitaView, self).dispatch(request,*args,**kwargs)
 
-    template_name = 'cita/reservar_cita.html'
     def get(self, request, *args, **kwargs):
         pacientes = Paciente.objects.order_by('fecha_registro')
         tipo_terapia_list = Tipo_terapia.objects.order_by('costo')
         terapista_list = Terapista.objects.order_by('fecha_nacimiento')
         return render(request,self.template_name,{'pacientes':pacientes, 'tipo_terapia_list':tipo_terapia_list, 'terapista_list':terapista_list, 'pagina_actual': 'cita'})
+
 
     def post(self, request, *args, **kwargs):
         fechacita = request.POST.get('date_holder', default = "")
@@ -103,11 +106,10 @@ class ReservarCitaView(View):
             cita.terapista = Terapista.objects.get(id=terapista_id)
         except Terapista.DoesNotExist:
             print "error"
-        
         cita.fecha_cita=fechacita
-        cita.hora_inicio=datetime.datetime.strptime(horaini[:24],'%a %b %d %Y %H:%M:%S')
-        cita.hora_fin=datetime.datetime.strptime(horafin[:24],'%a %b %d %Y %H:%M:%S')
-                
+        cita.hora_inicio=datetime.datetime.strptime(horaini[:-15],'%a %b %d %Y %H:%M:%S')
+        cita.hora_fin=datetime.datetime.strptime(horafin[:-15],'%a %b %d %Y %H:%M:%S')
+        #cita = Cita(fecha_cita=fechacita,  hora_inicio=horaini, hora_fin=horafin, tipo_terapia=tipoterapia, paciente=paciente, terapista=terapista)
         cita.save()
         return render(request, self.template_name, {'pagina_actual': 'cita'})
         return HttpResponseRedirect('/cita')
@@ -118,12 +120,12 @@ class ReservarCitaView(View):
 
         # datos_cita = CitaForm(request.POST, prefix="cita")
         # if datos_cita.is_valid():
-        #     #cita = datos_cita.save(commit=False) 
-        #     cita.save() 
-        #     print "datos de la cita grabados exitosamente"          
+        #     #cita = datos_cita.save(commit=False)
+        #     cita.save()
+        #     print "datos de la cita grabados exitosamente"
         #     context = {'cita_form': datos_cita,
         # 		       'pagina_actual': 'cita'}
         # #return render(request, self.template_name, context)
         # return render_to_response(self.template_name, context, context_instance=RequestContext(request))
         # #return render_to_response(self.template_name, context, RequestContext(request))
-        # return HttpResponseRedirect('/cita')
+# return HttpResponseRedirect('/cita')

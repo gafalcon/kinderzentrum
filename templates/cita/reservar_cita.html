@@ -2,19 +2,19 @@
 {% block title %} Kinderzentrum - Reservar cita {% endblock %}
 {% block css %}
 
-  <link rel='stylesheet' href='/static/css/cita/reset.css' />
-  <link rel='stylesheet' href='/static/css/cita/jquery-ui.css' />
-  <link rel='stylesheet' href='/static/css/cita/jquery.weekcalendar.css' />
-  <link rel='stylesheet' href='/static/css/cita/demo.css' />
-   
+    <link rel='stylesheet' href='/static/css/cita/reset.css' />
+    <link rel='stylesheet' href='/static/css/cita/jquery-ui.css' />
+    <link rel='stylesheet' href='/static/css/cita/jquery.weekcalendar.css' />
+    <link rel='stylesheet' href='/static/css/cita/demo.css' />
+
 {% endblock css %}
 
 {% block js %}
 
-  <script  src='/static/js/cita/jquery.min.js'></script>
-  <script  src='/static/js/cita/jquery-ui.min.js'></script>
-  <script  src='/static/js/cita/jquery.weekcalendar.js'></script>
-  <script  src='/static/js/cita/date.js'></script>
+    <script  src='/static/js/cita/jquery.min.js'></script>
+    <script  src='/static/js/cita/jquery-ui.min.js'></script>
+    <script  src='/static/js/cita/jquery.weekcalendar.js'></script>
+    <script  src='/static/js/cita/date.js'></script>
 
 {% endblock js %}
 
@@ -22,13 +22,14 @@
 
 {% block content %}
 
-<div id='calendar'></div>
+
+    <div id='calendar'></div>
     <div id="event_edit_container">
 
 
-       <form method="POST" action="/cita/">
+        <form method="POST" action="/cita/">
             {% csrf_token %}
-           <ul>
+            <ul>
 
                 <li>
                     <label for = "paciente">Fecha de la cita</label>
@@ -37,7 +38,7 @@
                     -->
                     <input type = "text" id = "date" name = "date_holder" readonly placeholder = "Fecha cita" />
 
-               </li>
+                </li>
                 <br/>
 
 
@@ -61,7 +62,7 @@
                 <br/>
 
                 <li>
-                   <label for = "horafin">Hora fin</label>
+                    <label for = "horafin">Hora fin</label>
                     <!--
                       <select name = "horafin">
                      <option value = "00:00">Seleccione una opcion</option>
@@ -71,7 +72,7 @@
                          <option value="08:45 am">08:45 am</option>
                          <option value="09:00 am">09:00 am</option>
                   </select>
-                  -->
+                   -->
                     <select name = "end">
                     </select>
 
@@ -80,7 +81,7 @@
                 <br/>
 
 
-               <li>
+                <li>
                     <label for = "paciente">Seleccione un paciente</label>
                     <select name = "paciente">
                         {{ pacientes }}
@@ -120,6 +121,7 @@
 
                 <br/>
 
+
             </ul>
             <div id = "savediv">
                 <button id="enviar" type="submit" class="btn btn-primary">
@@ -133,12 +135,10 @@
 
     </div>
 
- 
-
 {% endblock %}
 
 {% block script %}
 
-  <script src='/static/js/cita/select.js'></script>
-  
+    <script src='/static/js/cita/select.js'></script>
+
 {% endblock script %}
