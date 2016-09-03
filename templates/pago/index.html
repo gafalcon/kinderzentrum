@@ -59,10 +59,10 @@
 
           {% if pagina_actual == "cita" %}<li class="active dropdown">{% else %}<li class="dropdown">{% endif %}
           <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Citas <span class="caret"></span></a>
-            
-            <ul class="dropdown-menu">        
+
+            <ul class="dropdown-menu">
               <li><a href="{% url 'reservar_cita_view' %}">Reservar cita</a></li>
-              
+
                 </ul>
           </li>
 
@@ -151,8 +151,8 @@
   </div>
   <div class="panel panel-primary" style="margin-left: 5%; margin-right: 5%">
       <div class="panel-heading">Filtros de búsqueda</div>
-      <div class="panel-body">
-
+      <div id="info" style="background-color: white;" class="panel-body">
+        <h1 style="padding: 0; margin: 0;">Kinderzentrum</h1>
         <div class="container-fluid">
           <div class="row">
             <div class="col-md-12 col-xs-12">
@@ -163,12 +163,16 @@
                 <span id="table_header_name"></span>
               {% endif %}
               </h3>
-              <div class="table">
+              <div id="table" class="table">
                 <table class="table table-striped">
-                  <thead>
+                  <thead style="background-color: #337ab7; color: white;">
                     <tr>
-                      <th>Terapia</th>
+                      <th>Id</th>
                       <th>Fecha</th>
+                      <th>Hora</th>
+                      <th>Paciente</th>
+                      <th>Terapia</th>
+                      <th>Estado</th>
                       <th>Costo</th>
                     </tr>
                   </thead>
@@ -176,12 +180,20 @@
                     {% if context %}
                       {% for payment in context.payments_info.payments %}
                       <tr>
-                        <td>{{ payment.terapia_nombre }}</td>
+                        <td>{{ payment.cita_id }}</td>
                         <td>{{ payment.fecha_cita }}, {{ payment.hora_inicio }} - {{ payment.hora_fin }}</td>
+                        <td></td>
+                        <td>{{ context.patient.nombres }} {{ context.patient.apellidos }}</td>
+                        <td>{{ payment.terapia_nombre }}</td>
+                        <td>{{ payment.cita_estado }}</td>
                         <td>{{ payment.costo }}</td>
                       </tr>
                       {% endfor %}
                       <tr class="table-result">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                         <td></td>
                         <td>Total</td>
                         <td>{{ context.payments_info.total }}</td>
@@ -194,7 +206,7 @@
           </div>
           <div>
             <div>
-              <p>Comment:</p>
+              <p>Comentario:</p>
               {% if context %}
                 <textarea class="form-control" rows="3" id="comment">{{ context.comment }}</textarea>
               {% else %}
@@ -230,7 +242,7 @@
     function toPDF() {
       var format = 'a4';
       var pdfExport = new PDFExport(format);
-      var domNode = document.getElementsByTagName('body')[0];
+      var domNode = document.getElementById('info');
       pdfExport.createPageScreenshot(domNode).then(function () {
         pdfExport.downloadDocument();
       });

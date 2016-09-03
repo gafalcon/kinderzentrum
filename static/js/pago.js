@@ -193,6 +193,7 @@ function getPatientPaymentInformation(id, date) {
     })
     .catch(function (error) {
       console.log('error');
+      console.log(error);
       State.CurrentPatient.Payments = [];
       updatePatientPaymentInformationTable([]);
     });
@@ -201,18 +202,32 @@ function getPatientPaymentInformation(id, date) {
 function updatePatientPaymentInformationTable(payments) {
   console.log(payments);
   var tableNode = document.getElementById('patient_payments_table');
+  var states = {
+    'A': 'Agendada',
+    'S': 'Asistió',
+    'N': 'No asistió',
+    'C': 'Cancelada'
+  };
   tableNode.innerHTML = payments.map(function (payment) {
     return `<tr>
-      <td>${payment.terapia_nombre}</td>
-      <td>${payment.fecha_cita}, ${payment.hora_inicio} - ${payment.hora_fin}</td>
-      <td>${payment.costo}</td>
+      <td>${ payment.cita_id }</td>
+      <td>${ payment.fecha_cita }</td>
+      <td>${ payment.hora_inicio } - ${ payment.hora_fin }</td>
+      <td>${ payment.nombres } ${ payment.apellidos }</td>
+      <td>${ payment.terapia_nombre }</td>
+      <td>${ states[payment.cita_estado] }</td>
+      <td>$${ payment.costo }.00</td>
     </tr>`;
   }).join('') + `<tr class="table-result">
     <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
     <td>Total</td>
-    <td>${payments.reduce(function (sum, payment) {
+    <td>$${payments.reduce(function (sum, payment) {
       return sum + Number(payment.costo);
-    }, 0)}</td>
+    }, 0)}.00</td>
   </tr>`;
   var nameNode = document.getElementById('table_header_name');
   nameNode.innerHTML = State.CurrentPatient.Name;

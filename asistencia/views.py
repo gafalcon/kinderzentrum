@@ -1,7 +1,6 @@
 
 import datetime
 import json
-import simplejson
 
 from django.db import connection
 from django.shortcuts import render, render_to_response, get_list_or_404
@@ -10,8 +9,6 @@ from django.views.generic import View
 from django.template import RequestContext
 from django.http import HttpResponse, Http404
 from django.core.serializers.json import DjangoJSONEncoder
-from bson import json_util
-
 
 from models import Terapista, Tipo_terapia
 
