@@ -64,16 +64,16 @@ p {
 .ui-widget {
   font-size: 1em; 
 }
-/*
+
 #event_edit_container, #about {
   display: none;
 }
-*/
 
+/*
 #event_edit_container, #about {
   display: block;
 }
-
+*/
 #about_button_container {
   position: absolute;
   top: 1em;
