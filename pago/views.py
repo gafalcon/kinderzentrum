@@ -44,7 +44,7 @@ def patient_payments(request, patientId):
     fromDate = request.GET.get('from', '0')
     toDate = request.GET.get('to', '0')
     cursor = connection.cursor()
-    cursor.execute("select p.id, p.nombres, p.apellidos, t.nombre as terapia_nombre, t.tiempo, c.hora_inicio, c.hora_fin, c.fecha_cita, t.costo from registro_paciente p left join cita_cita c on p.id = c.paciente_id left join asistencia_tipo_terapia t on c.tipo_terapia_id = t.id where p.id = \'{0}\' and c.fecha_cita between date({1}, 'unixepoch') and date({2}, 'unixepoch')".format(patientId, fromDate, toDate))
+    cursor.execute("select p.id, p.nombres, p.apellidos, t.nombre as terapia_nombre, t.tiempo, c.id as cita_id, c.estado as cita_estado, c.hora_inicio, c.hora_fin, c.fecha_cita, t.costo from registro_paciente p left join cita_cita c on p.id = c.paciente_id left join asistencia_tipo_terapia t on c.tipo_terapia_id = t.id where p.id = \'{0}\' and c.fecha_cita between date({1}, 'unixepoch') and date({2}, 'unixepoch')".format(patientId, fromDate, toDate))
     row = dictfetchall(cursor)
     return HttpResponse(json.dumps(row, cls=DjangoJSONEncoder), content_type='application/json')
 
