@@ -27,6 +27,7 @@
               $.each(data, function(i, paciente){
 				  var tr = $("<tr></tr>");
 				  tr.attr("class","row-hermanos");
+          tr.attr("id","paciente_"+paciente.pk);
 				  //tr.attr("pk",paciente.pk);
 
                   var nombres = $("<td></td>").text(paciente.fields.nombres);
