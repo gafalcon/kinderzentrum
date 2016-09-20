@@ -1,5 +1,139 @@
 $(document).ready(function() {
 
+   $.getScript("/static/js/cita/jquery.cookie.js", function(){
+
+   });
+
+   function ver_cita(dialogContent,id){
+      var data = JSON.parse(ajax_get_cita(id));
+
+      var paciente = data[0].fields.paciente;
+      var tipoterapia = data[0].fields.tipo_terapia;
+      var terapista = data[0].fields.terapista;
+      var estado = data[0].fields.estado;
+      var indicaciones = data[0].fields.indicaciones;
+
+      dialogContent.find("select[name='paciente']").val(paciente);
+      dialogContent.find("select[name='tipoterapia']").val(tipoterapia);
+      dialogContent.find("select[name='terapista']").val(terapista);
+      dialogContent.find("select[name='estados']").val(estado);
+      dialogContent.find("textarea[name='indicaciones']").val(indicaciones);
+
+   }
+
+   function ajax_get_citas(){
+
+      var resp;
+
+      $.ajax({
+          async: false,
+          type: 'get',
+          url: '/get_citas/',
+          success : function(response){
+            resp = response;
+          },
+          dataType: 'json'
+      });
+
+      return resp;
+   }
+
+   function ajax_get_cita(id){
+
+      var resp;
+
+      $.ajax({
+          async: false,
+          type: 'get',
+          url: '/get_cita/',
+          data: {'id_cita':id},
+          success : function(response){
+            resp = response;
+          },
+          dataType: 'json'
+      });
+
+      return resp;
+   }
+
+   function ajax_save_cita(date_holder,start,end,paciente,tipoterapia,terapista,estado,indicaciones){
+      var cookie = Cookies.get('csrftoken');
+
+      $.ajax({
+          type: 'POST',
+          url: '/save_cita/',
+          data:{
+            'date_holder':date_holder,
+            'start':start,
+            'end':end,
+            'paciente':paciente,
+            'tipoterapia':tipoterapia,
+            'terapista':terapista,
+            'estado':estado,
+            'indicaciones':indicaciones,
+            'csrfmiddlewaretoken' : cookie
+          },
+          success : function(response){
+            console.log(response);
+          },
+          dataType: 'json'
+      });
+   }
+
+   function ajax_update_cita(date_holder,start,end,paciente,tipoterapia,terapista,estado,indicaciones,id){
+      var cookie = Cookies.get('csrftoken');
+
+      $.ajax({
+          type: 'POST',
+          url: '/update_cita/',
+          data:{
+            'cita_id':id,
+            'date_holder':date_holder,
+            'start':start,
+            'end':end,
+            'paciente':paciente,
+            'tipoterapia':tipoterapia,
+            'terapista':terapista,
+            'estado':estado,
+            'indicaciones':indicaciones,
+            'csrfmiddlewaretoken' : cookie
+          },
+          success : function(response){
+            console.log(response);
+          },
+          dataType: 'json'
+      });
+   }
+
+   function not_null(list){
+      for(i in list){
+         if(list[i]==null || list[i]=="")
+            return false;
+      }
+      return true;
+   }
+
+   function ajax_edit_cita(){
+
+   }
+
+   function ajax_delete_cita(id){
+      var cookie = Cookies.get('csrftoken');
+
+      $.ajax({
+          type: 'POST',
+          url: '/delete_cita/',
+          data:{
+            'cita_id':id,
+            'csrfmiddlewaretoken' : cookie
+          },
+          success : function(response){
+            console.log(response);
+          },
+          dataType: 'json'
+      });
+   }
+
 
    var $calendar = $('#calendar');
    var id = 10;
@@ -32,11 +166,15 @@ $(document).ready(function() {
       eventNew : function(calEvent, $event) {
          var $dialogContent = $("#event_edit_container");
          resetForm($dialogContent);
+         var date = $dialogContent.find("input[name='date_holder']");
          var startField = $dialogContent.find("select[name='start']").val(calEvent.start);
          var endField = $dialogContent.find("select[name='end']").val(calEvent.end);
-         /*var titleField = $dialogContent.find("input[name='title']");*/
-         /*var bodyField = $dialogContent.find("textarea[name='body']");*/
-
+         var paciente = $dialogContent.find("select[name='paciente']");
+         var tipoterapia = $dialogContent.find("select[name='tipoterapia']");
+         var terapista = $dialogContent.find("select[name='terapista']");
+         var estado = $dialogContent.find("select[name='estados']");
+         var indicaciones = $dialogContent.find("textarea[name='indicaciones']");
+         
 
          $dialogContent.dialog({
             modal: true,
@@ -47,14 +185,25 @@ $(document).ready(function() {
                $('#calendar').weekCalendar("removeUnsavedEvents");
             },
             buttons: {
-               /*save : function() {
-                 
-                  submit();
-                  $dialogContent.dialog("close");
+               Reservar : function() {
+                  var fecha_cita = date.val();
+                  var inicio = startField.val();
+                  var fin = endField.val();
+                  var paciente_id = paciente.val();
+                  var tipoterapia_id = tipoterapia.val();
+                  var terapista_id = terapista.val();
+                  var es = estado.val();
+                  var txt = indicaciones.val();
                   
+                  if(not_null([fecha_cita,inicio,fin,paciente_id,tipoterapia_id,terapista_id,es])){
+                     ajax_save_cita(fecha_cita,inicio,fin,paciente_id,tipoterapia_id,terapista_id,es,txt);
+                  }
+
+                  resetForm($dialogContent);
+                  $dialogContent.dialog("close");
+                  location.reload(true);
                },
-               */
-               cancelar : function() {
+               Cancelar : function() {
                   $dialogContent.dialog("close");
                }        
             }
@@ -77,36 +226,48 @@ $(document).ready(function() {
 
          var $dialogContent = $("#event_edit_container");
          resetForm($dialogContent);
+         var date = $dialogContent.find("input[name='date_holder']");
          var startField = $dialogContent.find("select[name='start']").val(calEvent.start);
          var endField = $dialogContent.find("select[name='end']").val(calEvent.end);
-         var titleField = $dialogContent.find("input[name='title']").val(calEvent.title);
-         var bodyField = $dialogContent.find("textarea[name='body']");
-         bodyField.val(calEvent.body);
+         var paciente = $dialogContent.find("select[name='paciente']");
+         var tipoterapia = $dialogContent.find("select[name='tipoterapia']");
+         var terapista = $dialogContent.find("select[name='terapista']");
+         var estado = $dialogContent.find("select[name='estados']");
+         var indicaciones = $dialogContent.find("textarea[name='indicaciones']");
 
          $dialogContent.dialog({
             modal: true,
-            title: "Edit - " + calEvent.title,
+            title: "Editar Cita ",
             close: function() {
                $dialogContent.dialog("destroy");
                $dialogContent.hide();
                $('#calendar').weekCalendar("removeUnsavedEvents");
             },
             buttons: {
-               save : function() {
+               Editar : function() {
+                  var fecha_cita = date.val();
+                  var inicio = startField.val();
+                  var fin = endField.val();
+                  var paciente_id = paciente.val();
+                  var tipoterapia_id = tipoterapia.val();
+                  var terapista_id = terapista.val();
+                  var es = estado.val();
+                  var txt = indicaciones.val();
 
-                  calEvent.start = new Date(startField.val());
-                  calEvent.end = new Date(endField.val());
-                  calEvent.title = titleField.val();
-                  calEvent.body = bodyField.val();
+                  if(not_null([fecha_cita,inicio,fin,paciente_id,tipoterapia_id,terapista_id,es])){
+                     ajax_update_cita(fecha_cita,inicio,fin,paciente_id,tipoterapia_id,terapista_id,es,txt,calEvent.id);
+                  }
 
-                  $calendar.weekCalendar("updateEvent", calEvent);
+                  resetForm($dialogContent);
                   $dialogContent.dialog("close");
+                  location.reload(true);
                },
-               "delete" : function() {
+               Eliminar : function() {
                   $calendar.weekCalendar("removeEvent", calEvent.id);
+                  ajax_delete_cita(calEvent.id);
                   $dialogContent.dialog("close");
                },
-               cancel : function() {
+               Cancelar : function() {
                   $dialogContent.dialog("close");
                }
             }
@@ -114,9 +275,11 @@ $(document).ready(function() {
 
          var startField = $dialogContent.find("select[name='start']").val(calEvent.start);
          var endField = $dialogContent.find("select[name='end']").val(calEvent.end);
-         /*$dialogContent.find(".date_holder").text($calendar.weekCalendar("formatDate", calEvent.start));*/
+         
+
          $dialogContent.find("input[name='date_holder']").val($calendar.weekCalendar("formatDate", calEvent.start));
          setupStartAndEndTimeFields(startField, endField, calEvent, $calendar.weekCalendar("getTimeslotTimes", calEvent.start));
+         ver_cita($dialogContent,calEvent.id);
          $(window).resize().resize(); //fixes a bug in modal overlay size ??
 
       },
@@ -134,6 +297,7 @@ $(document).ready(function() {
 
    function resetForm($dialogContent) {
       $dialogContent.find("input").val("");
+      $dialogContent.find("select").val("");
       $dialogContent.find("textarea").val("");
    }
 
@@ -141,48 +305,23 @@ $(document).ready(function() {
       var year = new Date().getFullYear();
       var month = new Date().getMonth();
       var day = new Date().getDate();
+      var ev = JSON.parse(ajax_get_citas());
+      var citas = [];
+
+      for(var i in ev){
+         var fecha_cita = ev[i].fields.fecha_cita;
+         var hora_inicio = ev[i].fields.hora_inicio;
+         var hora_fin = ev[i].fields.hora_fin;
+
+         var start = new Date(fecha_cita + " " + hora_inicio)
+         var end = new Date(fecha_cita + " " + hora_fin)
+         var title = ev[i].fields.paciente.fullname + " " + ev[i].fields.tipo_terapia + " " + ev[i].fields.terapista.fullname
+         var aux = {"id":ev[i].pk,"start": new Date(fecha_cita + " " + hora_inicio),"end":new Date(fecha_cita + " " + hora_fin),"title":title};
+         citas.push(aux);
+      }
 
       return {
-         events : [
-            {
-               "id":1,
-               "start": new Date(year, month, day, 12),
-               "end": new Date(year, month, day, 13, 30),
-               "title":"Lunch with Mike"
-            },
-            {
-               "id":2,
-               "start": new Date(year, month, day, 14),
-               "end": new Date(year, month, day, 14, 45),
-               "title":"Dev Meeting"
-            },
-            {
-               "id":3,
-               "start": new Date(year, month, day + 1, 17),
-               "end": new Date(year, month, day + 1, 17, 45),
-               "title":"Hair cut"
-            },
-            {
-               "id":4,
-               "start": new Date(year, month, day - 1, 8),
-               "end": new Date(year, month, day - 1, 9, 30),
-               "title":"Team breakfast"
-            },
-            {
-               "id":5,
-               "start": new Date(year, month, day + 1, 14),
-               "end": new Date(year, month, day + 1, 15),
-               "title":"Product showcase"
-            },
-            {
-               "id":6,
-               "start": new Date(year, month, day, 10),
-               "end": new Date(year, month, day, 11),
-               "title":"I'm read-only",
-               readOnly : true
-            }
-
-         ]
+         events : citas
       };
    }
 
