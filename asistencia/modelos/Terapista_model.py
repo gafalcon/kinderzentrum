@@ -1,4 +1,4 @@
-from django.db import models
+	from django.db import models
 
 
 class Terapista(models.Model):
@@ -14,3 +14,5 @@ class Terapista(models.Model):
     def __str__(self):
         return self.apellidos + " " + self.nombres
 
+    def natural_key(self):
+		return {'fullname':self.nombres + " "+self.apellidos}
