@@ -75,4 +75,8 @@ class Paciente(models.Model):
             self.datos_familiares.delete()
         return super(self.__class__, self).delete(*args, **kwargs)
 
+    def print_pk(self):
+        return str(self.pk)
 
+    def natural_key(self):
+        return {'fullname':self.nombres + " "+self.apellidos}
