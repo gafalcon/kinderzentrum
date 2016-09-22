@@ -9,3 +9,6 @@ class Tipo_terapia (models.Model):
 
     def __str__(self):
         return self.nombre
+
+    def natural_key(self):
+		return self.nombre
